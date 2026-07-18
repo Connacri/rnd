@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenasni Nabil - RND Ain El Turk | Ensemble pour l'avenir</title>
+    <meta name="description" content="Site officiel de Zenasni Nabil, Secrétaire Général du bureau communal RND d'Ain El Turk, Oran, Algérie">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1a3a5c;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --dark-bg: #0f172a;
+            --light-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #1a3a5c 0%, #2ecc71 100%);
+            --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.15);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', 'Cairo', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Parallax Effects */
+        .parallax-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            will-change: transform;
+            z-index: -1;
+        }
+
+        .parallax-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            z-index: 0;
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            color: var(--white);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.98);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled .logo {
+            color: var(--white);
+        }
+
+        .logo i {
+            color: var(--secondary-color);
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .navbar.scrolled .nav-links a {
+            color: var(--white);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled .mobile-menu span {
+            background: var(--white);
+        }
+
+        /* Hero Section with Parallax */
+        .hero-parallax {
+            margin-top: 70px;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-parallax .parallax-bg {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%232ecc71" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: var(--secondary-color);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            color: var(--white);
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(46, 204, 113, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary-color);
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-image-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-primary);
+            z-index: -1;
+            border-radius: 20px;
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Quote Section - Inspired by Poster 1 */
+        .quote-parallax {
+            position: relative;
+            padding: 8rem 2rem;
+            background: var(--white);
+        }
+
+        .quote-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .quote-poster {
+            background: var(--dark-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quote-poster::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="rgba(255,255,255,0.03)">RND</text></svg>');
+            opacity: 0.1;
+        }
+
+        .quote-icon-large {
+            font-size: 5rem;
+            color: var(--secondary-color);
+            opacity: 0.3;
+            position: absolute;
+            top: 20px;
+            left: 30px;
+        }
+
+        .quote-text-large {
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-author-name {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-position {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        .hashtag-section {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hashtag-item {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--secondary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Event Section - Inspired by Poster 2 */
+        .event-parallax {
+            position: relative;
+            padding: 8rem 2rem;
+            background: linear-gradient(135deg, #0f172a 0%, #1a3a5c 100%);
+            overflow: hidden;
+        }
+
+        .event-parallax::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%232ecc71" fill-opacity="0.05" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .event-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--secondary-color);
+            border-radius: 30px;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-image-poster {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .event-image-poster img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .event-countdown-badge {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            animation: pulse 2s infinite;
+        }
+
+        .event-countdown-badge .days-number {
+            font-size: 3rem;
+            font-weight: 800;
+            display: block;
+            line-height: 1;
+        }
+
+        .event-countdown-badge .days-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .event-content h2 {
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .event-details-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .event-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            color: var(--white);
+        }
+
+        .event-detail-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .event-detail-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: var(--white);
+        }
+
+        .event-detail-info p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        /* Moderator Section - Inspired by Poster 3 */
+        .moderator-parallax {
+            position: relative;
+            padding: 8rem 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            overflow: hidden;
+        }
+
+        .moderator-parallax::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(180deg, rgba(231, 76, 60, 0.1) 0%, transparent 100%);
+        }
+
+        .moderator-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 30px;
+            padding: 4rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .moderator-header {
+            margin-bottom: 3rem;
+        }
+
+        .moderator-header h2 {
+            font-size: 3rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .moderator-header h2 span {
+            color: var(--accent-color);
+        }
+
+        .moderator-poster {
+            position: relative;
+            display: inline-block;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+
+        .moderator-poster img {
+            width: 100%;
+            max-width: 500px;
+            display: block;
+        }
+
+        .moderator-info-box {
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .moderator-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .moderator-title {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .moderator-description {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .event-date-highlight {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Program Section */
+        .program {
+            background: var(--gradient-dark);
+            padding: 6rem 2rem;
+            color: var(--white);
+            position: relative;
+        }
+
+        .program::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-attachment: fixed;
+            background-size: cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .program-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .program-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+        }
+
+        .program-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .program-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--secondary-color);
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .program-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .program-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+        }
+
+        .program-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .program-list li {
+            padding: 0.5rem 0;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .program-list li i {
+            color: var(--secondary-color);
+        }
+
+        /* Membership Form Section */
+        .membership {
+            background: var(--light-bg);
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .membership-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 30px;
+            padding: 4rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        .membership-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .membership-header h2 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .membership-header h2 span {
+            color: var(--accent-color);
+        }
+
+        .membership-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #c0392b 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
+        }
+
+        .form-success {
+            display: none;
+            background: #2ecc71;
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .form-success.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--gradient-primary);
+            padding: 4rem 2rem;
+            color: var(--white);
+        }
+
+        .stats-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            color: var(--white);
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-color);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero-content-grid,
+            .event-container,
+            .program-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .moderator-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .quote-text-large {
+                font-size: 1.3rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .membership-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e2e8f0;
+            border-top-color: var(--secondary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-flag"></i>
+                <span>ZENASNI NABIL</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#citation">Citation</a></li>
+                <li><a href="#evenement">Événement</a></li>
+                <li><a href="#moderateur">Modérateur</a></li>
+                <li><a href="#programme">Programme</a></li>
+                <li><a href="#adhesion">Adhésion</a></li>
+            </ul>
+            <div class="mobile-menu" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Parallax -->
+    <section class="hero-parallax" id="accueil">
+        <div class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="parallax-content">
+            <div class="hero-content-grid">
+                <div class="hero-content" style="animation: slideInLeft 1s ease-out;">
+                    <div class="hero-badge">
+                        <i class="fas fa-star"></i> Élections Communales 2026
+                    </div>
+                    <h1>ZENASNI <span>NABIL</span></h1>
+                    <p class="hero-subtitle">Secrétaire Général - Bureau Communal RND d'Aïn El Turk</p>
+                    <p class="hero-description">
+                        Ensemble, construisons l'avenir d'Aïn El Turk. Un programme ambitieux basé sur 
+                        la gouvernance, le développement économique et la transformation numérique.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#adhesion" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> Devenir Adhérent
+                        </a>
+                        <a href="#programme" class="btn btn-secondary">
+                            <i class="fas fa-book"></i> Voir le Programme
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image-wrapper" style="animation: slideInRight 1s ease-out;">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=700&fit=crop" alt="Zenasni Nabil">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section - Parallax with Poster Style 1 -->
+    <section class="quote-parallax" id="citation">
+        <div class="quote-container animate-on-scroll">
+            <div class="quote-poster">
+                <i class="fas fa-quote-left quote-icon-large"></i>
+                <p class="quote-text-large">
+                    "Acorde para viver o melhor da sua vida hoje. Acorde para ser feliz agora. 
+                    Acorde para realizar as suas metas mais importantes e as menos importantes também 
+                    – afinal, elas são suas."
+                </p>
+                <div class="quote-author-name">ZENASNI NABIL</div>
+                <div class="quote-position">Secrétaire Général - RND Aïn El Turk</div>
+                <div class="hashtag-section">
+                    <span class="hashtag-item">#RND</span>
+                    <span class="hashtag-item">#PVINSIGHTS</span>
+                    <span class="hashtag-item">#AinElTurk</span>
+                    <span class="hashtag-item">#Ensemble</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Section - Parallax with Poster Style 2 -->
+    <section class="event-parallax" id="evenement">
+        <div class="event-container animate-on-scroll">
+            <div class="event-image-poster">
+                <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=700&fit=crop" alt="Event Poster">
+                <div class="event-countdown-badge">
+                    <span class="days-number">10</span>
+                    <span class="days-text">JOURS À GO</span>
+                </div>
+            </div>
+            <div class="event-content">
+                <h2>Business Game Changer</h2>
+                <p class="event-subtitle">Aïn El Turk 2026</p>
+                <div class="event-details-list">
+                    <div class="event-detail-item">
+                        <div class="event-detail-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="event-detail-info">
+                            <h4>Date</h4>
+                            <p>27 Novembre 2026<br>17h00 - 23h00</p>
+                        </div>
+                    </div>
+                    <div class="event-detail-item">
+                        <div class="event-detail-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="event-detail-info">
+                            <h4>Lieu</h4>
+                            <p>Salle des Festivals<br>Aïn El Turk, Oran</p>
+                        </div>
+                    </div>
+                    <div class="event-detail-item">
+                        <div class="event-detail-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="event-detail-info">
+                            <h4>Modérateur</h4>
+                            <p>Zenasni Nabil<br>Secrétaire Général RND</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="#adhesion" class="btn btn-primary">
+                    <i class="fas fa-ticket-alt"></i> Réserver ma Place
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Moderator Section - Parallax with Poster Style 3 -->
+    <section class="moderator-parallax" id="moderateur">
+        <div class="moderator-container animate-on-scroll">
+            <div class="moderator-header">
+                <h2>MEET YOUR <span>MODERATOR</span></h2>
+            </div>
+            <div class="moderator-poster">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=700&fit=crop" alt="Moderator">
+            </div>
+            <div class="moderator-info-box">
+                <div class="moderator-name">ZENASNI NABIL</div>
+                <div class="moderator-title">Chief Growth Officer - RND Aïn El Turk</div>
+            </div>
+            <p class="moderator-description">
+                Secrétaire Général du bureau communal, engagez-vous pour un avenir meilleur
+            </p>
+            <div class="event-date-highlight">
+                <i class="fas fa-video"></i> Join our LinkedIn Live
+            </div>
+            <a href="#adhesion" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Rejoignez-nous
+            </a>
+        </div>
+    </section>
+
+    <!-- Program Section -->
+    <section class="program" id="programme">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-badge">Notre Programme</span>
+                <h2 class="section-title">Axes Prioritaires</h2>
+                <p class="section-subtitle">
+                    Un programme complet basé sur les valeurs du RND pour transformer Aïn El Turk
+                </p>
+            </div>
+            <div class="program-grid">
+                <div class="program-card animate-on-scroll">
+                    <div class="program-number">01</div>
+                    <h3><i class="fas fa-users-cog"></i> Jeunesse et Femmes</h3>
+                    <p>Encouragement de la participation des jeunes et des femmes</p>
+                    <ul class="program-list">
+                        <li><i class="fas fa-check"></i> Programmes d'insertion professionnelle</li>
+                        <li><i class="fas fa-check"></i> Soutien à l'entrepreneuriat féminin</li>
+                        <li><i class="fas fa-check"></i> Espaces de dialogue</li>
+                    </ul>
+                </div>
+                <div class="program-card animate-on-scroll">
+                    <div class="program-number">02</div>
+                    <h3><i class="fas fa-rocket"></i> Innovation et Startups</h3>
+                    <p>Développement de l'écosystème entrepreneurial</p>
+                    <ul class="program-list">
+                        <li><i class="fas fa-check"></i> Incubateur de startups locales</li>
+                        <li><i class="fas fa-check"></i> Financement de projets innovants</li>
+                        <li><i class="fas fa-check"></i> Partenariats université-entreprise</li>
+                    </ul>
+                </div>
+                <div class="program-card animate-on-scroll">
+                    <div class="program-number">03</div>
+                    <h3><i class="fas fa-industry"></i> Industrie Nationale</h3>
+                    <p>Relance des activités productives</p>
+                    <ul class="program-list">
+                        <li><i class="fas fa-check"></i> Soutien aux industries de transformation</li>
+                        <li><i class="fas fa-check"></i> Développement de la sous-traitance</li>
+                        <li><i class="fas fa-check"></i> Valorisation des ressources locales</li>
+                    </ul>
+                </div>
+                <div class="program-card animate-on-scroll">
+                    <div class="program-number">04</div>
+                    <h3><i class="fas fa-balance-scale"></i> Justice Sociale</h3>
+                    <p>Consécration de l'égalité des chances</p>
+                    <ul class="program-list">
+                        <li><i class="fas fa-check"></i> Programmes de solidarité locale</li>
+                        <li><i class="fas fa-check"></i> Accès équitable aux services</li>
+                        <li><i class="fas fa-check"></i> Soutien aux catégories vulnérables</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item animate-on-scroll">
+                <h3 class="counter" data-target="1500">0</h3>
+                <p>Adhérents</p>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <h3 class="counter" data-target="25">0</h3>
+                <p>Projets Lancés</p>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <h3 class="counter" data-target="50">0</h3>
+                <p>Événements/an</p>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <h3 class="counter" data-target="100">0</h3>
+                <p>% Engagement</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Form Section -->
+    <section class="membership" id="adhesion">
+        <div class="membership-container animate-on-scroll">
+            <div class="membership-header">
+                <h2>Rejoignez <span>Nous</span></h2>
+                <p>Devenez adhérent du RND - Bureau Communal d'Aïn El Turk</p>
+            </div>
+            <form id="membershipForm" action="https://formsubmit.co/Connacri3@gmail.com" method="POST">
+                <input type="hidden" name="_subject" value="Nouvelle Adhésion RND - Zenasni Nabil">
+                <input type="hidden" name="_next" value="https://zenasni-nabil-rnd.dz/merci.html">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nom"><i class="fas fa-user"></i> Nom complet *</label>
+                        <input type="text" id="nom" name="Nom" required placeholder="Votre nom complet">
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom"><i class="fas fa-user"></i> Prénom *</label>
+                        <input type="text" id="prenom" name="Prénom" required placeholder="Votre prénom">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                        <input type="email" id="email" name="Email" required placeholder="votre@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone"><i class="fas fa-phone"></i> Téléphone *</label>
+                        <input type="tel" id="telephone" name="Téléphone" required placeholder="05 XX XX XX XX">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dateNaissance"><i class="fas fa-birthday-cake"></i> Date de naissance *</label>
+                        <input type="date" id="dateNaissance" name="Date_de_naissance" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wilaya"><i class="fas fa-map-marker-alt"></i> Wilaya *</label>
+                        <select id="wilaya" name="Wilaya" required>
+                            <option value="">Sélectionnez...</option>
+                            <option value="Oran">Oran</option>
+                            <option value="Alger">Alger</option>
+                            <option value="Constantine">Constantine</option>
+                            <option value="Annaba">Annaba</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="commune"><i class="fas fa-city"></i> Commune *</label>
+                    <input type="text" id="commune" name="Commune" required placeholder="Votre commune de résidence">
+                </div>
+
+                <div class="form-group">
+                    <label for="profession"><i class="fas fa-briefcase"></i> Profession</label>
+                    <input type="text" id="profession" name="Profession" placeholder="Votre profession">
+                </div>
+
+                <div class="form-group">
+                    <label for="engagement"><i class="fas fa-handshake"></i> Pourquoi souhaitez-vous adhérer ? *</label>
+                    <textarea id="engagement" name="Motivation" required placeholder="Décrivez votre motivation pour adhérer au RND..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="competences"><i class="fas fa-star"></i> Compétences et domaines d'intérêt</label>
+                    <textarea id="competences" name="Compétences" placeholder="Vos compétences, expériences ou domaines dans lesquels vous souhaitez vous engager..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Envoyer ma candidature
+                </button>
+                
+                <div class="form-success" id="formSuccess">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>Candidature envoyée avec succès !</strong>
+                    <p>Nous vous contacterons bientôt.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-flag"></i> RND - Aïn El Turk</h3>
+                <p>
+                    Rassemblement National Démocratique<br>
+                    Bureau Communal d'Aïn El Turk<br>
+                    Oran, Algérie 🇩🇿
+                </p>
+                <p>Secrétaire Général: <strong>Zenasni Nabil</strong></p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Liens Rapides</h4>
+                <ul class="footer-links">
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#citation">Citation</a></li>
+                    <li><a href="#evenement">Événements</a></li>
+                    <li><a href="#programme">Programme</a></li>
+                    <li><a href="#adhesion">Adhésion</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Programme</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Jeunesse & Femmes</a></li>
+                    <li><a href="#">Économie</a></li>
+                    <li><a href="#">Numérisation</a></li>
+                    <li><a href="#">Développement Local</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> Connacri3@gmail.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Aïn El Turk, Oran</li>
+                    <li><i class="fas fa-phone"></i> +213 5XX XXX XXX</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 RND - Bureau Communal d'Aïn El Turk. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 500);
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-bg');
+            
+            parallaxElements.forEach(element => {
+                const speed = 0.5;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+
+            // Scroll to top button
+            const scrollTop = document.getElementById('scrollTop');
+            if (scrolled > 500) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        document.getElementById('scrollTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Animate on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate counters
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        const duration = 2000;
+                        const increment = target / (duration / 16);
+                        let current = 0;
+                        
+                        const updateCounter = () => {
+                            current += increment;
+                            if (current < target) {
+                                counter.innerText = Math.floor(current);
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.innerText = target + (target > 100 ? '+' : '');
+                            }
+                        };
+                        
+                        updateCounter();
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Form submission
+        const form = document.getElementById('membershipForm');
+        const formSuccess = document.getElementById('formSuccess');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    formSuccess.classList.add('show');
+                    form.reset();
+                    
+                    setTimeout(() => {
+                        formSuccess.classList.remove('show');
+                    }, 5000);
+                } else {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Une erreur est survenue. Veuillez réessayer.');
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            navLinks.style.position = 'absolute';
+            navLinks.style.top = '100%';
+            navLinks.style.left = '0';
+            navLinks.style.right = '0';
+            navLinks.style.flexDirection = 'column';
+            navLinks.style.padding = '2rem';
+            navLinks.style.background = 'var(--white)';
+            navLinks.style.boxShadow = 'var(--shadow-md)';
+        });
+
+        // Active navigation based on scroll
+        const sections = document.querySelectorAll('section[id]');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.style.color = '';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.color = 'var(--secondary-color)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,1702 +1,634 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenasni Nabil - RND Ain El Turk | Ensemble pour l'avenir</title>
-    <meta name="description" content="Site officiel de Zenasni Nabil, Secrétaire Général du bureau communal RND d'Ain El Turk, Oran, Algérie">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --primary-color: #1a3a5c;
-            --secondary-color: #2ecc71;
-            --accent-color: #e74c3c;
-            --dark-bg: #0f172a;
-            --light-bg: #f8fafc;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --white: #ffffff;
-            --gradient-primary: linear-gradient(135deg, #1a3a5c 0%, #2ecc71 100%);
-            --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --shadow-sm: 0 2px 10px rgba(0,0,0,0.1);
-            --shadow-md: 0 8px 30px rgba(0,0,0,0.15);
-            --shadow-lg: 0 20px 60px rgba(0,0,0,0.2);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', 'Cairo', sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
-
-        /* Parallax Effects */
-        .parallax-wrapper {
-            position: relative;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .parallax-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120%;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            will-change: transform;
-            z-index: -1;
-        }
-
-        .parallax-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            z-index: 0;
-        }
-
-        .parallax-content {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            text-align: center;
-            color: var(--white);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow-sm);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            background: rgba(15, 23, 42, 0.98);
-            box-shadow: var(--shadow-md);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .navbar.scrolled .logo {
-            color: var(--white);
-        }
-
-        .logo i {
-            color: var(--secondary-color);
-            font-size: 2rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .navbar.scrolled .nav-links a {
-            color: var(--white);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: var(--secondary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .mobile-menu {
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            cursor: pointer;
-        }
-
-        .mobile-menu span {
-            width: 25px;
-            height: 3px;
-            background: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .navbar.scrolled .mobile-menu span {
-            background: var(--white);
-        }
-
-        /* Hero Section with Parallax */
-        .hero-parallax {
-            margin-top: 70px;
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-
-        .hero-parallax .parallax-bg {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%232ecc71" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .hero-content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: var(--secondary-color);
-            color: var(--white);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            animation: pulse 2s infinite;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            color: var(--white);
-            margin-bottom: 1rem;
-            line-height: 1.2;
-            font-weight: 800;
-        }
-
-        .hero h1 span {
-            color: var(--secondary-color);
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-        }
-
-        .hero-description {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: var(--secondary-color);
-            color: var(--white);
-            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(46, 204, 113, 0.5);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border: 2px solid var(--white);
-        }
-
-        .btn-secondary:hover {
-            background: var(--white);
-            color: var(--primary-color);
-        }
-
-        .hero-image-wrapper {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .hero-image-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: var(--gradient-primary);
-            z-index: -1;
-            border-radius: 20px;
-        }
-
-        .hero-image-wrapper img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Quote Section - Inspired by Poster 1 */
-        .quote-parallax {
-            position: relative;
-            padding: 8rem 2rem;
-            background: var(--white);
-        }
-
-        .quote-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .quote-poster {
-            background: var(--dark-bg);
-            border-radius: 20px;
-            padding: 3rem;
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .quote-poster::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="rgba(255,255,255,0.03)">RND</text></svg>');
-            opacity: 0.1;
-        }
-
-        .quote-icon-large {
-            font-size: 5rem;
-            color: var(--secondary-color);
-            opacity: 0.3;
-            position: absolute;
-            top: 20px;
-            left: 30px;
-        }
-
-        .quote-text-large {
-            font-size: 1.8rem;
-            font-weight: 600;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            font-style: italic;
-            position: relative;
-            z-index: 1;
-        }
-
-        .quote-author-name {
-            font-size: 1.3rem;
-            color: var(--secondary-color);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .quote-position {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1.5rem;
-        }
-
-        .hashtag-section {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .hashtag-item {
-            background: rgba(46, 204, 113, 0.2);
-            color: var(--secondary-color);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        /* Event Section - Inspired by Poster 2 */
-        .event-parallax {
-            position: relative;
-            padding: 8rem 2rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1a3a5c 100%);
-            overflow: hidden;
-        }
-
-        .event-parallax::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%232ecc71" fill-opacity="0.05" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .event-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 2px solid var(--secondary-color);
-            border-radius: 30px;
-            padding: 3rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .event-image-poster {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .event-image-poster img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .event-countdown-badge {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            background: var(--secondary-color);
-            color: var(--white);
-            padding: 1.5rem;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: var(--shadow-md);
-            animation: pulse 2s infinite;
-        }
-
-        .event-countdown-badge .days-number {
-            font-size: 3rem;
-            font-weight: 800;
-            display: block;
-            line-height: 1;
-        }
-
-        .event-countdown-badge .days-text {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .event-content h2 {
-            font-size: 2.5rem;
-            color: var(--white);
-            margin-bottom: 0.5rem;
-        }
-
-        .event-subtitle {
-            color: var(--secondary-color);
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
-
-        .event-details-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .event-detail-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            color: var(--white);
-        }
-
-        .event-detail-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--secondary-color);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-        }
-
-        .event-detail-info h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            color: var(--white);
-        }
-
-        .event-detail-info p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-        }
-
-        /* Moderator Section - Inspired by Poster 3 */
-        .moderator-parallax {
-            position: relative;
-            padding: 8rem 2rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            overflow: hidden;
-        }
-
-        .moderator-parallax::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(180deg, rgba(231, 76, 60, 0.1) 0%, transparent 100%);
-        }
-
-        .moderator-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--white);
-            border-radius: 30px;
-            padding: 4rem;
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        .moderator-header {
-            margin-bottom: 3rem;
-        }
-
-        .moderator-header h2 {
-            font-size: 3rem;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-            font-weight: 800;
-        }
-
-        .moderator-header h2 span {
-            color: var(--accent-color);
-        }
-
-        .moderator-poster {
-            position: relative;
-            display: inline-block;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 2rem;
-        }
-
-        .moderator-poster img {
-            width: 100%;
-            max-width: 500px;
-            display: block;
-        }
-
-        .moderator-info-box {
-            background: var(--accent-color);
-            color: var(--white);
-            padding: 1.5rem;
-            border-radius: 15px;
-            display: inline-block;
-            margin-bottom: 2rem;
-        }
-
-        .moderator-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .moderator-title {
-            font-size: 1.1rem;
-            opacity: 0.95;
-        }
-
-        .moderator-description {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 2rem;
-        }
-
-        .event-date-highlight {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-        }
-
-        /* Program Section */
-        .program {
-            background: var(--gradient-dark);
-            padding: 6rem 2rem;
-            color: var(--white);
-            position: relative;
-        }
-
-        .program::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-attachment: fixed;
-            background-size: cover;
-            opacity: 0.1;
-            z-index: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-badge {
-            display: inline-block;
-            background: var(--secondary-color);
-            color: var(--white);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            color: var(--white);
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .program-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .program-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .program-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-primary);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-        }
-
-        .program-card:hover::before {
-            opacity: 0.1;
-        }
-
-        .program-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--secondary-color);
-        }
-
-        .program-card > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .program-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--secondary-color);
-            opacity: 0.3;
-            margin-bottom: 1rem;
-        }
-
-        .program-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--white);
-        }
-
-        .program-card p {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.8;
-        }
-
-        .program-list {
-            list-style: none;
-            margin-top: 1.5rem;
-        }
-
-        .program-list li {
-            padding: 0.5rem 0;
-            color: rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .program-list li i {
-            color: var(--secondary-color);
-        }
-
-        /* Membership Form Section */
-        .membership {
-            background: var(--light-bg);
-            padding: 6rem 2rem;
-            position: relative;
-        }
-
-        .membership-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--white);
-            border-radius: 30px;
-            padding: 4rem;
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            z-index: 1;
-        }
-
-        .membership-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .membership-header h2 {
-            font-size: 2.5rem;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .membership-header h2 span {
-            color: var(--accent-color);
-        }
-
-        .membership-header p {
-            color: var(--text-light);
-            font-size: 1.1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1.2rem;
-            background: linear-gradient(135deg, var(--accent-color) 0%, #c0392b 100%);
-            color: var(--white);
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
-        }
-
-        .form-success {
-            display: none;
-            background: #2ecc71;
-            color: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .form-success.show {
-            display: block;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        /* Stats Section */
-        .stats {
-            background: var(--gradient-primary);
-            padding: 4rem 2rem;
-            color: var(--white);
-        }
-
-        .stats-grid {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-item p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark-bg);
-            color: var(--white);
-            padding: 3rem 2rem 1rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
-        }
-
-        .footer-section p {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-links a {
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background: var(--secondary-color);
-            transform: translateY(-5px);
-        }
-
-        .footer-section h4 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary-color);
-            padding-left: 5px;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* Scroll to top button */
-        .scroll-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--secondary-color);
-            color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-md);
-            z-index: 999;
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 968px) {
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu {
-                display: flex;
-            }
-
-            .hero-content-grid,
-            .event-container,
-            .program-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .moderator-header h2 {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .quote-text-large {
-                font-size: 1.3rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-
-            .membership-container {
-                padding: 2rem 1.5rem;
-            }
-        }
-
-        /* Loader */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loader-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid #e2e8f0;
-            border-top-color: var(--secondary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenasni Nabil — RND Ain El Turk | Elections Communales 2026</title>
+<meta name="description" content="Site officiel de campagne de Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Elections Communales 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rnd-blue: #0047AB; --rnd-green: #00A651; --rnd-red: #C8102E;
+    --rnd-dark: #0a1628; --rnd-light: #f0f4f8;
+    --accent-cyan: #00d4ff; --accent-pink: #ff006e; --gold: #d4af37;
+    --text-light: #ffffff; --text-dark: #1a1a2e;
+    --glass: rgba(255,255,255,0.08); --glass-border: rgba(255,255,255,0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Montserrat', sans-serif; background: var(--rnd-dark); color: var(--text-light); overflow-x: hidden; }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes fadeInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+  @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  @keyframes rotate-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  @keyframes blink-caret { from,to { border-color: transparent; } 50% { border-color: var(--accent-cyan); } }
+
+  .animate-on-scroll { opacity: 0; transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .animate-on-scroll.visible { opacity: 1; }
+  .anim-up { transform: translateY(60px); } .anim-up.visible { transform: translateY(0); }
+  .anim-left { transform: translateX(-80px); } .anim-left.visible { transform: translateX(0); }
+  .anim-right { transform: translateX(80px); } .anim-right.visible { transform: translateX(0); }
+  .anim-scale { transform: scale(0.8); } .anim-scale.visible { transform: scale(1); }
+
+  .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,22,40,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); transition: all 0.4s ease; }
+  .navbar.scrolled { padding: 10px 40px; background: rgba(10,22,40,0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
+  .nav-logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; }
+  .nav-logo .flag-alg { width: 32px; height: 24px; background: linear-gradient(180deg,#006233 50%,#fff 50%); border-radius: 3px; position: relative; overflow: hidden; }
+  .nav-logo .flag-alg::after { content: '\262A'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #d21034; font-size: 14px; }
+  .nav-links { display: flex; gap: 30px; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; position: relative; padding: 5px 0; transition: color 0.3s; }
+  .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: linear-gradient(90deg,var(--accent-cyan),var(--accent-pink)); transition: width 0.3s ease; }
+  .nav-links a:hover { color: #fff; } .nav-links a:hover::after { width: 100%; }
+  .nav-cta { background: linear-gradient(135deg,var(--accent-pink),#ff4081); color: #fff; border: none; padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(255,0,110,0.3); }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,0,110,0.5); }
+  .mobile-menu-btn { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+  .mobile-menu-btn span { width: 28px; height: 3px; background: #fff; border-radius: 2px; transition: all 0.3s; }
+
+  .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 120px 40px 60px; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%,rgba(0,71,171,0.15) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(0,166,81,0.1) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(200,16,46,0.08) 0%,transparent 50%),linear-gradient(180deg,#0a1628 0%,#0d1b2a 50%,#0a1628 100%); }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px); background-size: 60px 60px; animation: gradient-shift 20s ease infinite; }
+  .hero-particles { position: absolute; inset: 0; overflow: hidden; }
+  .particle { position: absolute; width: 4px; height: 4px; background: var(--accent-cyan); border-radius: 50%; opacity: 0.6; animation: float 6s ease-in-out infinite; }
+  .hero-content { position: relative; z-index: 2; max-width: 1200px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .hero-text h3 { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: var(--accent-cyan); margin-bottom: 20px; animation: fadeInLeft 0.8s ease forwards; }
+  .hero-text h1 { font-family: 'Playfair Display',serif; font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; animation: fadeInUp 1s ease 0.2s forwards; opacity: 0; }
+  .hero-text h1 .highlight { background: linear-gradient(90deg,var(--accent-cyan),var(--accent-pink),var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; background-size: 200% auto; animation: shimmer 3s linear infinite; }
+  .hero-text .typewriter-container { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 30px; min-height: 28px; }
+  .hero-text .typewriter-text { display: inline; overflow: hidden; white-space: nowrap; border-right: 2px solid var(--accent-cyan); animation: typewriter 3s steps(40) 1s forwards, blink-caret 0.75s step-end infinite; width: 0; }
+  .hero-text p { font-size: 1.05rem; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 35px; animation: fadeInUp 1s ease 0.6s forwards; opacity: 0; }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; animation: fadeInUp 1s ease 0.8s forwards; opacity: 0; }
+  .btn-primary { background: linear-gradient(135deg,var(--accent-cyan),#0099cc); color: #fff; border: none; padding: 16px 36px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(0,212,255,0.3); position: relative; overflow: hidden; }
+  .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent); transition: left 0.5s; }
+  .btn-primary:hover::before { left: 100%; } .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,212,255,0.5); }
+  .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 14px 34px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: all 0.4s ease; }
+  .btn-secondary:hover { border-color: var(--accent-cyan); background: rgba(0,212,255,0.1); transform: translateY(-3px); }
+
+  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; animation: fadeInRight 1.2s ease 0.4s forwards; opacity: 0; }
+  .hero-visual .ring-outer { position: absolute; width: 420px; height: 420px; border: 2px solid rgba(0,212,255,0.2); border-radius: 50%; animation: rotate-slow 30s linear infinite; }
+  .hero-visual .ring-inner { position: absolute; width: 360px; height: 360px; border: 2px dashed rgba(255,0,110,0.3); border-radius: 50%; animation: rotate-slow 20s linear infinite reverse; }
+  .hero-visual .ring-dots { position: absolute; width: 480px; height: 480px; border-radius: 50%; border: 1px dotted rgba(255,255,255,0.1); animation: rotate-slow 40s linear infinite; }
+  .hero-visual .candidate-card { position: relative; width: 320px; height: 400px; background: linear-gradient(145deg,rgba(0,71,171,0.2),rgba(0,166,81,0.15)); border-radius: 24px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); animation: float 6s ease-in-out infinite; }
+  .candidate-card .avatar { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg,var(--rnd-blue),var(--rnd-green)); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 900; color: #fff; margin-bottom: 20px; border: 4px solid rgba(255,255,255,0.2); box-shadow: 0 10px 40px rgba(0,71,171,0.4); }
+  .candidate-card h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; text-align: center; }
+  .candidate-card .role { font-size: 0.8rem; color: var(--accent-cyan); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; text-align: center; }
+  .candidate-card .location { font-size: 0.85rem; color: rgba(255,255,255,0.6); text-align: center; display: flex; align-items: center; gap: 6px; }
+  .candidate-card .rnd-badge { margin-top: 20px; background: linear-gradient(135deg,var(--rnd-blue),var(--rnd-green)); padding: 8px 20px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+
+  .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; animation: fadeInUp 1s ease 1.5s forwards; opacity: 0; cursor: pointer; }
+  .scroll-indicator span { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.4); }
+  .scroll-indicator .mouse { width: 24px; height: 40px; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; position: relative; }
+  .scroll-indicator .mouse::after { content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: var(--accent-cyan); border-radius: 2px; animation: float 2s ease-in-out infinite; }
+
+  .stats-bar { background: linear-gradient(135deg,rgba(0,71,171,0.3),rgba(0,166,81,0.2)); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 50px 40px; }
+  .stats-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 30px; }
+  .stat-item { text-align: center; padding: 20px; border-radius: 16px; background: var(--glass); border: 1px solid var(--glass-border); transition: all 0.4s ease; }
+  .stat-item:hover { transform: translateY(-5px); background: rgba(255,255,255,0.12); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+  .stat-item .stat-icon { font-size: 2rem; margin-bottom: 12px; }
+  .stat-item .stat-number { font-size: 2.5rem; font-weight: 900; background: linear-gradient(135deg,var(--accent-cyan),var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .stat-item .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 2px; margin-top: 8px; }
+
+  section { padding: 100px 40px; position: relative; }
+  .section-header { text-align: center; max-width: 700px; margin: 0 auto 60px; }
+  .section-header .section-tag { display: inline-block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: var(--accent-cyan); margin-bottom: 16px; padding: 6px 20px; border: 1px solid rgba(0,212,255,0.3); border-radius: 50px; }
+  .section-header h2 { font-family: 'Playfair Display',serif; font-size: clamp(2rem,4vw,3rem); font-weight: 900; margin-bottom: 16px; line-height: 1.2; }
+  .section-header p { font-size: 1.05rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+
+  .about { background: linear-gradient(180deg,var(--rnd-dark),#0d1f3a); }
+  .about-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .about-visual { position: relative; }
+  .about-visual .about-card { background: linear-gradient(145deg,rgba(0,71,171,0.15),rgba(0,166,81,0.1)); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
+  .about-visual .about-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle,rgba(0,212,255,0.05) 0%,transparent 60%); animation: rotate-slow 20s linear infinite; }
+  .about-visual .about-card h3 { font-family: 'Playfair Display',serif; font-size: 1.8rem; margin-bottom: 20px; position: relative; z-index: 1; }
+  .about-visual .about-card p { color: rgba(255,255,255,0.7); line-height: 1.8; position: relative; z-index: 1; }
+  .about-visual .about-card .quote-mark { font-size: 6rem; color: rgba(0,212,255,0.1); position: absolute; top: 10px; left: 20px; font-family: 'Playfair Display',serif; line-height: 1; }
+  .about-text h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--accent-cyan); }
+  .about-text p { color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 20px; font-size: 1rem; }
+  .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 30px; }
+  .about-feature { display: flex; align-items: flex-start; gap: 12px; padding: 16px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; transition: all 0.3s ease; }
+  .about-feature:hover { background: rgba(255,255,255,0.12); transform: translateX(5px); }
+  .about-feature .feature-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .about-feature h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+  .about-feature span { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+  .program { background: linear-gradient(180deg,#0d1f3a,var(--rnd-dark)); }
+  .program-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .program-card { background: linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02)); border: 1px solid var(--glass-border); border-radius: 20px; padding: 35px 30px; transition: all 0.5s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden; cursor: pointer; }
+  .program-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--accent-cyan),var(--accent-pink)); transform: scaleX(0); transform-origin: left; transition: transform 0.5s ease; }
+  .program-card:hover::before { transform: scaleX(1); } .program-card:hover { transform: translateY(-10px); background: linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03)); box-shadow: 0 20px 50px rgba(0,0,0,0.4); border-color: rgba(0,212,255,0.3); }
+  .program-card .program-num { font-size: 3rem; font-weight: 900; color: rgba(255,255,255,0.05); position: absolute; top: 15px; right: 20px; line-height: 1; }
+  .program-card .program-icon { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+  .program-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+  .program-card p { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+  .program-card .program-tag { display: inline-block; margin-top: 16px; padding: 6px 14px; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); border-radius: 50px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); }
+
+  .timeline { background: linear-gradient(180deg,var(--rnd-dark),#0d1f3a); }
+  .timeline-container { max-width: 900px; margin: 0 auto; position: relative; }
+  .timeline-container::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg,var(--accent-cyan),var(--accent-pink),var(--gold)); transform: translateX(-50%); }
+  .timeline-item { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 50px; position: relative; }
+  .timeline-item:nth-child(even) .timeline-content { grid-column: 2; } .timeline-item:nth-child(even) .timeline-date { grid-column: 1; text-align: right; }
+  .timeline-dot { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); width: 20px; height: 20px; background: var(--rnd-dark); border: 3px solid var(--accent-cyan); border-radius: 50%; z-index: 2; box-shadow: 0 0 20px rgba(0,212,255,0.4); transition: all 0.3s; }
+  .timeline-item:hover .timeline-dot { background: var(--accent-cyan); box-shadow: 0 0 30px rgba(0,212,255,0.6); transform: translateX(-50%) scale(1.2); }
+  .timeline-content { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 25px; transition: all 0.4s ease; }
+  .timeline-content:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); } .timeline-item:nth-child(even) .timeline-content:hover { transform: translateX(-5px); }
+  .timeline-content h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--accent-cyan); }
+  .timeline-content p { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+  .timeline-date { font-size: 0.85rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; padding-top: 10px; }
+
+  .join { background: linear-gradient(180deg,#0d1f3a,var(--rnd-dark)); position: relative; overflow: hidden; }
+  .join::before { content: ''; position: absolute; top: -200px; right: -200px; width: 500px; height: 500px; background: radial-gradient(circle,rgba(0,212,255,0.08) 0%,transparent 70%); border-radius: 50%; }
+  .join::after { content: ''; position: absolute; bottom: -200px; left: -200px; width: 500px; height: 500px; background: radial-gradient(circle,rgba(255,0,110,0.06) 0%,transparent 70%); border-radius: 50%; }
+  .join-container { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+  .join-form { background: linear-gradient(145deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02)); border: 1px solid var(--glass-border); border-radius: 24px; padding: 50px; backdrop-filter: blur(20px); box-shadow: 0 30px 80px rgba(0,0,0,0.4); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; font-family: 'Montserrat',sans-serif; font-size: 0.95rem; transition: all 0.3s ease; outline: none; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent-cyan); background: rgba(0,212,255,0.05); box-shadow: 0 0 20px rgba(0,212,255,0.1); }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+  .form-group select option { background: var(--rnd-dark); color: #fff; }
+  .form-group textarea { min-height: 120px; resize: vertical; }
+  .form-submit { width: 100%; padding: 18px; background: linear-gradient(135deg,var(--accent-pink),#ff4081); border: none; border-radius: 12px; color: #fff; font-family: 'Montserrat',sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,0,110,0.3); position: relative; overflow: hidden; }
+  .form-submit:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,0,110,0.5); } .form-submit:active { transform: translateY(0); }
+  .success-message { display: none; text-align: center; padding: 40px; }
+  .success-message.show { display: block; animation: scaleIn 0.5s ease; }
+  .success-message .success-icon { font-size: 4rem; margin-bottom: 20px; }
+  .success-message h3 { font-size: 1.5rem; margin-bottom: 10px; }
+  .success-message p { color: rgba(255,255,255,0.6); }
+
+  .footer { background: #070f1a; padding: 60px 40px 30px; border-top: 1px solid var(--glass-border); }
+  .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  .footer-brand h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; }
+  .footer-brand p { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 20px; }
+  .footer-social { display: flex; gap: 12px; }
+  .footer-social a { width: 40px; height: 40px; border-radius: 50%; background: var(--glass); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 1rem; transition: all 0.3s ease; }
+  .footer-social a:hover { background: var(--accent-cyan); border-color: var(--accent-cyan); transform: translateY(-3px); }
+  .footer-col h4 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: var(--accent-cyan); }
+  .footer-col ul { list-style: none; } .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+  .footer-col ul li a:hover { color: var(--accent-cyan); }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 30px; border-top: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+  .footer-bottom .rnd-colors { display: flex; gap: 4px; }
+  .footer-bottom .rnd-colors span { width: 30px; height: 4px; border-radius: 2px; }
+  .rnd-colors .c-blue { background: var(--rnd-blue); } .rnd-colors .c-green { background: var(--rnd-green); } .rnd-colors .c-red { background: var(--rnd-red); }
+
+  @media (max-width: 1024px) {
+    .hero-content { grid-template-columns: 1fr; text-align: center; } .hero-visual { order: -1; } .about-grid { grid-template-columns: 1fr; } .program-grid { grid-template-columns: repeat(2,1fr); } .stats-container { grid-template-columns: repeat(2,1fr); } .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .navbar { padding: 12px 20px; } .nav-links { display: none; } .mobile-menu-btn { display: flex; } .hero { padding: 100px 20px 40px; } .hero-text h1 { font-size: 2.2rem; } .hero-btns { justify-content: center; } .hero-visual .candidate-card { width: 280px; height: 360px; } .hero-visual .ring-outer { width: 340px; height: 340px; } .hero-visual .ring-inner { width: 290px; height: 290px; } section { padding: 60px 20px; } .program-grid { grid-template-columns: 1fr; } .stats-container { grid-template-columns: 1fr; } .about-features { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .timeline-container::before { left: 20px; } .timeline-item { grid-template-columns: 1fr; gap: 15px; padding-left: 50px; } .timeline-item:nth-child(even) .timeline-content, .timeline-item:nth-child(even) .timeline-date { grid-column: 1; text-align: left; } .timeline-dot { left: 20px; } .join-form { padding: 30px 20px; } .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; }
+  }
+
+  .mobile-nav { position: fixed; top: 0; right: -100%; width: 80%; max-width: 320px; height: 100vh; background: rgba(10,22,40,0.98); backdrop-filter: blur(20px); z-index: 2000; padding: 80px 30px 30px; transition: right 0.4s cubic-bezier(0.16,1,0.3,1); border-left: 1px solid var(--glass-border); }
+  .mobile-nav.open { right: 0; } .mobile-nav ul { list-style: none; } .mobile-nav ul li { margin-bottom: 20px; }
+  .mobile-nav ul li a { color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: 600; display: block; padding: 10px 0; border-bottom: 1px solid var(--glass-border); }
+  .mobile-nav-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1500; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .overlay.active { opacity: 1; pointer-events: auto; }
+</style>
 </head>
 <body>
-    <!-- Loader -->
-    <div class="loader" id="loader">
-        <div class="loader-spinner"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">
+    <div class="flag-alg"></div>
+    <span>ZENASNI NABIL</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#accueil">Accueil</a></li>
+    <li><a href="#apropos">A propos</a></li>
+    <li><a href="#programme">Programme</a></li>
+    <li><a href="#engagement">Engagement</a></li>
+    <li><a href="#adherer">Adherer</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('adherer').scrollIntoView({behavior:'smooth'})">Rejoignez-nous</button>
+  <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="overlay" id="overlay" onclick="toggleMobileMenu()"></div>
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="toggleMobileMenu()">X</button>
+  <ul>
+    <li><a href="#accueil" onclick="toggleMobileMenu()">Accueil</a></li>
+    <li><a href="#apropos" onclick="toggleMobileMenu()">A propos</a></li>
+    <li><a href="#programme" onclick="toggleMobileMenu()">Programme</a></li>
+    <li><a href="#engagement" onclick="toggleMobileMenu()">Engagement</a></li>
+    <li><a href="#adherer" onclick="toggleMobileMenu()">Adherer</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-particles" id="heroParticles"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <h3>Elections Communales 2026</h3>
+      <h1>Ensemble, <span class="highlight">construisons</span><br>l'avenir d'Ain El Turk</h1>
+      <div class="typewriter-container">
+        <span class="typewriter-text" id="typewriter"></span>
+      </div>
+      <p>Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="document.getElementById('programme').scrollIntoView({behavior:'smooth'})">Notre Programme</button>
+        <button class="btn-secondary" onclick="document.getElementById('adherer').scrollIntoView({behavior:'smooth'})">Devenir Adherent</button>
+      </div>
     </div>
-
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <i class="fas fa-flag"></i>
-                <span>ZENASNI NABIL</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#citation">Citation</a></li>
-                <li><a href="#evenement">Événement</a></li>
-                <li><a href="#moderateur">Modérateur</a></li>
-                <li><a href="#programme">Programme</a></li>
-                <li><a href="#adhesion">Adhésion</a></li>
-            </ul>
-            <div class="mobile-menu" id="mobileMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section with Parallax -->
-    <section class="hero-parallax" id="accueil">
-        <div class="parallax-bg"></div>
-        <div class="parallax-overlay"></div>
-        <div class="parallax-content">
-            <div class="hero-content-grid">
-                <div class="hero-content" style="animation: slideInLeft 1s ease-out;">
-                    <div class="hero-badge">
-                        <i class="fas fa-star"></i> Élections Communales 2026
-                    </div>
-                    <h1>ZENASNI <span>NABIL</span></h1>
-                    <p class="hero-subtitle">Secrétaire Général - Bureau Communal RND d'Aïn El Turk</p>
-                    <p class="hero-description">
-                        Ensemble, construisons l'avenir d'Aïn El Turk. Un programme ambitieux basé sur 
-                        la gouvernance, le développement économique et la transformation numérique.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#adhesion" class="btn btn-primary">
-                            <i class="fas fa-user-plus"></i> Devenir Adhérent
-                        </a>
-                        <a href="#programme" class="btn btn-secondary">
-                            <i class="fas fa-book"></i> Voir le Programme
-                        </a>
-                    </div>
-                </div>
-                <div class="hero-image-wrapper" style="animation: slideInRight 1s ease-out;">
-                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=700&fit=crop" alt="Zenasni Nabil">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quote Section - Parallax with Poster Style 1 -->
-    <section class="quote-parallax" id="citation">
-        <div class="quote-container animate-on-scroll">
-            <div class="quote-poster">
-                <i class="fas fa-quote-left quote-icon-large"></i>
-                <p class="quote-text-large">
-                    "Acorde para viver o melhor da sua vida hoje. Acorde para ser feliz agora. 
-                    Acorde para realizar as suas metas mais importantes e as menos importantes também 
-                    – afinal, elas são suas."
-                </p>
-                <div class="quote-author-name">ZENASNI NABIL</div>
-                <div class="quote-position">Secrétaire Général - RND Aïn El Turk</div>
-                <div class="hashtag-section">
-                    <span class="hashtag-item">#RND</span>
-                    <span class="hashtag-item">#PVINSIGHTS</span>
-                    <span class="hashtag-item">#AinElTurk</span>
-                    <span class="hashtag-item">#Ensemble</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Event Section - Parallax with Poster Style 2 -->
-    <section class="event-parallax" id="evenement">
-        <div class="event-container animate-on-scroll">
-            <div class="event-image-poster">
-                <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=700&fit=crop" alt="Event Poster">
-                <div class="event-countdown-badge">
-                    <span class="days-number">10</span>
-                    <span class="days-text">JOURS À GO</span>
-                </div>
-            </div>
-            <div class="event-content">
-                <h2>Business Game Changer</h2>
-                <p class="event-subtitle">Aïn El Turk 2026</p>
-                <div class="event-details-list">
-                    <div class="event-detail-item">
-                        <div class="event-detail-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="event-detail-info">
-                            <h4>Date</h4>
-                            <p>27 Novembre 2026<br>17h00 - 23h00</p>
-                        </div>
-                    </div>
-                    <div class="event-detail-item">
-                        <div class="event-detail-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="event-detail-info">
-                            <h4>Lieu</h4>
-                            <p>Salle des Festivals<br>Aïn El Turk, Oran</p>
-                        </div>
-                    </div>
-                    <div class="event-detail-item">
-                        <div class="event-detail-icon">
-                            <i class="fas fa-user-tie"></i>
-                        </div>
-                        <div class="event-detail-info">
-                            <h4>Modérateur</h4>
-                            <p>Zenasni Nabil<br>Secrétaire Général RND</p>
-                        </div>
-                    </div>
-                </div>
-                <a href="#adhesion" class="btn btn-primary">
-                    <i class="fas fa-ticket-alt"></i> Réserver ma Place
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Moderator Section - Parallax with Poster Style 3 -->
-    <section class="moderator-parallax" id="moderateur">
-        <div class="moderator-container animate-on-scroll">
-            <div class="moderator-header">
-                <h2>MEET YOUR <span>MODERATOR</span></h2>
-            </div>
-            <div class="moderator-poster">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=700&fit=crop" alt="Moderator">
-            </div>
-            <div class="moderator-info-box">
-                <div class="moderator-name">ZENASNI NABIL</div>
-                <div class="moderator-title">Chief Growth Officer - RND Aïn El Turk</div>
-            </div>
-            <p class="moderator-description">
-                Secrétaire Général du bureau communal, engagez-vous pour un avenir meilleur
-            </p>
-            <div class="event-date-highlight">
-                <i class="fas fa-video"></i> Join our LinkedIn Live
-            </div>
-            <a href="#adhesion" class="btn btn-primary">
-                <i class="fas fa-user-plus"></i> Rejoignez-nous
-            </a>
-        </div>
-    </section>
-
-    <!-- Program Section -->
-    <section class="program" id="programme">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-badge">Notre Programme</span>
-                <h2 class="section-title">Axes Prioritaires</h2>
-                <p class="section-subtitle">
-                    Un programme complet basé sur les valeurs du RND pour transformer Aïn El Turk
-                </p>
-            </div>
-            <div class="program-grid">
-                <div class="program-card animate-on-scroll">
-                    <div class="program-number">01</div>
-                    <h3><i class="fas fa-users-cog"></i> Jeunesse et Femmes</h3>
-                    <p>Encouragement de la participation des jeunes et des femmes</p>
-                    <ul class="program-list">
-                        <li><i class="fas fa-check"></i> Programmes d'insertion professionnelle</li>
-                        <li><i class="fas fa-check"></i> Soutien à l'entrepreneuriat féminin</li>
-                        <li><i class="fas fa-check"></i> Espaces de dialogue</li>
-                    </ul>
-                </div>
-                <div class="program-card animate-on-scroll">
-                    <div class="program-number">02</div>
-                    <h3><i class="fas fa-rocket"></i> Innovation et Startups</h3>
-                    <p>Développement de l'écosystème entrepreneurial</p>
-                    <ul class="program-list">
-                        <li><i class="fas fa-check"></i> Incubateur de startups locales</li>
-                        <li><i class="fas fa-check"></i> Financement de projets innovants</li>
-                        <li><i class="fas fa-check"></i> Partenariats université-entreprise</li>
-                    </ul>
-                </div>
-                <div class="program-card animate-on-scroll">
-                    <div class="program-number">03</div>
-                    <h3><i class="fas fa-industry"></i> Industrie Nationale</h3>
-                    <p>Relance des activités productives</p>
-                    <ul class="program-list">
-                        <li><i class="fas fa-check"></i> Soutien aux industries de transformation</li>
-                        <li><i class="fas fa-check"></i> Développement de la sous-traitance</li>
-                        <li><i class="fas fa-check"></i> Valorisation des ressources locales</li>
-                    </ul>
-                </div>
-                <div class="program-card animate-on-scroll">
-                    <div class="program-number">04</div>
-                    <h3><i class="fas fa-balance-scale"></i> Justice Sociale</h3>
-                    <p>Consécration de l'égalité des chances</p>
-                    <ul class="program-list">
-                        <li><i class="fas fa-check"></i> Programmes de solidarité locale</li>
-                        <li><i class="fas fa-check"></i> Accès équitable aux services</li>
-                        <li><i class="fas fa-check"></i> Soutien aux catégories vulnérables</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="stats-grid">
-            <div class="stat-item animate-on-scroll">
-                <h3 class="counter" data-target="1500">0</h3>
-                <p>Adhérents</p>
-            </div>
-            <div class="stat-item animate-on-scroll">
-                <h3 class="counter" data-target="25">0</h3>
-                <p>Projets Lancés</p>
-            </div>
-            <div class="stat-item animate-on-scroll">
-                <h3 class="counter" data-target="50">0</h3>
-                <p>Événements/an</p>
-            </div>
-            <div class="stat-item animate-on-scroll">
-                <h3 class="counter" data-target="100">0</h3>
-                <p>% Engagement</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Membership Form Section -->
-    <section class="membership" id="adhesion">
-        <div class="membership-container animate-on-scroll">
-            <div class="membership-header">
-                <h2>Rejoignez <span>Nous</span></h2>
-                <p>Devenez adhérent du RND - Bureau Communal d'Aïn El Turk</p>
-            </div>
-            <form id="membershipForm" action="https://formsubmit.co/Connacri3@gmail.com" method="POST">
-                <input type="hidden" name="_subject" value="Nouvelle Adhésion RND - Zenasni Nabil">
-                <input type="hidden" name="_next" value="https://zenasni-nabil-rnd.dz/merci.html">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="nom"><i class="fas fa-user"></i> Nom complet *</label>
-                        <input type="text" id="nom" name="Nom" required placeholder="Votre nom complet">
-                    </div>
-                    <div class="form-group">
-                        <label for="prenom"><i class="fas fa-user"></i> Prénom *</label>
-                        <input type="text" id="prenom" name="Prénom" required placeholder="Votre prénom">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email"><i class="fas fa-envelope"></i> Email *</label>
-                        <input type="email" id="email" name="Email" required placeholder="votre@email.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="telephone"><i class="fas fa-phone"></i> Téléphone *</label>
-                        <input type="tel" id="telephone" name="Téléphone" required placeholder="05 XX XX XX XX">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="dateNaissance"><i class="fas fa-birthday-cake"></i> Date de naissance *</label>
-                        <input type="date" id="dateNaissance" name="Date_de_naissance" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="wilaya"><i class="fas fa-map-marker-alt"></i> Wilaya *</label>
-                        <select id="wilaya" name="Wilaya" required>
-                            <option value="">Sélectionnez...</option>
-                            <option value="Oran">Oran</option>
-                            <option value="Alger">Alger</option>
-                            <option value="Constantine">Constantine</option>
-                            <option value="Annaba">Annaba</option>
-                            <option value="Autre">Autre</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="commune"><i class="fas fa-city"></i> Commune *</label>
-                    <input type="text" id="commune" name="Commune" required placeholder="Votre commune de résidence">
-                </div>
-
-                <div class="form-group">
-                    <label for="profession"><i class="fas fa-briefcase"></i> Profession</label>
-                    <input type="text" id="profession" name="Profession" placeholder="Votre profession">
-                </div>
-
-                <div class="form-group">
-                    <label for="engagement"><i class="fas fa-handshake"></i> Pourquoi souhaitez-vous adhérer ? *</label>
-                    <textarea id="engagement" name="Motivation" required placeholder="Décrivez votre motivation pour adhérer au RND..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="competences"><i class="fas fa-star"></i> Compétences et domaines d'intérêt</label>
-                    <textarea id="competences" name="Compétences" placeholder="Vos compétences, expériences ou domaines dans lesquels vous souhaitez vous engager..."></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-paper-plane"></i> Envoyer ma candidature
-                </button>
-                
-                <div class="form-success" id="formSuccess">
-                    <i class="fas fa-check-circle"></i>
-                    <strong>Candidature envoyée avec succès !</strong>
-                    <p>Nous vous contacterons bientôt.</p>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3><i class="fas fa-flag"></i> RND - Aïn El Turk</h3>
-                <p>
-                    Rassemblement National Démocratique<br>
-                    Bureau Communal d'Aïn El Turk<br>
-                    Oran, Algérie 🇩🇿
-                </p>
-                <p>Secrétaire Général: <strong>Zenasni Nabil</strong></p>
-                <div class="social-links">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4>Liens Rapides</h4>
-                <ul class="footer-links">
-                    <li><a href="#accueil">Accueil</a></li>
-                    <li><a href="#citation">Citation</a></li>
-                    <li><a href="#evenement">Événements</a></li>
-                    <li><a href="#programme">Programme</a></li>
-                    <li><a href="#adhesion">Adhésion</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Programme</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Jeunesse & Femmes</a></li>
-                    <li><a href="#">Économie</a></li>
-                    <li><a href="#">Numérisation</a></li>
-                    <li><a href="#">Développement Local</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <ul class="footer-links">
-                    <li><i class="fas fa-envelope"></i> Connacri3@gmail.com</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Aïn El Turk, Oran</li>
-                    <li><i class="fas fa-phone"></i> +213 5XX XXX XXX</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 RND - Bureau Communal d'Aïn El Turk. Tous droits réservés.</p>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button -->
-    <div class="scroll-top" id="scrollTop">
-        <i class="fas fa-arrow-up"></i>
+    <div class="hero-visual">
+      <div class="ring-outer"></div>
+      <div class="ring-inner"></div>
+      <div class="ring-dots"></div>
+      <div class="candidate-card">
+        <div class="avatar">ZN</div>
+        <h2>Zenasni Nabil</h2>
+        <div class="role">Secretaire General</div>
+        <div class="location">Ain El Turk, Oran, Algerie</div>
+        <div class="rnd-badge">RND - RND</div>
+      </div>
     </div>
+  </div>
+  <div class="scroll-indicator" onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">
+    <span>Decouvrir</span>
+    <div class="mouse"></div>
+  </div>
+</section>
 
-    <script>
-        // Loader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-            }, 500);
-        });
+<!-- STATS -->
+<div class="stats-bar" id="stats">
+  <div class="stats-container">
+    <div class="stat-item animate-on-scroll anim-scale">
+      <div class="stat-icon">🏛️</div>
+      <div class="stat-number" data-target="451">0</div>
+      <div class="stat-label">Mairies RND</div>
+    </div>
+    <div class="stat-item animate-on-scroll anim-scale">
+      <div class="stat-icon">👥</div>
+      <div class="stat-number" data-target="6521">0</div>
+      <div class="stat-label">Elus Communaux</div>
+    </div>
+    <div class="stat-item animate-on-scroll anim-scale">
+      <div class="stat-icon">🏛️</div>
+      <div class="stat-number" data-target="58">0</div>
+      <div class="stat-label">Deputes APN</div>
+    </div>
+    <div class="stat-item animate-on-scroll anim-scale">
+      <div class="stat-icon">📅</div>
+      <div class="stat-number" data-target="28">0</div>
+      <div class="stat-label">Annees d'Engagement</div>
+    </div>
+  </div>
+</div>
 
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+<!-- ABOUT -->
+<section class="about" id="apropos">
+  <div class="section-header animate-on-scroll anim-up">
+    <div class="section-tag">Qui sommes-nous</div>
+    <h2>Le RND, une force de progres pour l'Algerie</h2>
+    <p>Le Rassemblement National Democratique, fonde en 1997, est un parti liberal et progressiste engage pour le developpement national et local.</p>
+  </div>
+  <div class="about-grid">
+    <div class="about-visual animate-on-scroll anim-left">
+      <div class="about-card">
+        <div class="quote-mark">"</div>
+        <h3>Notre Vision</h3>
+        <p>Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays.</p>
+      </div>
+    </div>
+    <div class="about-text animate-on-scroll anim-right">
+      <h3>Engagement pour Ain El Turk</h3>
+      <p>En tant que Secretaire General du Bureau Communal du RND a Ain El Turk, je m'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain.</p>
+      <p>Notre approche repose sur l'ecoute, la proximite et la transparence. Chaque projet, chaque decision sera prise avec et pour vous.</p>
+      <div class="about-features">
+        <div class="about-feature">
+          <div class="feature-icon">🤝</div>
+          <div><h4>Proximite</h4><span>A l'ecoute des citoyens</span></div>
+        </div>
+        <div class="about-feature">
+          <div class="feature-icon">💡</div>
+          <div><h4>Innovation</h4><span>Solutions modernes</span></div>
+        </div>
+        <div class="about-feature">
+          <div class="feature-icon">⚖️</div>
+          <div><h4>Transparence</h4><span>Gestion claire et juste</span></div>
+        </div>
+        <div class="about-feature">
+          <div class="feature-icon">🌱</div>
+          <div><h4>Developpement</h4><span>Croissance durable</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Parallax Effect
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.parallax-bg');
-            
-            parallaxElements.forEach(element => {
-                const speed = 0.5;
-                element.style.transform = `translateY(${scrolled * speed}px)`;
-            });
+<!-- PROGRAM -->
+<section class="program" id="programme">
+  <div class="section-header animate-on-scroll anim-up">
+    <div class="section-tag">Notre Programme</div>
+    <h2>6 Piliers pour transformer Ain El Turk</h2>
+    <p>Un programme concret, realiste et porteur de resultats pour notre commune et nos concitoyens.</p>
+  </div>
+  <div class="program-grid">
+    <div class="program-card animate-on-scroll anim-up">
+      <div class="program-num">01</div>
+      <span class="program-icon">🏗️</span>
+      <h3>Infrastructures & Urbanisme</h3>
+      <p>Renovation des routes communales, creation d'espaces verts, modernisation des reseaux d'eau et d'electricite, et amenagement des quartiers populaires.</p>
+      <span class="program-tag">Developpement Local</span>
+    </div>
+    <div class="program-card animate-on-scroll anim-up">
+      <div class="program-num">02</div>
+      <span class="program-icon">🏥</span>
+      <h3>Sante & Bien-etre</h3>
+      <p>Amelioration des dispensaires, campagnes de sensibilisation sanitaire, soutien aux personnes agees et aux personnes en situation de handicap.</p>
+      <span class="program-tag">Social</span>
+    </div>
+    <div class="program-card animate-on-scroll anim-up">
+      <div class="program-num">03</div>
+      <span class="program-icon">📚</span>
+      <h3>Education & Jeunesse</h3>
+      <p>Rehabilitation des ecoles, creation de bibliotheques communales, programmes de soutien scolaire, et espaces de loisirs pour la jeunesse.</p>
+      <span class="program-tag">Education</span>
+    </div>
+    <div class="program-card animate-on-scroll anim-up">
+      <div class="program-num">04</div>
+      <span class="program-icon">💼</span>
+      <h3>Emploi & Economie</h3>
+      <p>Soutien aux micro-entreprises, creation de zones d'activites economiques, formation professionnelle et accompagnement des jeunes entrepreneurs.</p>
+      <span class="program-tag">Economie</span>
+    </div>
+    <div class="program-card animate-on-scroll anim-up">
+      <div class="program-num">05</div>
+      <span class="program-icon">🌊</span>
+      <h3>Environnement & Proprete</h3>
+      <p>Campagnes de nettoyage, gestion des dechets, preservation du littoral d'Ain El Turk, et sensibilisation a la protection de l'environnement.</p>
+      <span class="program-tag">Ecologie</span>
+    </div>
+    <div class="program-card animate-on-scroll anim-up">
+      <div class="program-num">06</div>
+      <span class="program-icon">💻</span>
+      <h3>Transformation Numerique</h3>
+      <p>Dematerialisation des services communaux, acces internet gratuit dans les espaces publics, et formation au numerique pour tous les ages.</p>
+      <span class="program-tag">Numerique</span>
+    </div>
+  </div>
+</section>
 
-            // Scroll to top button
-            const scrollTop = document.getElementById('scrollTop');
-            if (scrolled > 500) {
-                scrollTop.classList.add('visible');
-            } else {
-                scrollTop.classList.remove('visible');
-            }
-        });
+<!-- TIMELINE -->
+<section class="timeline" id="engagement">
+  <div class="section-header animate-on-scroll anim-up">
+    <div class="section-tag">Notre Parcours</div>
+    <h2>Un Engagement Continu</h2>
+    <p>Des actions concretes et un parcours politique au service de la commune d'Ain El Turk.</p>
+  </div>
+  <div class="timeline-container">
+    <div class="timeline-item animate-on-scroll anim-left">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">2018</div>
+      <div class="timeline-content">
+        <h4>Adhesion au RND</h4>
+        <p>Engagement militant au sein du Rassemblement National Democratique, porte par les valeurs de progres et de developpement.</p>
+      </div>
+    </div>
+    <div class="timeline-item animate-on-scroll anim-right">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">2020</div>
+      <div class="timeline-content">
+        <h4>Responsable Jeunesse</h4>
+        <p>Prise de responsabilite au sein de l'organisation des jeunes du RND a Ain El Turk, avec des actions de proximite et d'ecoute.</p>
+      </div>
+    </div>
+    <div class="timeline-item animate-on-scroll anim-left">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">2023</div>
+      <div class="timeline-content">
+        <h4>Membre du Bureau</h4>
+        <p>Integration au bureau communal du RND, participation active a l'elaboration des strategies locales et aux actions de terrain.</p>
+      </div>
+    </div>
+    <div class="timeline-item animate-on-scroll anim-right">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">2025</div>
+      <div class="timeline-content">
+        <h4>Secretaire General</h4>
+        <p>Election comme Secretaire General du Bureau Communal du RND d'Ain El Turk, avec la mission de porter la voix des citoyens.</p>
+      </div>
+    </div>
+    <div class="timeline-item animate-on-scroll anim-left">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">2026</div>
+      <div class="timeline-content">
+        <h4>Candidature Communale</h4>
+        <p>Candidature aux elections communales avec un programme ambitieux pour transformer Ain El Turk et ameliorer le quotidien de tous.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-        document.getElementById('scrollTop').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+<!-- JOIN FORM -->
+<section class="join" id="adherer">
+  <div class="section-header animate-on-scroll anim-up">
+    <div class="section-tag">Rejoignez le mouvement</div>
+    <h2>Devenez Adherent au RND</h2>
+    <p>Rejoignez-nous et participez activement a la construction de l'avenir de notre commune. Ensemble, nous sommes plus forts.</p>
+  </div>
+  <div class="join-container">
+    <div class="join-form animate-on-scroll anim-scale" id="joinFormContainer">
+      <form id="adhesionForm" action="https://formsubmit.co/Connacri3@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Nouvelle candidature RND - Zenasni Nabil">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+          </div>
+          <div class="form-group">
+            <label for="prenom">Prenom</label>
+            <input type="text" id="prenom" name="prenom" placeholder="Votre prenom" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="telephone">Telephone</label>
+            <input type="tel" id="telephone" name="telephone" placeholder="+213 5XX XXX XXX" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" placeholder="Votre age" min="18" max="100" required>
+          </div>
+          <div class="form-group">
+            <label for="profession">Profession</label>
+            <input type="text" id="profession" name="profession" placeholder="Votre profession">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="adresse">Adresse</label>
+          <input type="text" id="adresse" name="adresse" placeholder="Votre adresse a Ain El Turk">
+        </div>
+        <div class="form-group">
+          <label for="type">Type d'adhesion</label>
+          <select id="type" name="type" required>
+            <option value="">Choisir...</option>
+            <option value="membre">Membre Actif</option>
+            <option value="sympathisant">Sympathisant</option>
+            <option value="candidature">Candidature Electorale</option>
+            <option value="benevole">Benevole</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message / Motivation</label>
+          <textarea id="message" name="message" placeholder="Dites-nous pourquoi vous souhaitez rejoindre le RND..."></textarea>
+        </div>
+        <button type="submit" class="form-submit" id="submitBtn">
+          Envoyer ma Candidature
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
 
-        // Animate on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>Zenasni Nabil - RND</h3>
+      <p>Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens.</p>
+      <div class="footer-social">
+        <a href="#" title="Facebook">FB</a>
+        <a href="#" title="Twitter">TW</a>
+        <a href="#" title="Instagram">IG</a>
+        <a href="#" title="LinkedIn">LI</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#apropos">A propos</a></li>
+        <li><a href="#programme">Programme</a></li>
+        <li><a href="#adherer">Adherer</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Programme</h4>
+      <ul>
+        <li><a href="#programme">Infrastructures</a></li>
+        <li><a href="#programme">Sante</a></li>
+        <li><a href="#programme">Education</a></li>
+        <li><a href="#programme">Emploi</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:Connacri3@gmail.com">Connacri3@gmail.com</a></li>
+        <li><a href="#">Ain El Turk, Oran</a></li>
+        <li><a href="#">Algerie</a></li>
+        <li><a href="#">RND - RND</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>2026 Zenasni Nabil - RND Ain El Turk. Tous droits reserves.</p>
+    <div class="rnd-colors">
+      <span class="c-blue"></span>
+      <span class="c-green"></span>
+      <span class="c-red"></span>
+    </div>
+  </div>
+</footer>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    
-                    // Animate counters
-                    const counters = entry.target.querySelectorAll('.counter');
-                    counters.forEach(counter => {
-                        const target = parseInt(counter.getAttribute('data-target'));
-                        const duration = 2000;
-                        const increment = target / (duration / 16);
-                        let current = 0;
-                        
-                        const updateCounter = () => {
-                            current += increment;
-                            if (current < target) {
-                                counter.innerText = Math.floor(current);
-                                requestAnimationFrame(updateCounter);
-                            } else {
-                                counter.innerText = target + (target > 100 ? '+' : '');
-                            }
-                        };
-                        
-                        updateCounter();
-                    });
-                }
-            });
-        }, observerOptions);
+<script>
+  // Typewriter effect
+  const phrases = [
+    "Un avenir meilleur pour Ain El Turk",
+    "Transparence, Proximite, Progres",
+    "Ensemble, construisons notre commune",
+    "Le RND, la force du changement local"
+  ];
+  let phraseIndex = 0, charIndex = 0, isDeleting = false;
+  const typewriterEl = document.getElementById('typewriter');
+  function typeWriter() {
+    const current = phrases[phraseIndex];
+    if (isDeleting) { typewriterEl.textContent = current.substring(0, charIndex - 1); charIndex--; }
+    else { typewriterEl.textContent = current.substring(0, charIndex + 1); charIndex++; }
+    let speed = isDeleting ? 50 : 80;
+    if (!isDeleting && charIndex === current.length) { speed = 2000; isDeleting = true; }
+    else if (isDeleting && charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; speed = 500; }
+    setTimeout(typeWriter, speed);
+  }
+  setTimeout(typeWriter, 1000);
 
-        document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-            observer.observe(el);
-        });
+  // Particles
+  const particlesContainer = document.getElementById('heroParticles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 6 + 's';
+    p.style.animationDuration = (4 + Math.random() * 4) + 's';
+    p.style.opacity = 0.2 + Math.random() * 0.5;
+    p.style.width = (2 + Math.random() * 4) + 'px';
+    p.style.height = p.style.width;
+    particlesContainer.appendChild(p);
+  }
 
-        // Form submission
-        const form = document.getElementById('membershipForm');
-        const formSuccess = document.getElementById('formSuccess');
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 50) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  });
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData(form);
-            
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    formSuccess.classList.add('show');
-                    form.reset();
-                    
-                    setTimeout(() => {
-                        formSuccess.classList.remove('show');
-                    }, 5000);
-                } else {
-                    alert('Une erreur est survenue. Veuillez réessayer.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Une erreur est survenue. Veuillez réessayer.');
-            }
-        });
+  // Mobile menu
+  function toggleMobileMenu() {
+    document.getElementById('mobileNav').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('active');
+  }
 
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+  // Scroll animations
+  const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        if (entry.target.querySelector('.stat-number')) {
+          const numEl = entry.target.querySelector('.stat-number');
+          const target = parseInt(numEl.dataset.target);
+          animateCounter(numEl, target);
+        }
+      }
+    });
+  }, observerOptions);
+  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
-        // Mobile menu toggle
-        const mobileMenu = document.getElementById('mobileMenu');
-        const navLinks = document.querySelector('.nav-links');
-
-        mobileMenu.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            navLinks.style.position = 'absolute';
-            navLinks.style.top = '100%';
-            navLinks.style.left = '0';
-            navLinks.style.right = '0';
-            navLinks.style.flexDirection = 'column';
-            navLinks.style.padding = '2rem';
-            navLinks.style.background = 'var(--white)';
-            navLinks.style.boxShadow = 'var(--shadow-md)';
-        });
-
-        // Active navigation based on scroll
-        const sections = document.querySelectorAll('section[id]');
-        
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.style.color = '';
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.style.color = 'var(--secondary-color)';
-                }
-            });
-        });
-    </script>
+  // Counter animation
+  function animateCounter(el, target) {
+    let current = 0;
+    const increment = target / 60;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = Math.floor(current).toLocaleString();
+    }, 30);
+  }
+</script>
 </body>
 </html>

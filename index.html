@@ -191,6 +191,63 @@
   .mobile-nav-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
   .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1500; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
   .overlay.active { opacity: 1; pointer-events: auto; }
+
+  /* ===== LANGUAGE SWITCHER ===== */
+  .lang-switcher {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .lang-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .lang-btn:hover, .lang-btn.active {
+    border-color: var(--accent-cyan);
+    color: #fff;
+    background: rgba(0,212,255,0.1);
+  }
+  .lang-btn.active {
+    box-shadow: 0 0 15px rgba(0,212,255,0.3);
+  }
+
+  /* ===== RTL SUPPORT ===== */
+  [dir="rtl"] .hero-content { direction: rtl; }
+  [dir="rtl"] .hero-text h1 { text-align: right; }
+  [dir="rtl"] .hero-text p { text-align: right; }
+  [dir="rtl"] .hero-btns { justify-content: flex-start; }
+  [dir="rtl"] .about-grid { direction: rtl; }
+  [dir="rtl"] .about-text { text-align: right; }
+  [dir="rtl"] .about-feature { direction: rtl; }
+  [dir="rtl"] .timeline-item { direction: rtl; }
+  [dir="rtl"] .timeline-content { text-align: right; }
+  [dir="rtl"] .form-row { direction: rtl; }
+  [dir="rtl"] .form-group { text-align: right; }
+  [dir="rtl"] .section-header { direction: rtl; }
+  [dir="rtl"] .section-header h2, [dir="rtl"] .section-header p { text-align: right; }
+  [dir="rtl"] .program-card { text-align: right; direction: rtl; }
+  [dir="rtl"] .program-card h3 { text-align: right; }
+  [dir="rtl"] .program-card p { text-align: right; }
+  [dir="rtl"] .footer-grid { direction: rtl; }
+  [dir="rtl"] .footer-brand { text-align: right; }
+  [dir="rtl"] .footer-col { text-align: right; }
+  [dir="rtl"] .footer-col ul { text-align: right; }
+  [dir="rtl"] .footer-bottom { direction: rtl; }
+
+  @media (max-width: 768px) {
+    [dir="rtl"] .hero-btns { justify-content: center; }
+    [dir="rtl"] .hero-text h1, [dir="rtl"] .hero-text p { text-align: center; }
+  }
 </style>
 </head>
 <body>
@@ -201,14 +258,18 @@
     <div class="flag-alg"></div>
     <span>ZENASNI NABIL</span>
   </div>
-  <ul class="nav-links">
-    <li><a href="#accueil">Accueil</a></li>
-    <li><a href="#apropos">A propos</a></li>
-    <li><a href="#programme">Programme</a></li>
-    <li><a href="#engagement">Engagement</a></li>
-    <li><a href="#adherer">Adherer</a></li>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#accueil" data-fr="Accueil" data-ar="الرئيسية" data-en="Home">Accueil</a></li>
+    <li><a href="#apropos" data-fr="A propos" data-ar="من نحن" data-en="About">A propos</a></li>
+    <li><a href="#programme" data-fr="Programme" data-ar="البرنامج" data-en="Program">Programme</a></li>
+    <li><a href="#engagement" data-fr="Engagement" data-ar="المسار" data-en="Journey">Engagement</a></li>
+    <li><a href="#adherer" data-fr="Adherer" data-ar="انضم" data-en="Join">Adherer</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('adherer').scrollIntoView({behavior:'smooth'})">Rejoignez-nous</button>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('fr')" id="btn-fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" id="btn-ar">AR</button>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
   <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
     <span></span><span></span><span></span>
   </button>
@@ -217,12 +278,17 @@
 <div class="overlay" id="overlay" onclick="toggleMobileMenu()"></div>
 <div class="mobile-nav" id="mobileNav">
   <button class="mobile-nav-close" onclick="toggleMobileMenu()">X</button>
-  <ul>
-    <li><a href="#accueil" onclick="toggleMobileMenu()">Accueil</a></li>
-    <li><a href="#apropos" onclick="toggleMobileMenu()">A propos</a></li>
-    <li><a href="#programme" onclick="toggleMobileMenu()">Programme</a></li>
-    <li><a href="#engagement" onclick="toggleMobileMenu()">Engagement</a></li>
-    <li><a href="#adherer" onclick="toggleMobileMenu()">Adherer</a></li>
+  <div style="display:flex; gap:8px; margin-bottom:30px; justify-content:center;">
+    <button class="lang-btn active" onclick="setLang('fr')" id="mbtn-fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" id="mbtn-ar">AR</button>
+    <button class="lang-btn" onclick="setLang('en')" id="mbtn-en">EN</button>
+  </div>
+  <ul id="mobileNavLinks">
+    <li><a href="#accueil" onclick="toggleMobileMenu()" data-fr="Accueil" data-ar="الرئيسية" data-en="Home">Accueil</a></li>
+    <li><a href="#apropos" onclick="toggleMobileMenu()" data-fr="A propos" data-ar="من نحن" data-en="About">A propos</a></li>
+    <li><a href="#programme" onclick="toggleMobileMenu()" data-fr="Programme" data-ar="البرنامج" data-en="Program">Programme</a></li>
+    <li><a href="#engagement" onclick="toggleMobileMenu()" data-fr="Engagement" data-ar="المسار" data-en="Journey">Engagement</a></li>
+    <li><a href="#adherer" onclick="toggleMobileMenu()" data-fr="Adherer" data-ar="انضم" data-en="Join">Adherer</a></li>
   </ul>
 </div>
 
@@ -233,15 +299,23 @@
   <div class="hero-particles" id="heroParticles"></div>
   <div class="hero-content">
     <div class="hero-text">
-      <h3>Elections Communales 2026</h3>
-      <h1>Ensemble, <span class="highlight">construisons</span><br>l'avenir d'Ain El Turk</h1>
+      <h3 data-fr="Elections Communales 2026" data-ar="انتخابات البلدية 2026" data-en="Municipal Elections 2026">Elections Communales 2026</h3>
+      <h1 data-fr="Ensemble, <span class='highlight'>construisons</span><br>l'avenir d'Ain El Turk" 
+          data-ar="معاً، <span class='highlight'>لنبني</span><br>مستقبل عين الترك" 
+          data-en="Together, <span class='highlight'>let's build</span><br>the future of Ain El Turk">
+        Ensemble, <span class="highlight">construisons</span><br>l'avenir d'Ain El Turk</h1>
       <div class="typewriter-container">
         <span class="typewriter-text" id="typewriter"></span>
       </div>
-      <p>Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens.</p>
+      <p data-fr="Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens."
+         data-ar="زناسني نبيل، الأمين العام لمكتب حزب التجمع الوطني الديمقراطي بعين الترك، وهران. التزام قوي من أجل التنمية المحلية، الشفافية والقرب من المواطنين."
+         data-en="Zenasni Nabil, General Secretary of the RND Communal Bureau in Ain El Turk, Oran. A strong commitment to local development, transparency and proximity with citizens.">
+        Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens.</p>
       <div class="hero-btns">
-        <button class="btn-primary" onclick="document.getElementById('programme').scrollIntoView({behavior:'smooth'})">Notre Programme</button>
-        <button class="btn-secondary" onclick="document.getElementById('adherer').scrollIntoView({behavior:'smooth'})">Devenir Adherent</button>
+        <button class="btn-primary" onclick="document.getElementById('programme').scrollIntoView({behavior:'smooth'})" 
+                data-fr="Notre Programme" data-ar="برنامجنا" data-en="Our Program">Notre Programme</button>
+        <button class="btn-secondary" onclick="document.getElementById('adherer').scrollIntoView({behavior:'smooth'})"
+                data-fr="Devenir Adherent" data-ar="انضم إلينا" data-en="Join Us">Devenir Adherent</button>
       </div>
     </div>
     <div class="hero-visual">
@@ -251,14 +325,14 @@
       <div class="candidate-card">
         <div class="avatar">ZN</div>
         <h2>Zenasni Nabil</h2>
-        <div class="role">Secretaire General</div>
-        <div class="location">Ain El Turk, Oran, Algerie</div>
+        <div class="role" data-fr="Secretaire General" data-ar="الأمين العام" data-en="General Secretary">Secretaire General</div>
+        <div class="location" data-fr="Ain El Turk, Oran, Algerie" data-ar="عين الترك، وهران، الجزائر" data-en="Ain El Turk, Oran, Algeria">Ain El Turk, Oran, Algerie</div>
         <div class="rnd-badge">RND - RND</div>
       </div>
     </div>
   </div>
   <div class="scroll-indicator" onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">
-    <span>Decouvrir</span>
+    <span data-fr="Decouvrir" data-ar="استكشف" data-en="Discover">Decouvrir</span>
     <div class="mouse"></div>
   </div>
 </section>
@@ -269,22 +343,22 @@
     <div class="stat-item animate-on-scroll anim-scale">
       <div class="stat-icon">🏛️</div>
       <div class="stat-number" data-target="451">0</div>
-      <div class="stat-label">Mairies RND</div>
+      <div class="stat-label" data-fr="Mairies RND" data-ar="بلديات التجمع" data-en="RND Municipalities">Mairies RND</div>
     </div>
     <div class="stat-item animate-on-scroll anim-scale">
       <div class="stat-icon">👥</div>
       <div class="stat-number" data-target="6521">0</div>
-      <div class="stat-label">Elus Communaux</div>
+      <div class="stat-label" data-fr="Elus Communaux" data-ar="المنتخبون البلديون" data-en="Municipal Elected">Elus Communaux</div>
     </div>
     <div class="stat-item animate-on-scroll anim-scale">
       <div class="stat-icon">🏛️</div>
       <div class="stat-number" data-target="58">0</div>
-      <div class="stat-label">Deputes APN</div>
+      <div class="stat-label" data-fr="Deputes APN" data-ar="نواب المجلس" data-en="APN Deputies">Deputes APN</div>
     </div>
     <div class="stat-item animate-on-scroll anim-scale">
       <div class="stat-icon">📅</div>
       <div class="stat-number" data-target="28">0</div>
-      <div class="stat-label">Annees d'Engagement</div>
+      <div class="stat-label" data-fr="Annees d'Engagement" data-ar="سنوات الالتزام" data-en="Years of Commitment">Annees d'Engagement</div>
     </div>
   </div>
 </div>
@@ -292,38 +366,58 @@
 <!-- ABOUT -->
 <section class="about" id="apropos">
   <div class="section-header animate-on-scroll anim-up">
-    <div class="section-tag">Qui sommes-nous</div>
-    <h2>Le RND, une force de progres pour l'Algerie</h2>
-    <p>Le Rassemblement National Democratique, fonde en 1997, est un parti liberal et progressiste engage pour le developpement national et local.</p>
+    <div class="section-tag" data-fr="Qui sommes-nous" data-ar="من نحن" data-en="Who we are">Qui sommes-nous</div>
+    <h2 data-fr="Le RND, une force de progres pour l'Algerie" data-ar="التجمع، قوة التقدم للجزائر" data-en="RND, a force of progress for Algeria">Le RND, une force de progres pour l'Algerie</h2>
+    <p data-fr="Le Rassemblement National Democratique, fonde en 1997, est un parti liberal et progressiste engage pour le developpement national et local."
+       data-ar="التجمع الوطني الديمقراطي، تأسس عام 1997، هو حزب ليبرالي وتقدمي ملتزم بالتنمية الوطنية والمحلية."
+       data-en="The National Democratic Rally, founded in 1997, is a liberal and progressive party committed to national and local development.">Le Rassemblement National Democratique, fonde en 1997, est un parti liberal et progressiste engage pour le developpement national et local.</p>
   </div>
   <div class="about-grid">
     <div class="about-visual animate-on-scroll anim-left">
       <div class="about-card">
         <div class="quote-mark">"</div>
-        <h3>Notre Vision</h3>
-        <p>Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays.</p>
+        <h3 data-fr="Notre Vision" data-ar="رؤيتنا" data-en="Our Vision">Notre Vision</h3>
+        <p data-fr="Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays."
+           data-ar="جزائر قوية، مزدهرة وموحدة. يعمل التجمع من أجل حوكمة شفافة، واقتصاد ديناميكي وتحول رقمي في خدمة جميع المواطنين، في كل بلدية من البلاد."
+           data-en="A strong, prosperous and united Algeria. The RND works for transparent governance, a dynamic economy and digital transformation at the service of all citizens, in every municipality of the country.">Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays.</p>
       </div>
     </div>
     <div class="about-text animate-on-scroll anim-right">
-      <h3>Engagement pour Ain El Turk</h3>
-      <p>En tant que Secretaire General du Bureau Communal du RND a Ain El Turk, je m'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain.</p>
-      <p>Notre approche repose sur l'ecoute, la proximite et la transparence. Chaque projet, chaque decision sera prise avec et pour vous.</p>
+      <h3 data-fr="Engagement pour Ain El Turk" data-ar="التزامنا بعين الترك" data-en="Commitment to Ain El Turk">Engagement pour Ain El Turk</h3>
+      <p data-fr="En tant que Secretaire General du Bureau Communal du RND a Ain El Turk, je m'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain."
+         data-ar="بصفتي الأمين العام لمكتب التجمع الوطني الديمقراطي بعين الترك، أتعهد شخصيا بنقل أصوات مواطنينا وتحويل تطلعاتنا إلى أعمال ملموسة على أرض الواقع."
+         data-en="As General Secretary of the RND Communal Bureau in Ain El Turk, I personally commit to carrying the voices of our fellow citizens and transforming our aspirations into concrete actions on the ground.">En tant que Secretaire General du Bureau Communal du RND a Ain El Turk, je m'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain.</p>
+      <p data-fr="Notre approche repose sur l'ecoute, la proximite et la transparence. Chaque projet, chaque decision sera prise avec et pour vous."
+         data-ar="نهجنا يعتمد على الاستماع والقرب والشفافية. كل مشروع، كل قرار سيتخذ معكم ومن أجلكم."
+         data-en="Our approach is based on listening, proximity and transparency. Every project, every decision will be made with and for you.">Notre approche repose sur l'ecoute, la proximite et la transparence. Chaque projet, chaque decision sera prise avec et pour vous.</p>
       <div class="about-features">
         <div class="about-feature">
           <div class="feature-icon">🤝</div>
-          <div><h4>Proximite</h4><span>A l'ecoute des citoyens</span></div>
+          <div>
+            <h4 data-fr="Proximite" data-ar="القرب" data-en="Proximity">Proximite</h4>
+            <span data-fr="A l'ecoute des citoyens" data-ar="استماع للمواطنين" data-en="Listening to citizens">A l'ecoute des citoyens</span>
+          </div>
         </div>
         <div class="about-feature">
           <div class="feature-icon">💡</div>
-          <div><h4>Innovation</h4><span>Solutions modernes</span></div>
+          <div>
+            <h4 data-fr="Innovation" data-ar="الابتكار" data-en="Innovation">Innovation</h4>
+            <span data-fr="Solutions modernes" data-ar="حلول حديثة" data-en="Modern solutions">Solutions modernes</span>
+          </div>
         </div>
         <div class="about-feature">
           <div class="feature-icon">⚖️</div>
-          <div><h4>Transparence</h4><span>Gestion claire et juste</span></div>
+          <div>
+            <h4 data-fr="Transparence" data-ar="الشفافية" data-en="Transparency">Transparence</h4>
+            <span data-fr="Gestion claire et juste" data-ar="إدارة واضلة وعادلة" data-en="Clear and fair management">Gestion claire et juste</span>
+          </div>
         </div>
         <div class="about-feature">
           <div class="feature-icon">🌱</div>
-          <div><h4>Developpement</h4><span>Croissance durable</span></div>
+          <div>
+            <h4 data-fr="Developpement" data-ar="التنمية" data-en="Development">Developpement</h4>
+            <span data-fr="Croissance durable" data-ar="نمو مستدام" data-en="Sustainable growth">Croissance durable</span>
+          </div>
         </div>
       </div>
     </div>
@@ -333,52 +427,327 @@
 <!-- PROGRAM -->
 <section class="program" id="programme">
   <div class="section-header animate-on-scroll anim-up">
-    <div class="section-tag">Notre Programme</div>
-    <h2>6 Piliers pour transformer Ain El Turk</h2>
-    <p>Un programme concret, realiste et porteur de resultats pour notre commune et nos concitoyens.</p>
+    <div class="section-tag" data-fr="Notre Programme" data-ar="برنامجنا" data-en="Our Program">Notre Programme</div>
+    <h2 data-fr="Programme Municipal de Nabil Zenasni" data-ar="البرنامج البلدي لنبيل زناسني" data-en="Municipal Program of Nabil Zenasni">Programme Municipal de Nabil Zenasni</h2>
+    <p style="font-style:italic; color:var(--accent-cyan); font-weight:600; margin-top:10px;"
+       data-fr="« Ensemble pour une nouvelle dynamique a Ain El Turck »"
+       data-ar="« معاً من أجل ديناميكية جديدة في عين الترك »"
+       data-en="« Together for a new dynamic in Ain El Turck »">« Ensemble pour une nouvelle dynamique a Ain El Turck »</p>
   </div>
+
+  <!-- SLOGAN DIRECTEUR -->
+  <div style="max-width:900px; margin:0 auto 60px; text-align:center; padding:30px 40px; background:linear-gradient(135deg, rgba(0,71,171,0.2), rgba(0,166,81,0.15)); border:1px solid var(--glass-border); border-radius:20px; backdrop-filter:blur(10px);" class="animate-on-scroll anim-up">
+    <div style="font-size:2.5rem; margin-bottom:15px;">💎</div>
+    <p style="font-size:1.15rem; line-height:1.8; font-style:italic; color:rgba(255,255,255,0.9);"
+       data-fr="« Chaque dinar investi par la commune doit produire davantage de valeur pour les citoyens, creer de l'emploi, renforcer l'economie locale ou ameliorer durablement leur qualite de vie. »"
+       data-ar="« كل دينار تستثمره البلدية يجب أن يُنتج قيمة أكبر للمواطنين، ويخلق فرص عمل، ويعزز الاقتصاد المحلي أو يُحسّن بشكل دائم جودة حياتهم. »"
+       data-en="« Every dinar invested by the municipality must produce more value for citizens, create jobs, strengthen the local economy or sustainably improve their quality of life. »">
+      « Chaque dinar investi par la commune doit produire davantage de valeur pour les citoyens, creer de l'emploi, renforcer l'economie locale ou ameliorer durablement leur qualite de vie. »
+    </p>
+  </div>
+
+  <!-- VALORISER L'EXISTANT -->
+  <div style="max-width:1200px; margin:0 auto 60px;" class="animate-on-scroll anim-up">
+    <div style="background:linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); border:1px solid var(--glass-border); border-radius:20px; padding:40px; position:relative; overflow:hidden;">
+      <div style="position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--gold), var(--accent-cyan));"></div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:20px; color:var(--gold);">🔄 Valoriser l'existant avant de construire le nouveau</h3>
+      <p style="color:rgba(255,255,255,0.7); line-height:1.8; margin-bottom:20px;">Notre engagement est clair : nous ne repartirons pas de zero. Tous les projets, equipements, infrastructures et services deja realises ou engages par la commune seront evalues avec objectivite. Lorsqu'ils repondent aux besoins des citoyens, nous nous engageons a les renforcer, les moderniser, les entretenir et les developper plutot qu'a les abandonner.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+        <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
+          <div style="font-size:1.3rem; margin-bottom:8px;">✅</div>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);">Ameliorer les projets existants avant d'en creer de nouveaux lorsque cela est pertinent</p>
+        </div>
+        <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
+          <div style="font-size:1.3rem; margin-bottom:8px;">⚡</div>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);">Accelerer les projets en cours afin qu'ils profitent rapidement aux citoyens</p>
+        </div>
+        <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
+          <div style="font-size:1.3rem; margin-bottom:8px;">💰</div>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);">Optimiser les investissements deja realises avec l'argent public</p>
+        </div>
+        <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
+          <div style="font-size:1.3rem; margin-bottom:8px;">🔧</div>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);">Assurer un entretien regulier des infrastructures communales pour eviter leur degradation</p>
+        </div>
+        <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
+          <div style="font-size:1.3rem; margin-bottom:8px;">🛠️</div>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);">Completer les projets inacheves et corriger leurs insuffisances</p>
+        </div>
+        <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
+          <div style="font-size:1.3rem; margin-bottom:8px;">🚀</div>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);">Rechercher en permanence des solutions plus durables, plus economiques et plus efficaces</p>
+        </div>
+      </div>
+      <p style="color:rgba(255,255,255,0.6); font-style:italic; margin-top:20px; font-size:0.95rem;"
+         data-fr="Notre vision est celle d'une amelioration continue : preserver ce qui fonctionne, corriger ce qui doit l'etre et innover lorsque cela apporte une reelle valeur ajoutee aux citoyens."
+         data-ar="رؤيتنا هي التحسين المستمر: الحفاظ على ما يعمل، تصحيح ما يجب تصحيحه والابتكار عندما يجلب قيمة مضافة حقيقية للمواطنين."
+         data-en="Our vision is one of continuous improvement: preserve what works, correct what needs to be corrected and innovate when it brings real added value to citizens.">Notre vision est celle d'une amelioration continue : preserver ce qui fonctionne, corriger ce qui doit l'etre et innover lorsque cela apporte une reelle valeur ajoutee aux citoyens.</p>
+    </div>
+  </div>
+
+  <!-- 6 PILIERS DU PROGRAMME -->
   <div class="program-grid">
-    <div class="program-card animate-on-scroll anim-up">
+
+    <!-- PILIER 1: DEVELOPPEMENT ECONOMIQUE -->
+    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1; max-width:100%;">
       <div class="program-num">01</div>
-      <span class="program-icon">🏗️</span>
-      <h3>Infrastructures & Urbanisme</h3>
-      <p>Renovation des routes communales, creation d'espaces verts, modernisation des reseaux d'eau et d'electricite, et amenagement des quartiers populaires.</p>
-      <span class="program-tag">Developpement Local</span>
-    </div>
-    <div class="program-card animate-on-scroll anim-up">
-      <div class="program-num">02</div>
-      <span class="program-icon">🏥</span>
-      <h3>Sante & Bien-etre</h3>
-      <p>Amelioration des dispensaires, campagnes de sensibilisation sanitaire, soutien aux personnes agees et aux personnes en situation de handicap.</p>
-      <span class="program-tag">Social</span>
-    </div>
-    <div class="program-card animate-on-scroll anim-up">
-      <div class="program-num">03</div>
-      <span class="program-icon">📚</span>
-      <h3>Education & Jeunesse</h3>
-      <p>Rehabilitation des ecoles, creation de bibliotheques communales, programmes de soutien scolaire, et espaces de loisirs pour la jeunesse.</p>
-      <span class="program-tag">Education</span>
-    </div>
-    <div class="program-card animate-on-scroll anim-up">
-      <div class="program-num">04</div>
       <span class="program-icon">💼</span>
-      <h3>Emploi & Economie</h3>
-      <p>Soutien aux micro-entreprises, creation de zones d'activites economiques, formation professionnelle et accompagnement des jeunes entrepreneurs.</p>
-      <span class="program-tag">Economie</span>
+      <h3 data-fr="Developpement economique, commerce et emploi" data-ar="التنمية الاقتصادية والتجارة والتوظيف" data-en="Economic Development, Commerce and Employment">Developpement economique, commerce et emploi</h3>
+      <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
+         data-fr="Notre priorite est de transformer Ain El Turck en une commune creatrice de richesse."
+         data-ar="أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة."
+         data-en="Our priority is to transform Ain El Turck into a wealth-creating municipality.">Notre priorite est de transformer Ain El Turck en une commune creatrice de richesse.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🛣️</span> Ouverture d'une deuxieme route reliant les deux extremites de la commune afin de desengorger la circulation
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🔌</span> Realisation des raccordements necessaires sur cette route deja existante
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🏢</span> Creation d'un nouveau corridor economique favorisant l'implantation de commerces et de nouveaux locaux commerciaux
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🏘️</span> Valorisation des terrains, habitations et residences situes le long de cette nouvelle voie
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">💼</span> Creation d'emplois directs et indirects
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🛒</span> Creation d'un marche quotidien a Trouville (a l'etude)
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🚗</span> Creation d'un marche hebdomadaire de vehicules a l'entree ou a la sortie de la commune
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🏪</span> Installation de kiosques commerciaux harmonises selon une architecture de style californien
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📊</span> Creation d'une base de donnees recensant tous les commerces, entreprises, artisans, professions liberales, associations, clubs et services de la commune
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🤝</span> Organisation de rencontres regulieres entre entreprises, commercants, investisseurs, clubs et associations pour developper le sponsoring et les partenariats
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🤲</span> Encourager les entreprises titulaires de marches publics a contribuer a la resolution de problematiques communales dans le cadre de leur responsabilite societale
+        </div>
+      </div>
+      <p style="margin-top:15px; font-weight:600; color:var(--gold);"
+         data-fr="Objectif : creer un veritable ecosysteme economique local generateur d'emplois et de revenus."
+         data-ar="الهدف: إنشاء نظام بيئي اقتصادي محلي حقيقي يُولد فرص عمل ودخلاً."
+         data-en="Objective: create a real local economic ecosystem generating jobs and income.">Objectif : creer un veritable ecosysteme economique local generateur d'emplois et de revenus.</p>
+      <span class="program-tag" data-fr="Developpement Economique" data-ar="التنمية الاقتصادية" data-en="Economic Development">Developpement Economique</span>
     </div>
-    <div class="program-card animate-on-scroll anim-up">
+
+    <!-- PILIER 2: MOBILITE -->
+    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
+      <div class="program-num">02</div>
+      <span class="program-icon">🚗</span>
+      <h3 data-fr="Mobilite, circulation et transports" data-ar="التنقل والسير والمواصلات" data-en="Mobility, Traffic and Transport">Mobilite, circulation et transports</h3>
+      <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
+         data-fr="La mobilite est indispensable au developpement economique."
+         data-ar="التنقل ضروري للتنمية الاقتصادية."
+         data-en="Mobility is essential for economic development.">La mobilite est indispensable au developpement economique.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🛣️</span> Ouverture de la deuxieme route afin de fluidifier durablement la circulation
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🚌</span> Creation de nouvelles lignes de transport en commun
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🚕</span> Creation de nouvelles lignes de taxis desservant les quartiers eloignes
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🚶</span> Une meilleure desserte des quartiers afin que les citoyens n'aient plus a parcourir de longues distances a pied pour rejoindre la route nationale
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🌊</span> Une meilleure gestion des flux routiers pendant la saison estivale
+        </div>
+      </div>
+      <span class="program-tag" data-fr="Mobilite" data-ar="التنقل" data-en="Mobility">Mobilite</span>
+    </div>
+
+    <!-- PILIER 3: TOURISME -->
+    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
+      <div class="program-num">03</div>
+      <span class="program-icon">🏖️</span>
+      <h3 data-fr="Tourisme, plages et attractivite" data-ar="السياحة والشواطئ والجاذبية" data-en="Tourism, Beaches and Attractiveness">Tourisme, plages et attractivite</h3>
+      <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
+         data-fr="Ain El Turck doit devenir une reference nationale parmi les stations balneaires."
+         data-ar="يجب أن تصبح عين الترك مرجعاً وطنياً بين المنتجعات البحرية."
+         data-en="Ain El Turck must become a national reference among seaside resorts.">Ain El Turck doit devenir une reference nationale parmi les stations balneaires.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🏰</span> Des acces aux plages concus pour durer grace a la fabrication par l'APC de ses propres moules de murs de style ottoman
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🧱</span> Utilisation de mortiers teintes plus resistants a l'humidite marine
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🌉</span> Des passerelles et acces en bois inspires du style californien
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🧹</span> Creation de brigades permanentes de nettoyage des plages
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📢</span> Mise en place d'animations de sensibilisation
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🪧</span> Installation de panneaux modernes rappelant les regles de propretete, de securite et de protection de l'environnement
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">⛵</span> Developpement des activites nautiques
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🏆</span> Soutien aux clubs et associations organisant des evenements sportifs, culturels et maritimes
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📱</span> Une plateforme numerique regroupant toutes les informations utiles aux citoyens et aux touristes
+        </div>
+      </div>
+      <span class="program-tag" data-fr="Tourisme" data-ar="السياحة" data-en="Tourism">Tourisme</span>
+    </div>
+
+    <!-- PILIER 4: ENVIRONNEMENT -->
+    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
+      <div class="program-num">04</div>
+      <span class="program-icon">🌳</span>
+      <h3 data-fr="Environnement, espaces verts et cadre de vie" data-ar="البيئة والمساحات الخضراء وجودة الحياة" data-en="Environment, Green Spaces and Quality of Life">Environnement, espaces verts et cadre de vie</h3>
+      <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
+         data-fr="Nous voulons une commune plus verte, plus agreable et plus durable."
+         data-ar="نريد بلدية أكثر خضرة وأكثر متعة وأكثر استدامة."
+         data-en="We want a greener, more pleasant and more sustainable municipality.">Nous voulons une commune plus verte, plus agreable et plus durable.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🌱</span> Creation d'une pepiniere municipale
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🌲</span> Plantation de 10 000 arbres adaptes au climat local et a croissance rapide
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🛡️</span> Protection stricte du patrimoine arboricole
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🚫</span> Interdiction de couper les arbres ou de leur porter atteinte en dehors des dispositions prevues par la loi
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🎪</span> Fabrication locale des aires de jeux destinees aux parcs municipaux afin de reduire les couts, accelerer les renovations et multiplier les espaces de loisirs
+        </div>
+      </div>
+      <span class="program-tag" data-fr="Environnement" data-ar="البيئة" data-en="Environment">Environnement</span>
+    </div>
+
+    <!-- PILIER 5: COMMUNE NUMERIQUE -->
+    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
       <div class="program-num">05</div>
-      <span class="program-icon">🌊</span>
-      <h3>Environnement & Proprete</h3>
-      <p>Campagnes de nettoyage, gestion des dechets, preservation du littoral d'Ain El Turk, et sensibilisation a la protection de l'environnement.</p>
-      <span class="program-tag">Ecologie</span>
+      <span class="program-icon">📱</span>
+      <h3 data-fr="Une commune numerique et une administration moderne" data-ar="بلدية رقمية وإدارة حديثة" data-en="A Digital Municipality and Modern Administration">Une commune numerique et une administration moderne</h3>
+      <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
+         data-fr="Le citoyen doit pouvoir communiquer facilement avec sa commune. Nous creerons une application municipale permettant :"
+         data-ar="يجب أن يتمكن المواطن من التواصل بسهولة مع بلديته. سننشئ تطبيقاً بلدياً يسمح بـ:"
+         data-en="The citizen must be able to communicate easily with their municipality. We will create a municipal application allowing:">Le citoyen doit pouvoir communiquer facilement avec sa commune. Nous creerons une application municipale permettant :</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-top:15px;">
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📍</span> Signaler les problemes avec geolocalisation
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🚨</span> Signaler les accidents
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">⚠️</span> Identifier les points noirs
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📊</span> Suivre en temps reel le traitement des demandes
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">⏱️</span> Consulter les delais d'intervention
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📞</span> Contacter directement le maire ou les services municipaux
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">💡</span> Envoyer des suggestions et propositions
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📈</span> Suivre les realisations de la commune
+        </div>
+      </div>
+      <p style="margin-top:15px; font-weight:600; color:var(--accent-cyan);">Modernisation de l'etat civil :</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-top:10px;">
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">👥</span> Renforcement des guichets lors des periodes de forte affluence
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📋</span> Adaptation des effectifs selon les besoins
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">👁️</span> Creation d'une cellule de veille
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🚨</span> Creation d'une cellule de crise
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📱</span> Signaler les retards ou dysfonctionnements via l'application avec suivi des reponses
+        </div>
+      </div>
+      <span class="program-tag" data-fr="Numerique" data-ar="الرقمية" data-en="Digital">Numerique</span>
     </div>
-    <div class="program-card animate-on-scroll anim-up">
+
+    <!-- PILIER 6: GOUVERNANCE -->
+    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
       <div class="program-num">06</div>
-      <span class="program-icon">💻</span>
-      <h3>Transformation Numerique</h3>
-      <p>Dematerialisation des services communaux, acces internet gratuit dans les espaces publics, et formation au numerique pour tous les ages.</p>
-      <span class="program-tag">Numerique</span>
+      <span class="program-icon">⚖️</span>
+      <h3 data-fr="Gouvernance, transparence et participation citoyenne" data-ar="الحوكمة والشفافية والمشاركة المواطنة" data-en="Governance, Transparency and Citizen Participation">Gouvernance, transparence et participation citoyenne</h3>
+      <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
+         data-fr="La confiance se construit par la transparence. Nous nous engageons a :"
+         data-ar="الثقة تُبنى بالشفافية. نتعهد بـ:"
+         data-en="Trust is built through transparency. We commit to:">La confiance se construit par la transparence. Nous nous engageons a :</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📄</span> Publier l'integralite de notre programme
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">📊</span> Publier un bilan detaille des realisations a la fin de chaque annee ou de chaque mandat
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🗣️</span> Organiser des rencontres citoyennes mensuelles ouvertes a tous
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">💡</span> Recueillir les propositions des citoyens via l'application municipale
+        </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🤝</span> Associer les habitants aux decisions concernant leur commune
+        </div>
+      </div>
+      <p style="margin-top:15px; font-weight:600; color:var(--gold);"
+         data-fr="Objectif : construire une municipalite ouverte, a l'ecoute et proche des citoyens."
+         data-ar="الهدف: بناء بلدية منفتحة، مستمعة وقريبة من المواطنين."
+         data-en="Objective: build an open, listening and close-to-citizens municipality.">Objectif : construire une municipalite ouverte, a l'ecoute et proche des citoyens.</p>
+      <span class="program-tag" data-fr="Gouvernance" data-ar="الحوكمة" data-en="Governance">Gouvernance</span>
+    </div>
+
+  </div>
+
+  <!-- NOTRE ENGAGEMENT FINAL -->
+  <div style="max-width:1200px; margin:60px auto 0;" class="animate-on-scroll anim-up">
+    <div style="background:linear-gradient(145deg, rgba(0,71,171,0.2), rgba(0,166,81,0.15), rgba(200,16,46,0.1)); border:1px solid var(--glass-border); border-radius:24px; padding:50px; text-align:center; position:relative; overflow:hidden;">
+      <div style="position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--rnd-blue), var(--rnd-green), var(--rnd-red));"></div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:25px; color:#fff;">Notre Engagement</h3>
+      <p style="font-size:1.1rem; line-height:1.9; color:rgba(255,255,255,0.85); max-width:800px; margin:0 auto 20px;">
+        Notre programme est fonde sur des projets concrets, realisables et financierement responsables. Nous ne promettons pas des projets irrealisables ou dependants de financements incertains.
+      </p>
+      <p style="font-size:1.05rem; line-height:1.9; color:rgba(255,255,255,0.85); max-width:800px; margin:0 auto 25px;">
+        Nous voulons creer une economie locale forte, developper le commerce, soutenir le tourisme, ameliorer les services publics, proteger notre environnement et faire d'Ain El Turck une commune moderne, dynamique et exemplaire.
+      </p>
+      <p style="font-size:1.2rem; font-weight:700; color:var(--accent-cyan); font-style:italic;">
+        Ensemble, faisons d'Ain El Turck une commune ou il fait bon vivre, investir, travailler et accueillir les visiteurs.
+      </p>
+      <div style="margin-top:30px; display:flex; justify-content:center; gap:10px;">
+        <span style="width:40px; height:4px; background:var(--rnd-blue); border-radius:2px;"></span>
+        <span style="width:40px; height:4px; background:var(--rnd-green); border-radius:2px;"></span>
+        <span style="width:40px; height:4px; background:var(--rnd-red); border-radius:2px;"></span>
+      </div>
     </div>
   </div>
 </section>
@@ -386,49 +755,61 @@
 <!-- TIMELINE -->
 <section class="timeline" id="engagement">
   <div class="section-header animate-on-scroll anim-up">
-    <div class="section-tag">Notre Parcours</div>
-    <h2>Un Engagement Continu</h2>
-    <p>Des actions concretes et un parcours politique au service de la commune d'Ain El Turk.</p>
+    <div class="section-tag" data-fr="Notre Parcours" data-ar="مسارنا" data-en="Our Journey">Notre Parcours</div>
+    <h2 data-fr="Un Engagement Continu" data-ar="التزام مستمر" data-en="A Continuous Commitment">Un Engagement Continu</h2>
+    <p data-fr="Des actions concretes et un parcours politique au service de la commune d'Ain El Turk."
+       data-ar="أعمال ملموسة ومسار سياسي في خدمة بلدية عين الترك."
+       data-en="Concrete actions and a political journey at the service of the Ain El Turk municipality.">Des actions concretes et un parcours politique au service de la commune d'Ain El Turk.</p>
   </div>
   <div class="timeline-container">
     <div class="timeline-item animate-on-scroll anim-left">
       <div class="timeline-dot"></div>
       <div class="timeline-date">2018</div>
       <div class="timeline-content">
-        <h4>Adhesion au RND</h4>
-        <p>Engagement militant au sein du Rassemblement National Democratique, porte par les valeurs de progres et de developpement.</p>
+        <h4 data-fr="Adhesion au RND" data-ar="الانضمام إلى التجمع" data-en="Joining the RND">Adhesion au RND</h4>
+        <p data-fr="Engagement militant au sein du Rassemblement National Democratique, porte par les valeurs de progres et de developpement."
+           data-ar="انخراط ناشط داخل التجمع الوطني الديمقراطي، محمولاً بقيم التقدم والتنمية."
+           data-en="Militant commitment within the National Democratic Rally, carried by the values of progress and development.">Engagement militant au sein du Rassemblement National Democratique, porte par les valeurs de progres et de developpement.</p>
       </div>
     </div>
     <div class="timeline-item animate-on-scroll anim-right">
       <div class="timeline-dot"></div>
       <div class="timeline-date">2020</div>
       <div class="timeline-content">
-        <h4>Responsable Jeunesse</h4>
-        <p>Prise de responsabilite au sein de l'organisation des jeunes du RND a Ain El Turk, avec des actions de proximite et d'ecoute.</p>
+        <h4 data-fr="Responsable Jeunesse" data-ar="مسؤول الشباب" data-en="Youth Leader">Responsable Jeunesse</h4>
+        <p data-fr="Prise de responsabilite au sein de l'organisation des jeunes du RND a Ain El Turk, avec des actions de proximite et d'ecoute."
+           data-ar="تولي المسؤولية داخل منظمة شباب التجمع بعين الترك، مع أعمال القرب والاستماع."
+           data-en="Taking responsibility within the RND youth organization in Ain El Turk, with proximity and listening actions.">Prise de responsabilite au sein de l'organisation des jeunes du RND a Ain El Turk, avec des actions de proximite et d'ecoute.</p>
       </div>
     </div>
     <div class="timeline-item animate-on-scroll anim-left">
       <div class="timeline-dot"></div>
       <div class="timeline-date">2023</div>
       <div class="timeline-content">
-        <h4>Membre du Bureau</h4>
-        <p>Integration au bureau communal du RND, participation active a l'elaboration des strategies locales et aux actions de terrain.</p>
+        <h4 data-fr="Membre du Bureau" data-ar="عضو المكتب" data-en="Bureau Member">Membre du Bureau</h4>
+        <p data-fr="Integration au bureau communal du RND, participation active a l'elaboration des strategies locales et aux actions de terrain."
+           data-ar="الاندماج في المكتب البلدي للتجمع، مشاركة فعّالة في وضع الاستراتيجيات المحلية والأعمال الميدانية."
+           data-en="Integration into the RND communal bureau, active participation in developing local strategies and field actions.">Integration au bureau communal du RND, participation active a l'elaboration des strategies locales et aux actions de terrain.</p>
       </div>
     </div>
     <div class="timeline-item animate-on-scroll anim-right">
       <div class="timeline-dot"></div>
       <div class="timeline-date">2025</div>
       <div class="timeline-content">
-        <h4>Secretaire General</h4>
-        <p>Election comme Secretaire General du Bureau Communal du RND d'Ain El Turk, avec la mission de porter la voix des citoyens.</p>
+        <h4 data-fr="Secretaire General" data-ar="الأمين العام" data-en="General Secretary">Secretaire General</h4>
+        <p data-fr="Election comme Secretaire General du Bureau Communal du RND d'Ain El Turk, avec la mission de porter la voix des citoyens."
+           data-ar="انتخاب كأمين عام للمكتب البلدي للتجمع بعين الترك، مع مهمة نقل صوت المواطنين."
+           data-en="Elected as General Secretary of the RND Communal Bureau of Ain El Turk, with the mission of carrying the voice of citizens.">Election comme Secretaire General du Bureau Communal du RND d'Ain El Turk, avec la mission de porter la voix des citoyens.</p>
       </div>
     </div>
     <div class="timeline-item animate-on-scroll anim-left">
       <div class="timeline-dot"></div>
       <div class="timeline-date">2026</div>
       <div class="timeline-content">
-        <h4>Candidature Communale</h4>
-        <p>Candidature aux elections communales avec un programme ambitieux pour transformer Ain El Turk et ameliorer le quotidien de tous.</p>
+        <h4 data-fr="Candidature Communale" data-ar="الترشح البلدي" data-en="Municipal Candidacy">Candidature Communale</h4>
+        <p data-fr="Candidature aux elections communales avec un programme ambitieux pour transformer Ain El Turk et ameliorer le quotidien de tous."
+           data-ar="الترشح للانتخابات البلدية ببرنامج طموح لتحويل عين الترك وتحسين حياة الجميع."
+           data-en="Candidacy in municipal elections with an ambitious program to transform Ain El Turk and improve everyone's daily life.">Candidature aux elections communales avec un programme ambitieux pour transformer Ain El Turk et ameliorer le quotidien de tous.</p>
       </div>
     </div>
   </div>
@@ -437,9 +818,11 @@
 <!-- JOIN FORM -->
 <section class="join" id="adherer">
   <div class="section-header animate-on-scroll anim-up">
-    <div class="section-tag">Rejoignez le mouvement</div>
-    <h2>Devenez Adherent au RND</h2>
-    <p>Rejoignez-nous et participez activement a la construction de l'avenir de notre commune. Ensemble, nous sommes plus forts.</p>
+    <div class="section-tag" data-fr="Rejoignez le mouvement" data-ar="انضم إلى الحركة" data-en="Join the movement">Rejoignez le mouvement</div>
+    <h2 data-fr="Devenez Adherent au RND" data-ar="كن عضواً في التجمع" data-en="Become an RND Member">Devenez Adherent au RND</h2>
+    <p data-fr="Rejoignez-nous et participez activement a la construction de l'avenir de notre commune. Ensemble, nous sommes plus forts."
+       data-ar="انضم إلينا وشارك بنشاط في بناء مستقبل بلديتنا. معاً، نحن أقوى."
+       data-en="Join us and actively participate in building the future of our municipality. Together, we are stronger.">Rejoignez-nous et participez activement a la construction de l'avenir de notre commune. Ensemble, nous sommes plus forts.</p>
   </div>
   <div class="join-container">
     <div class="join-form animate-on-scroll anim-scale" id="joinFormContainer">
@@ -449,53 +832,54 @@
         <input type="hidden" name="_captcha" value="false">
         <div class="form-row">
           <div class="form-group">
-            <label for="nom">Nom</label>
+            <label for="nom" data-fr="Nom" data-ar="الاسم" data-en="Last Name">Nom</label>
             <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
           </div>
           <div class="form-group">
-            <label for="prenom">Prenom</label>
+            <label for="prenom" data-fr="Prenom" data-ar="الاسم الأول" data-en="First Name">Prenom</label>
             <input type="text" id="prenom" name="prenom" placeholder="Votre prenom" required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email" data-fr="Email" data-ar="البريد الإلكتروني" data-en="Email">Email</label>
             <input type="email" id="email" name="email" placeholder="votre@email.com" required>
           </div>
           <div class="form-group">
-            <label for="telephone">Telephone</label>
+            <label for="telephone" data-fr="Telephone" data-ar="الهاتف" data-en="Phone">Telephone</label>
             <input type="tel" id="telephone" name="telephone" placeholder="+213 5XX XXX XXX" required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="age">Age</label>
+            <label for="age" data-fr="Age" data-ar="العمر" data-en="Age">Age</label>
             <input type="number" id="age" name="age" placeholder="Votre age" min="18" max="100" required>
           </div>
           <div class="form-group">
-            <label for="profession">Profession</label>
+            <label for="profession" data-fr="Profession" data-ar="المهنة" data-en="Profession">Profession</label>
             <input type="text" id="profession" name="profession" placeholder="Votre profession">
           </div>
         </div>
         <div class="form-group">
-          <label for="adresse">Adresse</label>
+          <label for="adresse" data-fr="Adresse" data-ar="العنوان" data-en="Address">Adresse</label>
           <input type="text" id="adresse" name="adresse" placeholder="Votre adresse a Ain El Turk">
         </div>
         <div class="form-group">
-          <label for="type">Type d'adhesion</label>
+          <label for="type" data-fr="Type d'adhesion" data-ar="نوع الانضمام" data-en="Membership Type">Type d'adhesion</label>
           <select id="type" name="type" required>
-            <option value="">Choisir...</option>
-            <option value="membre">Membre Actif</option>
-            <option value="sympathisant">Sympathisant</option>
-            <option value="candidature">Candidature Electorale</option>
-            <option value="benevole">Benevole</option>
+            <option value="" data-fr="Choisir..." data-ar="اختر..." data-en="Choose...">Choisir...</option>
+            <option value="membre" data-fr="Membre Actif" data-ar="عضو نشط" data-en="Active Member">Membre Actif</option>
+            <option value="sympathisant" data-fr="Sympathisant" data-ar="متعاطف" data-en="Sympathizer">Sympathisant</option>
+            <option value="candidature" data-fr="Candidature Electorale" data-ar="ترشح انتخابي" data-en="Electoral Candidacy">Candidature Electorale</option>
+            <option value="benevole" data-fr="Benevole" data-ar="متطوع" data-en="Volunteer">Benevole</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="message">Message / Motivation</label>
+          <label for="message" data-fr="Message / Motivation" data-ar="الرسالة / الدافع" data-en="Message / Motivation">Message / Motivation</label>
           <textarea id="message" name="message" placeholder="Dites-nous pourquoi vous souhaitez rejoindre le RND..."></textarea>
         </div>
-        <button type="submit" class="form-submit" id="submitBtn">
+        <button type="submit" class="form-submit" id="submitBtn"
+                data-fr="Envoyer ma Candidature" data-ar="إرسال طلبي" data-en="Send my Application">
           Envoyer ma Candidature
         </button>
       </form>
@@ -508,7 +892,9 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <h3>Zenasni Nabil - RND</h3>
-      <p>Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens.</p>
+      <p data-fr="Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens."
+         data-ar="الأمين العام لمكتب التجمع الوطني الديمقراطي بعين الترك، وهران. ملتزم بالتنمية المحلية ورفاهية جميع المواطنين."
+         data-en="General Secretary of the RND Communal Bureau in Ain El Turk, Oran. Committed to local development and the well-being of all citizens.">Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens.</p>
       <div class="footer-social">
         <a href="#" title="Facebook">FB</a>
         <a href="#" title="Twitter">TW</a>
@@ -517,35 +903,37 @@
       </div>
     </div>
     <div class="footer-col">
-      <h4>Navigation</h4>
+      <h4 data-fr="Navigation" data-ar="التنقل" data-en="Navigation">Navigation</h4>
       <ul>
-        <li><a href="#accueil">Accueil</a></li>
-        <li><a href="#apropos">A propos</a></li>
-        <li><a href="#programme">Programme</a></li>
-        <li><a href="#adherer">Adherer</a></li>
+        <li><a href="#accueil" data-fr="Accueil" data-ar="الرئيسية" data-en="Home">Accueil</a></li>
+        <li><a href="#apropos" data-fr="A propos" data-ar="من نحن" data-en="About">A propos</a></li>
+        <li><a href="#programme" data-fr="Programme" data-ar="البرنامج" data-en="Program">Programme</a></li>
+        <li><a href="#adherer" data-fr="Adherer" data-ar="انضم" data-en="Join">Adherer</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Programme</h4>
+      <h4 data-fr="Programme" data-ar="البرنامج" data-en="Program">Programme</h4>
       <ul>
-        <li><a href="#programme">Infrastructures</a></li>
-        <li><a href="#programme">Sante</a></li>
-        <li><a href="#programme">Education</a></li>
-        <li><a href="#programme">Emploi</a></li>
+        <li><a href="#programme" data-fr="Infrastructures" data-ar="البنى التحتية" data-en="Infrastructure">Infrastructures</a></li>
+        <li><a href="#programme" data-fr="Sante" data-ar="الصحة" data-en="Health">Sante</a></li>
+        <li><a href="#programme" data-fr="Education" data-ar="التعليم" data-en="Education">Education</a></li>
+        <li><a href="#programme" data-fr="Emploi" data-ar="التوظيف" data-en="Employment">Emploi</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Contact</h4>
+      <h4 data-fr="Contact" data-ar="اتصل بنا" data-en="Contact">Contact</h4>
       <ul>
         <li><a href="mailto:Connacri3@gmail.com">Connacri3@gmail.com</a></li>
-        <li><a href="#">Ain El Turk, Oran</a></li>
-        <li><a href="#">Algerie</a></li>
+        <li><a href="#" data-fr="Ain El Turk, Oran" data-ar="عين الترك، وهران" data-en="Ain El Turk, Oran">Ain El Turk, Oran</a></li>
+        <li><a href="#" data-fr="Algerie" data-ar="الجزائر" data-en="Algeria">Algerie</a></li>
         <li><a href="#">RND - RND</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>2026 Zenasni Nabil - RND Ain El Turk. Tous droits reserves.</p>
+    <p data-fr="2026 Zenasni Nabil - RND Ain El Turk. Tous droits reserves."
+       data-ar="2026 زناسني نبيل - التجمع عين الترك. جميع الحقوق محفوظة."
+       data-en="2026 Zenasni Nabil - RND Ain El Turk. All rights reserved.">2026 Zenasni Nabil - RND Ain El Turk. Tous droits reserves.</p>
     <div class="rnd-colors">
       <span class="c-blue"></span>
       <span class="c-green"></span>
@@ -628,6 +1016,112 @@
       if (current >= target) { current = target; clearInterval(timer); }
       el.textContent = Math.floor(current).toLocaleString();
     }, 30);
+  }
+
+  // ===== LANGUAGE SWITCHING =====
+  let currentLang = 'fr';
+
+  const typewriterPhrases = {
+    fr: [
+      "Un avenir meilleur pour Ain El Turk",
+      "Transparence, Proximite, Progres",
+      "Ensemble, construisons notre commune",
+      "Le RND, la force du changement local"
+    ],
+    ar: [
+      "مستقبل أفضل لعين الترك",
+      "الشفافية، القرب، التقدم",
+      "معاً، لنبني بلديتنا",
+      "التجمع، قوة التغيير المحلي"
+    ],
+    en: [
+      "A better future for Ain El Turk",
+      "Transparency, Proximity, Progress",
+      "Together, let's build our municipality",
+      "RND, the force of local change"
+    ]
+  };
+
+  function setLang(lang) {
+    currentLang = lang;
+
+    // Update active button state
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.getElementById('btn-' + lang).classList.add('active');
+    if (document.getElementById('mbtn-' + lang)) {
+      document.getElementById('mbtn-' + lang).classList.add('active');
+    }
+
+    // Set RTL for Arabic
+    document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+    // Update all elements with data attributes
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      const text = el.getAttribute('data-' + lang);
+      if (text) {
+        // For elements with HTML inside (like h1 with span), use innerHTML if it contains HTML
+        if (text.includes('<')) {
+          el.innerHTML = text;
+        } else {
+          // Check if element has child elements
+          if (el.children.length === 0 || el.childNodes.length === 1) {
+            el.textContent = text;
+          } else {
+            // Try to update text nodes while preserving HTML children
+            for (let node of el.childNodes) {
+              if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                node.textContent = text;
+                break;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Update select options
+    document.querySelectorAll('select option[data-fr]').forEach(opt => {
+      const text = opt.getAttribute('data-' + lang);
+      if (text) opt.textContent = text;
+    });
+
+    // Update placeholder text for inputs
+    const placeholders = {
+      fr: { nom: 'Votre nom', prenom: 'Votre prenom', email: 'votre@email.com', telephone: '+213 5XX XXX XXX', age: 'Votre age', profession: 'Votre profession', adresse: 'Votre adresse a Ain El Turk', message: 'Dites-nous pourquoi vous souhaitez rejoindre le RND...' },
+      ar: { nom: 'اسمك', prenom: 'اسمك الأول', email: 'بريدك@email.com', telephone: '+213 5XX XXX XXX', age: 'عمرك', profession: 'مهنتك', adresse: 'عنوانك في عين الترك', message: 'أخبرنا لماذا ترغب في الانضمام إلى التجمع...' },
+      en: { nom: 'Your last name', prenom: 'Your first name', email: 'your@email.com', telephone: '+213 5XX XXX XXX', age: 'Your age', profession: 'Your profession', adresse: 'Your address in Ain El Turk', message: 'Tell us why you want to join the RND...' }
+    };
+
+    const ph = placeholders[lang];
+    if (ph) {
+      document.getElementById('nom').placeholder = ph.nom;
+      document.getElementById('prenom').placeholder = ph.prenom;
+      document.getElementById('email').placeholder = ph.email;
+      document.getElementById('telephone').placeholder = ph.telephone;
+      document.getElementById('age').placeholder = ph.age;
+      document.getElementById('profession').placeholder = ph.profession;
+      document.getElementById('adresse').placeholder = ph.adresse;
+      document.getElementById('message').placeholder = ph.message;
+    }
+
+    // Update typewriter phrases
+    phrases.length = 0;
+    typewriterPhrases[lang].forEach(p => phrases.push(p));
+    phraseIndex = 0;
+    charIndex = 0;
+    isDeleting = false;
+    typewriterEl.textContent = '';
+
+    // Save preference
+    localStorage.setItem('lang', lang);
+  }
+
+  // Load saved language preference
+  const savedLang = localStorage.getItem('lang');
+  if (savedLang && savedLang !== 'fr') {
+    setLang(savedLang);
   }
 </script>
 </body>

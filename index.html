@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zenasni Nabil — RND Ain El Turk | Elections Communales 2026</title>
-<meta name="description" content="Site officiel de campagne de Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Elections Communales 2026.">
+<meta name="description" content="Site officiel de campagne de Zenasni Nabil, Secretaire du Bureau Communal du RND a Ain El Turk, Oran. Elections Communales 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Al+Jazeera+Arabic:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -15,6 +15,129 @@
     --accent-cyan: #00d4ff; --accent-pink: #ff006e; --gold: #d4af37;
     --text-light: #ffffff; --text-dark: #1a1a2e;
     --glass: rgba(255,255,255,0.08); --glass-border: rgba(255,255,255,0.15);
+  /* ===== PROFILE PHOTO ===== */
+  .avatar-photo {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 4px solid var(--accent-cyan);
+    overflow: hidden;
+    margin: 0 auto 20px;
+    box-shadow: 0 0 40px rgba(0,212,255,0.4), 0 0 80px rgba(0,212,255,0.2);
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(145deg, rgba(0,71,171,0.3), rgba(0,166,81,0.2));
+  }
+  .avatar-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .avatar-photo:hover img {
+    transform: scale(1.05);
+  }
+
+  /* ===== AUDIO PLAYER ===== */
+  .audio-player-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 12px 18px;
+    background: linear-gradient(145deg, rgba(0,71,171,0.2), rgba(0,166,81,0.15));
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.3s ease;
+  }
+  .audio-player-container:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 20px rgba(0,212,255,0.2);
+  }
+  .audio-play-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-cyan);
+    background: rgba(0,212,255,0.15);
+    color: var(--accent-cyan);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  .audio-play-btn:hover {
+    background: var(--accent-cyan);
+    color: var(--bg-dark);
+    transform: scale(1.1);
+  }
+  .audio-play-btn.playing {
+    background: var(--accent-cyan);
+    color: var(--bg-dark);
+    animation: audio-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes audio-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(0,212,255,0); }
+  }
+  .audio-visualizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .audio-bar {
+    width: 3px;
+    background: linear-gradient(to top, var(--accent-cyan), var(--gold));
+    border-radius: 2px;
+    transition: height 0.15s ease;
+    height: 4px;
+  }
+  .audio-visualizer.playing .audio-bar {
+    animation: audio-bounce 0.5s ease-in-out infinite alternate;
+  }
+  .audio-visualizer.playing .audio-bar:nth-child(1) { animation-delay: 0s; }
+  .audio-visualizer.playing .audio-bar:nth-child(2) { animation-delay: 0.1s; }
+  .audio-visualizer.playing .audio-bar:nth-child(3) { animation-delay: 0.2s; }
+  .audio-visualizer.playing .audio-bar:nth-child(4) { animation-delay: 0.05s; }
+  .audio-visualizer.playing .audio-bar:nth-child(5) { animation-delay: 0.15s; }
+  .audio-visualizer.playing .audio-bar:nth-child(6) { animation-delay: 0.25s; }
+  .audio-visualizer.playing .audio-bar:nth-child(7) { animation-delay: 0.1s; }
+  .audio-visualizer.playing .audio-bar:nth-child(8) { animation-delay: 0.2s; }
+  @keyframes audio-bounce {
+    0% { height: 4px; }
+    100% { height: 20px; }
+  }
+  .audio-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Mobile audio player */
+  @media (max-width: 768px) {
+    .avatar-photo { width: 120px; height: 120px; }
+    .audio-player-container { max-width: 240px; padding: 10px 14px; }
+    .audio-label { font-size: 0.7rem; }
+  }
+  @media (max-width: 480px) {
+    .avatar-photo { width: 100px; height: 100px; }
+    .audio-player-container { max-width: 200px; }
+    .audio-visualizer { display: none; }
+  }
+
   /* Arabic font override */
   [lang="ar"] body, [lang="ar"] h1, [lang="ar"] h2, [lang="ar"] h3, [lang="ar"] h4, [lang="ar"] p, [lang="ar"] span, [lang="ar"] a, [lang="ar"] button, [lang="ar"] input, [lang="ar"] textarea, [lang="ar"] select, [lang="ar"] label, [lang="ar"] div {
     font-family: 'Noto Sans Arabic', 'Al Jazeera Arabic', sans-serif !important;
@@ -31,6 +154,10 @@
   html { scroll-behavior: smooth; }
   body { font-family: 'Roboto', 'Noto Sans Arabic', sans-serif; background: var(--rnd-dark); color: var(--text-light); overflow-x: hidden; }
 
+  @keyframes parallax-zoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+  }
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
   @keyframes fadeInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
@@ -196,7 +323,7 @@
   /* ===== PARALLAX SECTIONS ===== */
   .parallax-section {
     position: relative;
-    min-height: 500px;
+    min-height: 80vh;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -300,7 +427,6 @@
   [dir="rtl"] .footer-col { text-align: right; }
   [dir="rtl"] .footer-col ul { text-align: right; }
   [dir="rtl"] .footer-bottom { direction: rtl; }
-
 
   /* ===== COMPREHENSIVE RESPONSIVE FIXES ===== */
 
@@ -409,7 +535,7 @@
     .lang-btn { padding: 5px 10px; font-size: 0.7rem; }
 
     /* Parallax */
-    .parallax-section { min-height: 350px; background-attachment: scroll; }
+    .parallax-section { min-height: 60vh; background-attachment: scroll; }
     .parallax-content { padding: 40px 20px; }
     .parallax-content h2 { font-size: 1.6rem; }
     .parallax-content p { font-size: 0.95rem; }
@@ -494,7 +620,7 @@
     .footer-bottom { font-size: 0.75rem; }
 
     /* Parallax */
-    .parallax-section { min-height: 280px; }
+    .parallax-section { min-height: 50vh; }
     .parallax-content { padding: 30px 15px; }
     .parallax-content h2 { font-size: 1.3rem; }
     .parallax-content p { font-size: 0.85rem; }
@@ -591,7 +717,7 @@
   <div class="hero-particles" id="heroParticles"></div>
   <div class="hero-content">
     <div class="hero-text">
-      <h3 data-fr="Elections Communales 2026" data-ar="انتخابات البلدية 2026" data-en="Municipal Elections 2026">Elections Communales 2026</h3>
+      <h3 data-fr="Elections Communales 2026" data-ar="انتخابات البلدية 2026" data-en="Communal Elections 2026">Elections Communales 2026</h3>
       <h1 data-fr="Ensemble, <span class='highlight'>construisons</span><br>l'avenir d'Ain El Turk" 
           data-ar="معاً، <span class='highlight'>لنبني</span><br>مستقبل عين الترك" 
           data-en="Together, <span class='highlight'>let's build</span><br>the future of Ain El Turk">
@@ -599,10 +725,10 @@
       <div class="typewriter-container">
         <span class="typewriter-text" id="typewriter"></span>
       </div>
-      <p data-fr="Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens."
-         data-ar="زناسني نبيل، الأمين العام لمكتب حزب التجمع الوطني الديمقراطي بعين الترك، وهران. التزام قوي من أجل التنمية المحلية، الشفافية والقرب من المواطنين."
-         data-en="Zenasni Nabil, General Secretary of the RND Communal Bureau in Ain El Turk, Oran. A strong commitment to local development, transparency and proximity with citizens.">
-        Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens.</p>
+      <p data-fr="Zenasni Nabil, Secretaire du Bureau Communal du RND a Ain El Turk, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens."
+         data-ar="زناسني نبيل، الأمين لمكتب حزب التجمع الوطني الديمقراطي بعين الترك، وهران. التزام قوي من أجل التنمية المحلية، الشفافية والقرب من المواطنين."
+         data-en="Zenasni Nabil, Secretary of the RND Communal Bureau in Ain El Turk, Oran. A strong commitment to local development, transparency and proximity with citizens.">
+        Zenasni Nabil, Secretaire du Bureau Communal du RND a Ain El Turk, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens.</p>
       <div class="hero-btns">
         <button class="btn-primary" onclick="document.getElementById('programme').scrollIntoView({behavior:'smooth'})" 
                 data-fr="Notre Programme" data-ar="برنامجنا" data-en="Our Program">Notre Programme</button>
@@ -617,7 +743,7 @@
       <div class="candidate-card">
         <div class="avatar">ZN</div>
         <h2>Zenasni Nabil</h2>
-        <div class="role" data-fr="Secretaire General" data-ar="الأمين العام" data-en="General Secretary">Secretaire General</div>
+        <div class="role" data-fr="Secretaire" data-ar="الأمين" data-en="Secretary">Secretaire</div>
         <div class="location" data-fr="Ain El Turk, Oran, Algerie" data-ar="عين الترك، وهران، الجزائر" data-en="Ain El Turk, Oran, Algeria">Ain El Turk, Oran, Algerie</div>
         <div class="rnd-badge">RND - RND</div>
       </div>
@@ -635,12 +761,12 @@
     <div class="stat-item animate-on-scroll anim-scale">
       <div class="stat-icon">🏛️</div>
       <div class="stat-number" data-target="451">0</div>
-      <div class="stat-label" data-fr="Mairies RND" data-ar="بلديات التجمع" data-en="RND Municipalities">Mairies RND</div>
+      <div class="stat-label" data-fr="Mairies RND" data-ar="بلديات التجمع" data-en="RND Communalities">Mairies RND</div>
     </div>
     <div class="stat-item animate-on-scroll anim-scale">
       <div class="stat-icon">👥</div>
       <div class="stat-number" data-target="6521">0</div>
-      <div class="stat-label" data-fr="Elus Communaux" data-ar="المنتخبون البلديون" data-en="Municipal Elected">Elus Communaux</div>
+      <div class="stat-label" data-fr="Elus Communaux" data-ar="المنتخبون البلديون" data-en="Communal Elected">Elus Communaux</div>
     </div>
     <div class="stat-item animate-on-scroll anim-scale">
       <div class="stat-icon">🏛️</div>
@@ -656,11 +782,13 @@
 </div>
 
 <!-- PARALLAX IMAGE 1 -->
-<section class="parallax-section" style="background-image: url('1000011157.jpg');">
+<section class="parallax-section" style="background-image: url('assets/images/1000011157.jpg');" id="parallax1">
   <div class="parallax-overlay"></div>
   <div class="parallax-content">
-    <h2 data-fr="L'Engagement au Service des Citoyens" data-ar="الالتزام في خدمة المواطنين" data-en="Commitment to Serving Citizens">L'Engagement au Service des Citoyens</h2>
-    <p data-fr="Ensemble, construisons l'avenir d'Aïn El Turck" data-ar="معاً، لنبني مستقبل عين الترك" data-en="Together, let's build the future of Ain El Turck">Ensemble, construisons l'avenir d'Aïn El Turck</p>
+    <div class="parallax-label" data-fr="PROGRAMME" data-ar="البرنامج" data-en="PROGRAM">PROGRAMME</div>
+    <h2 data-fr="ENSEMBLE POUR UNE NOUVELLE DYNAMIQUE" data-ar="معاً من أجل ديناميكية جديدة" data-en="TOGETHER FOR A NEW DYNAMIC">ENSEMBLE POUR UNE NOUVELLE DYNAMIQUE</h2>
+    <div class="parallax-line"></div>
+    <p data-fr="Aïn El Turck mérite l'avenir qu'elle s'est construit" data-ar="عين الترك تستحق المستقبل الذي بنته" data-en="Ain El Turck deserves the future it has built">Aïn El Turck mérite l'avenir qu'elle s'est construit</p>
   </div>
 </section>
 
@@ -680,14 +808,14 @@
         <h3 data-fr="Notre Vision" data-ar="رؤيتنا" data-en="Our Vision">Notre Vision</h3>
         <p data-fr="Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays."
            data-ar="جزائر قوية، مزدهرة وموحدة. يعمل التجمع من أجل حوكمة شفافة، واقتصاد ديناميكي وتحول رقمي في خدمة جميع المواطنين، في كل بلدية من البلاد."
-           data-en="A strong, prosperous and united Algeria. The RND works for transparent governance, a dynamic economy and digital transformation at the service of all citizens, in every municipality of the country.">Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays.</p>
+           data-en="A strong, prosperous and united Algeria. The RND works for transparent governance, a dynamic economy and digital transformation at the service of all citizens, in every communality of the country.">Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays.</p>
       </div>
     </div>
     <div class="about-text animate-on-scroll anim-right">
       <h3 data-fr="Engagement pour Ain El Turk" data-ar="التزامنا بعين الترك" data-en="Commitment to Ain El Turk">Engagement pour Ain El Turk</h3>
-      <p data-fr="En tant que Secretaire General du Bureau Communal du RND a Ain El Turk, je m'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain."
-         data-ar="بصفتي الأمين العام لمكتب التجمع الوطني الديمقراطي بعين الترك، أتعهد شخصيا بنقل أصوات مواطنينا وتحويل تطلعاتنا إلى أعمال ملموسة على أرض الواقع."
-         data-en="As General Secretary of the RND Communal Bureau in Ain El Turk, I personally commit to carrying the voices of our fellow citizens and transforming our aspirations into concrete actions on the ground.">En tant que Secretaire General du Bureau Communal du RND a Ain El Turk, je m'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain.</p>
+      <p data-fr="En tant que Secretaire du Bureau Communal du RND a Ain El Turk, je m'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain."
+         data-ar="بصفتي الأمين لمكتب التجمع الوطني الديمقراطي بعين الترك، أتعهد شخصيا بنقل أصوات مواطنينا وتحويل تطلعاتنا إلى أعمال ملموسة على أرض الواقع."
+         data-en="As Secretary of the RND Communal Bureau in Ain El Turk, I personally commit to carrying the voices of our fellow citizens and transforming our aspirations into concrete actions on the ground.">En tant que Secretaire du Bureau Communal du RND a Ain El Turk, je m'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain.</p>
       <p data-fr="Notre approche repose sur l'ecoute, la proximite et la transparence. Chaque projet, chaque decision sera prise avec et pour vous."
          data-ar="نهجنا يعتمد على الاستماع والقرب والشفافية. كل مشروع، كل قرار سيتخذ معكم ومن أجلكم."
          data-en="Our approach is based on listening, proximity and transparency. Every project, every decision will be made with and for you.">Notre approche repose sur l'ecoute, la proximite et la transparence. Chaque projet, chaque decision sera prise avec et pour vous.</p>
@@ -726,11 +854,13 @@
 </section>
 
 <!-- PARALLAX IMAGE 2 -->
-<section class="parallax-section" style="background-image: url('1000011155.jpg');">
+<section class="parallax-section" style="background-image: url('assets/images/1000011155.jpg');" id="parallax2">
   <div class="parallax-overlay"></div>
   <div class="parallax-content">
-    <h2 data-fr="Une Vision pour l'Avenir" data-ar="رؤية للمستقبل" data-en="A Vision for the Future">Une Vision pour l'Avenir</h2>
-    <p data-fr="Transformation, progrès et développement durable" data-ar="التحول والتقدم والتنمية المستدامة" data-en="Transformation, progress and sustainable development">Transformation, progrès et développement durable</p>
+    <div class="parallax-label" data-fr="VISION" data-ar="الرؤية" data-en="VISION">VISION</div>
+    <h2 data-fr="CRÉER LA RICHESSE, AMÉLIORER LE CADRE DE VIE" data-ar="إنشاء الثروة، تحسين جودة الحياة" data-en="CREATE WEALTH, IMPROVE QUALITY OF LIFE">CRÉER LA RICHESSE, AMÉLIORER LE CADRE DE VIE</h2>
+    <div class="parallax-line"></div>
+    <p data-fr="Des projets réalistes, réalisables et financièrement responsables" data-ar="مشاريع واقعية وقابلة للتحقيق ومالياً مسؤولة" data-en="Realistic, achievable and financially responsible projects">Des projets réalistes, réalisables et financièrement responsables</p>
   </div>
 </section>
 
@@ -738,7 +868,7 @@
 <section class="program" id="programme">
   <div class="section-header animate-on-scroll anim-up">
     <div class="section-tag" data-fr="Notre Programme" data-ar="برنامجنا" data-en="Our Program">Notre Programme</div>
-    <h2 data-fr="Programme Municipal de Nabil Zenasni" data-ar="البرنامج البلدي لنبيل زناسني" data-en="Municipal Program of Nabil Zenasni">Programme Municipal de Nabil Zenasni</h2>
+    <h2 data-fr="Programme Communal de Nabil Zenasni" data-ar="البرنامج البلدي لنبيل زناسني" data-en="Communal Program of Nabil Zenasni">Programme Communal de Nabil Zenasni</h2>
     <p style="font-style:italic; color:var(--accent-cyan); font-weight:600; margin-top:10px;"
        data-fr="« Ensemble pour une nouvelle dynamique à Aïn El Turck »"
        data-ar="« معاً من أجل ديناميكية جديدة في عين الترك »"
@@ -755,7 +885,7 @@
     <p style="font-size:1.15rem; line-height:1.8; font-style:italic; color:rgba(255,255,255,0.9);"
        data-fr="« Chaque dinar investi par la commune doit produire davantage de valeur pour les citoyens, créer de l'emploi, renforcer l'économie locale ou améliorer durablement leur qualité de vie. »"
        data-ar="« كل دينار تستثمره البلدية يجب أن يُنتج قيمة أكبر للمواطنين، ويخلق فرص عمل، ويعزز الاقتصاد المحلي أو يُحسّن بشكل دائم جودة حياتهم. »"
-       data-en="« Every dinar invested by the municipality must produce more value for citizens, create jobs, strengthen the local economy or sustainably improve their quality of life. »">
+       data-en="« Every dinar invested by the communality must produce more value for citizens, create jobs, strengthen the local economy or sustainably improve their quality of life. »">
       « Chaque dinar investi par la commune doit produire davantage de valeur pour les citoyens, créer de l'emploi, renforcer l'économie locale ou améliorer durablement leur qualité de vie. »
     </p>
   </div>
@@ -771,7 +901,7 @@
       <p style="color:rgba(255,255,255,0.7); line-height:1.8; margin-bottom:20px;"
          data-fr="Notre engagement est clair : nous ne repartirons pas de zéro. Tous les projets, équipements, infrastructures et services déjà réalisés ou engagés par la commune seront évalués avec objectivité. Lorsqu'ils répondent aux besoins des citoyens, nous nous engageons à les renforcer, les moderniser, les entretenir et les développer plutôt qu'à les abandonner."
          data-ar="التزامنا واضح: لن نبدأ من الصفر. سيتم تقييم جميع المشاريع والمعدات والبنى التحتية والخدمات التي تم إنجازها أو التي باشرتها البلدية بموضوعية. عندما تلبي حاجات المواطنين، نتعهد بتعزيزها وتحديثها وصيانتها وتطويرها بدلاً من التخلي عنها."
-         data-en="Our commitment is clear: we will not start from scratch. All projects, equipment, infrastructure and services already completed or undertaken by the municipality will be evaluated objectively. When they meet the needs of citizens, we commit to strengthening, modernizing, maintaining and developing them rather than abandoning them.">Notre engagement est clair : nous ne repartirons pas de zéro. Tous les projets, équipements, infrastructures et services déjà réalisés ou engagés par la commune seront évalués avec objectivité. Lorsqu'ils répondent aux besoins des citoyens, nous nous engageons à les renforcer, les moderniser, les entretenir et les développer plutôt qu'à les abandonner.</p>
+         data-en="Our commitment is clear: we will not start from scratch. All projects, equipment, infrastructure and services already completed or undertaken by the communality will be evaluated objectively. When they meet the needs of citizens, we commit to strengthening, modernizing, maintaining and developing them rather than abandoning them.">Notre engagement est clair : nous ne repartirons pas de zéro. Tous les projets, équipements, infrastructures et services déjà réalisés ou engagés par la commune seront évalués avec objectivité. Lorsqu'ils répondent aux besoins des citoyens, nous nous engageons à les renforcer, les moderniser, les entretenir et les développer plutôt qu'à les abandonner.</p>
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
          data-fr="Notre priorité est de :"
          data-ar="أولويتنا هي:"
@@ -803,7 +933,7 @@
           <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"
              data-fr="assurer un entretien régulier des infrastructures communales pour éviter leur dégradation et les dépenses répétitives de reconstruction ;"
              data-ar="ضمان صيانة دورية للبنى التحتية البلدية لتجنب تدهورها والنفقات المتكررة لإعادة البناء؛"
-             data-en="ensure regular maintenance of municipal infrastructure to avoid their degradation and repeated reconstruction expenses;">assurer un entretien régulier des infrastructures communales pour éviter leur dégradation et les dépenses répétitives de reconstruction ;</p>
+             data-en="ensure regular maintenance of communal infrastructure to avoid their degradation and repeated reconstruction expenses;">assurer un entretien régulier des infrastructures communales pour éviter leur dégradation et les dépenses répétitives de reconstruction ;</p>
         </div>
         <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
           <div style="font-size:1.3rem; margin-bottom:8px;">🛠️</div>
@@ -837,7 +967,7 @@
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
          data-fr="Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse."
          data-ar="أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة."
-         data-en="Our priority is to transform Ain El Turck into a wealth-creating municipality.">Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse.</p>
+         data-en="Our priority is to transform Ain El Turck into a wealth-creating communality.">Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse.</p>
       <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
          data-fr="Nous proposons :"
          data-ar="نقترح:"
@@ -912,7 +1042,15 @@
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
           <span style="color:var(--gold); font-weight:700;">🌊</span><span data-fr="🌊 Une meilleure gestion des flux routiers pendant la saison estivale." data-ar="🌊 إدارة أفضل لتدفقات المرور خلال الموسم الصيفي."> Une meilleure gestion des flux routiers pendant la saison estivale.</span>
         </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🌉</span><span data-fr="🌉 Bâtir 6 ponts pour la déviation depuis la route vers les Andalouses et permettre l'accès à la ville d'Aïn El Turck facilement, d'éviter les embouteillages ou encombrements." data-ar="🌉 بناء 6 جسور لتحويل المرور من الطريق نحو الأندلس وتمكين الوصول إلى مدينة عين الترك بسهولة، وتجنب الاختناقات المرورية أو الازدحام."> Bâtir 6 ponts pour la déviation depuis la route vers les Andalouses et permettre l'accès à la ville d'Aïn El Turck facilement, d'éviter les embouteillages ou encombrements.</span>
+        </div>
+
       </div>
+        <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
+          <span style="color:var(--gold); font-weight:700;">🚏</span><span data-fr="🚏 Création de stations de transport en commun près des agglomérations Trouville, Bouisseville, Bensmir, près des accès de l'autoroute et Cap Falcon, Les Dunes." data-ar="🚏 إنشاء محطات للنقل العمومي بالقرب من التجمعات السكنية تروفيل، بويسفيل، بنسمير، بالقرب من مداخل الطريق السريع وكاب فالكون، ليدون."> Création de stations de transport en commun près des agglomérations Trouville, Bouisseville, Bensmir, près des accès de l'autoroute et Cap Falcon, Les Dunes.</span>
+        </div>
+
       <span class="program-tag" data-fr="Mobilité" data-ar="التنقل" data-en="Mobility">Mobilité</span>
     </div>
     <!-- PILIER 3: TOURISME -->
@@ -930,7 +1068,7 @@
          data-en="We propose:">Nous proposons :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🏰</span><span data-fr="🏰 Des accès aux plages conçus pour durer grâce à la fabrication par l'APC de ses propres moules de murs de style ottoman." data-ar="🏰 مداخل شاطئ مصممة لتدوم بفضل تصنيع البلدية لقوالبها الخاصة من جدران على الطراز العثماني."> Des accès aux plages conçus pour durer grâce à la fabrication par l'APC de ses propres moules de murs de style ottoman.</span>
+          <span style="color:var(--gold); font-weight:700;">🏰</span><span data-fr="🏰 Des accès aux plages conçus pour durer grâce à la fabrication par l'APC de ses propres moules de murs de style architecture osmanienne." data-ar="🏰 مداخل شاطئ مصممة لتدوم بفضل تصنيع البلدية لقوالبها الخاصة من جدران على الطراز العثماني."> Des accès aux plages conçus pour durer grâce à la fabrication par l'APC de ses propres moules de murs de style architecture osmanienne.</span>
         </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
           <span style="color:var(--gold); font-weight:700;">🧱</span><span data-fr="🧱 L'utilisation de mortiers teintés plus résistants à l'humidité marine." data-ar="🧱 استخدام مونة ملونة أكثر مقاومة لرطوبة البحر."> L'utilisation de mortiers teintés plus résistants à l'humidité marine.</span>
@@ -967,14 +1105,14 @@
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
          data-fr="Nous voulons une commune plus verte, plus agréable et plus durable."
          data-ar="نريد بلدية أكثر خضرة وأكثر متعة وأكثر استدامة."
-         data-en="We want a greener, more pleasant and more sustainable municipality.">Nous voulons une commune plus verte, plus agréable et plus durable.</p>
+         data-en="We want a greener, more pleasant and more sustainable communality.">Nous voulons une commune plus verte, plus agréable et plus durable.</p>
       <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
          data-fr="Nous proposons :"
          data-ar="نقترح:"
          data-en="We propose:">Nous proposons :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🌱</span><span data-fr="🌱 La création d'une pépinière municipale." data-ar="🌱 إنشاء مشتل بلدي."> La création d'une pépinière municipale.</span>
+          <span style="color:var(--gold); font-weight:700;">🌱</span><span data-fr="🌱 La création d'une pépinière communale." data-ar="🌱 إنشاء مشتل بلدي."> La création d'une pépinière communale.</span>
         </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
           <span style="color:var(--gold); font-weight:700;">🌲</span><span data-fr="🌲 La plantation de 10 000 arbres adaptés au climat local et à croissance rapide." data-ar="🌲 زراعة 10,000 شجرة متأقلمة مع المناخ المحلي وسريعة النمو."> La plantation de 10 000 arbres adaptés au climat local et à croissance rapide.</span>
@@ -995,15 +1133,15 @@
     <div class="program-card animate-on-scroll anim-up">
       <div class="program-num">05</div>
       <span class="program-icon">📱</span>
-      <h3 data-fr="Une commune numérique et une administration moderne" data-ar="بلدية رقمية وإدارة حديثة" data-en="A Digital Municipality and Modern Administration">Une commune numérique et une administration moderne</h3>
+      <h3 data-fr="Une commune numérique et une administration moderne" data-ar="بلدية رقمية وإدارة حديثة" data-en="A Digital Communality and Modern Administration">Une commune numérique et une administration moderne</h3>
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
          data-fr="Le citoyen doit pouvoir communiquer facilement avec sa commune."
          data-ar="يجب أن يتمكن المواطن من التواصل بسهولة مع بلديته."
-         data-en="The citizen must be able to communicate easily with their municipality.">Le citoyen doit pouvoir communiquer facilement avec sa commune.</p>
+         data-en="The citizen must be able to communicate easily with their communality.">Le citoyen doit pouvoir communiquer facilement avec sa commune.</p>
       <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
-         data-fr="Nous créerons une application municipale permettant :"
+         data-fr="Nous créerons une application communale permettant :"
          data-ar="سننشئ تطبيقاً بلدياً يسمح بـ:"
-         data-en="We will create a municipal application allowing:">Nous créerons une application municipale permettant :</p>
+         data-en="We will create a communal application allowing:">Nous créerons une application communale permettant :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
           <span style="color:var(--gold); font-weight:700;">📍</span><span data-fr="📍 de signaler les problèmes avec géolocalisation ;" data-ar="📍 الإبلاغ عن المشاكل مع تحديد الموقع الجغرافي؛"> de signaler les problèmes avec géolocalisation ;</span>
@@ -1077,16 +1215,16 @@
           <span style="color:var(--gold); font-weight:700;">🗣️</span><span data-fr="🗣️ organiser des rencontres citoyennes mensuelles ouvertes à tous ;" data-ar="🗣️ تنظيم لقاءات شهرية مفتوحة للمواطنين؛"> organiser des rencontres citoyennes mensuelles ouvertes à tous ;</span>
         </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">💡</span><span data-fr="💡 recueillir les propositions des citoyens via l'application municipale ;" data-ar="💡 جمع مقترحات المواطنين عبر التطبيق البلدي؛"> recueillir les propositions des citoyens via l'application municipale ;</span>
+          <span style="color:var(--gold); font-weight:700;">💡</span><span data-fr="💡 recueillir les propositions des citoyens via l'application communale ;" data-ar="💡 جمع مقترحات المواطنين عبر التطبيق البلدي؛"> recueillir les propositions des citoyens via l'application communale ;</span>
         </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
           <span style="color:var(--gold); font-weight:700;">🤝</span><span data-fr="🤝 associer les habitants aux décisions concernant leur commune." data-ar="🤝 إشراك السكان في القرارات المتعلقة ببلديتهم."> associer les habitants aux décisions concernant leur commune.</span>
         </div>
       </div>
       <p style="margin-top:15px; font-weight:600; color:var(--gold);"
-         data-fr="Notre objectif est de construire une municipalité ouverte, à l'écoute et proche des citoyens."
+         data-fr="Notre objectif est de construire une communalité ouverte, à l'écoute et proche des citoyens."
          data-ar="هدفنا هو بناء بلدية منفتحة، مستمعة وقريبة من المواطنين."
-         data-en="Our objective is to build an open, listening and close-to-citizens municipality.">Notre objectif est de construire une municipalité ouverte, à l'écoute et proche des citoyens.</p>
+         data-en="Our objective is to build an open, listening and close-to-citizens communality.">Notre objectif est de construire une communalité ouverte, à l'écoute et proche des citoyens.</p>
       <span class="program-tag" data-fr="Gouvernance" data-ar="الحوكمة" data-en="Governance">Gouvernance</span>
     </div>
   </div>
@@ -1110,11 +1248,11 @@
       <p style="font-size:1.05rem; line-height:1.9; color:rgba(255,255,255,0.85); max-width:800px; margin:0 auto 25px;"
          data-fr="Nous voulons créer une économie locale forte, développer le commerce, soutenir le tourisme, améliorer les services publics, protéger notre environnement et faire d'Aïn El Turck une commune moderne, dynamique et exemplaire."
          data-ar="نريد إنشاء اقتصاد محلي قوي، وتطوير التجارة، ودعم السياحة، وتحسين الخدمات العامة، وحماية بيئتنا، وجعل عين الترك بلدية حديثة وديناميكية ومثالية."
-         data-en="We want to create a strong local economy, develop commerce, support tourism, improve public services, protect our environment and make Ain El Turck a modern, dynamic and exemplary municipality.">Nous voulons créer une économie locale forte, développer le commerce, soutenir le tourisme, améliorer les services publics, protéger notre environnement et faire d'Aïn El Turck une commune moderne, dynamique et exemplaire.</p>
+         data-en="We want to create a strong local economy, develop commerce, support tourism, improve public services, protect our environment and make Ain El Turck a modern, dynamic and exemplary communality.">Nous voulons créer une économie locale forte, développer le commerce, soutenir le tourisme, améliorer les services publics, protéger notre environnement et faire d'Aïn El Turck une commune moderne, dynamique et exemplaire.</p>
       <p style="font-size:1.2rem; font-weight:700; color:var(--accent-cyan); font-style:italic;"
          data-fr="Ensemble, faisons d'Aïn El Turck une commune où il fait bon vivre, investir, travailler et accueillir les visiteurs."
          data-ar="معا، لنجعل عين الترك بلدية يحسن العيش فيها والاستثمار والعمل واستقبال الزوار."
-         data-en="Together, let us make Ain El Turck a municipality where it is good to live, invest, work and welcome visitors.">Ensemble, faisons d'Aïn El Turck une commune où il fait bon vivre, investir, travailler et accueillir les visiteurs.</p>
+         data-en="Together, let us make Ain El Turck a communality where it is good to live, invest, work and welcome visitors.">Ensemble, faisons d'Aïn El Turck une commune où il fait bon vivre, investir, travailler et accueillir les visiteurs.</p>
       <div style="margin-top:30px; display:flex; justify-content:center; gap:10px;">
         <span style="width:40px; height:4px; background:var(--rnd-blue); border-radius:2px;"></span>
         <span style="width:40px; height:4px; background:var(--rnd-green); border-radius:2px;"></span>
@@ -1123,75 +1261,14 @@
     </div>
   </div>
 </section>
-<!-- TIMELINE -->
-<section class="timeline" id="engagement">
-  <div class="section-header animate-on-scroll anim-up">
-    <div class="section-tag" data-fr="Notre Parcours" data-ar="مسارنا" data-en="Our Journey">Notre Parcours</div>
-    <h2 data-fr="Un Engagement Continu" data-ar="التزام مستمر" data-en="A Continuous Commitment">Un Engagement Continu</h2>
-    <p data-fr="Des actions concretes et un parcours politique au service de la commune d'Ain El Turk."
-       data-ar="أعمال ملموسة ومسار سياسي في خدمة بلدية عين الترك."
-       data-en="Concrete actions and a political journey at the service of the Ain El Turk municipality.">Des actions concretes et un parcours politique au service de la commune d'Ain El Turk.</p>
-  </div>
-  <div class="timeline-container">
-    <div class="timeline-item animate-on-scroll anim-left">
-      <div class="timeline-dot"></div>
-      <div class="timeline-date">2018</div>
-      <div class="timeline-content">
-        <h4 data-fr="Adhesion au RND" data-ar="الانضمام إلى التجمع" data-en="Joining the RND">Adhesion au RND</h4>
-        <p data-fr="Engagement militant au sein du Rassemblement National Democratique, porte par les valeurs de progres et de developpement."
-           data-ar="انخراط ناشط داخل التجمع الوطني الديمقراطي، محمولاً بقيم التقدم والتنمية."
-           data-en="Militant commitment within the National Democratic Rally, carried by the values of progress and development.">Engagement militant au sein du Rassemblement National Democratique, porte par les valeurs de progres et de developpement.</p>
-      </div>
-    </div>
-    <div class="timeline-item animate-on-scroll anim-right">
-      <div class="timeline-dot"></div>
-      <div class="timeline-date">2020</div>
-      <div class="timeline-content">
-        <h4 data-fr="Responsable Jeunesse" data-ar="مسؤول الشباب" data-en="Youth Leader">Responsable Jeunesse</h4>
-        <p data-fr="Prise de responsabilite au sein de l'organisation des jeunes du RND a Ain El Turk, avec des actions de proximite et d'ecoute."
-           data-ar="تولي المسؤولية داخل منظمة شباب التجمع بعين الترك، مع أعمال القرب والاستماع."
-           data-en="Taking responsibility within the RND youth organization in Ain El Turk, with proximity and listening actions.">Prise de responsabilite au sein de l'organisation des jeunes du RND a Ain El Turk, avec des actions de proximite et d'ecoute.</p>
-      </div>
-    </div>
-    <div class="timeline-item animate-on-scroll anim-left">
-      <div class="timeline-dot"></div>
-      <div class="timeline-date">2023</div>
-      <div class="timeline-content">
-        <h4 data-fr="Membre du Bureau" data-ar="عضو المكتب" data-en="Bureau Member">Membre du Bureau</h4>
-        <p data-fr="Integration au bureau communal du RND, participation active a l'elaboration des strategies locales et aux actions de terrain."
-           data-ar="الاندماج في المكتب البلدي للتجمع، مشاركة فعّالة في وضع الاستراتيجيات المحلية والأعمال الميدانية."
-           data-en="Integration into the RND communal bureau, active participation in developing local strategies and field actions.">Integration au bureau communal du RND, participation active a l'elaboration des strategies locales et aux actions de terrain.</p>
-      </div>
-    </div>
-    <div class="timeline-item animate-on-scroll anim-right">
-      <div class="timeline-dot"></div>
-      <div class="timeline-date">2025</div>
-      <div class="timeline-content">
-        <h4 data-fr="Secretaire General" data-ar="الأمين العام" data-en="General Secretary">Secretaire General</h4>
-        <p data-fr="Election comme Secretaire General du Bureau Communal du RND d'Ain El Turk, avec la mission de porter la voix des citoyens."
-           data-ar="انتخاب كأمين عام للمكتب البلدي للتجمع بعين الترك، مع مهمة نقل صوت المواطنين."
-           data-en="Elected as General Secretary of the RND Communal Bureau of Ain El Turk, with the mission of carrying the voice of citizens.">Election comme Secretaire General du Bureau Communal du RND d'Ain El Turk, avec la mission de porter la voix des citoyens.</p>
-      </div>
-    </div>
-    <div class="timeline-item animate-on-scroll anim-left">
-      <div class="timeline-dot"></div>
-      <div class="timeline-date">2026</div>
-      <div class="timeline-content">
-        <h4 data-fr="Candidature Communale" data-ar="الترشح البلدي" data-en="Municipal Candidacy">Candidature Communale</h4>
-        <p data-fr="Candidature aux elections communales avec un programme ambitieux pour transformer Ain El Turk et ameliorer le quotidien de tous."
-           data-ar="الترشح للانتخابات البلدية ببرنامج طموح لتحويل عين الترك وتحسين حياة الجميع."
-           data-en="Candidacy in municipal elections with an ambitious program to transform Ain El Turk and improve everyone's daily life.">Candidature aux elections communales avec un programme ambitieux pour transformer Ain El Turk et ameliorer le quotidien de tous.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- PARALLAX IMAGE 3 -->
-<section class="parallax-section" style="background-image: url('1000011156.jpg');">
+<section class="parallax-section" style="background-image: url('assets/images/1000011156.jpg');" id="parallax3">
   <div class="parallax-overlay"></div>
   <div class="parallax-content">
-    <h2 data-fr="Rejoignez le Mouvement" data-ar="انضم إلى الحركة" data-en="Join the Movement">Rejoignez le Mouvement</h2>
-    <p data-fr="Votre voix compte. Votre engagement fait la différence." data-ar="صوتك مهم. التزامك يحدث الفرق." data-en="Your voice matters. Your commitment makes the difference.">Votre voix compte. Votre engagement fait la différence.</p>
+    <div class="parallax-label" data-fr="ENGAGEMENT" data-ar="الالتزام" data-en="COMMITMENT">ENGAGEMENT</div>
+    <h2 data-fr="FAISONS D'AÏN EL TURCK UNE COMMUNE EXEMPLAIRE" data-ar="لنجعل عين الترك بلدية مثالية" data-en="LET'S MAKE AIN EL TURCK AN EXEMPLARY MUNICIPALITY">FAISONS D'AÏN EL TURCK UNE COMMUNE EXEMPLAIRE</h2>
+    <div class="parallax-line"></div>
+    <p data-fr="Où il fait bon vivre, investir, travailler et accueillir les visiteurs" data-ar="حيث يحسن العيش والاستثمار والعمل واستقبال الزوار" data-en="Where it is good to live, invest, work and welcome visitors">Où il fait bon vivre, investir, travailler et accueillir les visiteurs</p>
   </div>
 </section>
 
@@ -1202,7 +1279,7 @@
     <h2 data-fr="Devenez Adherent au RND" data-ar="كن عضواً في التجمع" data-en="Become an RND Member">Devenez Adherent au RND</h2>
     <p data-fr="Rejoignez-nous et participez activement a la construction de l'avenir de notre commune. Ensemble, nous sommes plus forts."
        data-ar="انضم إلينا وشارك بنشاط في بناء مستقبل بلديتنا. معاً، نحن أقوى."
-       data-en="Join us and actively participate in building the future of our municipality. Together, we are stronger.">Rejoignez-nous et participez activement a la construction de l'avenir de notre commune. Ensemble, nous sommes plus forts.</p>
+       data-en="Join us and actively participate in building the future of our communality. Together, we are stronger.">Rejoignez-nous et participez activement a la construction de l'avenir de notre commune. Ensemble, nous sommes plus forts.</p>
   </div>
   <div class="join-container">
     <div class="join-form animate-on-scroll anim-scale" id="joinFormContainer">
@@ -1272,9 +1349,9 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <h3>Zenasni Nabil - RND</h3>
-      <p data-fr="Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens."
-         data-ar="الأمين العام لمكتب التجمع الوطني الديمقراطي بعين الترك، وهران. ملتزم بالتنمية المحلية ورفاهية جميع المواطنين."
-         data-en="General Secretary of the RND Communal Bureau in Ain El Turk, Oran. Committed to local development and the well-being of all citizens.">Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens.</p>
+      <p data-fr="Secretaire du Bureau Communal du RND a Ain El Turk, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens."
+         data-ar="الأمين لمكتب التجمع الوطني الديمقراطي بعين الترك، وهران. ملتزم بالتنمية المحلية ورفاهية جميع المواطنين."
+         data-en="Secretary of the RND Communal Bureau in Ain El Turk, Oran. Committed to local development and the well-being of all citizens.">Secretaire du Bureau Communal du RND a Ain El Turk, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens.</p>
       <div class="footer-social">
         <a href="#" title="Facebook">FB</a>
         <a href="#" title="Twitter">TW</a>
@@ -1417,7 +1494,7 @@
     en: [
       "A better future for Ain El Turk",
       "Transparency, Proximity, Progress",
-      "Together, let's build our municipality",
+      "Together, let's build our communality",
       "RND, the force of local change"
     ]
   };
@@ -1507,6 +1584,44 @@
     // Save preference
     localStorage.setItem('lang', lang);
   }
+
+  
+  // ===== AUDIO PLAYER =====
+  let audioPlaying = false;
+  const audio = document.getElementById('nabilAudio');
+  const audioBtn = document.getElementById('audioPlayBtn');
+  const audioIcon = document.getElementById('audioIcon');
+  const visualizer = document.getElementById('audioVisualizer');
+
+  function toggleAudio() {
+    if (!audio) return;
+    if (audioPlaying) {
+      audio.pause();
+      audioPlaying = false;
+      audioBtn.classList.remove('playing');
+      visualizer.classList.remove('playing');
+      audioIcon.textContent = '▶';
+    } else {
+      audio.play().then(() => {
+        audioPlaying = true;
+        audioBtn.classList.add('playing');
+        visualizer.classList.add('playing');
+        audioIcon.textContent = '⏸';
+      }).catch(e => {
+        console.log('Audio play failed:', e);
+      });
+    }
+  }
+
+  if (audio) {
+    audio.addEventListener('ended', () => {
+      audioPlaying = false;
+      audioBtn.classList.remove('playing');
+      visualizer.classList.remove('playing');
+      audioIcon.textContent = '▶';
+    });
+  }
+
 
   // Load saved language preference
   const savedLang = localStorage.getItem('lang');

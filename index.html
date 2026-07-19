@@ -6,7 +6,8 @@
 <title>Zenasni Nabil — RND Ain El Turk | Elections Communales 2026</title>
 <meta name="description" content="Site officiel de campagne de Zenasni Nabil, Secretaire General du Bureau Communal du RND a Ain El Turk, Oran. Elections Communales 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Al+Jazeera+Arabic:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --rnd-blue: #0047AB; --rnd-green: #00A651; --rnd-red: #C8102E;
@@ -14,10 +15,21 @@
     --accent-cyan: #00d4ff; --accent-pink: #ff006e; --gold: #d4af37;
     --text-light: #ffffff; --text-dark: #1a1a2e;
     --glass: rgba(255,255,255,0.08); --glass-border: rgba(255,255,255,0.15);
+  /* Arabic font override */
+  [lang="ar"] body, [lang="ar"] h1, [lang="ar"] h2, [lang="ar"] h3, [lang="ar"] h4, [lang="ar"] p, [lang="ar"] span, [lang="ar"] a, [lang="ar"] button, [lang="ar"] input, [lang="ar"] textarea, [lang="ar"] select, [lang="ar"] label, [lang="ar"] div {
+    font-family: 'Noto Sans Arabic', 'Al Jazeera Arabic', sans-serif !important;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  [dir="rtl"] body, [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] p, [dir="rtl"] span, [dir="rtl"] a, [dir="rtl"] button, [dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select, [dir="rtl"] label, [dir="rtl"] div {
+    font-family: 'Noto Sans Arabic', 'Al Jazeera Arabic', sans-serif !important;
+  }
+
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }  * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  html { -webkit-text-size-adjust: 100%; }
+  img { max-width: 100%; height: auto; display: block; }
+
   html { scroll-behavior: smooth; }
-  body { font-family: 'Montserrat', sans-serif; background: var(--rnd-dark); color: var(--text-light); overflow-x: hidden; }
+  body { font-family: 'Roboto', 'Noto Sans Arabic', sans-serif; background: var(--rnd-dark); color: var(--text-light); overflow-x: hidden; }
 
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-80px); } to { opacity: 1; transform: translateX(0); } }
@@ -36,8 +48,10 @@
   .anim-right { transform: translateX(80px); } .anim-right.visible { transform: translateX(0); }
   .anim-scale { transform: scale(0.8); } .anim-scale.visible { transform: scale(1); }
 
-  .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,22,40,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); transition: all 0.4s ease; }
+  .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,22,40,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); transition: all 0.4s ease; gap: 15px; }
   .navbar.scrolled { padding: 10px 40px; background: rgba(10,22,40,0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
+  .navbar .nav-logo { flex-shrink: 0; }
+  .navbar .lang-switcher { flex-shrink: 0; margin-left: auto; }
   .nav-logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; }
   .nav-logo .flag-alg { width: 32px; height: 24px; background: linear-gradient(180deg,#006233 50%,#fff 50%); border-radius: 3px; position: relative; overflow: hidden; }
   .nav-logo .flag-alg::after { content: '\262A'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #d21034; font-size: 14px; }
@@ -57,7 +71,7 @@
   .particle { position: absolute; width: 4px; height: 4px; background: var(--accent-cyan); border-radius: 50%; opacity: 0.6; animation: float 6s ease-in-out infinite; }
   .hero-content { position: relative; z-index: 2; max-width: 1200px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
   .hero-text h3 { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: var(--accent-cyan); margin-bottom: 20px; animation: fadeInLeft 0.8s ease forwards; }
-  .hero-text h1 { font-family: 'Playfair Display',serif; font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; animation: fadeInUp 1s ease 0.2s forwards; opacity: 0; }
+  .hero-text h1 { font-family: 'Roboto', sans-serif; font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; animation: fadeInUp 1s ease 0.2s forwards; opacity: 0; }
   .hero-text h1 .highlight { background: linear-gradient(90deg,var(--accent-cyan),var(--accent-pink),var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; background-size: 200% auto; animation: shimmer 3s linear infinite; }
   .hero-text .typewriter-container { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 30px; min-height: 28px; }
   .hero-text .typewriter-text { display: inline; overflow: hidden; white-space: nowrap; border-right: 2px solid var(--accent-cyan); animation: typewriter 3s steps(40) 1s forwards, blink-caret 0.75s step-end infinite; width: 0; }
@@ -69,11 +83,11 @@
   .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 14px 34px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: all 0.4s ease; }
   .btn-secondary:hover { border-color: var(--accent-cyan); background: rgba(0,212,255,0.1); transform: translateY(-3px); }
 
-  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; animation: fadeInRight 1.2s ease 0.4s forwards; opacity: 0; }
-  .hero-visual .ring-outer { position: absolute; width: 420px; height: 420px; border: 2px solid rgba(0,212,255,0.2); border-radius: 50%; animation: rotate-slow 30s linear infinite; }
-  .hero-visual .ring-inner { position: absolute; width: 360px; height: 360px; border: 2px dashed rgba(255,0,110,0.3); border-radius: 50%; animation: rotate-slow 20s linear infinite reverse; }
-  .hero-visual .ring-dots { position: absolute; width: 480px; height: 480px; border-radius: 50%; border: 1px dotted rgba(255,255,255,0.1); animation: rotate-slow 40s linear infinite; }
-  .hero-visual .candidate-card { position: relative; width: 320px; height: 400px; background: linear-gradient(145deg,rgba(0,71,171,0.2),rgba(0,166,81,0.15)); border-radius: 24px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); animation: float 6s ease-in-out infinite; }
+  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; animation: fadeInRight 1.2s ease 0.4s forwards; opacity: 0; width: 100%; max-width: 400px; margin: 0 auto; }
+  .hero-visual .ring-outer { position: absolute; width: min(420px, 90vw); height: min(420px, 90vw); border: 2px solid rgba(0,212,255,0.2); border-radius: 50%; animation: rotate-slow 30s linear infinite; }
+  .hero-visual .ring-inner { position: absolute; width: min(360px, 75vw); height: min(360px, 75vw); border: 2px dashed rgba(255,0,110,0.3); border-radius: 50%; animation: rotate-slow 20s linear infinite reverse; }
+  .hero-visual .ring-dots { position: absolute; width: min(480px, 100vw); height: min(480px, 100vw); border-radius: 50%; border: 1px dotted rgba(255,255,255,0.1); animation: rotate-slow 40s linear infinite; }
+  .hero-visual .candidate-card { position: relative; width: min(320px, 80vw); height: min(400px, 100vw); background: linear-gradient(145deg,rgba(0,71,171,0.2),rgba(0,166,81,0.15)); border-radius: 24px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); animation: float 6s ease-in-out infinite; }
   .candidate-card .avatar { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg,var(--rnd-blue),var(--rnd-green)); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 900; color: #fff; margin-bottom: 20px; border: 4px solid rgba(255,255,255,0.2); box-shadow: 0 10px 40px rgba(0,71,171,0.4); }
   .candidate-card h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; text-align: center; }
   .candidate-card .role { font-size: 0.8rem; color: var(--accent-cyan); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; text-align: center; }
@@ -87,6 +101,9 @@
 
   .stats-bar { background: linear-gradient(135deg,rgba(0,71,171,0.3),rgba(0,166,81,0.2)); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 50px 40px; }
   .stats-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 30px; }
+  @media (max-width: 1024px) { .stats-container { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 768px) { .stats-container { grid-template-columns: repeat(2,1fr); gap: 15px; } .stats-bar { padding: 30px 20px; } }
+  @media (max-width: 480px) { .stats-container { grid-template-columns: 1fr; } }
   .stat-item { text-align: center; padding: 20px; border-radius: 16px; background: var(--glass); border: 1px solid var(--glass-border); transition: all 0.4s ease; }
   .stat-item:hover { transform: translateY(-5px); background: rgba(255,255,255,0.12); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
   .stat-item .stat-icon { font-size: 2rem; margin-bottom: 12px; }
@@ -96,7 +113,7 @@
   section { padding: 100px 40px; position: relative; }
   .section-header { text-align: center; max-width: 700px; margin: 0 auto 60px; }
   .section-header .section-tag { display: inline-block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: var(--accent-cyan); margin-bottom: 16px; padding: 6px 20px; border: 1px solid rgba(0,212,255,0.3); border-radius: 50px; }
-  .section-header h2 { font-family: 'Playfair Display',serif; font-size: clamp(2rem,4vw,3rem); font-weight: 900; margin-bottom: 16px; line-height: 1.2; }
+  .section-header h2 { font-family: 'Roboto', sans-serif; font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2rem,4vw,3rem); font-weight: 900; margin-bottom: 16px; line-height: 1.2; }
   .section-header p { font-size: 1.05rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
 
   .about { background: linear-gradient(180deg,var(--rnd-dark),#0d1f3a); }
@@ -104,9 +121,9 @@
   .about-visual { position: relative; }
   .about-visual .about-card { background: linear-gradient(145deg,rgba(0,71,171,0.15),rgba(0,166,81,0.1)); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
   .about-visual .about-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle,rgba(0,212,255,0.05) 0%,transparent 60%); animation: rotate-slow 20s linear infinite; }
-  .about-visual .about-card h3 { font-family: 'Playfair Display',serif; font-size: 1.8rem; margin-bottom: 20px; position: relative; z-index: 1; }
+  .about-visual .about-card h3 { font-family: 'Roboto', sans-serif; font-weight: 900; letter-spacing: -0.02em; font-size: 1.8rem; margin-bottom: 20px; position: relative; z-index: 1; }
   .about-visual .about-card p { color: rgba(255,255,255,0.7); line-height: 1.8; position: relative; z-index: 1; }
-  .about-visual .about-card .quote-mark { font-size: 6rem; color: rgba(0,212,255,0.1); position: absolute; top: 10px; left: 20px; font-family: 'Playfair Display',serif; line-height: 1; }
+  .about-visual .about-card .quote-mark { font-size: 6rem; color: rgba(0,212,255,0.1); position: absolute; top: 10px; left: 20px; font-family: 'Roboto', sans-serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1; }
   .about-text h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--accent-cyan); }
   .about-text p { color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 20px; font-size: 1rem; }
   .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 30px; }
@@ -117,7 +134,7 @@
   .about-feature span { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
 
   .program { background: linear-gradient(180deg,#0d1f3a,var(--rnd-dark)); }
-  .program-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .program-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 24px; }
   .program-card { background: linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02)); border: 1px solid var(--glass-border); border-radius: 20px; padding: 35px 30px; transition: all 0.5s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden; cursor: pointer; }
   .program-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--accent-cyan),var(--accent-pink)); transform: scaleX(0); transform-origin: left; transition: transform 0.5s ease; }
   .program-card:hover::before { transform: scaleX(1); } .program-card:hover { transform: translateY(-10px); background: linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03)); box-shadow: 0 20px 50px rgba(0,0,0,0.4); border-color: rgba(0,212,255,0.3); }
@@ -179,10 +196,158 @@
   .rnd-colors .c-blue { background: var(--rnd-blue); } .rnd-colors .c-green { background: var(--rnd-green); } .rnd-colors .c-red { background: var(--rnd-red); }
 
   @media (max-width: 1024px) {
-    .hero-content { grid-template-columns: 1fr; text-align: center; } .hero-visual { order: -1; } .about-grid { grid-template-columns: 1fr; } .program-grid { grid-template-columns: repeat(2,1fr); } .stats-container { grid-template-columns: repeat(2,1fr); } .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero-content { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+    .hero-visual { order: -1; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .program-grid { grid-template-columns: 1fr; }
+    .stats-container { grid-template-columns: repeat(2,1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .timeline-container::before { left: 30px; }
+    .timeline-item { gap: 30px; }
+    .parallax-section { min-height: 400px; }
   }
   @media (max-width: 768px) {
-    .navbar { padding: 12px 20px; } .nav-links { display: none; } .mobile-menu-btn { display: flex; } .hero { padding: 100px 20px 40px; } .hero-text h1 { font-size: 2.2rem; } .hero-btns { justify-content: center; } .hero-visual .candidate-card { width: 280px; height: 360px; } .hero-visual .ring-outer { width: 340px; height: 340px; } .hero-visual .ring-inner { width: 290px; height: 290px; } section { padding: 60px 20px; } .program-grid { grid-template-columns: 1fr; } .stats-container { grid-template-columns: 1fr; } .about-features { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .timeline-container::before { left: 20px; } .timeline-item { grid-template-columns: 1fr; gap: 15px; padding-left: 50px; } .timeline-item:nth-child(even) .timeline-content, .timeline-item:nth-child(even) .timeline-date { grid-column: 1; text-align: left; } .timeline-dot { left: 20px; } .join-form { padding: 30px 20px; } .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; }
+    .navbar { padding: 12px 20px; }
+    .nav-links { display: none; }
+    .mobile-menu-btn { display: flex; }
+    .hero { padding: 100px 20px 40px; min-height: auto; }
+    .hero-text h1 { font-size: clamp(1.8rem, 6vw, 2.2rem); }
+    .hero-text h3 { font-size: 0.75rem; letter-spacing: 2px; }
+    .hero-text p { font-size: 0.95rem; }
+    .hero-btns { justify-content: center; flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; max-width: 300px; }
+    .hero-visual .candidate-card { width: 260px; height: 340px; }
+    .hero-visual .ring-outer { width: 300px; height: 300px; }
+    .hero-visual .ring-inner { width: 260px; height: 260px; }
+    .hero-visual .ring-dots { width: 360px; height: 360px; }
+    .hero-visual .avatar { width: 120px; height: 120px; font-size: 2.5rem; }
+    section { padding: 60px 20px; }
+    .section-header h2 { font-size: clamp(1.6rem, 5vw, 2rem); }
+    .program-grid { grid-template-columns: 1fr; }
+    .stats-container { grid-template-columns: 1fr 1fr; }
+    .stat-item .stat-number { font-size: 2rem; }
+    .about-features { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .timeline-container::before { left: 20px; }
+    .timeline-item { grid-template-columns: 1fr; gap: 15px; padding-left: 50px; }
+    .timeline-item:nth-child(even) .timeline-content, .timeline-item:nth-child(even) .timeline-date { grid-column: 1; text-align: left; }
+    [dir="rtl"] .timeline-item:nth-child(even) .timeline-content, [dir="rtl"] .timeline-item:nth-child(even) .timeline-date { text-align: right; }
+    .timeline-dot { left: 20px; }
+    .join-form { padding: 30px 20px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 15px; }
+    .lang-switcher { gap: 4px; }
+    .lang-btn { padding: 5px 10px; font-size: 0.7rem; }
+    .parallax-section { min-height: 350px; background-attachment: scroll; }
+    .parallax-content { padding: 40px 20px; }
+    .parallax-content h2 { font-size: 1.6rem; }
+    .candidate-card h2 { font-size: 1.3rem; }
+    .typewriter-container { min-height: 24px; font-size: 0.9rem; }
+  }
+  @media (max-width: 480px) {
+    .navbar { padding: 10px 15px; }
+    .nav-logo span { font-size: 0.9rem; }
+    .hero { padding: 90px 15px 30px; }
+    .hero-text h1 { font-size: 1.5rem; }
+    .hero-visual .candidate-card { width: 220px; height: 300px; padding: 20px; }
+    .hero-visual .ring-outer { width: 260px; height: 260px; }
+    .hero-visual .ring-inner { width: 220px; height: 220px; }
+    .hero-visual .ring-dots { width: 300px; height: 300px; }
+    .hero-visual .avatar { width: 100px; height: 100px; font-size: 2rem; }
+    .stats-container { grid-template-columns: 1fr; }
+    .stat-item { padding: 15px; }
+    .stat-item .stat-number { font-size: 1.8rem; }
+    section { padding: 40px 15px; }
+    .program-card { padding: 25px 20px; }
+    .program-card .program-num { font-size: 2rem; }
+    .about-card { padding: 25px; }
+    .about-card .quote-mark { font-size: 4rem; }
+    .join-form { padding: 25px 15px; }
+    .form-group input, .form-group select, .form-group textarea { padding: 12px 14px; font-size: 0.9rem; }
+    .form-submit { padding: 16px; font-size: 0.9rem; }
+    .timeline-item { padding-left: 40px; }
+    .timeline-dot { width: 16px; height: 16px; }
+    .footer-social a { width: 36px; height: 36px; }
+    .parallax-section { min-height: 280px; }
+    .parallax-content h2 { font-size: 1.3rem; }
+    .parallax-content p { font-size: 0.85rem; }
+    .scroll-indicator { display: none; }
+  }
+
+
+  /* ===== PARALLAX SECTIONS ===== */
+  .parallax-section {
+    position: relative;
+    min-height: 500px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .parallax-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,71,171,0.75), rgba(0,166,81,0.6), rgba(200,16,46,0.5));
+    backdrop-filter: blur(2px);
+  }
+  .parallax-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 60px 40px;
+    max-width: 800px;
+  }
+  .parallax-content h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    letter-spacing: -0.02em;
+  }
+  .parallax-content p {
+    font-family: 'Roboto', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    color: rgba(255,255,255,0.9);
+    font-weight: 400;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  }
+  [dir="rtl"] .parallax-content h2,
+  [dir="rtl"] .parallax-content p {
+    font-family: 'Noto Sans Arabic', 'Al Jazeera Arabic', sans-serif !important;
+  }
+
+  /* Mobile: disable fixed background for performance */
+  @media (max-width: 768px) {
+    .parallax-section {
+      background-attachment: scroll;
+      min-height: 350px;
+    }
+    .parallax-content {
+      padding: 40px 20px;
+    }
+    .parallax-content h2 {
+      font-size: 1.6rem;
+    }
+    .parallax-content p {
+      font-size: 0.95rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .parallax-section {
+      min-height: 280px;
+    }
+    .parallax-content h2 {
+      font-size: 1.3rem;
+    }
+    .parallax-content p {
+      font-size: 0.85rem;
+    }
   }
 
   .mobile-nav { position: fixed; top: 0; right: -100%; width: 80%; max-width: 320px; height: 100vh; background: rgba(10,22,40,0.98); backdrop-filter: blur(20px); z-index: 2000; padding: 80px 30px 30px; transition: right 0.4s cubic-bezier(0.16,1,0.3,1); border-left: 1px solid var(--glass-border); }
@@ -210,7 +375,7 @@
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Roboto', 'Noto Sans Arabic', sans-serif;
   }
   .lang-btn:hover, .lang-btn.active {
     border-color: var(--accent-cyan);
@@ -279,9 +444,9 @@
 <div class="mobile-nav" id="mobileNav">
   <button class="mobile-nav-close" onclick="toggleMobileMenu()">X</button>
   <div style="display:flex; gap:8px; margin-bottom:30px; justify-content:center;">
-    <button class="lang-btn active" onclick="setLang('fr')" id="mbtn-fr">FR</button>
-    <button class="lang-btn" onclick="setLang('ar')" id="mbtn-ar">AR</button>
-    <button class="lang-btn" onclick="setLang('en')" id="mbtn-en">EN</button>
+    <button class="lang-btn active" onclick="setLang('fr'); toggleMobileMenu();" id="mbtn-fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar'); toggleMobileMenu();" id="mbtn-ar">AR</button>
+    <button class="lang-btn" onclick="setLang('en'); toggleMobileMenu();" id="mbtn-en">EN</button>
   </div>
   <ul id="mobileNavLinks">
     <li><a href="#accueil" onclick="toggleMobileMenu()" data-fr="Accueil" data-ar="الرئيسية" data-en="Home">Accueil</a></li>
@@ -363,6 +528,15 @@
   </div>
 </div>
 
+<!-- PARALLAX IMAGE 1 -->
+<section class="parallax-section" style="background-image: url('1000011157.jpg');">
+  <div class="parallax-overlay"></div>
+  <div class="parallax-content">
+    <h2 data-fr="L'Engagement au Service des Citoyens" data-ar="الالتزام في خدمة المواطنين" data-en="Commitment to Serving Citizens">L'Engagement au Service des Citoyens</h2>
+    <p data-fr="Ensemble, construisons l'avenir d'Aïn El Turck" data-ar="معاً، لنبني مستقبل عين الترك" data-en="Together, let's build the future of Ain El Turck">Ensemble, construisons l'avenir d'Aïn El Turck</p>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section class="about" id="apropos">
   <div class="section-header animate-on-scroll anim-up">
@@ -424,25 +598,38 @@
   </div>
 </section>
 
+<!-- PARALLAX IMAGE 2 -->
+<section class="parallax-section" style="background-image: url('1000011155.jpg');">
+  <div class="parallax-overlay"></div>
+  <div class="parallax-content">
+    <h2 data-fr="Une Vision pour l'Avenir" data-ar="رؤية للمستقبل" data-en="A Vision for the Future">Une Vision pour l'Avenir</h2>
+    <p data-fr="Transformation, progrès et développement durable" data-ar="التحول والتقدم والتنمية المستدامة" data-en="Transformation, progress and sustainable development">Transformation, progrès et développement durable</p>
+  </div>
+</section>
+
 <!-- PROGRAM -->
 <section class="program" id="programme">
   <div class="section-header animate-on-scroll anim-up">
     <div class="section-tag" data-fr="Notre Programme" data-ar="برنامجنا" data-en="Our Program">Notre Programme</div>
     <h2 data-fr="Programme Municipal de Nabil Zenasni" data-ar="البرنامج البلدي لنبيل زناسني" data-en="Municipal Program of Nabil Zenasni">Programme Municipal de Nabil Zenasni</h2>
     <p style="font-style:italic; color:var(--accent-cyan); font-weight:600; margin-top:10px;"
-       data-fr="« Ensemble pour une nouvelle dynamique a Ain El Turck »"
+       data-fr="« Ensemble pour une nouvelle dynamique à Aïn El Turck »"
        data-ar="« معاً من أجل ديناميكية جديدة في عين الترك »"
-       data-en="« Together for a new dynamic in Ain El Turck »">« Ensemble pour une nouvelle dynamique a Ain El Turck »</p>
+       data-en="« Together for a new dynamic in Ain El Turck »">« Ensemble pour une nouvelle dynamique à Aïn El Turck »</p>
+    <p style="color:rgba(255,255,255,0.7); margin-top:15px; max-width:800px; margin-left:auto; margin-right:auto; line-height:1.8;"
+       data-fr="Notre programme est construit autour d'une idée simple : créer de la richesse, améliorer le cadre de vie et offrir des services publics modernes, avec des projets réalistes, réalisables et financièrement responsables."
+       data-ar="برنامجنا مبني على فكرة بسيطة: إنشاء الثروة، وتحسين جودة الحياة، وتقديم خدمات عامة حديثة، مع مشاريع واقعية وقابلة للتحقيق ومالياً مسؤولة."
+       data-en="Our program is built around a simple idea: create wealth, improve quality of life and offer modern public services, with realistic, achievable and financially responsible projects.">Notre programme est construit autour d'une idée simple : créer de la richesse, améliorer le cadre de vie et offrir des services publics modernes, avec des projets réalistes, réalisables et financièrement responsables.</p>
   </div>
 
   <!-- SLOGAN DIRECTEUR -->
   <div style="max-width:900px; margin:0 auto 60px; text-align:center; padding:30px 40px; background:linear-gradient(135deg, rgba(0,71,171,0.2), rgba(0,166,81,0.15)); border:1px solid var(--glass-border); border-radius:20px; backdrop-filter:blur(10px);" class="animate-on-scroll anim-up">
     <div style="font-size:2.5rem; margin-bottom:15px;">💎</div>
     <p style="font-size:1.15rem; line-height:1.8; font-style:italic; color:rgba(255,255,255,0.9);"
-       data-fr="« Chaque dinar investi par la commune doit produire davantage de valeur pour les citoyens, creer de l'emploi, renforcer l'economie locale ou ameliorer durablement leur qualite de vie. »"
+       data-fr="« Chaque dinar investi par la commune doit produire davantage de valeur pour les citoyens, créer de l'emploi, renforcer l'économie locale ou améliorer durablement leur qualité de vie. »"
        data-ar="« كل دينار تستثمره البلدية يجب أن يُنتج قيمة أكبر للمواطنين، ويخلق فرص عمل، ويعزز الاقتصاد المحلي أو يُحسّن بشكل دائم جودة حياتهم. »"
        data-en="« Every dinar invested by the municipality must produce more value for citizens, create jobs, strengthen the local economy or sustainably improve their quality of life. »">
-      « Chaque dinar investi par la commune doit produire davantage de valeur pour les citoyens, creer de l'emploi, renforcer l'economie locale ou ameliorer durablement leur qualite de vie. »
+      « Chaque dinar investi par la commune doit produire davantage de valeur pour les citoyens, créer de l'emploi, renforcer l'économie locale ou améliorer durablement leur qualité de vie. »
     </p>
   </div>
 
@@ -450,251 +637,357 @@
   <div style="max-width:1200px; margin:0 auto 60px;" class="animate-on-scroll anim-up">
     <div style="background:linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); border:1px solid var(--glass-border); border-radius:20px; padding:40px; position:relative; overflow:hidden;">
       <div style="position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--gold), var(--accent-cyan));"></div>
-      <h3 style="font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:20px; color:var(--gold);"><span data-fr="🔄 Valoriser l'existant avant de construire le nouveau" data-ar="🔄 تعزيز الموجود قبل بناء الجديد">🔄 Valoriser l'existant avant de construire le nouveau</span></h3>
-      <p style="color:rgba(255,255,255,0.7); line-height:1.8; margin-bottom:20px;"><span data-fr="Notre engagement est clair : nous ne repartirons pas de zero. Tous les projets, equipements, infrastructures et services deja realises ou engages par la commune seront evalues avec objectivite. Lorsqu'ils repondent aux besoins des citoyens, nous nous engageons a les renforcer, les moderniser, les entretenir et les developper plutot qu'a les abandonner." data-ar="التزامنا واضح: لن نبدأ من الصفر. سيتم تقييم جميع المشاريع والمعدات والبنى التحتية والخدمات التي تم إنجازها أو التي باشرتها البلدية بموضوعية. عندما تلبي حاجات المواطنين، نتعهد بتعزيزها وتحديثها وصيانتها وتطويرها بدلاً من التخلي عنها.">Notre engagement est clair : nous ne repartirons pas de zero. Tous les projets, equipements, infrastructures et services deja realises ou engages par la commune seront evalues avec objectivite. Lorsqu'ils repondent aux besoins des citoyens, nous nous engageons a les renforcer, les moderniser, les entretenir et les developper plutot qu'a les abandonner.</span></p>
+      <h3 style="font-family:'Roboto', sans-serif; font-size:1.6rem; margin-bottom:20px; color:var(--gold); font-weight:900; letter-spacing:-0.02em;"
+          data-fr="🔄 Valoriser l'existant avant de construire le nouveau"
+          data-ar="🔄 تعزيز الموجود قبل بناء الجديد"
+          data-en="🔄 Enhance the existing before building the new">🔄 Valoriser l'existant avant de construire le nouveau</h3>
+      <p style="color:rgba(255,255,255,0.7); line-height:1.8; margin-bottom:20px;"
+         data-fr="Notre engagement est clair : nous ne repartirons pas de zéro. Tous les projets, équipements, infrastructures et services déjà réalisés ou engagés par la commune seront évalués avec objectivité. Lorsqu'ils répondent aux besoins des citoyens, nous nous engageons à les renforcer, les moderniser, les entretenir et les développer plutôt qu'à les abandonner."
+         data-ar="التزامنا واضح: لن نبدأ من الصفر. سيتم تقييم جميع المشاريع والمعدات والبنى التحتية والخدمات التي تم إنجازها أو التي باشرتها البلدية بموضوعية. عندما تلبي حاجات المواطنين، نتعهد بتعزيزها وتحديثها وصيانتها وتطويرها بدلاً من التخلي عنها."
+         data-en="Our commitment is clear: we will not start from scratch. All projects, equipment, infrastructure and services already completed or undertaken by the municipality will be evaluated objectively. When they meet the needs of citizens, we commit to strengthening, modernizing, maintaining and developing them rather than abandoning them.">Notre engagement est clair : nous ne repartirons pas de zéro. Tous les projets, équipements, infrastructures et services déjà réalisés ou engagés par la commune seront évalués avec objectivité. Lorsqu'ils répondent aux besoins des citoyens, nous nous engageons à les renforcer, les moderniser, les entretenir et les développer plutôt qu'à les abandonner.</p>
+      <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
+         data-fr="Notre priorité est de :"
+         data-ar="أولويتنا هي:"
+         data-en="Our priority is to:">Notre priorité est de :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
         <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
           <div style="font-size:1.3rem; margin-bottom:8px;">✅</div>
-          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"><span data-fr="Ameliorer les projets existants avant d'en creer de nouveaux lorsque cela est pertinent" data-ar="تحسين المشاريع الموجودة قبل إنشاء مشاريع جديدة عندما يكون ذلك مناسباً">Ameliorer les projets existants avant d'en creer de nouveaux lorsque cela est pertinent</span></p>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"
+             data-fr="améliorer les projets existants avant d'en créer de nouveaux lorsque cela est pertinent ;"
+             data-ar="تحسين المشاريع الموجودة قبل إنشاء مشاريع جديدة عندما يكون ذلك مناسباً؛"
+             data-en="improve existing projects before creating new ones when relevant;">améliorer les projets existants avant d'en créer de nouveaux lorsque cela est pertinent ;</p>
         </div>
         <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
           <div style="font-size:1.3rem; margin-bottom:8px;">⚡</div>
-          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"><span data-fr="Accelerer les projets en cours afin qu'ils profitent rapidement aux citoyens" data-ar="تسريع المشاريع الجارية حتى تستفيد منها المواطنون بسرعة">Accelerer les projets en cours afin qu'ils profitent rapidement aux citoyens</span></p>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"
+             data-fr="accélérer les projets en cours afin qu'ils profitent rapidement aux citoyens ;"
+             data-ar="تسريع المشاريع الجارية حتى تستفيد منها المواطنون بسرعة؛"
+             data-en="accelerate ongoing projects so that citizens benefit quickly;">accélérer les projets en cours afin qu'ils profitent rapidement aux citoyens ;</p>
         </div>
         <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
           <div style="font-size:1.3rem; margin-bottom:8px;">💰</div>
-          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"><span data-fr="Optimiser les investissements deja realises avec l'argent public" data-ar="تحسين الاستثمارات التي تمت بالفعل بأموال عامة">Optimiser les investissements deja realises avec l'argent public</span></p>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"
+             data-fr="optimiser les investissements déjà réalisés avec l'argent public ;"
+             data-ar="تحسين الاستثمارات التي تمت بالفعل بأموال عامة؛"
+             data-en="optimize investments already made with public money;">optimiser les investissements déjà réalisés avec l'argent public ;</p>
         </div>
         <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
           <div style="font-size:1.3rem; margin-bottom:8px;">🔧</div>
-          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"><span data-fr="Assurer un entretien regulier des infrastructures communales pour eviter leur degradation" data-ar="ضمان صيانة دورية للبنى التحتية البلدية لتجنب تدهورها">Assurer un entretien regulier des infrastructures communales pour eviter leur degradation</span></p>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"
+             data-fr="assurer un entretien régulier des infrastructures communales pour éviter leur dégradation et les dépenses répétitives de reconstruction ;"
+             data-ar="ضمان صيانة دورية للبنى التحتية البلدية لتجنب تدهورها والنفقات المتكررة لإعادة البناء؛"
+             data-en="ensure regular maintenance of municipal infrastructure to avoid their degradation and repeated reconstruction expenses;">assurer un entretien régulier des infrastructures communales pour éviter leur dégradation et les dépenses répétitives de reconstruction ;</p>
         </div>
         <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
           <div style="font-size:1.3rem; margin-bottom:8px;">🛠️</div>
-          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"><span data-fr="Completer les projets inacheves et corriger leurs insuffisances" data-ar="إكمال المشاريع غير المنجزة وتصحيح نواقصها">Completer les projets inacheves et corriger leurs insuffisances</span></p>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"
+             data-fr="compléter les projets inachevés et corriger leurs insuffisances ;"
+             data-ar="إكمال المشاريع غير المنجزة وتصحيح نواقصها؛"
+             data-en="complete unfinished projects and correct their shortcomings;">compléter les projets inachevés et corriger leurs insuffisances ;</p>
         </div>
         <div style="padding:16px; background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;">
           <div style="font-size:1.3rem; margin-bottom:8px;">🚀</div>
-          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"><span data-fr="Rechercher en permanence des solutions plus durables, plus economiques et plus efficaces" data-ar="البحث باستمرار عن حلول أكثر استدامة واقتصاداً وفعالية">Rechercher en permanence des solutions plus durables, plus economiques et plus efficaces</span></p>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7);"
+             data-fr="rechercher en permanence des solutions plus durables, plus économiques et plus efficaces."
+             data-ar="البحث باستمرار عن حلول أكثر استدامة واقتصاداً وفعالية."
+             data-en="continuously seek more sustainable, economical and effective solutions.">rechercher en permanence des solutions plus durables, plus économiques et plus efficaces.</p>
         </div>
       </div>
       <p style="color:rgba(255,255,255,0.6); font-style:italic; margin-top:20px; font-size:0.95rem;"
-         data-fr="<span data-fr="Notre vision est celle d'une amelioration continue : preserver ce qui fonctionne, corriger ce qui doit l'etre et innover lorsque cela apporte une reelle valeur ajoutee aux citoyens." data-ar="رؤيتنا هي التحسين المستمر: الحفاظ على ما يعمل، تصحيح ما يجب تصحيحه والابتكار عندما يجلب قيمة مضافة حقيقية للمواطنين.">Notre vision est celle d'une amelioration continue : preserver ce qui fonctionne, corriger ce qui doit l'etre et innover lorsque cela apporte une reelle valeur ajoutee aux citoyens.</span>"
+         data-fr="Notre vision est celle d'une amélioration continue : préserver ce qui fonctionne, corriger ce qui doit l'être et innover lorsque cela apporte une réelle valeur ajoutée aux citoyens."
          data-ar="رؤيتنا هي التحسين المستمر: الحفاظ على ما يعمل، تصحيح ما يجب تصحيحه والابتكار عندما يجلب قيمة مضافة حقيقية للمواطنين."
-         data-en="Our vision is one of continuous improvement: preserve what works, correct what needs to be corrected and innovate when it brings real added value to citizens.">Notre vision est celle d'une amelioration continue : preserver ce qui fonctionne, corriger ce qui doit l'etre et innover lorsque cela apporte une reelle valeur ajoutee aux citoyens.</p>
+         data-en="Our vision is one of continuous improvement: preserve what works, correct what needs to be corrected and innovate when it brings real added value to citizens.">Notre vision est celle d'une amélioration continue : préserver ce qui fonctionne, corriger ce qui doit l'être et innover lorsque cela apporte une réelle valeur ajoutée aux citoyens.</p>
     </div>
   </div>
 
   <!-- 6 PILIERS DU PROGRAMME -->
   <div class="program-grid">
-
     <!-- PILIER 1: DEVELOPPEMENT ECONOMIQUE -->
-    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1; max-width:100%;">
+    <div class="program-card animate-on-scroll anim-up">
       <div class="program-num">01</div>
       <span class="program-icon">💼</span>
-      <h3 data-fr="Developpement economique, commerce et emploi" data-ar="التنمية الاقتصادية والتجارة والتوظيف" data-en="Economic Development, Commerce and Employment">Developpement economique, commerce et emploi</h3>
+      <h3 data-fr="Développement économique, commerce et emploi" data-ar="التنمية الاقتصادية والتجارة والتوظيف" data-en="Economic Development, Commerce and Employment">Développement économique, commerce et emploi</h3>
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
-         data-fr="Notre priorite est de transformer Ain El Turck en une commune creatrice de richesse."
+         data-fr="Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse."
          data-ar="أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة."
-         data-en="Our priority is to transform Ain El Turck into a wealth-creating municipality.">Notre priorite est de transformer Ain El Turck en une commune creatrice de richesse.</p>
+         data-en="Our priority is to transform Ain El Turck into a wealth-creating municipality.">Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse.</p>
+      <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
+         data-fr="Nous proposons :"
+         data-ar="نقترح:"
+         data-en="We propose:">Nous proposons :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🛣️</span><span data-fr="🛣️ Ouverture d'une deuxieme route reliant les deux extremites de la commune afin de desengorger la circulation" data-ar="🛣️ فتح طريق ثانٍ يربط طرفي البلدية لتخفيف الازدحام المروري"> Ouverture d'une deuxieme route reliant les deux extremites de la commune afin de desengorger la circulation</span>
+          <span style="color:var(--gold); font-weight:700;">🛣️</span><span data-fr="🛣️ L'ouverture d'une deuxième route reliant les deux extrémités de la commune afin de désengorger la circulation." data-ar="🛣️ فتح طريق ثانٍ يربط طرفي البلدية لتخفيف الازدحام المروري."> L'ouverture d'une deuxième route reliant les deux extrémités de la commune afin de désengorger la circulation.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🔌</span><span data-fr="🔌 Realisation des raccordements necessaires sur cette route deja existante" data-ar="🔌 إنجاز التوصيلات اللازمة على هذا الطريق الموجود بالفعل"> Realisation des raccordements necessaires sur cette route deja existante</span>
+          <span style="color:var(--gold); font-weight:700;">🔌</span><span data-fr="🔌 La réalisation des raccordements nécessaires sur cette route déjà existante." data-ar="🔌 إنجاز التوصيلات اللازمة على هذا الطريق الموجود بالفعل."> La réalisation des raccordements nécessaires sur cette route déjà existante.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🏢</span><span data-fr="🏢 Creation d'un nouveau corridor economique favorisant l'implantation de commerces et de nouveaux locaux commerciaux" data-ar="🏢 إنشاء ممر اقتصادي جديد يشجع على استقرار المتاجر والمحلات التجارية الجديدة"> Creation d'un nouveau corridor economique favorisant l'implantation de commerces et de nouveaux locaux commerciaux</span>
+          <span style="color:var(--gold); font-weight:700;">🏢</span><span data-fr="🏢 La création d'un nouveau corridor économique favorisant l'implantation de commerces et de nouveaux locaux commerciaux." data-ar="🏢 إنشاء ممر اقتصادي جديد يشجع على استقرار المتاجر والمحلات التجارية الجديدة."> La création d'un nouveau corridor économique favorisant l'implantation de commerces et de nouveaux locaux commerciaux.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🏘️</span><span data-fr="🏘️ Valorisation des terrains, habitations et residences situes le long de cette nouvelle voie" data-ar="🏘️ تعزيز قيمة الأراضي والمساكن والإقامات الواقعة على طول هذا الطريق الجديد"> Valorisation des terrains, habitations et residences situes le long de cette nouvelle voie</span>
+          <span style="color:var(--gold); font-weight:700;">🏘️</span><span data-fr="🏘️ La valorisation des terrains, habitations et résidences situés le long de cette nouvelle voie." data-ar="🏘️ تعزيز قيمة الأراضي والمساكن والإقامات الواقعة على طول هذا الطريق الجديد."> La valorisation des terrains, habitations et résidences situés le long de cette nouvelle voie.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">💼</span><span data-fr="💼 Creation d'emplois directs et indirects" data-ar="💼 خلق فرص عمل مباشرة وغير مباشرة"> Creation d'emplois directs et indirects</span>
+          <span style="color:var(--gold); font-weight:700;">💼</span><span data-fr="💼 La création d'emplois directs et indirects." data-ar="💼 خلق فرص عمل مباشرة وغير مباشرة."> La création d'emplois directs et indirects.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🛒</span><span data-fr="🛒 Creation d'un marche quotidien a Trouville (a l'etude)" data-ar="🛒 إنشاء سوق يومي في تروفيل (قيد الدراسة)"> Creation d'un marche quotidien a Trouville (a l'etude)</span>
+          <span style="color:var(--gold); font-weight:700;">🛒</span><span data-fr="🛒 La création d'un marché quotidien à Trouville (à l'étude)." data-ar="🛒 إنشاء سوق يومي في تروفيل (قيد الدراسة)."> La création d'un marché quotidien à Trouville (à l'étude).</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🚗</span><span data-fr="🚗 Creation d'un marche hebdomadaire de vehicules a l'entree ou a la sortie de la commune" data-ar="🚗 إنشاء سوق أسبوعي للمركبات عند مدخل أو مخرج البلدية"> Creation d'un marche hebdomadaire de vehicules a l'entree ou a la sortie de la commune</span>
+          <span style="color:var(--gold); font-weight:700;">🚗</span><span data-fr="🚗 La création d'un marché hebdomadaire de véhicules à l'entrée ou à la sortie de la commune." data-ar="🚗 إنشاء سوق أسبوعي للمركبات عند مدخل أو مخرج البلدية."> La création d'un marché hebdomadaire de véhicules à l'entrée ou à la sortie de la commune.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🏪</span><span data-fr="🏪 Installation de kiosques commerciaux harmonises selon une architecture de style californien" data-ar="🏪 تركيب أكشاك تجارية متناسقة وفق هندسة معمارية على الطراز الكاليفورني"> Installation de kiosques commerciaux harmonises selon une architecture de style californien</span>
+          <span style="color:var(--gold); font-weight:700;">🏪</span><span data-fr="🏪 L'installation de kiosques commerciaux harmonisés selon une architecture de style californien." data-ar="🏪 تركيب أكشاك تجارية متناسقة وفق هندسة معمارية على الطراز الكاليفورني."> L'installation de kiosques commerciaux harmonisés selon une architecture de style californien.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📊</span><span data-fr="📊 Creation d'une base de donnees recensant tous les commerces, entreprises, artisans, professions liberales, associations, clubs et services de la commune" data-ar="📊 إنشاء قاعدة بيانات تسرد جميع المتاجر والمؤسسات والحرفيين والمهن الحرة والجمعيات والأندية والخدمات بالبلدية"> Creation d'une base de donnees recensant tous les commerces, entreprises, artisans, professions liberales, associations, clubs et services de la commune</span>
+          <span style="color:var(--gold); font-weight:700;">📊</span><span data-fr="📊 La création d'une base de données recensant tous les commerces, entreprises, artisans, professions libérales, associations, clubs et services de la commune afin de faciliter les échanges économiques et l'accès des citoyens aux services." data-ar="📊 إنشاء قاعدة بيانات تسرد جميع المتاجر والمؤسسات والحرفيين والمهن الحرة والجمعيات والأندية والخدمات بالبلدية من أجل تسهيل التبادلات الاقتصادية وللوصول المواطنين إلى الخدمات."> La création d'une base de données recensant tous les commerces, entreprises, artisans, professions libérales, associations, clubs et services de la commune afin de faciliter les échanges économiques et l'accès des citoyens aux services.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🤝</span><span data-fr="🤝 Organisation de rencontres regulieres entre entreprises, commercants, investisseurs, clubs et associations pour developper le sponsoring et les partenariats" data-ar="🤝 تنظيم لقاءات دورية بين المؤسسات والتجار والمستثمرين والأندية والجمعيات لتطوير الرعاية والشراكات"> Organisation de rencontres regulieres entre entreprises, commercants, investisseurs, clubs et associations pour developper le sponsoring et les partenariats</span>
+          <span style="color:var(--gold); font-weight:700;">🤝</span><span data-fr="🤝 L'organisation de rencontres régulières entre entreprises, commerçants, investisseurs, clubs et associations afin de développer le sponsoring, les partenariats et les projets communs." data-ar="🤝 تنظيم لقاءات دورية بين المؤسسات والتجار والمستثمرين والأندية والجمعيات من أجل تطوير الرعاية والشراكات والمشاريع المشتركة."> L'organisation de rencontres régulières entre entreprises, commerçants, investisseurs, clubs et associations afin de développer le sponsoring, les partenariats et les projets communs.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🤲</span><span data-fr="🤲 Encourager les entreprises titulaires de marches publics a contribuer a la resolution de problematiques communales dans le cadre de leur responsabilite societale" data-ar="🤲 تشجيع المؤسسات الحاصلة على صفقات عمومية على المساهمة في حل المشاكل البلدية في إطار مسؤوليتها الاجتماعية"> Encourager les entreprises titulaires de marches publics a contribuer a la resolution de problematiques communales dans le cadre de leur responsabilite societale</span>
+          <span style="color:var(--gold); font-weight:700;">🤲</span><span data-fr="🤲 Encourager, dans le respect de la réglementation, les entreprises titulaires de marchés publics à contribuer à la résolution de deux problématiques d'intérêt communal dans le cadre de leur responsabilité sociétale." data-ar="🤲 تشجيع المؤسسات الحاصلة على صفقات عمومية، في احترام للتنظيم، على المساهمة في حل مشكلتين ذات اهتمام بلدي في إطار مسؤوليتها الاجتماعية."> Encourager, dans le respect de la réglementation, les entreprises titulaires de marchés publics à contribuer à la résolution de deux problématiques d'intérêt communal dans le cadre de leur responsabilité sociétale.</span>
+        </div>
       </div>
       <p style="margin-top:15px; font-weight:600; color:var(--gold);"
-         data-fr="Objectif : creer un veritable ecosysteme economique local generateur d'emplois et de revenus."
-         data-ar="الهدف: إنشاء نظام بيئي اقتصادي محلي حقيقي يُولد فرص عمل ودخلاً."
-         data-en="Objective: create a real local economic ecosystem generating jobs and income.">Objectif : creer un veritable ecosysteme economique local generateur d'emplois et de revenus.</p>
-      <span class="program-tag" data-fr="Developpement Economique" data-ar="التنمية الاقتصادية" data-en="Economic Development">Developpement Economique</span>
+         data-fr="Notre objectif est de créer un véritable écosystème économique local générateur d'emplois et de revenus."
+         data-ar="هدفنا هو إنشاء نظام بيئي اقتصادي محلي حقيقي يُولد فرص عمل ودخلاً."
+         data-en="Our objective is to create a real local economic ecosystem generating jobs and income.">Notre objectif est de créer un véritable écosystème économique local générateur d'emplois et de revenus.</p>
+      <span class="program-tag" data-fr="Développement Économique" data-ar="التنمية الاقتصادية" data-en="Economic Development">Développement Économique</span>
     </div>
-
     <!-- PILIER 2: MOBILITE -->
-    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
+    <div class="program-card animate-on-scroll anim-up">
       <div class="program-num">02</div>
       <span class="program-icon">🚗</span>
-      <h3 data-fr="Mobilite, circulation et transports" data-ar="التنقل والسير والمواصلات" data-en="Mobility, Traffic and Transport">Mobilite, circulation et transports</h3>
+      <h3 data-fr="Mobilité, circulation et transports" data-ar="التنقل والسير والمواصلات" data-en="Mobility, Traffic and Transport">Mobilité, circulation et transports</h3>
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
-         data-fr="La mobilite est indispensable au developpement economique."
+         data-fr="La mobilité est indispensable au développement économique."
          data-ar="التنقل ضروري للتنمية الاقتصادية."
-         data-en="Mobility is essential for economic development.">La mobilite est indispensable au developpement economique.</p>
+         data-en="Mobility is essential for economic development.">La mobilité est indispensable au développement économique.</p>
+      <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
+         data-fr="Nous proposons :"
+         data-ar="نقترح:"
+         data-en="We propose:">Nous proposons :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🛣️</span><span data-fr="🛣️ Ouverture de la deuxieme route afin de fluidifier durablement la circulation" data-ar="🛣️ فتح الطريق الثاني لتسهيل حركة المرور بشكل دائم"> Ouverture de la deuxieme route afin de fluidifier durablement la circulation</span>
+          <span style="color:var(--gold); font-weight:700;">🛣️</span><span data-fr="🛣️ L'ouverture de la deuxième route afin de fluidifier durablement la circulation." data-ar="🛣️ فتح الطريق الثاني لتسهيل حركة المرور بشكل دائم."> L'ouverture de la deuxième route afin de fluidifier durablement la circulation.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🚌</span><span data-fr="🚌 Creation de nouvelles lignes de transport en commun" data-ar="🚌 إنشاء خطوط جديدة للنقل العمومي"> Creation de nouvelles lignes de transport en commun</span>
+          <span style="color:var(--gold); font-weight:700;">🚌</span><span data-fr="🚌 La création de nouvelles lignes de transport en commun." data-ar="🚌 إنشاء خطوط جديدة للنقل العمومي."> La création de nouvelles lignes de transport en commun.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🚕</span><span data-fr="🚕 Creation de nouvelles lignes de taxis desservant les quartiers eloignes" data-ar="🚕 إنشاء خطوط جديدة للتاكسي تخدم الأحياء النائية"> Creation de nouvelles lignes de taxis desservant les quartiers eloignes</span>
+          <span style="color:var(--gold); font-weight:700;">🚕</span><span data-fr="🚕 La création de nouvelles lignes de taxis desservant les quartiers éloignés." data-ar="🚕 إنشاء خطوط جديدة للتاكسي تخدم الأحياء النائية."> La création de nouvelles lignes de taxis desservant les quartiers éloignés.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🚶</span><span data-fr="🚶 Une meilleure desserte des quartiers afin que les citoyens n'aient plus a parcourir de longues distances a pied pour rejoindre la route nationale" data-ar="🚶 خدمة أفضل للأحياء حتى لا يضطر المواطنون لقطع مسافات طويلة سيراً على الأقدام للوصول إلى الطريق الوطني"> Une meilleure desserte des quartiers afin que les citoyens n'aient plus a parcourir de longues distances a pied pour rejoindre la route nationale</span>
+          <span style="color:var(--gold); font-weight:700;">🚶</span><span data-fr="🚶 Une meilleure desserte des quartiers afin que les citoyens n'aient plus à parcourir de longues distances à pied pour rejoindre la route nationale." data-ar="🚶 خدمة أفضل للأحياء حتى لا يضطر المواطنون لقطع مسافات طويلة سيراً على الأقدام للوصول إلى الطريق الوطني."> Une meilleure desserte des quartiers afin que les citoyens n'aient plus à parcourir de longues distances à pied pour rejoindre la route nationale.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🌊</span><span data-fr="🌊 Une meilleure gestion des flux routiers pendant la saison estivale" data-ar="🌊 إدارة أفضل لتدفقات المرور خلال الموسم الصيفي"> Une meilleure gestion des flux routiers pendant la saison estivale</span>
+          <span style="color:var(--gold); font-weight:700;">🌊</span><span data-fr="🌊 Une meilleure gestion des flux routiers pendant la saison estivale." data-ar="🌊 إدارة أفضل لتدفقات المرور خلال الموسم الصيفي."> Une meilleure gestion des flux routiers pendant la saison estivale.</span>
+        </div>
       </div>
-      <span class="program-tag" data-fr="Mobilite" data-ar="التنقل" data-en="Mobility">Mobilite</span>
+      <span class="program-tag" data-fr="Mobilité" data-ar="التنقل" data-en="Mobility">Mobilité</span>
     </div>
-
     <!-- PILIER 3: TOURISME -->
-    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
+    <div class="program-card animate-on-scroll anim-up">
       <div class="program-num">03</div>
       <span class="program-icon">🏖️</span>
-      <h3 data-fr="Tourisme, plages et attractivite" data-ar="السياحة والشواطئ والجاذبية" data-en="Tourism, Beaches and Attractiveness">Tourisme, plages et attractivite</h3>
+      <h3 data-fr="Tourisme, plages et attractivité" data-ar="السياحة والشواطئ والجاذبية" data-en="Tourism, Beaches and Attractiveness">Tourisme, plages et attractivité</h3>
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
-         data-fr="Ain El Turck doit devenir une reference nationale parmi les stations balneaires."
+         data-fr="Aïn El Turck doit devenir une référence nationale parmi les stations balnéaires."
          data-ar="يجب أن تصبح عين الترك مرجعاً وطنياً بين المنتجعات البحرية."
-         data-en="Ain El Turck must become a national reference among seaside resorts.">Ain El Turck doit devenir une reference nationale parmi les stations balneaires.</p>
+         data-en="Ain El Turck must become a national reference among seaside resorts.">Aïn El Turck doit devenir une référence nationale parmi les stations balnéaires.</p>
+      <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
+         data-fr="Nous proposons :"
+         data-ar="نقترح:"
+         data-en="We propose:">Nous proposons :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🏰</span><span data-fr="🏰 Des acces aux plages concus pour durer grace a la fabrication par l'APC de ses propres moules de murs de style ottoman" data-ar="🏰 مداخل شاطئ مصممة لتدوم بفضل تصنيع البلدية لقوالبها الخاصة من جدران على الطراز العثماني"> Des acces aux plages concus pour durer grace a la fabrication par l'APC de ses propres moules de murs de style ottoman</span>
+          <span style="color:var(--gold); font-weight:700;">🏰</span><span data-fr="🏰 Des accès aux plages conçus pour durer grâce à la fabrication par l'APC de ses propres moules de murs de style ottoman." data-ar="🏰 مداخل شاطئ مصممة لتدوم بفضل تصنيع البلدية لقوالبها الخاصة من جدران على الطراز العثماني."> Des accès aux plages conçus pour durer grâce à la fabrication par l'APC de ses propres moules de murs de style ottoman.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🧱</span><span data-fr="🧱 Utilisation de mortiers teintes plus resistants a l'humidite marine" data-ar="🧱 استخدام مونة ملونة أكثر مقاومة لرطوبة البحر"> Utilisation de mortiers teintes plus resistants a l'humidite marine</span>
+          <span style="color:var(--gold); font-weight:700;">🧱</span><span data-fr="🧱 L'utilisation de mortiers teintés plus résistants à l'humidité marine." data-ar="🧱 استخدام مونة ملونة أكثر مقاومة لرطوبة البحر."> L'utilisation de mortiers teintés plus résistants à l'humidité marine.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🌉</span><span data-fr="🌉 Des passerelles et acces en bois inspires du style californien" data-ar="🌉 جسور ومداخل خشبية مستوحاة من الطراز الكاليفورني"> Des passerelles et acces en bois inspires du style californien</span>
+          <span style="color:var(--gold); font-weight:700;">🌉</span><span data-fr="🌉 Des passerelles et accès en bois inspirés du style californien." data-ar="🌉 جسور ومداخل خشبية مستوحاة من الطراز الكاليفورني."> Des passerelles et accès en bois inspirés du style californien.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🧹</span><span data-fr="🧹 Creation de brigades permanentes de nettoyage des plages" data-ar="🧹 إنشاء فرق دائمة لتنظيف الشواطئ"> Creation de brigades permanentes de nettoyage des plages</span>
+          <span style="color:var(--gold); font-weight:700;">🧹</span><span data-fr="🧹 La création de brigades permanentes de nettoyage des plages." data-ar="🧹 إنشاء فرق دائمة لتنظيف الشواطئ."> La création de brigades permanentes de nettoyage des plages.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📢</span><span data-fr="📢 Mise en place d'animations de sensibilisation" data-ar="📢 تنظيم حملات توعية"> Mise en place d'animations de sensibilisation</span>
+          <span style="color:var(--gold); font-weight:700;">📢</span><span data-fr="📢 La mise en place d'animations de sensibilisation." data-ar="📢 تنظيم حملات توعية."> La mise en place d'animations de sensibilisation.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🪧</span><span data-fr="🪧 Installation de panneaux modernes rappelant les regles de propretete, de securite et de protection de l'environnement" data-ar="🪧 تركيب لوحات حديثة تذكر بقواعد النظافة والأمن وحماية البيئة"> Installation de panneaux modernes rappelant les regles de propretete, de securite et de protection de l'environnement</span>
+          <span style="color:var(--gold); font-weight:700;">🪧</span><span data-fr="🪧 L'installation de panneaux modernes rappelant les règles de propreté, de sécurité et de protection de l'environnement." data-ar="🪧 تركيب لوحات حديثة تذكر بقواعد النظافة والأمن وحماية البيئة."> L'installation de panneaux modernes rappelant les règles de propreté, de sécurité et de protection de l'environnement.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">⛵</span><span data-fr="⛵ Developpement des activites nautiques" data-ar="⛵ تطوير الأنشطة البحرية"> Developpement des activites nautiques</span>
+          <span style="color:var(--gold); font-weight:700;">⛵</span><span data-fr="⛵ Le développement des activités nautiques." data-ar="⛵ تطوير الأنشطة البحرية."> Le développement des activités nautiques.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🏆</span><span data-fr="🏆 Soutien aux clubs et associations organisant des evenements sportifs, culturels et maritimes" data-ar="🏆 دعم الأندية والجمعيات المنظمة للفعاليات الرياضية والثقافية والبحرية"> Soutien aux clubs et associations organisant des evenements sportifs, culturels et maritimes</span>
+          <span style="color:var(--gold); font-weight:700;">🏆</span><span data-fr="🏆 Le soutien aux clubs et associations organisant des événements sportifs, culturels et maritimes." data-ar="🏆 دعم الأندية والجمعيات المنظمة للفعاليات الرياضية والثقافية والبحرية."> Le soutien aux clubs et associations organisant des événements sportifs, culturels et maritimes.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📱</span><span data-fr="📱 Une plateforme numerique regroupant toutes les informations utiles aux citoyens et aux touristes" data-ar="📱 منصة رقمية تجمع جميع المعلومات المفيدة للمواطنين والسياح"> Une plateforme numerique regroupant toutes les informations utiles aux citoyens et aux touristes</span>
+          <span style="color:var(--gold); font-weight:700;">📱</span><span data-fr="📱 Une plateforme numérique regroupant toutes les informations utiles aux citoyens et aux touristes." data-ar="📱 منصة رقمية تجمع جميع المعلومات المفيدة للمواطنين والسياح."> Une plateforme numérique regroupant toutes les informations utiles aux citoyens et aux touristes.</span>
+        </div>
       </div>
       <span class="program-tag" data-fr="Tourisme" data-ar="السياحة" data-en="Tourism">Tourisme</span>
     </div>
-
     <!-- PILIER 4: ENVIRONNEMENT -->
-    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
+    <div class="program-card animate-on-scroll anim-up">
       <div class="program-num">04</div>
       <span class="program-icon">🌳</span>
       <h3 data-fr="Environnement, espaces verts et cadre de vie" data-ar="البيئة والمساحات الخضراء وجودة الحياة" data-en="Environment, Green Spaces and Quality of Life">Environnement, espaces verts et cadre de vie</h3>
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
-         data-fr="Nous voulons une commune plus verte, plus agreable et plus durable."
+         data-fr="Nous voulons une commune plus verte, plus agréable et plus durable."
          data-ar="نريد بلدية أكثر خضرة وأكثر متعة وأكثر استدامة."
-         data-en="We want a greener, more pleasant and more sustainable municipality.">Nous voulons une commune plus verte, plus agreable et plus durable.</p>
+         data-en="We want a greener, more pleasant and more sustainable municipality.">Nous voulons une commune plus verte, plus agréable et plus durable.</p>
+      <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
+         data-fr="Nous proposons :"
+         data-ar="نقترح:"
+         data-en="We propose:">Nous proposons :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🌱</span><span data-fr="🌱 Creation d'une pepiniere municipale" data-ar="🌱 إنشاء مشتل بلدي"> Creation d'une pepiniere municipale</span>
+          <span style="color:var(--gold); font-weight:700;">🌱</span><span data-fr="🌱 La création d'une pépinière municipale." data-ar="🌱 إنشاء مشتل بلدي."> La création d'une pépinière municipale.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🌲</span><span data-fr="🌲 Plantation de 10 000 arbres adaptes au climat local et a croissance rapide" data-ar="🌲 زراعة 10,000 شجرة متأقلمة مع المناخ المحلي وسريعة النمو"> Plantation de 10 000 arbres adaptes au climat local et a croissance rapide</span>
+          <span style="color:var(--gold); font-weight:700;">🌲</span><span data-fr="🌲 La plantation de 10 000 arbres adaptés au climat local et à croissance rapide." data-ar="🌲 زراعة 10,000 شجرة متأقلمة مع المناخ المحلي وسريعة النمو."> La plantation de 10 000 arbres adaptés au climat local et à croissance rapide.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🛡️</span><span data-fr="🛡️ Protection stricte du patrimoine arboricole" data-ar="🛡️ حماية صارمة للتراث الشجري"> Protection stricte du patrimoine arboricole</span>
+          <span style="color:var(--gold); font-weight:700;">🛡️</span><span data-fr="🛡️ La protection stricte du patrimoine arboricole." data-ar="🛡️ حماية صارمة للتراث الشجري."> La protection stricte du patrimoine arboricole.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🚫</span><span data-fr="🚫 Interdiction de couper les arbres ou de leur porter atteinte en dehors des dispositions prevues par la loi" data-ar="🚫 منع قطع الأشجار أو الإضرار بها خارج الأحكام المنصوص عليها في القانون"> Interdiction de couper les arbres ou de leur porter atteinte en dehors des dispositions prevues par la loi</span>
+          <span style="color:var(--gold); font-weight:700;">🚫</span><span data-fr="🚫 L'interdiction de couper les arbres ou de leur porter atteinte en dehors des dispositions prévues par la loi." data-ar="🚫 منع قطع الأشجار أو الإضرار بها خارج الأحكام المنصوص عليها في القانون."> L'interdiction de couper les arbres ou de leur porter atteinte en dehors des dispositions prévues par la loi.</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🎪</span><span data-fr="🎪 Fabrication locale des aires de jeux destinees aux parcs municipaux afin de reduire les couts, accelerer les renovations et multiplier les espaces de loisirs" data-ar="🎪 تصنيع محلي لمناطق اللعب المخصصة للحدائق البلدية لتقليل التكاليف وتسريع التجديدات وتكثيف أماكن الترفيه"> Fabrication locale des aires de jeux destinees aux parcs municipaux afin de reduire les couts, accelerer les renovations et multiplier les espaces de loisirs</span>
+          <span style="color:var(--gold); font-weight:700;">🎪</span><span data-fr="🎪 La fabrication locale des aires de jeux destinées aux parcs municipaux afin de réduire les coûts, accélérer les rénovations et multiplier les espaces de loisirs." data-ar="🎪 تصنيع محلي لمناطق اللعب المخصصة للحدائق البلدية لتقليل التكاليف وتسريع التجديدات وتكثيف أماكن الترفيه."> La fabrication locale des aires de jeux destinées aux parcs municipaux afin de réduire les coûts, accélérer les rénovations et multiplier les espaces de loisirs.</span>
+        </div>
       </div>
       <span class="program-tag" data-fr="Environnement" data-ar="البيئة" data-en="Environment">Environnement</span>
     </div>
-
     <!-- PILIER 5: COMMUNE NUMERIQUE -->
-    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
+    <div class="program-card animate-on-scroll anim-up">
       <div class="program-num">05</div>
       <span class="program-icon">📱</span>
-      <h3 data-fr="Une commune numerique et une administration moderne" data-ar="بلدية رقمية وإدارة حديثة" data-en="A Digital Municipality and Modern Administration">Une commune numerique et une administration moderne</h3>
+      <h3 data-fr="Une commune numérique et une administration moderne" data-ar="بلدية رقمية وإدارة حديثة" data-en="A Digital Municipality and Modern Administration">Une commune numérique et une administration moderne</h3>
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
-         data-fr="Le citoyen doit pouvoir communiquer facilement avec sa commune. Nous creerons une application municipale permettant :"
-         data-ar="يجب أن يتمكن المواطن من التواصل بسهولة مع بلديته. سننشئ تطبيقاً بلدياً يسمح بـ:"
-         data-en="The citizen must be able to communicate easily with their municipality. We will create a municipal application allowing:">Le citoyen doit pouvoir communiquer facilement avec sa commune. Nous creerons une application municipale permettant :</p>
+         data-fr="Le citoyen doit pouvoir communiquer facilement avec sa commune."
+         data-ar="يجب أن يتمكن المواطن من التواصل بسهولة مع بلديته."
+         data-en="The citizen must be able to communicate easily with their municipality.">Le citoyen doit pouvoir communiquer facilement avec sa commune.</p>
+      <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
+         data-fr="Nous créerons une application municipale permettant :"
+         data-ar="سننشئ تطبيقاً بلدياً يسمح بـ:"
+         data-en="We will create a municipal application allowing:">Nous créerons une application municipale permettant :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📍</span><span data-fr="📍 Signaler les problemes avec geolocalisation" data-ar="📍 الإبلاغ عن المشاكل مع تحديد الموقع الجغرافي"> Signaler les problemes avec geolocalisation</span>
+          <span style="color:var(--gold); font-weight:700;">📍</span><span data-fr="📍 de signaler les problèmes avec géolocalisation ;" data-ar="📍 الإبلاغ عن المشاكل مع تحديد الموقع الجغرافي؛"> de signaler les problèmes avec géolocalisation ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🚨</span><span data-fr="🚨 Signaler les accidents" data-ar="🚨 الإبلاغ عن الحوادث"> Signaler les accidents</span>
+          <span style="color:var(--gold); font-weight:700;">🚨</span><span data-fr="🚨 de signaler les accidents ;" data-ar="🚨 الإبلاغ عن الحوادث؛"> de signaler les accidents ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">⚠️</span><span data-fr="⚠️ Identifier les points noirs" data-ar="⚠️ تحديد النقاط السوداء"> Identifier les points noirs</span>
+          <span style="color:var(--gold); font-weight:700;">⚠️</span><span data-fr="⚠️ d'identifier les points noirs ;" data-ar="⚠️ تحديد النقاط السوداء؛"> d'identifier les points noirs ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📊</span><span data-fr="📊 Suivre en temps reel le traitement des demandes" data-ar="📊 متابعة معالجة الطلبات في الوقت الفعلي"> Suivre en temps reel le traitement des demandes</span>
+          <span style="color:var(--gold); font-weight:700;">📊</span><span data-fr="📊 de suivre en temps réel le traitement des demandes ;" data-ar="📊 متابعة معالجة الطلبات في الوقت الفعلي؛"> de suivre en temps réel le traitement des demandes ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">⏱️</span><span data-fr="⏱️ Consulter les delais d'intervention" data-ar="⏱️ الاطلاع على آجال التدخل"> Consulter les delais d'intervention</span>
+          <span style="color:var(--gold); font-weight:700;">⏱️</span><span data-fr="⏱️ de consulter les délais d'intervention ;" data-ar="⏱️ الاطلاع على آجال التدخل؛"> de consulter les délais d'intervention ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📞</span><span data-fr="📞 Contacter directement le maire ou les services municipaux" data-ar="📞 التواصل المباشر مع العمدة أو الخدمات البلدية"> Contacter directement le maire ou les services municipaux</span>
+          <span style="color:var(--gold); font-weight:700;">📞</span><span data-fr="📞 de contacter directement le maire ou les services municipaux ;" data-ar="📞 التواصل المباشر مع العمدة أو الخدمات البلدية؛"> de contacter directement le maire ou les services municipaux ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">💡</span><span data-fr="💡 Envoyer des suggestions et propositions" data-ar="💡 إرسال الاقتراحات والمقترحات"> Envoyer des suggestions et propositions</span>
+          <span style="color:var(--gold); font-weight:700;">💡</span><span data-fr="💡 d'envoyer des suggestions et propositions ;" data-ar="💡 إرسال الاقتراحات والمقترحات؛"> d'envoyer des suggestions et propositions ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📈</span><span data-fr="📈 Suivre les realisations de la commune" data-ar="📈 متابعة إنجازات البلدية"> Suivre les realisations de la commune</span>
+          <span style="color:var(--gold); font-weight:700;">📈</span><span data-fr="📈 de suivre les réalisations de la commune." data-ar="📈 متابعة إنجازات البلدية."> de suivre les réalisations de la commune.</span>
+        </div>
       </div>
-      <p style="margin-top:15px; font-weight:600; color:var(--accent-cyan);">Modernisation de l'etat civil :</p>
+      <p style="margin-top:15px; font-weight:600; color:var(--accent-cyan);"
+         data-fr="Nous moderniserons également l'état civil :"
+         data-ar="سنحدث أيضاً الحالة المدنية:"
+         data-en="We will also modernize the civil registry:">Nous moderniserons également l'état civil :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-top:10px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">👥</span><span data-fr="👥 Renforcement des guichets lors des periodes de forte affluence" data-ar="👥 تعزيز الوكالات خلال فترات الازدحام الشديد"> Renforcement des guichets lors des periodes de forte affluence</span>
+          <span style="color:var(--gold); font-weight:700;">👥</span><span data-fr="👥 renforcement des guichets lors des périodes de forte affluence ;" data-ar="👥 تعزيز الوكالات خلال فترات الازدحام الشديد؛"> renforcement des guichets lors des périodes de forte affluence ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📋</span><span data-fr="📋 Adaptation des effectifs selon les besoins" data-ar="📋 تكييف الأعداد حسب الحاجات"> Adaptation des effectifs selon les besoins</span>
+          <span style="color:var(--gold); font-weight:700;">📋</span><span data-fr="📋 adaptation des effectifs selon les besoins ;" data-ar="📋 تكييف الأعداد حسب الحاجات؛"> adaptation des effectifs selon les besoins ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">👁️</span><span data-fr="👁️ Creation d'une cellule de veille" data-ar="👁️ إنشاء خلية مراقبة"> Creation d'une cellule de veille</span>
+          <span style="color:var(--gold); font-weight:700;">👁️</span><span data-fr="👁️ création d'une cellule de veille ;" data-ar="👁️ إنشاء خلية مراقبة؛"> création d'une cellule de veille ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🚨</span><span data-fr="🚨 Creation d'une cellule de crise" data-ar="🚨 إنشاء خلية أزمات"> Creation d'une cellule de crise</span>
+          <span style="color:var(--gold); font-weight:700;">🚨</span><span data-fr="🚨 création d'une cellule de crise ;" data-ar="🚨 إنشاء خلية أزمات؛"> création d'une cellule de crise ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📱</span><span data-fr="📱 Signaler les retards ou dysfonctionnements via l'application avec suivi des reponses" data-ar="📱 الإبلاغ عن التأخيرات أو الاختلالات عبر التطبيق مع متابعة الردود"> Signaler les retards ou dysfonctionnements via l'application avec suivi des reponses</span>
+          <span style="color:var(--gold); font-weight:700;">📱</span><span data-fr="📱 possibilité de signaler les retards ou dysfonctionnements via l'application avec suivi des réponses." data-ar="📱 إمكانية الإبلاغ عن التأخيرات أو الاختلالات عبر التطبيق مع متابعة الردود."> possibilité de signaler les retards ou dysfonctionnements via l'application avec suivi des réponses.</span>
+        </div>
       </div>
-      <span class="program-tag" data-fr="Numerique" data-ar="الرقمية" data-en="Digital">Numerique</span>
+      <span class="program-tag" data-fr="Numérique" data-ar="الرقمية" data-en="Digital">Numérique</span>
     </div>
-
     <!-- PILIER 6: GOUVERNANCE -->
-    <div class="program-card animate-on-scroll anim-up" style="grid-column:1 / -1;">
+    <div class="program-card animate-on-scroll anim-up">
       <div class="program-num">06</div>
       <span class="program-icon">⚖️</span>
       <h3 data-fr="Gouvernance, transparence et participation citoyenne" data-ar="الحوكمة والشفافية والمشاركة المواطنة" data-en="Governance, Transparency and Citizen Participation">Gouvernance, transparence et participation citoyenne</h3>
       <p style="font-weight:600; color:var(--accent-cyan); margin-bottom:15px;"
-         data-fr="La confiance se construit par la transparence. Nous nous engageons a :"
-         data-ar="الثقة تُبنى بالشفافية. نتعهد بـ:"
-         data-en="Trust is built through transparency. We commit to:">La confiance se construit par la transparence. Nous nous engageons a :</p>
+         data-fr="La confiance se construit par la transparence."
+         data-ar="الثقة تُبنى بالشفافية."
+         data-en="Trust is built through transparency.">La confiance se construit par la transparence.</p>
+      <p style="font-size:0.9rem; color:rgba(255,255,255,0.6); margin-bottom:12px; font-style:italic;"
+         data-fr="Nous nous engageons à :"
+         data-ar="نتعهد بـ:"
+         data-en="We commit to:">Nous nous engageons à :</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:12px; margin-top:15px;">
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📄</span><span data-fr="📄 Publier l'integralite de notre programme" data-ar="📄 نشر برنامجنا كاملاً"> Publier l'integralite de notre programme</span>
+          <span style="color:var(--gold); font-weight:700;">📄</span><span data-fr="📄 publier l'intégralité de notre programme ;" data-ar="📄 نشر برنامجنا كاملاً؛"> publier l'intégralité de notre programme ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">📊</span><span data-fr="📊 Publier un bilan detaille des realisations a la fin de chaque annee ou de chaque mandat" data-ar="📊 نشر تقرير مفصل بالإنجازات في نهاية كل سنة أو كل ولاية"> Publier un bilan detaille des realisations a la fin de chaque annee ou de chaque mandat</span>
+          <span style="color:var(--gold); font-weight:700;">📊</span><span data-fr="📊 publier un bilan détaillé des réalisations à la fin de chaque année ou de chaque mandat ;" data-ar="📊 نشر تقرير مفصل بالإنجازات في نهاية كل سنة أو كل ولاية؛"> publier un bilan détaillé des réalisations à la fin de chaque année ou de chaque mandat ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🗣️</span><span data-fr="🗣️ Organiser des rencontres citoyennes mensuelles ouvertes a tous" data-ar="🗣️ تنظيم لقاءات شهرية مفتوحة للمواطنين"> Organiser des rencontres citoyennes mensuelles ouvertes a tous</span>
+          <span style="color:var(--gold); font-weight:700;">🗣️</span><span data-fr="🗣️ organiser des rencontres citoyennes mensuelles ouvertes à tous ;" data-ar="🗣️ تنظيم لقاءات شهرية مفتوحة للمواطنين؛"> organiser des rencontres citoyennes mensuelles ouvertes à tous ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">💡</span><span data-fr="💡 Recueillir les propositions des citoyens via l'application municipale" data-ar="💡 جمع مقترحات المواطنين عبر التطبيق البلدي"> Recueillir les propositions des citoyens via l'application municipale</span>
+          <span style="color:var(--gold); font-weight:700;">💡</span><span data-fr="💡 recueillir les propositions des citoyens via l'application municipale ;" data-ar="💡 جمع مقترحات المواطنين عبر التطبيق البلدي؛"> recueillir les propositions des citoyens via l'application municipale ;</span>
+        </div>
         <div style="padding:12px; background:var(--glass); border-radius:10px; border:1px solid var(--glass-border);">
-          <span style="color:var(--gold); font-weight:700;">🤝</span><span data-fr="🤝 Associer les habitants aux decisions concernant leur commune" data-ar="🤝 إشراك السكان في القرارات المتعلقة ببلديتهم"> Associer les habitants aux decisions concernant leur commune</span>
+          <span style="color:var(--gold); font-weight:700;">🤝</span><span data-fr="🤝 associer les habitants aux décisions concernant leur commune." data-ar="🤝 إشراك السكان في القرارات المتعلقة ببلديتهم."> associer les habitants aux décisions concernant leur commune.</span>
+        </div>
       </div>
       <p style="margin-top:15px; font-weight:600; color:var(--gold);"
-         data-fr="Objectif : construire une municipalite ouverte, a l'ecoute et proche des citoyens."
-         data-ar="الهدف: بناء بلدية منفتحة، مستمعة وقريبة من المواطنين."
-         data-en="Objective: build an open, listening and close-to-citizens municipality.">Objectif : construire une municipalite ouverte, a l'ecoute et proche des citoyens.</p>
+         data-fr="Notre objectif est de construire une municipalité ouverte, à l'écoute et proche des citoyens."
+         data-ar="هدفنا هو بناء بلدية منفتحة، مستمعة وقريبة من المواطنين."
+         data-en="Our objective is to build an open, listening and close-to-citizens municipality.">Notre objectif est de construire une municipalité ouverte, à l'écoute et proche des citoyens.</p>
       <span class="program-tag" data-fr="Gouvernance" data-ar="الحوكمة" data-en="Governance">Gouvernance</span>
     </div>
-
   </div>
 
   <!-- NOTRE ENGAGEMENT FINAL -->
   <div style="max-width:1200px; margin:60px auto 0;" class="animate-on-scroll anim-up">
     <div style="background:linear-gradient(145deg, rgba(0,71,171,0.2), rgba(0,166,81,0.15), rgba(200,16,46,0.1)); border:1px solid var(--glass-border); border-radius:24px; padding:50px; text-align:center; position:relative; overflow:hidden;">
       <div style="position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--rnd-blue), var(--rnd-green), var(--rnd-red));"></div>
-      <h3 style="font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:25px; color:#fff;"><span data-fr="Notre Engagement" data-ar="التزامنا">Notre Engagement</span></h3>
-      <p style="font-size:1.1rem; line-height:1.9; color:rgba(255,255,255,0.85); max-width:800px; margin:0 auto 20px;">
-        <span data-fr="Notre programme est fonde sur des projets concrets, realisables et financierement responsables. Nous ne promettons pas des projets irrealisables ou dependants de financements incertains." data-ar="برنامجنا مبني على مشاريع ملموسة وقابلة للتحقيق ومالياً مسؤولة. نحن لا نعد بمشاريع غير قابلة للتحقيق أو تعتمد على تمويلات غير مؤكدة.">Notre programme est fonde sur des projets concrets, realisables et financierement responsables. Nous ne promettons pas des projets irrealisables ou dependants de financements incertains.</span>
-      </p>
-      <p style="font-size:1.05rem; line-height:1.9; color:rgba(255,255,255,0.85); max-width:800px; margin:0 auto 25px;">
-        <span data-fr="Nous voulons creer une economie locale forte, developper le commerce, soutenir le tourisme, ameliorer les services publics, proteger notre environnement et faire d'Ain El Turck une commune moderne, dynamique et exemplaire." data-ar="نريد إنشاء اقتصاد محلي قوي، وتطوير التجارة، ودعم السياحة، وتحسين الخدمات العامة، وحماية بيئتنا، وجعل عين الترك بلدية حديثة وديناميكية ومثالية.">Nous voulons creer une economie locale forte, developper le commerce, soutenir le tourisme, ameliorer les services publics, proteger notre environnement et faire d'Ain El Turck une commune moderne, dynamique et exemplaire.</span>
-      </p>
-      <p style="font-size:1.2rem; font-weight:700; color:var(--accent-cyan); font-style:italic;">
-        <span data-fr="Ensemble, faisons d'Ain El Turck une commune ou il fait bon vivre, investir, travailler et accueillir les visiteurs." data-ar="معاً، لنجعل عين الترك بلدية يحسن العيش فيها والاستثمار والعمل واستقبال الزوار.">Ensemble, faisons d'Ain El Turck une commune ou il fait bon vivre, investir, travailler et accueillir les visiteurs.</span>
-      </p>
+      <h3 style="font-family:'Roboto', sans-serif; font-size:2rem; margin-bottom:25px; color:#fff; font-weight:900; letter-spacing:-0.02em;"
+          data-fr="Notre engagement"
+          data-ar="التزامنا"
+          data-en="Our commitment">Notre engagement</h3>
+      <p style="font-size:1.1rem; line-height:1.9; color:rgba(255,255,255,0.85); max-width:800px; margin:0 auto 20px;"
+         data-fr="Notre programme est fondé sur des projets concrets, réalisables et financièrement responsables."
+         data-ar="برنامجنا مبني على مشاريع ملموسة وقابلة للتحقيق ومالياً مسؤولة."
+         data-en="Our program is based on concrete, achievable and financially responsible projects.">Notre programme est fondé sur des projets concrets, réalisables et financièrement responsables.</p>
+      <p style="font-size:1.05rem; line-height:1.9; color:rgba(255,255,255,0.85); max-width:800px; margin:0 auto 20px;"
+         data-fr="Nous ne promettons pas des projets irréalisables ou dépendants de financements incertains."
+         data-ar="نحن لا نعد بمشاريع غير قابلة للتحقيق أو تعتمد على تمويلات غير مؤكدة."
+         data-en="We do not promise unachievable projects or projects dependent on uncertain funding.">Nous ne promettons pas des projets irréalisables ou dépendants de financements incertains.</p>
+      <p style="font-size:1.05rem; line-height:1.9; color:rgba(255,255,255,0.85); max-width:800px; margin:0 auto 25px;"
+         data-fr="Nous voulons créer une économie locale forte, développer le commerce, soutenir le tourisme, améliorer les services publics, protéger notre environnement et faire d'Aïn El Turck une commune moderne, dynamique et exemplaire."
+         data-ar="نريد إنشاء اقتصاد محلي قوي، وتطوير التجارة، ودعم السياحة، وتحسين الخدمات العامة، وحماية بيئتنا، وجعل عين الترك بلدية حديثة وديناميكية ومثالية."
+         data-en="We want to create a strong local economy, develop commerce, support tourism, improve public services, protect our environment and make Ain El Turck a modern, dynamic and exemplary municipality.">Nous voulons créer une économie locale forte, développer le commerce, soutenir le tourisme, améliorer les services publics, protéger notre environnement et faire d'Aïn El Turck une commune moderne, dynamique et exemplaire.</p>
+      <p style="font-size:1.2rem; font-weight:700; color:var(--accent-cyan); font-style:italic;"
+         data-fr="Ensemble, faisons d'Aïn El Turck une commune où il fait bon vivre, investir, travailler et accueillir les visiteurs."
+         data-ar="معا، لنجعل عين الترك بلدية يحسن العيش فيها والاستثمار والعمل واستقبال الزوار."
+         data-en="Together, let us make Ain El Turck a municipality where it is good to live, invest, work and welcome visitors.">Ensemble, faisons d'Aïn El Turck une commune où il fait bon vivre, investir, travailler et accueillir les visiteurs.</p>
       <div style="margin-top:30px; display:flex; justify-content:center; gap:10px;">
         <span style="width:40px; height:4px; background:var(--rnd-blue); border-radius:2px;"></span>
         <span style="width:40px; height:4px; background:var(--rnd-green); border-radius:2px;"></span>
@@ -703,7 +996,6 @@
     </div>
   </div>
 </section>
-
 <!-- TIMELINE -->
 <section class="timeline" id="engagement">
   <div class="section-header animate-on-scroll anim-up">
@@ -764,6 +1056,15 @@
            data-en="Candidacy in municipal elections with an ambitious program to transform Ain El Turk and improve everyone's daily life.">Candidature aux elections communales avec un programme ambitieux pour transformer Ain El Turk et ameliorer le quotidien de tous.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- PARALLAX IMAGE 3 -->
+<section class="parallax-section" style="background-image: url('1000011156.jpg');">
+  <div class="parallax-overlay"></div>
+  <div class="parallax-content">
+    <h2 data-fr="Rejoignez le Mouvement" data-ar="انضم إلى الحركة" data-en="Join the Movement">Rejoignez le Mouvement</h2>
+    <p data-fr="Votre voix compte. Votre engagement fait la différence." data-ar="صوتك مهم. التزامك يحدث الفرق." data-en="Your voice matters. Your commitment makes the difference.">Votre voix compte. Votre engagement fait la différence.</p>
   </div>
 </section>
 
@@ -1014,15 +1315,23 @@
     document.querySelectorAll('[data-fr]').forEach(el => {
       const text = el.getAttribute('data-' + lang);
       if (text) {
-        // For elements with HTML inside (like h1 with span), use innerHTML if it contains HTML
         if (text.includes('<')) {
           el.innerHTML = text;
         } else {
-          // For simple elements or translation spans, set textContent
-          // This works for both direct elements and nested translation spans
-          if (el.tagName === 'SPAN' && el.parentElement && el.parentElement.querySelectorAll('[data-fr]').length > 1) {
-            // This is a nested translation span - just update its text
-            el.textContent = ' ' + text;
+          // For translation spans inside other elements
+          if (el.tagName === 'SPAN' && el.parentElement) {
+            // Check if this is a nested translation span
+            const parentHasData = el.parentElement.hasAttribute('data-fr');
+            if (!parentHasData) {
+              // This is a standalone translation span
+              el.textContent = text;
+            } else {
+              // This is inside an element that also has data-fr
+              // Only update if this span is the main text container
+              if (el.children.length === 0) {
+                el.textContent = text;
+              }
+            }
           } else if (el.children.length === 0 || el.childNodes.length === 1) {
             el.textContent = text;
           } else {
@@ -1046,21 +1355,18 @@
 
     // Update placeholder text for inputs
     const placeholders = {
-      fr: { nom: 'Votre nom', prenom: 'Votre prenom', email: 'votre@email.com', telephone: '+213 5XX XXX XXX', age: 'Votre age', profession: 'Votre profession', adresse: 'Votre adresse a Ain El Turk', message: 'Dites-nous pourquoi vous souhaitez rejoindre le RND...' },
+      fr: { nom: 'Votre nom', prenom: 'Votre prénom', email: 'votre@email.com', telephone: '+213 5XX XXX XXX', age: 'Votre âge', profession: 'Votre profession', adresse: 'Votre adresse à Aïn El Turk', message: 'Dites-nous pourquoi vous souhaitez rejoindre le RND...' },
       ar: { nom: 'اسمك', prenom: 'اسمك الأول', email: 'بريدك@email.com', telephone: '+213 5XX XXX XXX', age: 'عمرك', profession: 'مهنتك', adresse: 'عنوانك في عين الترك', message: 'أخبرنا لماذا ترغب في الانضمام إلى التجمع...' },
       en: { nom: 'Your last name', prenom: 'Your first name', email: 'your@email.com', telephone: '+213 5XX XXX XXX', age: 'Your age', profession: 'Your profession', adresse: 'Your address in Ain El Turk', message: 'Tell us why you want to join the RND...' }
     };
 
     const ph = placeholders[lang];
     if (ph) {
-      document.getElementById('nom').placeholder = ph.nom;
-      document.getElementById('prenom').placeholder = ph.prenom;
-      document.getElementById('email').placeholder = ph.email;
-      document.getElementById('telephone').placeholder = ph.telephone;
-      document.getElementById('age').placeholder = ph.age;
-      document.getElementById('profession').placeholder = ph.profession;
-      document.getElementById('adresse').placeholder = ph.adresse;
-      document.getElementById('message').placeholder = ph.message;
+      const fields = ['nom', 'prenom', 'email', 'telephone', 'age', 'profession', 'adresse', 'message'];
+      fields.forEach(field => {
+        const el = document.getElementById(field);
+        if (el && ph[field]) el.placeholder = ph[field];
+      });
     }
 
     // Update typewriter phrases

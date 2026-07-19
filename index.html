@@ -15,6 +15,9 @@
     --accent-cyan: #00d4ff; --accent-pink: #ff006e; --gold: #d4af37;
     --text-light: #ffffff; --text-dark: #1a1a2e;
     --glass: rgba(255,255,255,0.08); --glass-border: rgba(255,255,255,0.15);
+    --bg-dark: #0a1628;
+  }
+
   /* ===== PROFILE PHOTO ===== */
   .avatar-photo {
     width: 140px;
@@ -145,13 +148,11 @@
   [dir="rtl"] body, [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] p, [dir="rtl"] span, [dir="rtl"] a, [dir="rtl"] button, [dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select, [dir="rtl"] label, [dir="rtl"] div {
     font-family: 'Noto Sans Arabic', 'Al Jazeera Arabic', sans-serif !important;
   }
-
-  }
   * { margin: 0; padding: 0; box-sizing: border-box; }  * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   html { -webkit-text-size-adjust: 100%; }
   img { max-width: 100%; height: auto; display: block; }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
   body { font-family: 'Roboto', 'Noto Sans Arabic', sans-serif; background: var(--rnd-dark); color: var(--text-light); overflow-x: hidden; }
 
   @keyframes parallax-zoom {
@@ -214,7 +215,7 @@
   .hero-visual .ring-outer { position: absolute; width: min(420px, 90vw); height: min(420px, 90vw); border: 2px solid rgba(0,212,255,0.2); border-radius: 50%; animation: rotate-slow 30s linear infinite; }
   .hero-visual .ring-inner { position: absolute; width: min(360px, 75vw); height: min(360px, 75vw); border: 2px dashed rgba(255,0,110,0.3); border-radius: 50%; animation: rotate-slow 20s linear infinite reverse; }
   .hero-visual .ring-dots { position: absolute; width: min(480px, 100vw); height: min(480px, 100vw); border-radius: 50%; border: 1px dotted rgba(255,255,255,0.1); animation: rotate-slow 40s linear infinite; }
-  .hero-visual .candidate-card { position: relative; width: min(320px, 80vw); height: min(400px, 100vw); background: linear-gradient(145deg,rgba(0,71,171,0.2),rgba(0,166,81,0.15)); border-radius: 24px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); animation: float 6s ease-in-out infinite; }
+  .hero-visual .candidate-card { position: relative; width: min(320px, 80vw); min-height: min(400px, 100vw); background: linear-gradient(145deg,rgba(0,71,171,0.2),rgba(0,166,81,0.15)); border-radius: 24px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); animation: float 6s ease-in-out infinite; }
   .candidate-card .avatar { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg,var(--rnd-blue),var(--rnd-green)); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 900; color: #fff; margin-bottom: 20px; border: 4px solid rgba(255,255,255,0.2); box-shadow: 0 10px 40px rgba(0,71,171,0.4); }
   .candidate-card h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; text-align: center; }
   .candidate-card .role { font-size: 0.8rem; color: var(--accent-cyan); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; text-align: center; }
@@ -346,6 +347,23 @@
     padding: 60px 40px;
     max-width: 800px;
   }
+  .parallax-label {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--accent-cyan);
+    margin-bottom: 16px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  }
+  .parallax-line {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--gold));
+    margin: 20px auto;
+    border-radius: 2px;
+  }
   .parallax-content h2 {
     font-family: 'Roboto', sans-serif;
     font-size: clamp(2rem, 4vw, 3.5rem);
@@ -470,7 +488,7 @@
     .hero-btns { justify-content: center; flex-direction: column; align-items: center; gap: 12px; }
     .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
     .hero-visual { max-width: 320px; margin: 0 auto; }
-    .hero-visual .candidate-card { width: 260px; height: 340px; padding: 25px; }
+    .hero-visual .candidate-card { width: 260px; min-height: 340px; padding: 25px; }
     .hero-visual .ring-outer { width: 300px; height: 300px; }
     .hero-visual .ring-inner { width: 260px; height: 260px; }
     .hero-visual .ring-dots { width: 360px; height: 360px; }
@@ -560,7 +578,7 @@
     .hero-text h3 { font-size: 0.7rem; }
     .hero-text p { font-size: 0.9rem; }
     .hero-visual { max-width: 280px; }
-    .hero-visual .candidate-card { width: 220px; height: 300px; padding: 20px; }
+    .hero-visual .candidate-card { width: 220px; min-height: 300px; padding: 20px; }
     .hero-visual .ring-outer { width: 260px; height: 260px; }
     .hero-visual .ring-inner { width: 220px; height: 220px; }
     .hero-visual .ring-dots { width: 300px; height: 300px; }
@@ -643,7 +661,7 @@
   /* Extra small (360px and below) */
   @media (max-width: 360px) {
     .hero-text h1 { font-size: 1.3rem; }
-    .hero-visual .candidate-card { width: 200px; height: 280px; }
+    .hero-visual .candidate-card { width: 200px; min-height: 280px; }
     .hero-visual .ring-outer { width: 240px; height: 240px; }
     .hero-visual .ring-inner { width: 200px; height: 200px; }
     .hero-visual .avatar { width: 90px; height: 90px; font-size: 1.8rem; }
@@ -741,11 +759,32 @@
       <div class="ring-inner"></div>
       <div class="ring-dots"></div>
       <div class="candidate-card">
-        <div class="avatar">ZN</div>
+        <div class="avatar-photo">
+          <img src="assets/images/nabil-zenasni-profile.jpg" alt="Zenasni Nabil">
+        </div>
         <h2>Zenasni Nabil</h2>
         <div class="role" data-fr="Secretaire" data-ar="الأمين" data-en="Secretary">Secretaire</div>
         <div class="location" data-fr="Ain El Turk, Oran, Algerie" data-ar="عين الترك، وهران، الجزائر" data-en="Ain El Turk, Oran, Algeria">Ain El Turk, Oran, Algerie</div>
         <div class="rnd-badge">RND - RND</div>
+        <div class="audio-player-container">
+          <button class="audio-play-btn" id="audioPlayBtn" type="button" onclick="toggleAudio()" aria-label="Ecouter le message audio de Nabil Zenasni">
+            <span id="audioIcon">▶</span>
+          </button>
+          <div class="audio-visualizer" id="audioVisualizer">
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+          </div>
+          <span class="audio-label" data-fr="Message audio" data-ar="رسالة صوتية" data-en="Audio message">Message audio</span>
+        </div>
+        <!-- IMPORTANT: aucun fichier audio n'existe dans le repo (assets/images ne contient que des .jpg).
+             Deposez le fichier reel a ce chemin, ou changez le src ci-dessous. -->
+        <audio id="nabilAudio" src="assets/audio/message-nabil.mp3" preload="none"></audio>
       </div>
     </div>
   </div>
@@ -1230,7 +1269,7 @@
   </div>
 
   <!-- NOTRE ENGAGEMENT FINAL -->
-  <div style="max-width:1200px; margin:60px auto 0;" class="animate-on-scroll anim-up">
+  <div id="engagement" style="max-width:1200px; margin:60px auto 0;" class="animate-on-scroll anim-up">
     <div style="background:linear-gradient(145deg, rgba(0,71,171,0.2), rgba(0,166,81,0.15), rgba(200,16,46,0.1)); border:1px solid var(--glass-border); border-radius:24px; padding:50px; text-align:center; position:relative; overflow:hidden;">
       <div style="position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--rnd-blue), var(--rnd-green), var(--rnd-red));"></div>
       <h3 style="font-family:'Roboto', sans-serif; font-size:2rem; margin-bottom:25px; color:#fff; font-weight:900; letter-spacing:-0.02em;"

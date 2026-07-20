@@ -1620,6 +1620,19 @@
     isDeleting = false;
     typewriterEl.textContent = '';
 
+    // Switch the audio message to match the selected language (fr/ar have dedicated recordings, en falls back to fr)
+    const audioSources = { fr: 'assets/audio/fr.mp3', ar: 'assets/audio/ar.mp3', en: 'assets/audio/fr.mp3' };
+    if (audio && audioSources[lang] && !audio.src.endsWith(audioSources[lang])) {
+      audio.src = audioSources[lang];
+      if (audioPlaying) {
+        audio.pause();
+        audioPlaying = false;
+        audioBtn.classList.remove('playing');
+        visualizer.classList.remove('playing');
+        audioIcon.textContent = '▶';
+      }
+    }
+
     // Save preference
     localStorage.setItem('lang', lang);
   }

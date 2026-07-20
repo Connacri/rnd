@@ -1,11 +1,7 @@
-name: rnd-campaign-app-ci
+name: doro-ci
 
 on:
   push:
-    branches:
-      - main
-      - master
-  pull_request:
     branches:
       - main
       - master
@@ -121,7 +117,6 @@ jobs:
           else
             echo "WARNING: No keystore secret found. Build will use debug signing."
           fi
-
       - name: Build APK (universal)
         run: |
           flutter build apk --release \
@@ -135,13 +130,13 @@ jobs:
           VERSION="${{ needs.version.outputs.version }}"
           mkdir -p release
           cp build/app/outputs/flutter-apk/app-release.apk \
-             "release/rnd-campaign-app-android-universal-$VERSION.apk"
+             "release/doro-android-universal-$VERSION.apk"
 
       - name: Upload APK (universal)
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: release/rnd-campaign-app-android-universal-*.apk
+          path: release/doro-android-universal-*.apk
           retention-days: 30
 
   ##############################################################################
@@ -178,13 +173,13 @@ jobs:
           $VERSION = "${{ needs.version.outputs.version }}"
           New-Item -ItemType Directory -Force -Path release
           Compress-Archive -Path "build\windows\x64\runner\Release\*" `
-            -DestinationPath "release\rnd-campaign-app-windows-$VERSION.zip"
+            -DestinationPath "release\doro-windows-$VERSION.zip"
 
       - name: Upload Windows
         uses: actions/upload-artifact@v4
         with:
           name: windows-portable
-          path: release/rnd-campaign-app-windows-*.zip
+          path: release/doro-windows-*.zip
           retention-days: 30
 
   ##############################################################################
@@ -230,11 +225,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.version.outputs.version }}
-          name: RND Campaign App v${{ needs.version.outputs.version }}
+          name: Doro v${{ needs.version.outputs.version }}
           body: |
-            ## RND Campaign App v${{ needs.version.outputs.version }}
+            ## Doro v${{ needs.version.outputs.version }}
 
-            Application campagne municipale Nabil Zenasni - Ain El Turck.
+            **Réseau décentralisé P2P** — Communications, portefeuille et registre distribué.
 
             ### Ce qui a changé
             *Version automatique basée sur le dernier tag.*
@@ -242,8 +237,8 @@ jobs:
             ### 📦 Téléchargements
             | Plateforme | Fichier |
             |------------|---------|
-            | 📱 Android (universel) | `rnd-campaign-app-android-universal-${{ needs.version.outputs.version }}.apk` |
-            | 🪟 Windows | `rnd-campaign-app-windows-${{ needs.version.outputs.version }}.zip` |
+            | 📱 Android (universel) | `doro-android-universal-${{ needs.version.outputs.version }}.apk` |
+            | 🪟 Windows | `doro-windows-${{ needs.version.outputs.version }}.zip` |
           files: out/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

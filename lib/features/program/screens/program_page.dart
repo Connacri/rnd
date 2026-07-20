@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rnd_campaign_app/core/services/translation_service.dart';
+import 'package:rnd_campaign_app/core/services/program_data.dart';
 
 class ProgramPage extends StatelessWidget {
   const ProgramPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final pillars = ProgramData.getPillars();
     return Scaffold(
       appBar: AppBar(
         title: Text(TranslationService.t('programTitle')),
@@ -19,117 +21,18 @@ class ProgramPage extends StatelessWidget {
         children: [
           _SloganCard(),
           const SizedBox(height: 16),
-          _PillarCard(
-            number: '01',
-            icon: '💼',
-            title: 'Développement économique, commerce et emploi',
-            subtitle: 'Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse.',
-            accentColor: const Color(0xFF00d4ff),
-            items: const [
-              "L'ouverture d'une deuxième route reliant les deux extrémités de la commune",
-              'La réalisation des raccordements nécessaires sur cette route',
-              'La création d\'un nouveau corridor économique',
-              'La valorisation des terrains le long de cette nouvelle voie',
-              'La création d\'emplois directs et indirects',
-              'La création d\'un marché quotidien à Trouville',
-              'La création d\'un marché hebdomadaire de véhicules',
-              "L'installation de kiosques commerciaux style californien",
-              "Une base de données des commerces et associations",
-              'Des rencontres régulières entre acteurs économiques',
-            ],
-            tag: 'Développement Économique',
-          ),
-          const SizedBox(height: 16),
-          _PillarCard(
-            number: '02',
-            icon: '🚗',
-            title: 'Mobilité, circulation et transports',
-            subtitle: 'La mobilité est indispensable au développement économique.',
-            accentColor: const Color(0xFFff006e),
-            items: const [
-              "L'ouverture de la deuxième route pour fluidifier la circulation",
-              'La création de nouvelles lignes de transport en commun',
-              'De nouvelles lignes de taxis pour les quartiers éloignés',
-              'Une meilleure desserte des quartiers',
-              'Une meilleure gestion des flux routiers en été',
-              'Bâtir 6 ponts pour la déviation vers les Andalouses',
-              'Stations de transport près de Trouville, Bouisseville, Bensmir',
-            ],
-            tag: 'Mobilité',
-          ),
-          const SizedBox(height: 16),
-          _PillarCard(
-            number: '03',
-            icon: '🏖️',
-            title: 'Tourisme, plages et attractivité',
-            subtitle: 'Aïn El Turck doit devenir une référence nationale parmi les stations balnéaires.',
-            accentColor: const Color(0xFFd4af37),
-            items: const [
-              'Accès aux plages avec murs de style ottoman',
-              'Utilisation de mortiers teintés résistants à l\'humidité',
-              'Passerelles et accès en bois style californien',
-              'Brigades permanentes de nettoyage des plages',
-              'Animations de sensibilisation',
-              'Panneaux modernes de propreté et sécurité',
-              'Développement des activités nautiques',
-              'Soutien aux clubs et associations sportifs',
-              'Plateforme numérique pour citoyens et touristes',
-            ],
-            tag: 'Tourisme',
-          ),
-          const SizedBox(height: 16),
-          _PillarCard(
-            number: '04',
-            icon: '🌳',
-            title: 'Environnement, espaces verts et cadre de vie',
-            subtitle: 'Nous voulons une commune plus verte, plus agréable et plus durable.',
-            accentColor: const Color(0xFF00A651),
-            items: const [
-              "La création d'une pépinière communale",
-              'La plantation de 10 000 arbres adaptés au climat',
-              'La protection stricte du patrimoine arboricole',
-              "L'interdiction de couper les arbres hors cadre légal",
-              'Fabrication locale des aires de jeux pour parcs',
-            ],
-            tag: 'Environnement',
-          ),
-          const SizedBox(height: 16),
-          _PillarCard(
-            number: '05',
-            icon: '📱',
-            title: 'Une commune numérique et une administration moderne',
-            subtitle: 'Le citoyen doit pouvoir communiquer facilement avec sa commune.',
-            accentColor: const Color(0xFF00d4ff),
-            items: const [
-              'Signaler les problèmes avec géolocalisation',
-              'Signaler les accidents',
-              'Identifier les points noirs',
-              'Suivi en temps réel des demandes',
-              'Contacter directement le maire',
-              'Envoyer des suggestions et propositions',
-              'Suivre les réalisations de la commune',
-              'Renforcement des guichets état civil',
-              'Création d\'une cellule de veille et de crise',
-            ],
-            tag: 'Numérique',
-          ),
-          const SizedBox(height: 16),
-          _PillarCard(
-            number: '06',
-            icon: '⚖️',
-            title: 'Gouvernance, transparence et participation citoyenne',
-            subtitle: 'La confiance se construit par la transparence.',
-            accentColor: const Color(0xFFd4af37),
-            items: const [
-              "Publier l'intégralité de notre programme",
-              'Publier un bilan annuel des réalisations',
-              'Rencontres citoyennes mensuelles ouvertes à tous',
-              'Recueillir les propositions via l\'application',
-              'Associer les habitants aux décisions',
-            ],
-            tag: 'Gouvernance',
-          ),
-          const SizedBox(height: 16),
+          ...pillars.map((p) => Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _PillarCard(
+                  number: p.number,
+                  icon: p.icon,
+                  title: p.title,
+                  subtitle: p.subtitle,
+                  accentColor: p.accentColor,
+                  items: p.items,
+                  tag: p.tag,
+                ),
+              )),
           _EngagementSection(),
           const SizedBox(height: 32),
         ],

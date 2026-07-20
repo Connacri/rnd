@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/app/theme.dart';
@@ -23,6 +25,18 @@ class CampaignApp extends StatelessWidget {
           title: TranslationService.t('appName'),
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('fr'),
+            Locale('ar'),
+            Locale('en'),
+          ],
+          locale: Locale(langProvider.lang),
           builder: (context, child) {
             return Directionality(
               textDirection: langProvider.isRtl ? TextDirection.rtl : TextDirection.ltr,

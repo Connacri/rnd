@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/providers/language_provider.dart';
 import 'package:rnd_campaign_app/core/services/translation_service.dart';
@@ -35,15 +36,39 @@ class _LanguageSwitcher extends StatelessWidget {
   Widget build(BuildContext context) {
     final lang = context.watch<LanguageProvider>();
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _LangButton(label: 'FR', langCode: 'fr', currentLang: lang.lang, onTap: () => lang.setLang('fr')),
-          const SizedBox(width: 8),
-          _LangButton(label: 'AR', langCode: 'ar', currentLang: lang.lang, onTap: () => lang.setLang('ar')),
-          const SizedBox(width: 8),
-          _LangButton(label: 'EN', langCode: 'en', currentLang: lang.lang, onTap: () => lang.setLang('en')),
+          Row(
+            children: [
+              Image.asset(
+                'assets/icons/icon.jfif',
+                height: 36,
+                errorBuilder: (_, __, ___) => const SizedBox(),
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'RND',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  letterSpacing: 1.5,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _LangButton(label: 'FR', langCode: 'fr', currentLang: lang.lang, onTap: () => lang.setLang('fr')),
+              const SizedBox(width: 8),
+              _LangButton(label: 'AR', langCode: 'ar', currentLang: lang.lang, onTap: () => lang.setLang('ar')),
+              const SizedBox(width: 8),
+              _LangButton(label: 'EN', langCode: 'en', currentLang: lang.lang, onTap: () => lang.setLang('en')),
+            ],
+          ),
         ],
       ),
     );
@@ -122,7 +147,7 @@ class _HeroSection extends StatelessWidget {
             ),
             child: ClipOval(
               child: Image.asset(
-                'assets/images/nabil-zenasni-profile2.jpg',
+                'assets/icons/icon.jfif',
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => const Icon(
                   Icons.person,
@@ -182,16 +207,20 @@ class _HeroSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _HeroButton(
-                label: TranslationService.t('ourProgram'),
-                onTap: () => Navigator.pushNamed(context, AppRoutes.program),
-                primary: true,
+              Expanded(
+                child: _HeroButton(
+                  label: TranslationService.t('ourProgram'),
+                  onTap: () => Navigator.pushNamed(context, AppRoutes.program),
+                  primary: true,
+                ),
               ),
               const SizedBox(width: 12),
-              _HeroButton(
-                label: TranslationService.t('joinUs'),
-                onTap: () => Navigator.pushNamed(context, AppRoutes.membership),
-                primary: false,
+              Expanded(
+                child: _HeroButton(
+                  label: TranslationService.t('joinUs'),
+                  onTap: () => Navigator.pushNamed(context, AppRoutes.membership),
+                  primary: false,
+                ),
               ),
             ],
           ),
@@ -207,16 +236,50 @@ class _AudioPlayerWidget extends StatefulWidget {
 }
 
 class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isPlaying = false;
+  String? _lastLang;
 
-  void _togglePlay() {
-    setState(() {
-      _isPlaying = !_isPlaying;
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer.onPlayerStateChanged.listen((state) {
+      if (mounted) {
+        setState(() {
+          _isPlaying = state == PlayerState.playing;
+        });
+      }
     });
   }
 
   @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _togglePlay() async {
+    if (_isPlaying) {
+      await _audioPlayer.pause();
+    } else {
+      final lang = Provider.of<LanguageProvider>(context, listen: false).lang;
+      final audioFile = (lang == 'ar') ? 'assets/audio/ar.mp3' : 'assets/audio/fr.mp3';
+      try {
+        await _audioPlayer.play(AssetSource(audioFile));
+      } catch (e) {
+        debugPrint('Error playing audio: $e');
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final lang = context.watch<LanguageProvider>().lang;
+    if (_lastLang != null && _lastLang != lang) {
+      _audioPlayer.stop();
+    }
+    _lastLang = lang;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
@@ -512,7 +575,7 @@ class _AboutSection extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            childAspectRatio: 2.5,
+            childAspectRatio: 2.8,
             children: [
               _FeatureItem(icon: '🤝', title: TranslationService.t('proximity'), subtitle: TranslationService.t('proximityDesc')),
               _FeatureItem(icon: '💡', title: TranslationService.t('innovation'), subtitle: TranslationService.t('innovationDesc')),
@@ -540,7 +603,7 @@ class _FeatureItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.08),
         border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
@@ -553,10 +616,26 @@ class _FeatureItem extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: Colors.white)),
-                Text(subtitle, style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.5))),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 10,
+                    color: Colors.white,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 9,
+                    color: Colors.white.withValues(alpha: 0.5),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  maxLines: 1,
+                ),
               ],
             ),
           ),
@@ -638,7 +717,6 @@ class _LinkCard extends StatelessWidget {
             title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
             subtitle: Text(subtitle, style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
             trailing: Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.3)),
-            onTap: () {},
           ),
         ),
       ),

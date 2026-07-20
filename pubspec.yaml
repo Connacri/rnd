@@ -28,7 +28,7 @@ dependencies:
 
 
   # UI
-  google_fonts: ^8.2.0
+  google_fonts: ^6.1.0
   cached_network_image: ^3.4.1
 
 

@@ -24,11 +24,11 @@ dependencies:
 
 
   # Authentication
-  google_sign_in: ^6.3.0
+  google_sign_in: ^7.2.0
 
 
   # UI
-  google_fonts: ^7.1.0
+  google_fonts: ^8.2.0
   cached_network_image: ^3.4.1
 
 
@@ -49,12 +49,12 @@ dependencies:
 
 dev_dependencies:
 
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.4
 
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
   flutter_native_splash: ^2.4.1
 

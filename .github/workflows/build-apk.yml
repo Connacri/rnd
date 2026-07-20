@@ -1,15 +1,155 @@
-name: Build APK
+name: rnd-campaign-app-ci
 
 on:
   push:
-    branches: [master, main]
+    branches:
+      - main
+      - master
   pull_request:
-    branches: [master, main]
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+env:
+  FLUTTER_VERSION: stable
+
 jobs:
-  build:
+  ##############################################################################
+  # Compute next version from git tags
+  ##############################################################################
+  version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute next version
+        id: v
+        run: |
+          git fetch --tags --force
+          # Determine the starting point: latest local tag
+          LAST_TAG=$(git tag -l "v*" | sort -V | tail -n1)
+          if [ -z "$LAST_TAG" ]; then
+            LAST_TAG="v1.0.0"
+          fi
+          VERSION=${LAST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          # Keep incrementing until we find a tag that doesn't exist
+          while : ; do
+            PATCH=$((PATCH + 1))
+            CANDIDATE="$MAJOR.$MINOR.$PATCH"
+            if ! git tag -l "v$CANDIDATE" | grep -q .; then
+              break
+            fi
+          done
+
+          echo "version=$CANDIDATE" >> "$GITHUB_OUTPUT"
+          echo "Computed version: $CANDIDATE"
+
+  ##############################################################################
+  # Quality: lint + test
+  ##############################################################################
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+
+      - name: Test
+        run: flutter test
+
+  ##############################################################################
+  # Build Android APK (signed with keystore from GitHub Secrets)
+  ##############################################################################
+  build-android:
+    needs: [version, quality]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Decode keystore
+        run: |
+          if [ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]; then
+            printf '%s' "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
+            echo "Keystore decoded from secret"
+          fi
+
+      - name: Create key.properties
+        run: |
+          if [ -f android/app/upload-keystore.jks ]; then
+            echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" > android/key.properties
+            echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
+            echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
+            echo "storeFile=upload-keystore.jks" >> android/key.properties
+            echo "key.properties created with release signing"
+          else
+            echo "WARNING: No keystore secret found. Build will use debug signing."
+          fi
+
+      - name: Build APK (universal)
+        run: |
+          flutter build apk --release \
+            --build-name=${{ needs.version.outputs.version }} \
+            --build-number=${{ github.run_number }} \
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+
+      - name: Prepare artifacts
+        run: |
+          VERSION="${{ needs.version.outputs.version }}"
+          mkdir -p release
+          cp build/app/outputs/flutter-apk/app-release.apk \
+             "release/rnd-campaign-app-android-universal-$VERSION.apk"
+
+      - name: Upload APK (universal)
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: release/rnd-campaign-app-android-universal-*.apk
+          retention-days: 30
+
+  ##############################################################################
+  # Build Windows (portable ZIP only; installer optional)
+  ##############################################################################
+  build-windows:
+    needs: [version, quality]
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -17,23 +157,93 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-
-      - name: Enable windows-desktop (workaround)
-        run: |
-          flutter config --enable-windows-desktop 2>/dev/null || true
+          channel: ${{ env.FLUTTER_VERSION }}
+          cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Analyze
-        run: flutter analyze
+      - name: Build Windows
+        shell: pwsh
+        run: |
+          flutter build windows --release `
+            --build-name=${{ needs.version.outputs.version }} `
+            --build-number=${{ github.run_number }} `
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} `
+            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
 
-      - name: Build APK
-        run: flutter build apk --release --split-per-abi
+      - name: Package portable ZIP
+        shell: pwsh
+        run: |
+          $VERSION = "${{ needs.version.outputs.version }}"
+          New-Item -ItemType Directory -Force -Path release
+          Compress-Archive -Path "build\windows\x64\runner\Release\*" `
+            -DestinationPath "release\rnd-campaign-app-windows-$VERSION.zip"
 
-      - name: Upload APKs
+      - name: Upload Windows
         uses: actions/upload-artifact@v4
         with:
-          name: apk-release
-          path: build/app/outputs/flutter-apk/*.apk
+          name: windows-portable
+          path: release/rnd-campaign-app-windows-*.zip
+          retention-days: 30
+
+  ##############################################################################
+  # Create GitHub Release + tag
+  ##############################################################################
+  publish:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    needs: [version, build-android, build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -la out/
+
+      - name: Create Git Tag
+        run: |
+          git fetch --tags --force
+          TAG="v${{ needs.version.outputs.version }}"
+          if git tag -l "$TAG" | grep -q .; then
+            echo "Tag $TAG already exists, skipping"
+            echo "exists=true" >> "$GITHUB_ENV"
+          else
+            echo "exists=false" >> "$GITHUB_ENV"
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.version.outputs.version }}
+          name: RND Campaign App v${{ needs.version.outputs.version }}
+          body: |
+            ## RND Campaign App v${{ needs.version.outputs.version }}
+
+            Application campagne municipale Nabil Zenasni - Ain El Turck.
+
+            ### Ce qui a changé
+            *Version automatique basée sur le dernier tag.*
+
+            ### 📦 Téléchargements
+            | Plateforme | Fichier |
+            |------------|---------|
+            | 📱 Android (universel) | `rnd-campaign-app-android-universal-${{ needs.version.outputs.version }}.apk` |
+            | 🪟 Windows | `rnd-campaign-app-windows-${{ needs.version.outputs.version }}.zip` |
+          files: out/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

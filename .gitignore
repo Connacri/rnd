@@ -1,7 +1,7 @@
 .opencode
 .agents
 .claude
-scratch/
+lib/scratch/
 # Flutter
 .dart_tool/
 .flutter-plugins

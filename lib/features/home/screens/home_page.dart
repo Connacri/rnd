@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: const Color(0xFF0a1628),
       body: SafeArea(
         child: SingleChildScrollView(
-        child: Column(
+          child: Column(
           children: [
             const _HomeTopBar(),
             const _HeroSection(),
@@ -26,6 +26,7 @@ class HomePage extends StatelessWidget {
             const _QuickLinksSection(),
             const _FooterSection(),
           ],
+        ),
         ),
       ),
     );

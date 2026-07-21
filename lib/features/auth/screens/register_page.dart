@@ -122,8 +122,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(l.haveAccount),
-            ),
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -131,5 +131,4 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-}
 }

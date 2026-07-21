@@ -110,8 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushNamed(context, AppRoutes.register);
                   },
                   child: Text(l.noAccount),
-            ),
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -119,5 +119,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
 }

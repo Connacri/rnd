@@ -129,6 +129,17 @@ jobs:
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
             --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
 
+      - name: Verify APK signature
+        run: |
+          APK=build/app/outputs/flutter-apk/app-release.apk
+          if unzip -l "$APK" | grep -q "META-INF/"; then
+            echo "✅ APK signé — certificat :"
+            keytool -printcert -jarfile "$APK" 2>&1 | grep -E "Owner|Issuer" || true
+          else
+            echo "❌ APK NON signé !"
+            exit 1
+          fi
+
       - name: Prepare artifact
         run: |
           VERSION="${{ needs.version.outputs.version }}"

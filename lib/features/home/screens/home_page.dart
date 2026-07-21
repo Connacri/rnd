@@ -252,7 +252,7 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
       await _audioPlayer.pause();
     } else {
       final lang = Provider.of<LanguageProvider>(context, listen: false).lang;
-      final audioFile = (lang == 'ar') ? 'assets/audio/ar.mp3' : 'assets/audio/fr.mp3';
+      final audioFile = (lang == 'ar') ? 'audio/ar.mp3' : 'audio/fr.mp3';
       try {
         await _audioPlayer.play(AssetSource(audioFile));
       } catch (e) {
@@ -777,6 +777,12 @@ class _FooterSection extends StatelessWidget {
             l.rights,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.3)),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '© Developed by FORSLOG LTD — Codded by Ramzy Guedouar — Contact: 0696 41 09 53',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.2)),
           ),
         ],
       ),

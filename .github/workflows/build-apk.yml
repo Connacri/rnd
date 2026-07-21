@@ -142,16 +142,15 @@ jobs:
 
       - name: Prepare artifact
         run: |
-          VERSION="${{ needs.version.outputs.version }}"
           mkdir -p release
           cp build/app/outputs/flutter-apk/app-release.apk \
-             "release/rnd-android-v$VERSION.apk"
+             release/rnd-android.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: release/rnd-android-v*.apk
+          path: release/rnd-android.apk
           retention-days: 30
 
   ##############################################################################
@@ -212,20 +211,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Update APK download link in index.html
-        run: |
-          VERSION="${{ needs.version.outputs.version }}"
-          sed -i "s|https://github.com/Connacri/rnd/releases/download/v[0-9.]*/rnd-android-v[0-9.]*\.apk|https://github.com/Connacri/rnd/releases/download/v${VERSION}/rnd-android-v${VERSION}.apk|g" index.html
-          if git diff --quiet index.html; then
-            echo "No change needed"
-          else
-            git config user.name "github-actions"
-            git config user.email "github-actions@github.com"
-            git add index.html
-            git commit -m "auto: update APK download link to v${VERSION}"
-            git push
-          fi
-
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -263,7 +248,7 @@ jobs:
             ### 📦 Téléchargements
             | Plateforme | Fichier |
             |------------|---------|
-            | 📱 Android | `rnd-android-v${{ needs.version.outputs.version }}.apk` |
+            | 📱 Android | `rnd-android.apk` |
             | 🪟 Windows (portable) | `rnd-windows-v${{ needs.version.outputs.version }}.zip` |
 
             ### 🔐 Sécurité

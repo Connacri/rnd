@@ -212,6 +212,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Update APK download link in index.html
+        run: |
+          VERSION="${{ needs.version.outputs.version }}"
+          sed -i "s|https://github.com/Connacri/rnd/releases/download/v[0-9.]*/rnd-android-v[0-9.]*\.apk|https://github.com/Connacri/rnd/releases/download/v${VERSION}/rnd-android-v${VERSION}.apk|g" index.html
+          if git diff --quiet index.html; then
+            echo "No change needed"
+          else
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add index.html
+            git commit -m "auto: update APK download link to v${VERSION}"
+            git push
+          fi
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:

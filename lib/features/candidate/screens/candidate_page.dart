@@ -15,8 +15,9 @@ class CandidatePage extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       backgroundColor: const Color(0xFF0a1628),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      body: SafeArea(
+        child: ListView(
+        padding: const EdgeInsets.all(20),
         children: [
           const SizedBox(height: 16),
           Center(
@@ -144,17 +145,17 @@ class CandidatePage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0x260047AB), Color(0x1A00A651)],
-              ),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                const Text('💡', style: TextStyle(fontSize: 24)),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0x260047AB), Color(0x1A00A651)],
+        ),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          const Text('💡', style: TextStyle(fontSize: 28)),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
@@ -188,6 +189,7 @@ class CandidatePage extends StatelessWidget {
           ),
           const SizedBox(height: 32),
         ],
+      ),
       ),
     );
   }
@@ -224,23 +226,24 @@ class _ValueCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.05),
         border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
-          Text(icon, style: const TextStyle(fontSize: 22)),
-          const SizedBox(width: 8),
+          Text(icon, style: const TextStyle(fontSize: 28)),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: Colors.white)),
-                Text(subtitle, style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.5))),
+                Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white)),
+                const SizedBox(height: 2),
+                Text(subtitle, style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.5))),
               ],
             ),
           ),

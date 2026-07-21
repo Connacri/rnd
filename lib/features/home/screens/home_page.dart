@@ -15,7 +15,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0a1628),
-      body: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
         child: Column(
           children: [
             const _HomeTopBar(),
@@ -375,7 +376,7 @@ class _StatsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0x4D0047AB), Color(0x3300A651)],
@@ -418,7 +419,7 @@ class _StatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.08),
         border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
@@ -427,8 +428,8 @@ class _StatItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(icon, style: const TextStyle(fontSize: 22)),
-          const SizedBox(height: 4),
+          Text(icon, style: const TextStyle(fontSize: 28)),
+          const SizedBox(height: 6),
           ShaderMask(
             shaderCallback: (bounds) => const LinearGradient(
               colors: [Color(0xFF00d4ff), Color(0xFFd4af37)],
@@ -436,18 +437,18 @@ class _StatItem extends StatelessWidget {
             child: Text(
               number,
               style: GoogleFonts.roboto(
-                fontSize: 18,
+                fontSize: 22,
                 fontWeight: FontWeight.w900,
                 color: Colors.white,
               ),
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
-              fontSize: 10,
-              color: Colors.white.withValues(alpha: 0.5),
+              fontSize: 12,
+              color: Colors.white.withValues(alpha: 0.6),
               letterSpacing: 1,
             ),
           ),
@@ -468,7 +469,7 @@ class _AboutSection extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             decoration: BoxDecoration(
               border: Border.all(color: const Color(0xFF00d4ff).withValues(alpha: 0.3)),
               borderRadius: BorderRadius.circular(50),
@@ -476,36 +477,36 @@ class _AboutSection extends StatelessWidget {
             child: Text(
               l.whoWeAre,
               style: const TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF00d4ff),
                 letterSpacing: 3,
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Text(
             l.rndDescription,
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: FontWeight.w900,
               color: Colors.white,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Text(
             l.rndDescText,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               color: Colors.white.withValues(alpha: 0.6),
-              height: 1.6,
+              height: 1.7,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [Color(0x260047AB), Color(0x1A00A651)],
@@ -545,26 +546,26 @@ class _AboutSection extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
           Text(
             l.commitment,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 24,
               fontWeight: FontWeight.w700,
               color: Color(0xFF00d4ff),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Text(
             l.commitmentText,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               color: Colors.white.withValues(alpha: 0.7),
               height: 1.7,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
@@ -599,16 +600,16 @@ class _FeatureItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.08),
         border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         children: [
-          Text(icon, style: const TextStyle(fontSize: 20)),
-          const SizedBox(width: 8),
+          Text(icon, style: const TextStyle(fontSize: 26)),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -618,19 +619,18 @@ class _FeatureItem extends StatelessWidget {
                   title,
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: 10,
+                    fontSize: 14,
                     color: Colors.white,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                const SizedBox(height: 2),
                 Text(
                   subtitle,
                   style: TextStyle(
-                    fontSize: 9,
-                    color: Colors.white.withValues(alpha: 0.5),
-                    overflow: TextOverflow.ellipsis,
+                    fontSize: 12,
+                    color: Colors.white.withValues(alpha: 0.6),
                   ),
-                  maxLines: 1,
+                  maxLines: 2,
                 ),
               ],
             ),
@@ -651,28 +651,28 @@ class _QuickLinksSection extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
           _LinkCard(
             icon: '👤',
             title: l.candidate,
             subtitle: l.learnMore,
             onTap: () => Navigator.pushNamed(context, AppRoutes.candidate),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           _LinkCard(
             icon: '📋',
             title: l.program,
             subtitle: l.discoverProgram,
             onTap: () => Navigator.pushNamed(context, AppRoutes.program),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           _LinkCard(
             icon: '✋',
             title: l.membership,
             subtitle: l.joinMovement,
             onTap: () => Navigator.pushNamed(context, AppRoutes.membership),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           _LinkCard(
             icon: '📅',
             title: l.events,
@@ -706,18 +706,19 @@ class _LinkCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
-        child: Ink(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-            borderRadius: BorderRadius.circular(16),
+          child: Ink(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: ListTile(
+              leading: Text(icon, style: const TextStyle(fontSize: 36)),
+              title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white)),
+              subtitle: Text(subtitle, style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.5))),
+              trailing: Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.3)),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            ),
           ),
-          child: ListTile(
-            leading: Text(icon, style: const TextStyle(fontSize: 32)),
-            title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white)),
-            subtitle: Text(subtitle, style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
-            trailing: Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.3)),
-          ),
-        ),
       ),
     );
   }
@@ -730,7 +731,7 @@ class _FooterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
+      padding: const EdgeInsets.fromLTRB(24, 48, 24, 32),
       color: const Color(0xFF070f1a),
       child: Column(
         children: [

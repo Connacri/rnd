@@ -17,8 +17,9 @@ class ProgramPage extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       backgroundColor: const Color(0xFF0a1628),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      body: SafeArea(
+        child: ListView(
+        padding: const EdgeInsets.all(20),
         children: [
           _SloganCard(),
           const SizedBox(height: 16),
@@ -38,6 +39,7 @@ class ProgramPage extends StatelessWidget {
           const SizedBox(height: 32),
         ],
       ),
+      ),
     );
   }
 }
@@ -47,7 +49,7 @@ class _SloganCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0x330047AB), Color(0x3300A651)],
@@ -57,16 +59,16 @@ class _SloganCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text('💎', style: TextStyle(fontSize: 40)),
-          const SizedBox(height: 12),
+          const Text('💎', style: TextStyle(fontSize: 48)),
+          const SizedBox(height: 16),
           Text(
             l.slogan,
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
-              fontSize: 16,
+              fontSize: 18,
               fontStyle: FontStyle.italic,
               color: Colors.white.withValues(alpha: 0.9),
-              height: 1.5,
+              height: 1.6,
             ),
           ),
         ],
@@ -97,7 +99,7 @@ class _PillarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -113,13 +115,13 @@ class _PillarCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(icon, style: const TextStyle(fontSize: 36)),
-              const SizedBox(width: 12),
+              Text(icon, style: const TextStyle(fontSize: 40)),
+              const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   title,
                   style: GoogleFonts.roboto(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
@@ -127,30 +129,30 @@ class _PillarCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Text(
             subtitle,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               color: accentColor,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           ...items.map(
             (item) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('• ', style: TextStyle(color: accentColor)),
+                  Text('• ', style: TextStyle(color: accentColor, fontSize: 16)),
                   Expanded(
                     child: Text(
                       item,
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 15,
                         color: Colors.white.withValues(alpha: 0.6),
-                        height: 1.4,
+                        height: 1.5,
                       ),
                     ),
                   ),
@@ -158,9 +160,9 @@ class _PillarCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
               color: accentColor.withValues(alpha: 0.1),
               border: Border.all(color: accentColor.withValues(alpha: 0.3)),
@@ -169,7 +171,7 @@ class _PillarCard extends StatelessWidget {
             child: Text(
               tag,
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: accentColor,
                 letterSpacing: 1,
@@ -187,7 +189,7 @@ class _EngagementSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0x330047AB), Color(0x3300A651), Color(0x19C8102E)],
@@ -200,43 +202,43 @@ class _EngagementSection extends StatelessWidget {
           Text(
             l.engagement,
             style: GoogleFonts.roboto(
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: FontWeight.w900,
               color: Colors.white,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Text(
             l.engagementText1,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 15,
-              height: 1.7,
-              color: Colors.white.withValues(alpha: 0.85),
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            l.engagementText2,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
+              fontSize: 17,
               height: 1.7,
               color: Colors.white.withValues(alpha: 0.85),
             ),
           ),
           const SizedBox(height: 16),
           Text(
-            l.engagementText3,
+            l.engagementText2,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
+              height: 1.7,
+              color: Colors.white.withValues(alpha: 0.85),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            l.engagementText3,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
               fontWeight: FontWeight.w700,
               color: const Color(0xFF00d4ff),
               fontStyle: FontStyle.italic,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

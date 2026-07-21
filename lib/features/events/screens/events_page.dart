@@ -15,7 +15,8 @@ class EventsPage extends StatelessWidget {
         backgroundColor: AppTheme.bgDark,
         foregroundColor: Colors.white,
       ),
-      body: Center(
+      body: SafeArea(
+        child: Center(
         child: Padding(
           padding: const EdgeInsets.all(32),
           child: Column(
@@ -47,6 +48,7 @@ class EventsPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

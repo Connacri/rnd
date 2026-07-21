@@ -59,7 +59,8 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF0a1628),
       appBar: AppBar(title: Text(l.register)),
-      body: Center(
+      body: SafeArea(
+        child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Form(
@@ -121,12 +122,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(l.haveAccount),
-                ),
-              ],
+            ),
+              ),
             ),
           ),
+        ),
         ),
       ),
     );
   }
+}
 }

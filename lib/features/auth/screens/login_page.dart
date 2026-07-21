@@ -54,7 +54,8 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF0a1628),
-      body: Center(
+      body: SafeArea(
+        child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Form(
@@ -109,12 +110,14 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushNamed(context, AppRoutes.register);
                   },
                   child: Text(l.noAccount),
-                ),
-              ],
+            ),
+              ),
             ),
           ),
+        ),
         ),
       ),
     );
   }
+}
 }

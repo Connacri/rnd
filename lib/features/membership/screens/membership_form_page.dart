@@ -98,7 +98,8 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
         foregroundColor: Colors.white,
       ),
       backgroundColor: const Color(0xFF0a1628),
-      body: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
@@ -108,17 +109,18 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
               Text(
                 l.membershipTitle,
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontSize: 26,
                   fontWeight: FontWeight.w900,
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               Text(
                 l.membershipDesc,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   color: Colors.white.withValues(alpha: 0.6),
+                  height: 1.5,
                 ),
               ),
               const SizedBox(height: 24),
@@ -205,6 +207,7 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
             ],
           ),
         ),
+      ),
       ),
     );
   }

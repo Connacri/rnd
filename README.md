@@ -20,9 +20,9 @@ Application officielle de campagne de **Nabil Zenasni**, secrétaire du bureau c
 ## Captures d'écran
 
 <p align="center">
-  <img src="assets/images/1000011155.jpg" width="200" alt="Accueil"/>
-  <img src="assets/images/1000011156.jpg" width="200" alt="Programme"/>
-  <img src="assets/images/1000011157.jpg" width="200" alt="Adhésion"/>
+  <img src="assets/images/1000011155.png" width="200" alt="Accueil"/>
+  <img src="assets/images/1000011156.png" width="200" alt="Programme"/>
+  <img src="assets/images/1000011157.png" width="200" alt="Adhésion"/>
 </p>
 
 ## Audio

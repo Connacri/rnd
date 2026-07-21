@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
             const _StatsSection(),
             const _AboutSection(),
             const _QuickLinksSection(),
+            const _ScreenshotsSection(),
             const _FooterSection(),
           ],
         ),
@@ -720,6 +721,70 @@ class _LinkCard extends StatelessWidget {
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
           ),
+      ),
+    );
+  }
+}
+
+class _ScreenshotsSection extends StatelessWidget {
+  const _ScreenshotsSection();
+
+  @override
+  Widget build(BuildContext context) {
+    const screenshots = [
+      ('assets/images/1000011155.png', 'Accueil'),
+      ('assets/images/1000011156.png', 'Programme'),
+      ('assets/images/1000011157.png', 'Adhésion'),
+      ('assets/images/1000011158.png', 'Événements'),
+    ];
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          const SizedBox(height: 24),
+          const Text(
+            'Aperçu de l\'application',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Captures d\'écran',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.white.withValues(alpha: 0.5),
+            ),
+          ),
+          const SizedBox(height: 24),
+          ...screenshots.map((s) => Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.asset(s.$1, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const SizedBox()),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  s.$2,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white.withValues(alpha: 0.7),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          )),
+        ],
       ),
     );
   }

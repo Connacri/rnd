@@ -813,8 +813,7 @@
           </div>
           <span class="audio-label" data-fr="Message audio" data-ar="رسالة صوتية" data-en="Audio message">Message audio</span>
         </div>
-        <!-- IMPORTANT: aucun fichier audio n'existe dans le repo (assets/images ne contient que des .jpg).
-             Deposez le fichier reel a ce chemin, ou changez le src ci-dessous. -->
+        <!-- Le fichier audio existe dans assets/audio/ -->
         <audio id="nabilAudio" src="assets/audio/fr.mp3" preload="none"></audio>
       </div>
     </div>
@@ -852,7 +851,7 @@
 </div>
 
 <!-- PARALLAX IMAGE 1 -->
-<section class="parallax-section" style="background-image: url('assets/images/1000011157.jpg');" id="parallax1">
+<section class="parallax-section" style="background-image: url('assets/images/1000011157.png');" id="parallax1">
   <div class="parallax-overlay"></div>
   <div class="parallax-content">
     <div class="parallax-label" data-fr="PROGRAMME" data-ar="البرنامج" data-en="PROGRAM">PROGRAMME</div>
@@ -924,7 +923,7 @@
 </section>
 
 <!-- PARALLAX IMAGE 2 -->
-<section class="parallax-section" style="background-image: url('assets/images/1000011155.jpg');" id="parallax2">
+<section class="parallax-section" style="background-image: url('assets/images/1000011155.png');" id="parallax2">
   <div class="parallax-overlay"></div>
   <div class="parallax-content">
     <div class="parallax-label" data-fr="VISION" data-ar="الرؤية" data-en="VISION">VISION</div>
@@ -1332,7 +1331,7 @@
   </div>
 </section>
 <!-- PARALLAX IMAGE 3 -->
-<section class="parallax-section" style="background-image: url('assets/images/1000011156.jpg');" id="parallax3">
+<section class="parallax-section" style="background-image: url('assets/images/1000011156.png');" id="parallax3">
   <div class="parallax-overlay"></div>
   <div class="parallax-content">
     <div class="parallax-label" data-fr="ENGAGEMENT" data-ar="الالتزام" data-en="COMMITMENT">ENGAGEMENT</div>
@@ -1395,6 +1394,33 @@
           Envoyer ma Candidature
         </button>
       </form>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY SECTION -->
+<section class="join" id="galerie" style="background: var(--bg-dark); padding-top: 60px; padding-bottom: 60px;">
+  <div class="section-header animate-on-scroll anim-up">
+    <div class="section-tag" data-fr="Aperçu" data-ar="نظرة عامة" data-en="Overview">Aperçu</div>
+    <h2 data-fr="Découvrez l'application" data-ar="اكتشف التطبيق" data-en="Discover the app">Découvrez l'application</h2>
+    <p data-fr="Captures d'écran de l'application campagne RND"
+       data-ar="لقطات شاشة من تطبيق حملة التجمع"
+       data-en="Screenshots of the RND campaign app">Captures d'écran de l'application campagne RND</p>
+  </div>
+  <div class="join-container">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:20px; padding:0 24px;">
+      <div class="animate-on-scroll anim-scale" style="border-radius:16px; overflow:hidden; border:1px solid var(--glass-border);">
+        <img src="assets/images/1000011155.png" alt="Accueil" style="width:100%; height:auto; display:block;">
+      </div>
+      <div class="animate-on-scroll anim-scale" style="border-radius:16px; overflow:hidden; border:1px solid var(--glass-border);">
+        <img src="assets/images/1000011156.png" alt="Programme" style="width:100%; height:auto; display:block;">
+      </div>
+      <div class="animate-on-scroll anim-scale" style="border-radius:16px; overflow:hidden; border:1px solid var(--glass-border);">
+        <img src="assets/images/1000011157.png" alt="Adhésion" style="width:100%; height:auto; display:block;">
+      </div>
+      <div class="animate-on-scroll anim-scale" style="border-radius:16px; overflow:hidden; border:1px solid var(--glass-border);">
+        <img src="assets/images/1000011158.png" alt="Événements" style="width:100%; height:auto; display:block;">
+      </div>
     </div>
   </div>
 </section>

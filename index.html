@@ -237,6 +237,8 @@
   .btn-primary:hover::before { left: 100%; } .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,212,255,0.5); }
   .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 14px 34px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: all 0.4s ease; }
   .btn-secondary:hover { border-color: var(--accent-cyan); background: rgba(0,212,255,0.1); transform: translateY(-3px); }
+  .btn-download { display: inline-block; background: linear-gradient(135deg,var(--rnd-green),#008c44); color: #fff; border: none; padding: 14px 34px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; text-decoration: none; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(0,166,81,0.3); }
+  .btn-download:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,166,81,0.5); }
 
   .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; animation: fadeInRight 1.2s ease 0.4s forwards; opacity: 0; width: 100%; max-width: 400px; margin: 0 auto; }
   .hero-visual .ring-outer { position: absolute; width: min(420px, 90vw); height: min(420px, 90vw); border: 2px solid rgba(0,212,255,0.2); border-radius: 50%; animation: rotate-slow 30s linear infinite; }
@@ -513,7 +515,7 @@
     .hero-text h3 { font-size: 0.75rem; letter-spacing: 2px; }
     .hero-text p { font-size: 0.95rem; }
     .hero-btns { justify-content: center; flex-direction: column; align-items: center; gap: 12px; }
-    .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
+    .btn-primary, .btn-secondary, .btn-download { width: 100%; max-width: 300px; justify-content: center; text-align: center; }
     .hero-visual { max-width: 320px; margin: 0 auto; }
     .hero-visual .candidate-card { width: 260px; min-height: 340px; padding: 25px; }
     .hero-visual .ring-outer { width: 300px; height: 300px; }
@@ -779,6 +781,8 @@
                 data-fr="Notre Programme" data-ar="برنامجنا" data-en="Our Program">Notre Programme</button>
         <button class="btn-secondary" onclick="document.getElementById('adherer').scrollIntoView({behavior:'smooth'})"
                 data-fr="Devenir Adherent" data-ar="انضم إلينا" data-en="Join Us">Devenir Adherent</button>
+        <a href="https://github.com/Connacri/rnd/releases/download/v1.0.9/rnd-android-v1.0.9.apk" class="btn-download" target="_blank" rel="noopener"
+           data-fr="Telecharger l'APK" data-ar="تحميل التطبيق" data-en="Download APK">📱 Telecharger l'APK</a>
       </div>
     </div>
     <div class="hero-visual">

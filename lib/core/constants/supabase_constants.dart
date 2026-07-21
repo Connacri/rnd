@@ -1,6 +1,8 @@
 class SupabaseConstants {
-  static const String url = 'https://liveclvibiqcpekafnbp.supabase.co';
-  static const String anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpdmVjbHZpYmlxY3Bla2FuZmJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MzM1MzgsImV4cCI6MjEwMDEwOTUzOH0.5yPrhzp8nAa4Nibp9JNCC8hWWFxKes7lr75S7mZE2Fg';
+  /// Injectées au build via --dart-define ou --dart-define-from-file=.env
+  /// Ne JAMAIS committer de vraies valeurs ici : voir .env.example.
+  static const String url = String.fromEnvironment('SUPABASE_URL');
+  static const String anonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
   static const String tableUsers = 'users';
   static const String tableMemberships = 'memberships';

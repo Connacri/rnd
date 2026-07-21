@@ -1,4 +1,4 @@
-name: doro-ci
+name: rnd-ci
 
 on:
   push:
@@ -15,7 +15,7 @@ env:
 
 jobs:
   ##############################################################################
-  # Compute next version from git tags
+  # Calcule la prochaine version à partir des tags git existants (vX.Y.Z)
   ##############################################################################
   version:
     runs-on: ubuntu-latest
@@ -31,7 +31,6 @@ jobs:
         id: v
         run: |
           git fetch --tags --force
-          # Determine the starting point: latest local tag
           LAST_TAG=$(git tag -l "v*" | sort -V | tail -n1)
           if [ -z "$LAST_TAG" ]; then
             LAST_TAG="v1.0.0"
@@ -39,7 +38,7 @@ jobs:
           VERSION=${LAST_TAG#v}
           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
 
-          # Keep incrementing until we find a tag that doesn't exist
+          # Incrémente jusqu'à trouver un tag qui n'existe pas encore
           while : ; do
             PATCH=$((PATCH + 1))
             CANDIDATE="$MAJOR.$MINOR.$PATCH"
@@ -49,10 +48,10 @@ jobs:
           done
 
           echo "version=$CANDIDATE" >> "$GITHUB_OUTPUT"
-          echo "Computed version: $CANDIDATE"
+          echo "Version calculée : $CANDIDATE"
 
   ##############################################################################
-  # Quality: lint + test
+  # Qualité : analyse statique + tests (bloque le build si échec)
   ##############################################################################
   quality:
     runs-on: ubuntu-latest
@@ -75,7 +74,7 @@ jobs:
         run: flutter test
 
   ##############################################################################
-  # Build Android APK (signed with keystore from GitHub Secrets)
+  # Build Android APK (signé avec le keystore issu des secrets GitHub)
   ##############################################################################
   build-android:
     needs: [version, quality]
@@ -103,7 +102,9 @@ jobs:
         run: |
           if [ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]; then
             printf '%s' "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
-            echo "Keystore decoded from secret"
+            echo "Keystore décodé depuis le secret"
+          else
+            echo "⚠️  Aucun secret ANDROID_KEYSTORE_BASE64 : signature debug utilisée"
           fi
 
       - name: Create key.properties
@@ -113,10 +114,13 @@ jobs:
             echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
             echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
             echo "storeFile=upload-keystore.jks" >> android/key.properties
-            echo "key.properties created with release signing"
+            echo "✅ key.properties créé (signature release)"
           else
-            echo "WARNING: No keystore secret found. Build will use debug signing."
+            echo "⚠️  key.properties non créé : signature debug utilisée"
           fi
+
+      # Seule la clé anon (publique par design) est injectée dans le build
+      # client. La service_role key ne doit JAMAIS être passée ici.
       - name: Build APK (universal)
         run: |
           flutter build apk --release \
@@ -125,22 +129,22 @@ jobs:
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
             --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
 
-      - name: Prepare artifacts
+      - name: Prepare artifact
         run: |
           VERSION="${{ needs.version.outputs.version }}"
           mkdir -p release
           cp build/app/outputs/flutter-apk/app-release.apk \
-             "release/doro-android-universal-$VERSION.apk"
+             "release/rnd-android-v$VERSION.apk"
 
-      - name: Upload APK (universal)
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: release/doro-android-universal-*.apk
+          path: release/rnd-android-v*.apk
           retention-days: 30
 
   ##############################################################################
-  # Build Windows (portable ZIP only; installer optional)
+  # Build Windows (ZIP portable)
   ##############################################################################
   build-windows:
     needs: [version, quality]
@@ -173,19 +177,19 @@ jobs:
           $VERSION = "${{ needs.version.outputs.version }}"
           New-Item -ItemType Directory -Force -Path release
           Compress-Archive -Path "build\windows\x64\runner\Release\*" `
-            -DestinationPath "release\doro-windows-$VERSION.zip"
+            -DestinationPath "release\rnd-windows-v$VERSION.zip"
 
       - name: Upload Windows
         uses: actions/upload-artifact@v4
         with:
           name: windows-portable
-          path: release/doro-windows-*.zip
+          path: release/rnd-windows-v*.zip
           retention-days: 30
 
   ##############################################################################
-  # Create GitHub Release + tag
+  # Tag + Release GitHub avec tous les artefacts
   ##############################################################################
-  publish:
+  release:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     needs: [version, build-android, build-windows]
     runs-on: ubuntu-latest
@@ -194,6 +198,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -209,10 +215,8 @@ jobs:
           git fetch --tags --force
           TAG="v${{ needs.version.outputs.version }}"
           if git tag -l "$TAG" | grep -q .; then
-            echo "Tag $TAG already exists, skipping"
-            echo "exists=true" >> "$GITHUB_ENV"
+            echo "Le tag $TAG existe déjà, on saute"
           else
-            echo "exists=false" >> "$GITHUB_ENV"
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
             git tag "$TAG"
@@ -225,20 +229,21 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.version.outputs.version }}
-          name: Doro v${{ needs.version.outputs.version }}
+          name: RND Campagne v${{ needs.version.outputs.version }}
           body: |
-            ## Doro v${{ needs.version.outputs.version }}
+            ## RND Campagne v${{ needs.version.outputs.version }}
 
-            **Réseau décentralisé P2P** — Communications, portefeuille et registre distribué.
-
-            ### Ce qui a changé
-            *Version automatique basée sur le dernier tag.*
+            Application de campagne municipale — Nabil Zenasni, Aïn El Turck.
 
             ### 📦 Téléchargements
             | Plateforme | Fichier |
             |------------|---------|
-            | 📱 Android (universel) | `doro-android-universal-${{ needs.version.outputs.version }}.apk` |
-            | 🪟 Windows | `doro-windows-${{ needs.version.outputs.version }}.zip` |
+            | 📱 Android | `rnd-android-v${{ needs.version.outputs.version }}.apk` |
+            | 🪟 Windows (portable) | `rnd-windows-v${{ needs.version.outputs.version }}.zip` |
+
+            ### 🔐 Sécurité
+            - Clés Supabase injectées via GitHub Secrets au moment du build (aucune clé committée dans le code)
+            - APK signé avec le keystore de release (voir secrets `ANDROID_KEYSTORE_*`)
           files: out/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -25,6 +25,12 @@ android/app/build/
 *.keystore
 keystore_base64.txt
 rnd.keys.txt
+android/key.properties
 
 # Local patches
 patches/
+
+# Secrets — ne jamais committer
+.env
+.env.*
+!.env.example

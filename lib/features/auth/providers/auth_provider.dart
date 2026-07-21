@@ -9,6 +9,13 @@ class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
 
+  AuthProvider() {
+    // Restaure la session Supabase persistée localement (l'utilisateur
+    // reste connecté après un redémarrage de l'app tant que son token
+    // n'a pas expiré).
+    checkAuth();
+  }
+
   AppUser? get user => _user;
   bool get isLoading => _isLoading;
   String? get error => _error;

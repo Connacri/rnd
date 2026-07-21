@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
-import 'package:rnd_campaign_app/core/providers/language_provider.dart';
 import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
+import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -64,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
             key: _formKey,
             child: Column(
               children: [
-                _LanguageSwitcher(),
+                const LanguageSwitcher(),
                 const SizedBox(height: 24),
                 TextFormField(
                   controller: _nameController,
@@ -129,57 +129,4 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 }
 
-class _LanguageSwitcher extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final lang = context.watch<LanguageProvider>();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _LangButton(label: 'FR', langCode: 'fr', currentLang: lang.lang, onTap: () => lang.setLang('fr')),
-        const SizedBox(width: 8),
-        _LangButton(label: 'AR', langCode: 'ar', currentLang: lang.lang, onTap: () => lang.setLang('ar')),
-        const SizedBox(width: 8),
-        _LangButton(label: 'EN', langCode: 'en', currentLang: lang.lang, onTap: () => lang.setLang('en')),
-      ],
-    );
-  }
-}
 
-class _LangButton extends StatelessWidget {
-  final String label;
-  final String langCode;
-  final String currentLang;
-  final VoidCallback onTap;
-
-  const _LangButton({
-    required this.label,
-    required this.langCode,
-    required this.currentLang,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isActive = currentLang == langCode;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        decoration: BoxDecoration(
-          color: isActive ? const Color(0xFF00d4ff) : Colors.transparent,
-          border: Border.all(color: isActive ? const Color(0xFF00d4ff) : Colors.white.withValues(alpha: 0.3)),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isActive ? Colors.white : Colors.white70,
-            fontWeight: FontWeight.w700,
-            fontSize: 13,
-          ),
-        ),
-      ),
-    );
-  }
-}

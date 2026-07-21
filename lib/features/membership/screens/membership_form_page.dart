@@ -17,6 +17,7 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
   final _formKey = GlobalKey<FormState>();
   final _nomController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _ageController = TextEditingController();
   final _professionController = TextEditingController();
   final _adresseController = TextEditingController();
@@ -27,6 +28,7 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
   void dispose() {
     _nomController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
     _ageController.dispose();
     _professionController.dispose();
     _adresseController.dispose();
@@ -53,7 +55,7 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
       userId: auth.user!.id,
       fullName: _nomController.text.trim(),
       email: _emailController.text.trim(),
-      phone: '',
+      phone: _phoneController.text.trim(),
       address: _adresseController.text.trim().isEmpty
           ? null
           : _adresseController.text.trim(),
@@ -133,6 +135,14 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white),
                 validator: Validators.email,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _phoneController,
+                decoration: _inputDecoration(TranslationService.t('phone'), '0X XX XX XX XX'),
+                keyboardType: TextInputType.phone,
+                style: const TextStyle(color: Colors.white),
+                validator: Validators.phone,
               ),
               const SizedBox(height: 16),
               TextFormField(

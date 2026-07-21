@@ -5,6 +5,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/providers/language_provider.dart';
 import 'package:rnd_campaign_app/core/services/translation_service.dart';
+import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
+import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,7 +18,7 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const _LanguageSwitcher(),
+            const _HomeTopBar(),
             const _HeroSection(),
             _StatsSection(),
             _AboutSection(),
@@ -29,12 +31,11 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _LanguageSwitcher extends StatelessWidget {
-  const _LanguageSwitcher();
+class _HomeTopBar extends StatelessWidget {
+  const _HomeTopBar();
 
   @override
   Widget build(BuildContext context) {
-    final lang = context.watch<LanguageProvider>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
       child: Row(
@@ -62,11 +63,9 @@ class _LanguageSwitcher extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _LangButton(label: 'FR', langCode: 'fr', currentLang: lang.lang, onTap: () => lang.setLang('fr')),
+              const LanguageSwitcher(),
               const SizedBox(width: 8),
-              _LangButton(label: 'AR', langCode: 'ar', currentLang: lang.lang, onTap: () => lang.setLang('ar')),
-              const SizedBox(width: 8),
-              _LangButton(label: 'EN', langCode: 'en', currentLang: lang.lang, onTap: () => lang.setLang('en')),
+              const _AuthAction(),
             ],
           ),
         ],
@@ -75,40 +74,28 @@ class _LanguageSwitcher extends StatelessWidget {
   }
 }
 
-class _LangButton extends StatelessWidget {
-  final String label;
-  final String langCode;
-  final String currentLang;
-  final VoidCallback onTap;
-
-  const _LangButton({
-    required this.label,
-    required this.langCode,
-    required this.currentLang,
-    required this.onTap,
-  });
+class _AuthAction extends StatelessWidget {
+  const _AuthAction();
 
   @override
   Widget build(BuildContext context) {
-    final isActive = currentLang == langCode;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        decoration: BoxDecoration(
-          color: isActive ? const Color(0xFF00d4ff) : Colors.transparent,
-          border: Border.all(color: isActive ? const Color(0xFF00d4ff) : Colors.white.withValues(alpha: 0.3)),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isActive ? Colors.white : Colors.white70,
-            fontWeight: FontWeight.w700,
-            fontSize: 13,
-          ),
-        ),
+    final auth = context.watch<AuthProvider>();
+    return IconButton(
+      tooltip: auth.isAuthenticated
+          ? TranslationService.t('logout')
+          : TranslationService.t('login'),
+      icon: Icon(
+        auth.isAuthenticated ? Icons.logout : Icons.login,
+        color: Colors.white70,
+        size: 20,
       ),
+      onPressed: () {
+        if (auth.isAuthenticated) {
+          auth.logout();
+        } else {
+          Navigator.pushNamed(context, AppRoutes.login);
+        }
+      },
     );
   }
 }

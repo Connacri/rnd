@@ -2,3 +2,29 @@
 .agents
 .claude
 scratch/
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# Android generated
+android/.gradle/
+android/local.properties
+android/app/build/
+
+# Signing keys - NEVER commit
+*.jks
+*.keystore
+keystore_base64.txt
+rnd.keys.txt
+
+# Local patches
+patches/

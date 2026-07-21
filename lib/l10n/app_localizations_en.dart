@@ -285,4 +285,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yearsEngagement => 'Years of Commitment';
+
+  @override
+  String get namePlaceholder => 'Your name';
+
+  @override
+  String get emailPlaceholder => 'your@email.com';
+
+  @override
+  String get phonePlaceholder => '0X XX XX XX XX';
+
+  @override
+  String get agePlaceholder => 'Your age';
+
+  @override
+  String get professionPlaceholder => 'Your profession';
+
+  @override
+  String get addressPlaceholder => 'Your address';
+
+  @override
+  String get messagePlaceholder => 'Your message...';
+
+  @override
+  String get suggestionPlaceholder => 'Your suggestion or proposal...';
 }

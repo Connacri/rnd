@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:rnd_campaign_app/app/theme.dart';
-import 'package:rnd_campaign_app/core/services/translation_service.dart';
+import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 
 class EventsPage extends StatelessWidget {
   const EventsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppTheme.bgDark,
       appBar: AppBar(
-        title: Text(TranslationService.t('events')),
+        title: Text(l.events),
         backgroundColor: AppTheme.bgDark,
         foregroundColor: Colors.white,
       ),
@@ -36,7 +37,7 @@ class EventsPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                TranslationService.t('upcomingEvents'),
+                l.upcomingEvents,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white70,

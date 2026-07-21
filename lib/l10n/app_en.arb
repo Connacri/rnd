@@ -88,5 +88,13 @@
   "visionText": "A strong, prosperous and united Algeria. The RND works for transparent governance, a dynamic economy and digital transformation at the service of all citizens, in every commune of the country.",
   "welcome": "Welcome",
   "whoWeAre": "Who we are",
-  "yearsEngagement": "Years of Commitment"
+  "yearsEngagement": "Years of Commitment",
+  "namePlaceholder": "Your name",
+  "emailPlaceholder": "your@email.com",
+  "phonePlaceholder": "0X XX XX XX XX",
+  "agePlaceholder": "Your age",
+  "professionPlaceholder": "Your profession",
+  "addressPlaceholder": "Your address",
+  "messagePlaceholder": "Your message...",
+  "suggestionPlaceholder": "Your suggestion or proposal..."
 }

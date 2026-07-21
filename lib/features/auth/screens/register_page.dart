@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
-import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
+import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -33,6 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (!_formKey.currentState!.validate()) return;
 
     final auth = context.read<AuthProvider>();
+    final l = AppLocalizations.of(context)!;
     final success = await auth.register(
       _emailController.text.trim(),
       _passwordController.text,
@@ -45,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
       Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(auth.error ?? TranslationService.t('registerError'))),
+        SnackBar(content: Text(auth.error ?? l.registerError)),
       );
     }
   }
@@ -53,10 +54,11 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: const Color(0xFF0a1628),
-      appBar: AppBar(title: Text(TranslationService.t('register'))),
+      appBar: AppBar(title: Text(l.register)),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -69,17 +71,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
-                    labelText: TranslationService.t('fullName'),
+                    labelText: l.fullName,
                     prefixIcon: const Icon(Icons.person_outlined),
                   ),
                   validator: (v) =>
-                      v == null || v.isEmpty ? TranslationService.t('nomRequired') : null,
+                      v == null || v.isEmpty ? l.nomRequired : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
-                    labelText: TranslationService.t('email'),
+                    labelText: l.email,
                     prefixIcon: const Icon(Icons.email_outlined),
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -89,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   controller: _phoneController,
                   decoration: InputDecoration(
-                    labelText: TranslationService.t('phone'),
+                    labelText: l.phone,
                     prefixIcon: const Icon(Icons.phone_outlined),
                   ),
                   keyboardType: TextInputType.phone,
@@ -99,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: TranslationService.t('password'),
+                    labelText: l.password,
                     prefixIcon: const Icon(Icons.lock_outlined),
                   ),
                   obscureText: true,
@@ -112,13 +114,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: auth.isLoading ? null : _submit,
                     child: auth.isLoading
                         ? const CircularProgressIndicator()
-                        : Text(TranslationService.t('register')),
+                        : Text(l.register),
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text(TranslationService.t('haveAccount')),
+                  child: Text(l.haveAccount),
                 ),
               ],
             ),
@@ -128,5 +130,3 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
-
-

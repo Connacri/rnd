@@ -633,6 +633,54 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Annees d\'Engagement'**
   String get yearsEngagement;
+
+  /// No description provided for @namePlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre nom'**
+  String get namePlaceholder;
+
+  /// No description provided for @emailPlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'votre@email.com'**
+  String get emailPlaceholder;
+
+  /// No description provided for @phonePlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'0X XX XX XX XX'**
+  String get phonePlaceholder;
+
+  /// No description provided for @agePlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre âge'**
+  String get agePlaceholder;
+
+  /// No description provided for @professionPlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre profession'**
+  String get professionPlaceholder;
+
+  /// No description provided for @addressPlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre adresse'**
+  String get addressPlaceholder;
+
+  /// No description provided for @messagePlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre message...'**
+  String get messagePlaceholder;
+
+  /// No description provided for @suggestionPlaceholder.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre suggestion ou proposition...'**
+  String get suggestionPlaceholder;
 }
 
 class _AppLocalizationsDelegate

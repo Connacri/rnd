@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rnd_campaign_app/core/services/translation_service.dart';
+import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 
 class CandidatePage extends StatelessWidget {
   const CandidatePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.t('candidate')),
+        title: Text(l.candidate),
         backgroundColor: const Color(0xFF0a1628),
         foregroundColor: Colors.white,
       ),
@@ -47,7 +48,7 @@ class CandidatePage extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            TranslationService.t('candidateName'),
+            l.candidateName,
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
               fontSize: 28,
@@ -57,7 +58,7 @@ class CandidatePage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            TranslationService.t('secretary'),
+            l.secretary,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 14,
@@ -68,7 +69,7 @@ class CandidatePage extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            TranslationService.t('algeria'),
+            l.algeria,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13,
@@ -86,7 +87,7 @@ class CandidatePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Text(
-                TranslationService.t('party'),
+                l.party,
                 style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
@@ -97,7 +98,7 @@ class CandidatePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          _SectionTitle(TranslationService.t('ourVision')),
+          _SectionTitle(l.ourVision),
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(24),
@@ -120,7 +121,7 @@ class CandidatePage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  TranslationService.t('visionText'),
+                  l.visionText,
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white.withValues(alpha: 0.7),
@@ -131,10 +132,10 @@ class CandidatePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          _SectionTitle(TranslationService.t('commitment')),
+          _SectionTitle(l.commitment),
           const SizedBox(height: 12),
           Text(
-            TranslationService.t('commitmentText'),
+            l.commitmentText,
             style: TextStyle(
               fontSize: 14,
               color: Colors.white.withValues(alpha: 0.7),
@@ -157,7 +158,7 @@ class CandidatePage extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    TranslationService.t('approach'),
+                    l.approach,
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white.withValues(alpha: 0.7),
@@ -169,7 +170,7 @@ class CandidatePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          _SectionTitle(TranslationService.t('ourValues')),
+          _SectionTitle(l.ourValues),
           const SizedBox(height: 12),
           GridView.count(
             crossAxisCount: 2,
@@ -179,10 +180,10 @@ class CandidatePage extends StatelessWidget {
             crossAxisSpacing: 12,
             childAspectRatio: 2.5,
             children: [
-              _ValueCard(icon: '🤝', title: TranslationService.t('proximity'), subtitle: TranslationService.t('proximityDesc')),
-              _ValueCard(icon: '💡', title: TranslationService.t('innovation'), subtitle: TranslationService.t('innovationDesc')),
-              _ValueCard(icon: '⚖️', title: TranslationService.t('transparency'), subtitle: TranslationService.t('transparencyDesc')),
-              _ValueCard(icon: '🌱', title: TranslationService.t('development'), subtitle: TranslationService.t('developmentDesc')),
+              _ValueCard(icon: '🤝', title: l.proximity, subtitle: l.proximityDesc),
+              _ValueCard(icon: '💡', title: l.innovation, subtitle: l.innovationDesc),
+              _ValueCard(icon: '⚖️', title: l.transparency, subtitle: l.transparencyDesc),
+              _ValueCard(icon: '🌱', title: l.development, subtitle: l.developmentDesc),
             ],
           ),
           const SizedBox(height: 32),

@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/providers/language_provider.dart';
-import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
+import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,10 +20,10 @@ class HomePage extends StatelessWidget {
           children: [
             const _HomeTopBar(),
             const _HeroSection(),
-            _StatsSection(),
-            _AboutSection(),
-            _QuickLinksSection(),
-            _FooterSection(),
+            const _StatsSection(),
+            const _AboutSection(),
+            const _QuickLinksSection(),
+            const _FooterSection(),
           ],
         ),
       ),
@@ -60,12 +60,12 @@ class _HomeTopBar extends StatelessWidget {
               ),
             ],
           ),
-          Row(
+          const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const LanguageSwitcher(),
-              const SizedBox(width: 8),
-              const _AuthAction(),
+              LanguageSwitcher(),
+              SizedBox(width: 8),
+              _AuthAction(),
             ],
           ),
         ],
@@ -80,10 +80,9 @@ class _AuthAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final l = AppLocalizations.of(context)!;
     return IconButton(
-      tooltip: auth.isAuthenticated
-          ? TranslationService.t('logout')
-          : TranslationService.t('login'),
+      tooltip: auth.isAuthenticated ? l.logout : l.login,
       icon: Icon(
         auth.isAuthenticated ? Icons.logout : Icons.login,
         color: Colors.white70,
@@ -105,7 +104,8 @@ class _HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final togetherParts = TranslationService.t('together').split(TranslationService.t('togetherHighlight'));
+    final l = AppLocalizations.of(context)!;
+    final togetherParts = l.together.split(l.togetherHighlight);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
@@ -146,11 +146,11 @@ class _HeroSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            TranslationService.t('elections2026'),
-            style: TextStyle(
+            l.elections2026,
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF00d4ff),
+              color: Color(0xFF00d4ff),
               letterSpacing: 3,
             ),
           ),
@@ -160,7 +160,7 @@ class _HeroSection extends StatelessWidget {
               children: [
                 TextSpan(text: togetherParts.isNotEmpty ? togetherParts[0] : ''),
                 TextSpan(
-                  text: TranslationService.t('togetherHighlight'),
+                  text: l.togetherHighlight,
                   style: TextStyle(
                     color: const Color(0xFF00d4ff),
                     fontFamily: GoogleFonts.roboto().fontFamily,
@@ -180,7 +180,7 @@ class _HeroSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            TranslationService.t('description'),
+            l.description,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -189,14 +189,14 @@ class _HeroSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          _AudioPlayerWidget(),
+          const _AudioPlayerWidget(),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
                 child: _HeroButton(
-                  label: TranslationService.t('ourProgram'),
+                  label: l.ourProgram,
                   onTap: () => Navigator.pushNamed(context, AppRoutes.program),
                   primary: true,
                 ),
@@ -204,7 +204,7 @@ class _HeroSection extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: _HeroButton(
-                  label: TranslationService.t('joinUs'),
+                  label: l.joinUs,
                   onTap: () => Navigator.pushNamed(context, AppRoutes.membership),
                   primary: false,
                 ),
@@ -218,6 +218,8 @@ class _HeroSection extends StatelessWidget {
 }
 
 class _AudioPlayerWidget extends StatefulWidget {
+  const _AudioPlayerWidget();
+
   @override
   State<_AudioPlayerWidget> createState() => _AudioPlayerWidgetState();
 }
@@ -262,6 +264,7 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     final lang = context.watch<LanguageProvider>().lang;
+    final l = AppLocalizations.of(context)!;
     if (_lastLang != null && _lastLang != lang) {
       _audioPlayer.stop();
     }
@@ -315,7 +318,7 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
           )),
           const SizedBox(width: 12),
           Text(
-            TranslationService.t('audioMessage'),
+            l.audioMessage,
             style: TextStyle(
               fontSize: 12,
               color: Colors.white.withValues(alpha: 0.7),
@@ -366,8 +369,11 @@ class _HeroButton extends StatelessWidget {
 }
 
 class _StatsSection extends StatelessWidget {
+  const _StatsSection();
+
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
       decoration: BoxDecoration(
@@ -386,10 +392,10 @@ class _StatsSection extends StatelessWidget {
             spacing: 16,
             runSpacing: 16,
             children: [
-              SizedBox(width: itemWidth, child: _StatItem(icon: '🏛️', number: '451', label: TranslationService.t('mairiesRnd'))),
-              SizedBox(width: itemWidth, child: _StatItem(icon: '👥', number: '6 521', label: TranslationService.t('elusCommunaux'))),
-              SizedBox(width: itemWidth, child: _StatItem(icon: '🏛️', number: '58', label: TranslationService.t('deputesApn'))),
-              SizedBox(width: itemWidth, child: _StatItem(icon: '📅', number: '28', label: TranslationService.t('yearsEngagement'))),
+              SizedBox(width: itemWidth, child: _StatItem(icon: '🏛️', number: '451', label: l.mairiesRnd)),
+              SizedBox(width: itemWidth, child: _StatItem(icon: '👥', number: '6 521', label: l.elusCommunaux)),
+              SizedBox(width: itemWidth, child: _StatItem(icon: '🏛️', number: '58', label: l.deputesApn)),
+              SizedBox(width: itemWidth, child: _StatItem(icon: '📅', number: '28', label: l.yearsEngagement)),
             ],
           );
         },
@@ -452,8 +458,11 @@ class _StatItem extends StatelessWidget {
 }
 
 class _AboutSection extends StatelessWidget {
+  const _AboutSection();
+
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -465,18 +474,18 @@ class _AboutSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(50),
             ),
             child: Text(
-              TranslationService.t('whoWeAre'),
-              style: TextStyle(
+              l.whoWeAre,
+              style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
-                color: const Color(0xFF00d4ff),
+                color: Color(0xFF00d4ff),
                 letterSpacing: 3,
               ),
             ),
           ),
           const SizedBox(height: 16),
           Text(
-            TranslationService.t('rndDescription'),
+            l.rndDescription,
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
               fontSize: 24,
@@ -486,7 +495,7 @@ class _AboutSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            TranslationService.t('rndDescText'),
+            l.rndDescText,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -517,7 +526,7 @@ class _AboutSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  TranslationService.t('ourVision'),
+                  l.ourVision,
                   style: GoogleFonts.roboto(
                     fontSize: 22,
                     fontWeight: FontWeight.w900,
@@ -526,7 +535,7 @@ class _AboutSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  TranslationService.t('visionText'),
+                  l.visionText,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.white.withValues(alpha: 0.7),
@@ -538,16 +547,16 @@ class _AboutSection extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            TranslationService.t('commitment'),
-            style: TextStyle(
+            l.commitment,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF00d4ff),
+              color: Color(0xFF00d4ff),
             ),
           ),
           const SizedBox(height: 12),
           Text(
-            TranslationService.t('commitmentText'),
+            l.commitmentText,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -564,10 +573,10 @@ class _AboutSection extends StatelessWidget {
             crossAxisSpacing: 12,
             childAspectRatio: 2.8,
             children: [
-              _FeatureItem(icon: '🤝', title: TranslationService.t('proximity'), subtitle: TranslationService.t('proximityDesc')),
-              _FeatureItem(icon: '💡', title: TranslationService.t('innovation'), subtitle: TranslationService.t('innovationDesc')),
-              _FeatureItem(icon: '⚖️', title: TranslationService.t('transparency'), subtitle: TranslationService.t('transparencyDesc')),
-              _FeatureItem(icon: '🌱', title: TranslationService.t('development'), subtitle: TranslationService.t('developmentDesc')),
+              _FeatureItem(icon: '🤝', title: l.proximity, subtitle: l.proximityDesc),
+              _FeatureItem(icon: '💡', title: l.innovation, subtitle: l.innovationDesc),
+              _FeatureItem(icon: '⚖️', title: l.transparency, subtitle: l.transparencyDesc),
+              _FeatureItem(icon: '🌱', title: l.development, subtitle: l.developmentDesc),
             ],
           ),
         ],
@@ -633,8 +642,11 @@ class _FeatureItem extends StatelessWidget {
 }
 
 class _QuickLinksSection extends StatelessWidget {
+  const _QuickLinksSection();
+
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -642,29 +654,29 @@ class _QuickLinksSection extends StatelessWidget {
           const SizedBox(height: 16),
           _LinkCard(
             icon: '👤',
-            title: TranslationService.t('candidate'),
-            subtitle: TranslationService.t('learnMore'),
+            title: l.candidate,
+            subtitle: l.learnMore,
             onTap: () => Navigator.pushNamed(context, AppRoutes.candidate),
           ),
           const SizedBox(height: 12),
           _LinkCard(
             icon: '📋',
-            title: TranslationService.t('program'),
-            subtitle: TranslationService.t('discoverProgram'),
+            title: l.program,
+            subtitle: l.discoverProgram,
             onTap: () => Navigator.pushNamed(context, AppRoutes.program),
           ),
           const SizedBox(height: 12),
           _LinkCard(
             icon: '✋',
-            title: TranslationService.t('membership'),
-            subtitle: TranslationService.t('joinMovement'),
+            title: l.membership,
+            subtitle: l.joinMovement,
             onTap: () => Navigator.pushNamed(context, AppRoutes.membership),
           ),
           const SizedBox(height: 12),
           _LinkCard(
             icon: '📅',
-            title: TranslationService.t('events'),
-            subtitle: TranslationService.t('seeEvents'),
+            title: l.events,
+            subtitle: l.seeEvents,
             onTap: () => Navigator.pushNamed(context, AppRoutes.events),
           ),
         ],
@@ -712,15 +724,18 @@ class _LinkCard extends StatelessWidget {
 }
 
 class _FooterSection extends StatelessWidget {
+  const _FooterSection();
+
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
       color: const Color(0xFF070f1a),
       child: Column(
         children: [
           Text(
-            '${TranslationService.t('candidateName')} - ${TranslationService.t('party')}',
+            '${l.candidateName} - ${l.party}',
             style: GoogleFonts.roboto(
               fontSize: 18,
               fontWeight: FontWeight.w800,
@@ -729,7 +744,7 @@ class _FooterSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            TranslationService.t('footerDesc'),
+            l.footerDesc,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.5)),
           ),
@@ -759,7 +774,7 @@ class _FooterSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            '2026 ${TranslationService.t('candidateName')} - ${TranslationService.t('party')} ${TranslationService.t('city')}. ${TranslationService.t('rights')}',
+            l.rights,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.3)),
           ),

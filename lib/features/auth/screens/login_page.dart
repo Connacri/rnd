@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/constants/app_constants.dart';
-import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
+import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 
 class LoginPage extends StatefulWidget {
@@ -30,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     if (!_formKey.currentState!.validate()) return;
 
     final auth = context.read<AuthProvider>();
+    final l = AppLocalizations.of(context)!;
     final success = await auth.login(
       _emailController.text.trim(),
       _passwordController.text,
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(auth.error ?? TranslationService.t('loginError'))),
+        SnackBar(content: Text(auth.error ?? l.loginError)),
       );
     }
   }
@@ -49,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: const Color(0xFF0a1628),
@@ -75,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
-                    labelText: TranslationService.t('email'),
+                    labelText: l.email,
                     prefixIcon: const Icon(Icons.email_outlined),
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -85,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: TranslationService.t('password'),
+                    labelText: l.password,
                     prefixIcon: const Icon(Icons.lock_outlined),
                   ),
                   obscureText: true,
@@ -98,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: auth.isLoading ? null : _submit,
                     child: auth.isLoading
                         ? const CircularProgressIndicator()
-                        : Text(TranslationService.t('login')),
+                        : Text(l.login),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -106,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.register);
                   },
-                  child: Text(TranslationService.t('noAccount')),
+                  child: Text(l.noAccount),
                 ),
               ],
             ),
@@ -116,5 +118,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-

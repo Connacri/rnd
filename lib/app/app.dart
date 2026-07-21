@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/app/theme.dart';
 import 'package:rnd_campaign_app/core/providers/language_provider.dart';
-import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/features/auth/screens/login_page.dart';
 import 'package:rnd_campaign_app/features/auth/screens/register_page.dart';
 import 'package:rnd_campaign_app/features/home/screens/home_page.dart';
@@ -23,7 +22,7 @@ class CampaignApp extends StatelessWidget {
     return Consumer<LanguageProvider>(
       builder: (context, langProvider, _) {
         return MaterialApp(
-          title: TranslationService.t('appName'),
+          title: 'RND',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           localizationsDelegates: [

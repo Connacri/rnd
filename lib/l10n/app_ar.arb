@@ -88,5 +88,13 @@
   "visionText": "جزائر قوية ومزدهرة وموحدة. يعمل التجمع الوطني الديمقراطي من أجل حوكمة شفافة واقتصاد ديناميكي وتحول رقمي في خدمة جميع المواطنين، في كل بلدية من بلديات الوطن.",
   "welcome": "مرحباً",
   "whoWeAre": "من نحن",
-  "yearsEngagement": "سنوات الالتزام"
+  "yearsEngagement": "سنوات الالتزام",
+  "namePlaceholder": "اسمك الكامل",
+  "emailPlaceholder": "votre@email.com",
+  "phonePlaceholder": "0X XX XX XX XX",
+  "agePlaceholder": "عمرك",
+  "professionPlaceholder": "مهنتك",
+  "addressPlaceholder": "عنوانك",
+  "messagePlaceholder": "رسالتك...",
+  "suggestionPlaceholder": "اقتراحك أو عرضك..."
 }

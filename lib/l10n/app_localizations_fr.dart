@@ -286,4 +286,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get yearsEngagement => 'Annees d\'Engagement';
+
+  @override
+  String get namePlaceholder => 'Votre nom';
+
+  @override
+  String get emailPlaceholder => 'votre@email.com';
+
+  @override
+  String get phonePlaceholder => '0X XX XX XX XX';
+
+  @override
+  String get agePlaceholder => 'Votre âge';
+
+  @override
+  String get professionPlaceholder => 'Votre profession';
+
+  @override
+  String get addressPlaceholder => 'Votre adresse';
+
+  @override
+  String get messagePlaceholder => 'Votre message...';
+
+  @override
+  String get suggestionPlaceholder => 'Votre suggestion ou proposition...';
 }

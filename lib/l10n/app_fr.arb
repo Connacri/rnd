@@ -88,5 +88,13 @@
   "visionText": "Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays.",
   "welcome": "Bienvenue",
   "whoWeAre": "Qui sommes-nous",
-  "yearsEngagement": "Annees d'Engagement"
+  "yearsEngagement": "Annees d'Engagement",
+  "namePlaceholder": "Votre nom",
+  "emailPlaceholder": "votre@email.com",
+  "phonePlaceholder": "0X XX XX XX XX",
+  "agePlaceholder": "Votre âge",
+  "professionPlaceholder": "Votre profession",
+  "addressPlaceholder": "Votre adresse",
+  "messagePlaceholder": "Votre message...",
+  "suggestionPlaceholder": "Votre suggestion ou proposition..."
 }

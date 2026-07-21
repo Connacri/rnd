@@ -121,6 +121,14 @@ class TranslationService {
       case 'fullName': return loc.fullName;
       case 'welcome': return loc.welcome;
       case 'audioMessage': return loc.audioMessage;
+      case 'namePlaceholder': return loc.namePlaceholder;
+      case 'emailPlaceholder': return loc.emailPlaceholder;
+      case 'phonePlaceholder': return loc.phonePlaceholder;
+      case 'agePlaceholder': return loc.agePlaceholder;
+      case 'professionPlaceholder': return loc.professionPlaceholder;
+      case 'addressPlaceholder': return loc.addressPlaceholder;
+      case 'messagePlaceholder': return loc.messagePlaceholder;
+      case 'suggestionPlaceholder': return loc.suggestionPlaceholder;
       default:
         return key;
     }

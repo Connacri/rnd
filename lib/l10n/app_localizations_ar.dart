@@ -285,4 +285,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get yearsEngagement => 'سنوات الالتزام';
+
+  @override
+  String get namePlaceholder => 'اسمك الكامل';
+
+  @override
+  String get emailPlaceholder => 'votre@email.com';
+
+  @override
+  String get phonePlaceholder => '0X XX XX XX XX';
+
+  @override
+  String get agePlaceholder => 'عمرك';
+
+  @override
+  String get professionPlaceholder => 'مهنتك';
+
+  @override
+  String get addressPlaceholder => 'عنوانك';
+
+  @override
+  String get messagePlaceholder => 'رسالتك...';
+
+  @override
+  String get suggestionPlaceholder => 'اقتراحك أو عرضك...';
 }

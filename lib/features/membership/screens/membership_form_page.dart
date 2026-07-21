@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
-import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/features/membership/providers/membership_provider.dart';
+import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 
 class MembershipFormPage extends StatefulWidget {
   const MembershipFormPage({super.key});
@@ -42,10 +42,11 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
 
     final auth = context.read<AuthProvider>();
     final membership = context.read<MembershipProvider>();
+    final l = AppLocalizations.of(context)!;
 
     if (auth.user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(TranslationService.t('loginRequired'))),
+        SnackBar(content: Text(l.loginRequired)),
       );
       Navigator.pushNamed(context, AppRoutes.login);
       return;
@@ -68,13 +69,12 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
     if (!mounted) return;
 
     if (success) {
+      final l2 = AppLocalizations.of(context)!;
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text(TranslationService.t('thankYou')),
-          content: Text(
-            TranslationService.t('successMessage'),
-          ),
+          title: Text(l2.thankYou),
+          content: Text(l2.successMessage),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -89,10 +89,11 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
   @override
   Widget build(BuildContext context) {
     final membership = context.watch<MembershipProvider>();
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.t('membership')),
+        title: Text(l.membership),
         backgroundColor: const Color(0xFF0a1628),
         foregroundColor: Colors.white,
       ),
@@ -105,7 +106,7 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                TranslationService.t('membershipTitle'),
+                l.membershipTitle,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w900,
@@ -114,7 +115,7 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                TranslationService.t('membershipDesc'),
+                l.membershipDesc,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.white.withValues(alpha: 0.6),
@@ -123,15 +124,15 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
               const SizedBox(height: 24),
               TextFormField(
                 controller: _nomController,
-                decoration: _inputDecoration(TranslationService.t('nom'), 'Votre nom'),
+                decoration: _inputDecoration(l.nom, l.namePlaceholder),
                 style: const TextStyle(color: Colors.white),
                 validator: (v) =>
-                    v == null || v.isEmpty ? TranslationService.t('nomRequired') : null,
+                    v == null || v.isEmpty ? l.nomRequired : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _emailController,
-                decoration: _inputDecoration(TranslationService.t('emailField'), 'votre@email.com'),
+                decoration: _inputDecoration(l.emailField, l.emailPlaceholder),
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white),
                 validator: Validators.email,
@@ -139,7 +140,7 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _phoneController,
-                decoration: _inputDecoration(TranslationService.t('phone'), '0X XX XX XX XX'),
+                decoration: _inputDecoration(l.phone, l.phonePlaceholder),
                 keyboardType: TextInputType.phone,
                 style: const TextStyle(color: Colors.white),
                 validator: Validators.phone,
@@ -147,38 +148,33 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _ageController,
-                decoration: _inputDecoration(TranslationService.t('ageOptional'), 'Votre âge'),
+                decoration: _inputDecoration(l.ageOptional, l.agePlaceholder),
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _professionController,
-                decoration: _inputDecoration(
-                    TranslationService.t('professionOptional'), 'Votre profession'),
+                decoration: _inputDecoration(l.professionOptional, l.professionPlaceholder),
                 style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _adresseController,
-                decoration: _inputDecoration(
-                    TranslationService.t('addressOptional'), 'Votre adresse'),
+                decoration: _inputDecoration(l.addressOptional, l.addressPlaceholder),
                 style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _messageController,
-                decoration: _inputDecoration(
-                    TranslationService.t('messageOptional'), 'Votre message...'),
+                decoration: _inputDecoration(l.messageOptional, l.messagePlaceholder),
                 maxLines: 3,
                 style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _suggestionController,
-                decoration: _inputDecoration(
-                    TranslationService.t('suggestionOptional'),
-                    'Votre suggestion ou proposition...'),
+                decoration: _inputDecoration(l.suggestionOptional, l.suggestionPlaceholder),
                 maxLines: 3,
                 style: const TextStyle(color: Colors.white),
               ),
@@ -198,7 +194,7 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
                   child: membership.isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : Text(
-                          TranslationService.t('send'),
+                          l.send,
                           style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 16,

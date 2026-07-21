@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/core/services/program_data.dart';
+import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 
 class ProgramPage extends StatelessWidget {
   const ProgramPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final pillars = ProgramData.getPillars();
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.t('programTitle')),
+        title: Text(l.programTitle),
         backgroundColor: const Color(0xFF0a1628),
         foregroundColor: Colors.white,
       ),
@@ -44,6 +45,7 @@ class ProgramPage extends StatelessWidget {
 class _SloganCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -58,7 +60,7 @@ class _SloganCard extends StatelessWidget {
           const Text('💎', style: TextStyle(fontSize: 40)),
           const SizedBox(height: 12),
           Text(
-            TranslationService.t('slogan'),
+            l.slogan,
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
               fontSize: 16,
@@ -183,6 +185,7 @@ class _PillarCard extends StatelessWidget {
 class _EngagementSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
@@ -195,7 +198,7 @@ class _EngagementSection extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            TranslationService.t('engagement'),
+            l.engagement,
             style: GoogleFonts.roboto(
               fontSize: 24,
               fontWeight: FontWeight.w900,
@@ -204,7 +207,7 @@ class _EngagementSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            TranslationService.t('engagementText1'),
+            l.engagementText1,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15,
@@ -214,7 +217,7 @@ class _EngagementSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            TranslationService.t('engagementText2'),
+            l.engagementText2,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -224,7 +227,7 @@ class _EngagementSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            TranslationService.t('engagementText3'),
+            l.engagementText3,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,

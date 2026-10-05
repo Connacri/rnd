@@ -129,6 +129,14 @@ jobs:
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
             --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
 
+      - name: Build App Bundle (AAB)
+        run: |
+          flutter build appbundle --release \
+            --build-name=${{ needs.version.outputs.version }} \
+            --build-number=${{ github.run_number }} \
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+
       - name: Verify APK signature
         run: |
           APK=build/app/outputs/flutter-apk/app-release.apk
@@ -145,12 +153,21 @@ jobs:
           mkdir -p release
           cp build/app/outputs/flutter-apk/app-release.apk \
              release/rnd-android.apk
+          cp build/app/outputs/bundle/release/app-release.aab \
+             release/rnd-android.aab
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: release/rnd-android.apk
+          retention-days: 30
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: release/rnd-android.aab
           retention-days: 30
 
   ##############################################################################
@@ -248,7 +265,8 @@ jobs:
             ### 📦 Téléchargements
             | Plateforme | Fichier |
             |------------|---------|
-            | 📱 Android | `rnd-android.apk` |
+            | 📱 Android (APK) | `rnd-android.apk` |
+            | 📱 Android (AAB) | `rnd-android.aab` |
             | 🪟 Windows (portable) | `rnd-windows-v${{ needs.version.outputs.version }}.zip` |
 
             ### 🔐 Sécurité

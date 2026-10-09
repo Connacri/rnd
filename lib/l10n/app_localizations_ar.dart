@@ -309,4 +309,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get suggestionPlaceholder => 'اقتراحك أو عرضك...';
+
+  @override
+  String get forgotPasswordTitle => 'نسيت كلمة المرور';
+
+  @override
+  String get forgotPasswordHint =>
+      'أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.';
+
+  @override
+  String get sendResetEmail => 'إرسال الرابط';
+
+  @override
+  String get resetEmailSent =>
+      'تم إرسال البريد الإلكتروني! تحقق من صندوق الوارد.';
+
+  @override
+  String get forgotPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get continueWithGoogle => 'المتابعة عبر Google';
+
+  @override
+  String get contentLoadFailed =>
+      'تعذر تحميل المحتوى. تحقق من اتصالك بالإنترنت.';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get latestNews => 'آخر الأخبار';
 }

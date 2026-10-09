@@ -69,7 +69,8 @@ class ProgramData {
           number: '03',
           icon: '🏖️',
           title: 'السياحة والشواطئ والجاذبية',
-          subtitle: 'يجب أن تصبح عين الترك مرجعاً وطنياً بين المنتجعات البحرية.',
+          subtitle:
+              'يجب أن تصبح عين الترك مرجعاً وطنياً بين المنتجعات البحرية.',
           tag: 'السياحة',
           accentColor: const Color(0xFFd4af37),
           items: const [
@@ -144,7 +145,8 @@ class ProgramData {
           number: '01',
           icon: '💼',
           title: 'Economic Development, Commerce and Employment',
-          subtitle: 'Our priority is to transform Ain El Turck into a wealth-generating communality.',
+          subtitle:
+              'Our priority is to transform Ain El Turck into a wealth-generating communality.',
           tag: 'Economic Development',
           accentColor: const Color(0xFF00d4ff),
           items: const [
@@ -182,7 +184,8 @@ class ProgramData {
           number: '03',
           icon: '🏖️',
           title: 'Tourism, Beaches and Attractiveness',
-          subtitle: 'Ain El Turck must become a national reference among seaside resorts.',
+          subtitle:
+              'Ain El Turck must become a national reference among seaside resorts.',
           tag: 'Tourism',
           accentColor: const Color(0xFFd4af37),
           items: const [
@@ -201,7 +204,8 @@ class ProgramData {
           number: '04',
           icon: '🌳',
           title: 'Environment, Green Spaces and Quality of Life',
-          subtitle: 'We want a greener, more pleasant and more sustainable communality.',
+          subtitle:
+              'We want a greener, more pleasant and more sustainable communality.',
           tag: 'Environment',
           accentColor: const Color(0xFF00A651),
           items: const [
@@ -216,7 +220,8 @@ class ProgramData {
           number: '05',
           icon: '📱',
           title: 'A Digital Communality and Modern Administration',
-          subtitle: 'The citizen must be able to communicate easily with their communality.',
+          subtitle:
+              'The citizen must be able to communicate easily with their communality.',
           tag: 'Digital',
           accentColor: const Color(0xFF00d4ff),
           items: const [
@@ -258,7 +263,8 @@ class ProgramData {
           number: '01',
           icon: '💼',
           title: 'Développement économique, commerce et emploi',
-          subtitle: 'Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse.',
+          subtitle:
+              'Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse.',
           tag: 'Développement Économique',
           accentColor: const Color(0xFF00d4ff),
           items: const [
@@ -279,7 +285,8 @@ class ProgramData {
           number: '02',
           icon: '🚗',
           title: 'Mobilité, circulation et transports',
-          subtitle: 'La mobilité est indispensable au développement économique.',
+          subtitle:
+              'La mobilité est indispensable au développement économique.',
           tag: 'Mobilité',
           accentColor: const Color(0xFFff006e),
           items: const [
@@ -296,7 +303,8 @@ class ProgramData {
           number: '03',
           icon: '🏖️',
           title: 'Tourisme, plages et attractivité',
-          subtitle: 'Aïn El Turck doit de venir une référence nationale parmi les stations balnéaires.',
+          subtitle:
+              'Aïn El Turck doit de venir une référence nationale parmi les stations balnéaires.',
           tag: 'Tourisme',
           accentColor: const Color(0xFFd4af37),
           items: const [
@@ -315,7 +323,8 @@ class ProgramData {
           number: '04',
           icon: '🌳',
           title: 'Environnement, espaces verts et cadre de vie',
-          subtitle: 'Nous voulons une commune plus verte, plus agréable et plus durable.',
+          subtitle:
+              'Nous voulons une commune plus verte, plus agréable et plus durable.',
           tag: 'Environnement',
           accentColor: const Color(0xFF00A651),
           items: const [
@@ -330,7 +339,8 @@ class ProgramData {
           number: '05',
           icon: '📱',
           title: 'Une commune numérique et une administration moderne',
-          subtitle: 'Le citoyen doit pouvoir communiquer facilement avec sa commune.',
+          subtitle:
+              'Le citoyen doit pouvoir communiquer facilement avec sa commune.',
           tag: 'Numérique',
           accentColor: const Color(0xFF00d4ff),
           items: const [

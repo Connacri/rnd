@@ -10,16 +10,4 @@ class MembershipService {
           membership.toJson(),
         );
   }
-
-  Future<List<Membership>> getUserMemberships(String userId) async {
-    final response = await _client
-        .from(SupabaseConstants.tableMemberships)
-        .select()
-        .eq('user_id', userId)
-        .order('created_at', ascending: false);
-
-    return (response as List)
-        .map((json) => Membership.fromJson(json as Map<String, dynamic>))
-        .toList();
-  }
 }

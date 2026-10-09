@@ -47,6 +47,22 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<void> _googleSignIn() async {
+    final auth = context.read<AuthProvider>();
+    final l = AppLocalizations.of(context)!;
+    final success = await auth.loginWithGoogle();
+
+    if (!mounted) return;
+
+    if (success) {
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(auth.error ?? l.loginError)),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
@@ -56,65 +72,106 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: const Color(0xFF0a1628),
       body: SafeArea(
         child: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const LanguageSwitcher(),
-                const SizedBox(height: 24),
-                Text(
-                  AppConstants.appName,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const LanguageSwitcher(),
+                  const SizedBox(height: 24),
+                  Text(
+                    AppConstants.appName,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(AppConstants.slogan,
+                      style: const TextStyle(color: Colors.white70)),
+                  const SizedBox(height: 48),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: l.email,
+                      prefixIcon: const Icon(Icons.email_outlined),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: Validators.email,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: l.password,
+                      prefixIcon: const Icon(Icons.lock_outlined),
+                    ),
+                    obscureText: true,
+                    validator: Validators.password,
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.forgotPassword);
+                      },
+                      child: Text(
+                        l.forgotPassword,
+                        style: const TextStyle(color: Colors.white70),
                       ),
-                ),
-                const SizedBox(height: 8),
-                Text(AppConstants.slogan, style: const TextStyle(color: Colors.white70)),
-                const SizedBox(height: 48),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: l.email,
-                    prefixIcon: const Icon(Icons.email_outlined),
+                    ),
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: Validators.email,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: l.password,
-                    prefixIcon: const Icon(Icons.lock_outlined),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: auth.isLoading ? null : _submit,
+                      child: auth.isLoading
+                          ? const CircularProgressIndicator()
+                          : Text(l.login),
+                    ),
                   ),
-                  obscureText: true,
-                  validator: Validators.password,
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: auth.isLoading ? null : _submit,
-                    child: auth.isLoading
-                        ? const CircularProgressIndicator()
-                        : Text(l.login),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      const Expanded(child: Divider(color: Colors.white24)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          '•',
+                          style: const TextStyle(color: Colors.white38),
+                        ),
+                      ),
+                      const Expanded(child: Divider(color: Colors.white24)),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.register);
-                  },
-                  child: Text(l.noAccount),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: auth.isLoading ? null : _googleSignIn,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        side: const BorderSide(color: Colors.white30),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      icon: const Icon(Icons.g_mobiledata, size: 28),
+                      label: Text(l.continueWithGoogle),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.register);
+                    },
+                    child: Text(l.noAccount),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
         ),
       ),
     );

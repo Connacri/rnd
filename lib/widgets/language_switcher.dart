@@ -7,7 +7,8 @@ import 'package:rnd_campaign_app/core/providers/language_provider.dart';
 /// Sélecteur de langue FR/AR/EN réutilisable, utilisé sur les écrans
 /// d'accueil, de connexion et d'inscription.
 class LanguageSwitcher extends StatelessWidget {
-  const LanguageSwitcher({super.key, this.mainAxisAlignment = MainAxisAlignment.center});
+  const LanguageSwitcher(
+      {super.key, this.mainAxisAlignment = MainAxisAlignment.center});
 
   final MainAxisAlignment mainAxisAlignment;
 
@@ -18,11 +19,23 @@ class LanguageSwitcher extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _LangChip(label: 'FR', langCode: 'fr', currentLang: lang.lang, onTap: () => lang.setLang('fr')),
+        _LangChip(
+            label: 'FR',
+            langCode: 'fr',
+            currentLang: lang.lang,
+            onTap: () => lang.setLang('fr')),
         const SizedBox(width: 8),
-        _LangChip(label: 'AR', langCode: 'ar', currentLang: lang.lang, onTap: () => lang.setLang('ar')),
+        _LangChip(
+            label: 'AR',
+            langCode: 'ar',
+            currentLang: lang.lang,
+            onTap: () => lang.setLang('ar')),
         const SizedBox(width: 8),
-        _LangChip(label: 'EN', langCode: 'en', currentLang: lang.lang, onTap: () => lang.setLang('en')),
+        _LangChip(
+            label: 'EN',
+            langCode: 'en',
+            currentLang: lang.lang,
+            onTap: () => lang.setLang('en')),
       ],
     );
   }
@@ -56,7 +69,9 @@ class _LangChip extends StatelessWidget {
           decoration: BoxDecoration(
             color: isActive ? AppTheme.accentCyan : Colors.transparent,
             border: Border.all(
-              color: isActive ? AppTheme.accentCyan : Colors.white.withValues(alpha: 0.3),
+              color: isActive
+                  ? AppTheme.accentCyan
+                  : Colors.white.withValues(alpha: 0.3),
             ),
             borderRadius: BorderRadius.circular(20),
           ),

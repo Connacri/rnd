@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 env:
-  FLUTTER_VERSION: stable
+  FLUTTER_VERSION: "3.44.0"
 
 jobs:
   ##############################################################################
@@ -19,6 +19,7 @@ jobs:
   ##############################################################################
   version:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       version: ${{ steps.v.outputs.version }}
 
@@ -51,21 +52,26 @@ jobs:
           echo "Version calculée : $CANDIDATE"
 
   ##############################################################################
-  # Qualité : analyse statique + tests (bloque le build si échec)
+  # Qualité : format + analyse statique + tests (bloque le build si échec)
   ##############################################################################
   quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.FLUTTER_VERSION }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib tool
 
       - name: Analyze
         run: flutter analyze --no-fatal-infos
@@ -79,6 +85,7 @@ jobs:
   build-android:
     needs: [version, quality]
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
@@ -92,8 +99,18 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.FLUTTER_VERSION }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
+
+      - name: Setup Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
 
       - name: Install dependencies
         run: flutter pub get
@@ -119,23 +136,35 @@ jobs:
             echo "⚠️  key.properties non créé : signature debug utilisée"
           fi
 
-      # Seule la clé anon (publique par design) est injectée dans le build
-      # client. La service_role key ne doit JAMAIS être passée ici.
+      # Les clés sont injectées via un fichier dart-define temporaire (supprimé
+      # après build) plutôt qu'en ligne de commande, pour éviter qu'elles
+      # n'apparaissent dans les logs de processus.
+      - name: Create dart-define file
+        run: |
+          cat > /tmp/ci_env.json <<EOF
+          {
+            "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}",
+            "SUPABASE_ANON_KEY": "${{ secrets.SUPABASE_ANON_KEY }}"
+          }
+          EOF
+
       - name: Build APK (universal)
         run: |
           flutter build apk --release \
             --build-name=${{ needs.version.outputs.version }} \
             --build-number=${{ github.run_number }} \
-            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+            --dart-define-from-file=/tmp/ci_env.json
 
       - name: Build App Bundle (AAB)
         run: |
           flutter build appbundle --release \
             --build-name=${{ needs.version.outputs.version }} \
             --build-number=${{ github.run_number }} \
-            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+            --dart-define-from-file=/tmp/ci_env.json
+
+      - name: Clean up secrets file
+        if: always()
+        run: rm -f /tmp/ci_env.json android/app/upload-keystore.jks android/key.properties
 
       - name: Verify APK signature
         run: |
@@ -156,6 +185,12 @@ jobs:
           cp build/app/outputs/bundle/release/app-release.aab \
              release/rnd-android.aab
 
+      - name: Generate SHA256 checksums
+        run: |
+          cd release
+          sha256sum rnd-android.apk rnd-android.aab > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
@@ -170,12 +205,20 @@ jobs:
           path: release/rnd-android.aab
           retention-days: 30
 
+      - name: Upload checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-checksums
+          path: release/SHA256SUMS.txt
+          retention-days: 30
+
   ##############################################################################
   # Build Windows (ZIP portable)
   ##############################################################################
   build-windows:
     needs: [version, quality]
     runs-on: windows-latest
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
@@ -183,11 +226,21 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.FLUTTER_VERSION }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Create dart-define file
+        shell: pwsh
+        run: |
+          $env = @{
+            SUPABASE_URL = "${{ secrets.SUPABASE_URL }}"
+            SUPABASE_ANON_KEY = "${{ secrets.SUPABASE_ANON_KEY }}"
+          } | ConvertTo-Json
+          [IO.File]::WriteAllText("$env:RUNNER_TEMP\ci_env.json", $env)
 
       - name: Build Windows
         shell: pwsh
@@ -195,8 +248,12 @@ jobs:
           flutter build windows --release `
             --build-name=${{ needs.version.outputs.version }} `
             --build-number=${{ github.run_number }} `
-            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} `
-            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+            --dart-define-from-file="$env:RUNNER_TEMP\ci_env.json"
+
+      - name: Clean up secrets file
+        if: always()
+        shell: pwsh
+        run: Remove-Item -Force "$env:RUNNER_TEMP\ci_env.json" -ErrorAction SilentlyContinue
 
       - name: Package portable ZIP
         shell: pwsh
@@ -220,6 +277,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     needs: [version, build-android, build-windows]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
 
@@ -270,8 +328,9 @@ jobs:
             | 🪟 Windows (portable) | `rnd-windows-v${{ needs.version.outputs.version }}.zip` |
 
             ### 🔐 Sécurité
-            - Clés Supabase injectées via GitHub Secrets au moment du build (aucune clé committée dans le code)
+            - Clés injectées via fichier temporaire au moment du build (jamais dans les logs)
             - APK signé avec le keystore de release (voir secrets `ANDROID_KEYSTORE_*`)
+            - Checksums SHA256 disponibles dans `android-checksums`
           files: out/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

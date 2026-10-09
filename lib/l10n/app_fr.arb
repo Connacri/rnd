@@ -96,5 +96,14 @@
   "professionPlaceholder": "Votre profession",
   "addressPlaceholder": "Votre adresse",
   "messagePlaceholder": "Votre message...",
-  "suggestionPlaceholder": "Votre suggestion ou proposition..."
+  "suggestionPlaceholder": "Votre suggestion ou proposition...",
+  "forgotPasswordTitle": "Mot de passe oublié",
+  "forgotPasswordHint": "Entrez votre email et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+  "sendResetEmail": "Envoyer le lien",
+  "resetEmailSent": "Email envoyé ! Vérifiez votre boîte de réception.",
+  "forgotPassword": "Mot de passe oublié ?",
+  "continueWithGoogle": "Continuer avec Google",
+  "contentLoadFailed": "Impossible de charger le contenu. Vérifiez votre connexion.",
+  "retry": "Réessayer",
+  "latestNews": "Actualités"
 }

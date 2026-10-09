@@ -23,28 +23,27 @@ dependencies:
   supabase_flutter: ^2.16.0
 
 
+  # Firebase
+  firebase_core: ^4.15.0
+  firebase_auth: ^6.7.0
+
+
   # Authentication
   google_sign_in: ^7.2.0
 
 
   # UI
   google_fonts: ^8.2.0
-  cached_network_image: ^3.4.1
-
-
-  # Maps
-  flutter_map: ^8.3.1
-  latlong2: ^0.10.1
 
 
   # Utils
   intl: ^0.20.2
-  uuid: ^4.6.0
 
 
-  # Images
-  image_picker: ^1.2.3
+  # Audio
   audioplayers: ^6.8.1
+  firebase_messaging: ^16.7.0
+  flutter_local_notifications: ^22.3.1
 
 
 dev_dependencies:
@@ -57,6 +56,8 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
   flutter_native_splash: ^2.4.8
+  googleapis_auth: ^2.3.4
+  http: ^1.6.0
 
 flutter:
   generate: true
@@ -71,11 +72,20 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/icon.jfif"
+  windows:
+    generate: true
+    image_path: "assets/icons/icon.png"
+    icon_size: 256
+  image_path: "assets/icons/icon.png"
+  web:
+    generate: true
+    image_path: "assets/icons/icon.png"
+    background: "#0a1628"
+    theme_color: "#0a1628"
 
 flutter_native_splash:
   color: "#0a1628"
-  image: "assets/icons/splash.jfif"
+  image: "assets/icons/splash.png"
   android: true
   ios: true
   web: false

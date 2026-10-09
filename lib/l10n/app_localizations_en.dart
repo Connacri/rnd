@@ -309,4 +309,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suggestionPlaceholder => 'Your suggestion or proposal...';
+
+  @override
+  String get forgotPasswordTitle => 'Forgot password';
+
+  @override
+  String get forgotPasswordHint =>
+      'Enter your email and we will send you a link to reset your password.';
+
+  @override
+  String get sendResetEmail => 'Send link';
+
+  @override
+  String get resetEmailSent => 'Email sent! Check your inbox.';
+
+  @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get contentLoadFailed =>
+      'Could not load content. Check your connection.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get latestNews => 'News';
 }

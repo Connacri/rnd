@@ -32,103 +32,206 @@ class TranslationService {
       return key;
     }
     switch (key) {
-      case 'appName': return loc.appName;
-      case 'candidateName': return loc.candidateName;
-      case 'city': return loc.city;
-      case 'elections2026': return loc.elections2026;
-      case 'together': return loc.together;
-      case 'togetherHighlight': return loc.togetherHighlight;
-      case 'description': return loc.description;
-      case 'ourProgram': return loc.ourProgram;
-      case 'joinUs': return loc.joinUs;
-      case 'whoWeAre': return loc.whoWeAre;
-      case 'ourVision': return loc.ourVision;
-      case 'rndDescription': return loc.rndDescription;
-      case 'rndDescText': return loc.rndDescText;
-      case 'visionText': return loc.visionText;
-      case 'commitment': return loc.commitment;
-      case 'commitmentText': return loc.commitmentText;
-      case 'approach': return loc.approach;
-      case 'candidate': return loc.candidate;
-      case 'program': return loc.program;
-      case 'membership': return loc.membership;
-      case 'events': return loc.events;
-      case 'login': return loc.login;
-      case 'register': return loc.register;
-      case 'logout': return loc.logout;
-      case 'email': return loc.email;
-      case 'password': return loc.password;
-      case 'name': return loc.name;
-      case 'phone': return loc.phone;
-      case 'age': return loc.age;
-      case 'profession': return loc.profession;
-      case 'address': return loc.address;
-      case 'message': return loc.message;
-      case 'suggestion': return loc.suggestion;
-      case 'send': return loc.send;
-      case 'thankYou': return loc.thankYou;
-      case 'successMessage': return loc.successMessage;
-      case 'loginRequired': return loc.loginRequired;
-      case 'noAccount': return loc.noAccount;
-      case 'haveAccount': return loc.haveAccount;
-      case 'secretary': return loc.secretary;
-      case 'algeria': return loc.algeria;
-      case 'party': return loc.party;
-      case 'ourValues': return loc.ourValues;
-      case 'proximity': return loc.proximity;
-      case 'proximityDesc': return loc.proximityDesc;
-      case 'innovation': return loc.innovation;
-      case 'innovationDesc': return loc.innovationDesc;
-      case 'transparency': return loc.transparency;
-      case 'transparencyDesc': return loc.transparencyDesc;
-      case 'development': return loc.development;
-      case 'developmentDesc': return loc.developmentDesc;
-      case 'mairiesRnd': return loc.mairiesRnd;
-      case 'elusCommunaux': return loc.elusCommunaux;
-      case 'deputesApn': return loc.deputesApn;
-      case 'yearsEngagement': return loc.yearsEngagement;
-      case 'learnMore': return loc.learnMore;
-      case 'discoverProgram': return loc.discoverProgram;
-      case 'joinMovement': return loc.joinMovement;
-      case 'seeEvents': return loc.seeEvents;
-      case 'upcomingEvents': return loc.upcomingEvents;
-      case 'footerDesc': return loc.footerDesc;
-      case 'rights': return loc.rights;
-      case 'programTitle': return loc.programTitle;
-      case 'engagement': return loc.engagement;
-      case 'engagementText1': return loc.engagementText1;
-      case 'engagementText2': return loc.engagementText2;
-      case 'engagementText3': return loc.engagementText3;
-      case 'slogan': return loc.slogan;
-      case 'membershipTitle': return loc.membershipTitle;
-      case 'membershipDesc': return loc.membershipDesc;
-      case 'nom': return loc.nom;
-      case 'emailField': return loc.emailField;
-      case 'ageOptional': return loc.ageOptional;
-      case 'professionOptional': return loc.professionOptional;
-      case 'addressOptional': return loc.addressOptional;
-      case 'messageOptional': return loc.messageOptional;
-      case 'suggestionOptional': return loc.suggestionOptional;
-      case 'nomRequired': return loc.nomRequired;
-      case 'emailRequired': return loc.emailRequired;
-      case 'emailInvalid': return loc.emailInvalid;
-      case 'passwordRequired': return loc.passwordRequired;
-      case 'passwordMin': return loc.passwordMin;
-      case 'phoneRequired': return loc.phoneRequired;
-      case 'phoneInvalid': return loc.phoneInvalid;
-      case 'loginError': return loc.loginError;
-      case 'registerError': return loc.registerError;
-      case 'fullName': return loc.fullName;
-      case 'welcome': return loc.welcome;
-      case 'audioMessage': return loc.audioMessage;
-      case 'namePlaceholder': return loc.namePlaceholder;
-      case 'emailPlaceholder': return loc.emailPlaceholder;
-      case 'phonePlaceholder': return loc.phonePlaceholder;
-      case 'agePlaceholder': return loc.agePlaceholder;
-      case 'professionPlaceholder': return loc.professionPlaceholder;
-      case 'addressPlaceholder': return loc.addressPlaceholder;
-      case 'messagePlaceholder': return loc.messagePlaceholder;
-      case 'suggestionPlaceholder': return loc.suggestionPlaceholder;
+      case 'appName':
+        return loc.appName;
+      case 'candidateName':
+        return loc.candidateName;
+      case 'city':
+        return loc.city;
+      case 'elections2026':
+        return loc.elections2026;
+      case 'together':
+        return loc.together;
+      case 'togetherHighlight':
+        return loc.togetherHighlight;
+      case 'description':
+        return loc.description;
+      case 'ourProgram':
+        return loc.ourProgram;
+      case 'joinUs':
+        return loc.joinUs;
+      case 'whoWeAre':
+        return loc.whoWeAre;
+      case 'ourVision':
+        return loc.ourVision;
+      case 'rndDescription':
+        return loc.rndDescription;
+      case 'rndDescText':
+        return loc.rndDescText;
+      case 'visionText':
+        return loc.visionText;
+      case 'commitment':
+        return loc.commitment;
+      case 'commitmentText':
+        return loc.commitmentText;
+      case 'approach':
+        return loc.approach;
+      case 'candidate':
+        return loc.candidate;
+      case 'program':
+        return loc.program;
+      case 'membership':
+        return loc.membership;
+      case 'events':
+        return loc.events;
+      case 'login':
+        return loc.login;
+      case 'register':
+        return loc.register;
+      case 'logout':
+        return loc.logout;
+      case 'email':
+        return loc.email;
+      case 'password':
+        return loc.password;
+      case 'name':
+        return loc.name;
+      case 'phone':
+        return loc.phone;
+      case 'age':
+        return loc.age;
+      case 'profession':
+        return loc.profession;
+      case 'address':
+        return loc.address;
+      case 'message':
+        return loc.message;
+      case 'suggestion':
+        return loc.suggestion;
+      case 'send':
+        return loc.send;
+      case 'thankYou':
+        return loc.thankYou;
+      case 'successMessage':
+        return loc.successMessage;
+      case 'loginRequired':
+        return loc.loginRequired;
+      case 'noAccount':
+        return loc.noAccount;
+      case 'haveAccount':
+        return loc.haveAccount;
+      case 'secretary':
+        return loc.secretary;
+      case 'algeria':
+        return loc.algeria;
+      case 'party':
+        return loc.party;
+      case 'ourValues':
+        return loc.ourValues;
+      case 'proximity':
+        return loc.proximity;
+      case 'proximityDesc':
+        return loc.proximityDesc;
+      case 'innovation':
+        return loc.innovation;
+      case 'innovationDesc':
+        return loc.innovationDesc;
+      case 'transparency':
+        return loc.transparency;
+      case 'transparencyDesc':
+        return loc.transparencyDesc;
+      case 'development':
+        return loc.development;
+      case 'developmentDesc':
+        return loc.developmentDesc;
+      case 'mairiesRnd':
+        return loc.mairiesRnd;
+      case 'elusCommunaux':
+        return loc.elusCommunaux;
+      case 'deputesApn':
+        return loc.deputesApn;
+      case 'yearsEngagement':
+        return loc.yearsEngagement;
+      case 'learnMore':
+        return loc.learnMore;
+      case 'discoverProgram':
+        return loc.discoverProgram;
+      case 'joinMovement':
+        return loc.joinMovement;
+      case 'seeEvents':
+        return loc.seeEvents;
+      case 'upcomingEvents':
+        return loc.upcomingEvents;
+      case 'footerDesc':
+        return loc.footerDesc;
+      case 'rights':
+        return loc.rights;
+      case 'programTitle':
+        return loc.programTitle;
+      case 'engagement':
+        return loc.engagement;
+      case 'engagementText1':
+        return loc.engagementText1;
+      case 'engagementText2':
+        return loc.engagementText2;
+      case 'engagementText3':
+        return loc.engagementText3;
+      case 'slogan':
+        return loc.slogan;
+      case 'membershipTitle':
+        return loc.membershipTitle;
+      case 'membershipDesc':
+        return loc.membershipDesc;
+      case 'nom':
+        return loc.nom;
+      case 'emailField':
+        return loc.emailField;
+      case 'ageOptional':
+        return loc.ageOptional;
+      case 'professionOptional':
+        return loc.professionOptional;
+      case 'addressOptional':
+        return loc.addressOptional;
+      case 'messageOptional':
+        return loc.messageOptional;
+      case 'suggestionOptional':
+        return loc.suggestionOptional;
+      case 'nomRequired':
+        return loc.nomRequired;
+      case 'emailRequired':
+        return loc.emailRequired;
+      case 'emailInvalid':
+        return loc.emailInvalid;
+      case 'passwordRequired':
+        return loc.passwordRequired;
+      case 'passwordMin':
+        return loc.passwordMin;
+      case 'phoneRequired':
+        return loc.phoneRequired;
+      case 'phoneInvalid':
+        return loc.phoneInvalid;
+      case 'loginError':
+        return loc.loginError;
+      case 'registerError':
+        return loc.registerError;
+      case 'fullName':
+        return loc.fullName;
+      case 'welcome':
+        return loc.welcome;
+      case 'audioMessage':
+        return loc.audioMessage;
+      case 'namePlaceholder':
+        return loc.namePlaceholder;
+      case 'emailPlaceholder':
+        return loc.emailPlaceholder;
+      case 'phonePlaceholder':
+        return loc.phonePlaceholder;
+      case 'agePlaceholder':
+        return loc.agePlaceholder;
+      case 'professionPlaceholder':
+        return loc.professionPlaceholder;
+      case 'addressPlaceholder':
+        return loc.addressPlaceholder;
+      case 'messagePlaceholder':
+        return loc.messagePlaceholder;
+      case 'suggestionPlaceholder':
+        return loc.suggestionPlaceholder;
+      case 'contentLoadFailed':
+        return loc.contentLoadFailed;
+      case 'retry':
+        return loc.retry;
+      case 'latestNews':
+        return loc.latestNews;
       default:
         return key;
     }

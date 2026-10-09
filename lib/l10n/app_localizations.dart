@@ -681,6 +681,60 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Votre suggestion ou proposition...'**
   String get suggestionPlaceholder;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entrez votre email et nous vous enverrons un lien pour réinitialiser votre mot de passe.'**
+  String get forgotPasswordHint;
+
+  /// No description provided for @sendResetEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer le lien'**
+  String get sendResetEmail;
+
+  /// No description provided for @resetEmailSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Email envoyé ! Vérifiez votre boîte de réception.'**
+  String get resetEmailSent;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié ?'**
+  String get forgotPassword;
+
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer avec Google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @contentLoadFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de charger le contenu. Vérifiez votre connexion.'**
+  String get contentLoadFailed;
+
+  /// No description provided for @retry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get retry;
+
+  /// No description provided for @latestNews.
+  ///
+  /// In fr, this message translates to:
+  /// **'Actualités'**
+  String get latestNews;
 }
 
 class _AppLocalizationsDelegate

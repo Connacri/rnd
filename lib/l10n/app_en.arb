@@ -96,5 +96,14 @@
   "professionPlaceholder": "Your profession",
   "addressPlaceholder": "Your address",
   "messagePlaceholder": "Your message...",
-  "suggestionPlaceholder": "Your suggestion or proposal..."
+  "suggestionPlaceholder":   "Your suggestion or proposal...",
+  "forgotPasswordTitle": "Forgot password",
+  "forgotPasswordHint": "Enter your email and we will send you a link to reset your password.",
+  "sendResetEmail": "Send link",
+  "resetEmailSent": "Email sent! Check your inbox.",
+  "forgotPassword": "Forgot password?",
+  "continueWithGoogle": "Continue with Google",
+  "contentLoadFailed": "Could not load content. Check your connection.",
+  "retry": "Retry",
+  "latestNews": "News"
 }

@@ -4,7 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/providers/language_provider.dart';
+import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
+import 'package:rnd_campaign_app/features/content/models/content_models.dart';
+import 'package:rnd_campaign_app/features/content/providers/content_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 
@@ -18,16 +21,17 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-          children: [
-            const _HomeTopBar(),
-            const _HeroSection(),
-            const _StatsSection(),
-            const _AboutSection(),
-            const _QuickLinksSection(),
-            const _ScreenshotsSection(),
-            const _FooterSection(),
-          ],
-        ),
+            children: [
+              const _HomeTopBar(),
+              const _HeroSection(),
+              const _StatsSection(),
+              const _NewsSection(),
+              const _AboutSection(),
+              const _QuickLinksSection(),
+              const _ScreenshotsSection(),
+              const _FooterSection(),
+            ],
+          ),
         ),
       ),
     );
@@ -47,7 +51,7 @@ class _HomeTopBar extends StatelessWidget {
           Row(
             children: [
               Image.asset(
-                'assets/icons/icon.jfif',
+                'assets/icons/icon.png',
                 height: 36,
                 errorBuilder: (_, __, ___) => const SizedBox(),
               ),
@@ -137,7 +141,7 @@ class _HeroSection extends StatelessWidget {
             ),
             child: ClipOval(
               child: Image.asset(
-                'assets/icons/icon.jfif',
+                'assets/icons/icon.png',
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => const Icon(
                   Icons.person,
@@ -161,7 +165,8 @@ class _HeroSection extends StatelessWidget {
           Text.rich(
             TextSpan(
               children: [
-                TextSpan(text: togetherParts.isNotEmpty ? togetherParts[0] : ''),
+                TextSpan(
+                    text: togetherParts.isNotEmpty ? togetherParts[0] : ''),
                 TextSpan(
                   text: l.togetherHighlight,
                   style: TextStyle(
@@ -170,7 +175,8 @@ class _HeroSection extends StatelessWidget {
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                TextSpan(text: togetherParts.length > 1 ? togetherParts[1] : ''),
+                TextSpan(
+                    text: togetherParts.length > 1 ? togetherParts[1] : ''),
               ],
             ),
             textAlign: TextAlign.center,
@@ -208,7 +214,8 @@ class _HeroSection extends StatelessWidget {
               Expanded(
                 child: _HeroButton(
                   label: l.joinUs,
-                  onTap: () => Navigator.pushNamed(context, AppRoutes.membership),
+                  onTap: () =>
+                      Navigator.pushNamed(context, AppRoutes.membership),
                   primary: false,
                 ),
               ),
@@ -299,26 +306,29 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
               ),
               child: Center(
                 child: Text(
-                  _isPlaying ? '⏸' : '▶',
+                  _isPlaying ? 'â¸' : 'â–¶',
                   style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ),
             ),
           ),
           const SizedBox(width: 12),
-          ...List.generate(6, (i) => Container(
-            width: 3,
-            height: _isPlaying ? [12, 18, 8, 16, 10, 14][i].toDouble() : 4,
-            margin: const EdgeInsets.symmetric(horizontal: 1.5),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [Color(0xFF00d4ff), Color(0xFFd4af37)],
-              ),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          )),
+          ...List.generate(
+              6,
+              (i) => Container(
+                    width: 3,
+                    height:
+                        _isPlaying ? [12, 18, 8, 16, 10, 14][i].toDouble() : 4,
+                    margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [Color(0xFF00d4ff), Color(0xFFd4af37)],
+                      ),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  )),
           const SizedBox(width: 12),
           Text(
             l.audioMessage,
@@ -353,9 +363,11 @@ class _HeroButton extends StatelessWidget {
           backgroundColor: const Color(0xFF00d4ff),
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         ),
-        child: Text(label, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
+        child: Text(label,
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
       );
     }
     return OutlinedButton(
@@ -366,7 +378,8 @@ class _HeroButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       ),
-      child: Text(label, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
+      child: Text(label,
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
     );
   }
 }
@@ -376,7 +389,8 @@ class _StatsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
+    // Chiffres : Supabase si présent, repli sur les valeurs statiques.
+    final stats = context.watch<ContentProvider>().homeStats;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
       decoration: BoxDecoration(
@@ -391,17 +405,120 @@ class _StatsSection extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final itemWidth = (constraints.maxWidth - 16) / 2;
+          final lang = TranslationService.currentLang;
           return Wrap(
             spacing: 16,
             runSpacing: 16,
-            children: [
-              SizedBox(width: itemWidth, child: _StatItem(icon: '🏛️', number: '451', label: l.mairiesRnd)),
-              SizedBox(width: itemWidth, child: _StatItem(icon: '👥', number: '6 521', label: l.elusCommunaux)),
-              SizedBox(width: itemWidth, child: _StatItem(icon: '🏛️', number: '58', label: l.deputesApn)),
-              SizedBox(width: itemWidth, child: _StatItem(icon: '📅', number: '28', label: l.yearsEngagement)),
-            ],
+            children: stats
+                .map(
+                  (s) => SizedBox(
+                    width: itemWidth,
+                    child: _StatItem(
+                      icon: s.icon,
+                      number: s.number,
+                      label: s.labelFor(lang),
+                    ),
+                  ),
+                )
+                .toList(),
           );
         },
+      ),
+    );
+  }
+}
+
+/// Actualités publiées par l'administrateur (table Supabase `news`).
+/// Masquée si aucune actu — pas de placeholder vide.
+class _NewsSection extends StatelessWidget {
+  const _NewsSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final news = context.watch<ContentProvider>().news;
+    if (news.isEmpty) return const SizedBox.shrink();
+    final lang = TranslationService.currentLang;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l.latestNews,
+            style: GoogleFonts.roboto(
+              fontSize: 26,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ...news.map((item) => _NewsTile(item: item, lang: lang)),
+        ],
+      ),
+    );
+  }
+}
+
+class _NewsTile extends StatelessWidget {
+  final NewsItem item;
+  final String lang;
+
+  const _NewsTile({required this.item, required this.lang});
+
+  @override
+  Widget build(BuildContext context) {
+    final date = item.createdAt;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.campaign_outlined,
+                  color: Color(0xFF00d4ff), size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  item.titleFor(lang),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (item.bodyFor(lang).isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              item.bodyFor(lang),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white.withValues(alpha: 0.7),
+                height: 1.5,
+              ),
+            ),
+          ],
+          if (date != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              '${date.day}/${date.month}/${date.year}',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white.withValues(alpha: 0.4),
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -473,7 +590,8 @@ class _AboutSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xFF00d4ff).withValues(alpha: 0.3)),
+              border: Border.all(
+                  color: const Color(0xFF00d4ff).withValues(alpha: 0.3)),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Text(
@@ -576,10 +694,20 @@ class _AboutSection extends StatelessWidget {
             crossAxisSpacing: 12,
             childAspectRatio: 2.8,
             children: [
-              _FeatureItem(icon: '🤝', title: l.proximity, subtitle: l.proximityDesc),
-              _FeatureItem(icon: '💡', title: l.innovation, subtitle: l.innovationDesc),
-              _FeatureItem(icon: '⚖️', title: l.transparency, subtitle: l.transparencyDesc),
-              _FeatureItem(icon: '🌱', title: l.development, subtitle: l.developmentDesc),
+              _FeatureItem(
+                  icon: 'ðŸ¤', title: l.proximity, subtitle: l.proximityDesc),
+              _FeatureItem(
+                  icon: 'ðŸ’¡',
+                  title: l.innovation,
+                  subtitle: l.innovationDesc),
+              _FeatureItem(
+                  icon: 'âš–ï¸',
+                  title: l.transparency,
+                  subtitle: l.transparencyDesc),
+              _FeatureItem(
+                  icon: 'ðŸŒ±',
+                  title: l.development,
+                  subtitle: l.developmentDesc),
             ],
           ),
         ],
@@ -655,28 +783,28 @@ class _QuickLinksSection extends StatelessWidget {
         children: [
           const SizedBox(height: 24),
           _LinkCard(
-            icon: '👤',
+            icon: 'ðŸ‘¤',
             title: l.candidate,
             subtitle: l.learnMore,
             onTap: () => Navigator.pushNamed(context, AppRoutes.candidate),
           ),
           const SizedBox(height: 16),
           _LinkCard(
-            icon: '📋',
+            icon: 'ðŸ“‹',
             title: l.program,
             subtitle: l.discoverProgram,
             onTap: () => Navigator.pushNamed(context, AppRoutes.program),
           ),
           const SizedBox(height: 16),
           _LinkCard(
-            icon: '✋',
+            icon: 'âœ‹',
             title: l.membership,
             subtitle: l.joinMovement,
             onTap: () => Navigator.pushNamed(context, AppRoutes.membership),
           ),
           const SizedBox(height: 16),
           _LinkCard(
-            icon: '📅',
+            icon: 'ðŸ“…',
             title: l.events,
             subtitle: l.seeEvents,
             onTap: () => Navigator.pushNamed(context, AppRoutes.events),
@@ -708,19 +836,27 @@ class _LinkCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
-          child: Ink(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: ListTile(
-              leading: Text(icon, style: const TextStyle(fontSize: 36)),
-              title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: Colors.white)),
-              subtitle: Text(subtitle, style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.5))),
-              trailing: Icon(Icons.chevron_right, color: Colors.white.withValues(alpha: 0.3)),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            ),
+        child: Ink(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+            borderRadius: BorderRadius.circular(16),
           ),
+          child: ListTile(
+            leading: Text(icon, style: const TextStyle(fontSize: 36)),
+            title: Text(title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: Colors.white)),
+            subtitle: Text(subtitle,
+                style: TextStyle(
+                    fontSize: 13, color: Colors.white.withValues(alpha: 0.5))),
+            trailing: Icon(Icons.chevron_right,
+                color: Colors.white.withValues(alpha: 0.3)),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          ),
+        ),
       ),
     );
   }
@@ -734,8 +870,8 @@ class _ScreenshotsSection extends StatelessWidget {
     const screenshots = [
       ('assets/images/1000011155.png', 'Accueil'),
       ('assets/images/1000011156.png', 'Programme'),
-      ('assets/images/1000011157.png', 'Adhésion'),
-      ('assets/images/1000011158.png', 'Événements'),
+      ('assets/images/1000011157.png', 'AdhÃ©sion'),
+      ('assets/images/1000011158.png', 'Ã‰vÃ©nements'),
     ];
     return Container(
       padding: const EdgeInsets.all(24),
@@ -743,7 +879,7 @@ class _ScreenshotsSection extends StatelessWidget {
         children: [
           const SizedBox(height: 24),
           const Text(
-            'Aperçu de l\'application',
+            'AperÃ§u de l\'application',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w900,
@@ -752,7 +888,7 @@ class _ScreenshotsSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Captures d\'écran',
+            'Captures d\'Ã©cran',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13,
@@ -761,29 +897,32 @@ class _ScreenshotsSection extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           ...screenshots.map((s) => Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: Image.asset(s.$1, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const SizedBox()),
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.15)),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Image.asset(s.$1,
+                          fit: BoxFit.contain,
+                          errorBuilder: (_, __, ___) => const SizedBox()),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      s.$2,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white.withValues(alpha: 0.7),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  s.$2,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withValues(alpha: 0.7),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          )),
+              )),
         ],
       ),
     );
@@ -813,7 +952,8 @@ class _FooterSection extends StatelessWidget {
           Text(
             l.footerDesc,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.5)),
+            style: TextStyle(
+                fontSize: 13, color: Colors.white.withValues(alpha: 0.5)),
           ),
           const SizedBox(height: 20),
           Row(
@@ -832,24 +972,41 @@ class _FooterSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(width: 24, height: 3, decoration: BoxDecoration(color: const Color(0xFF0047AB), borderRadius: BorderRadius.circular(2))),
+              Container(
+                  width: 24,
+                  height: 3,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFF0047AB),
+                      borderRadius: BorderRadius.circular(2))),
               const SizedBox(width: 4),
-              Container(width: 24, height: 3, decoration: BoxDecoration(color: const Color(0xFF00A651), borderRadius: BorderRadius.circular(2))),
+              Container(
+                  width: 24,
+                  height: 3,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFF00A651),
+                      borderRadius: BorderRadius.circular(2))),
               const SizedBox(width: 4),
-              Container(width: 24, height: 3, decoration: BoxDecoration(color: const Color(0xFFC8102E), borderRadius: BorderRadius.circular(2))),
+              Container(
+                  width: 24,
+                  height: 3,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFC8102E),
+                      borderRadius: BorderRadius.circular(2))),
             ],
           ),
           const SizedBox(height: 16),
           Text(
             l.rights,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.3)),
+            style: TextStyle(
+                fontSize: 12, color: Colors.white.withValues(alpha: 0.3)),
           ),
           const SizedBox(height: 8),
           Text(
-            '© Developed by FORSLOG LTD — Codded by Ramzy Guedouar — Contact: 0696 41 09 53',
+            'Â© Developed by FORSLOG LTD â€” Codded by Ramzy Guedouar â€” Contact: 0696 41 09 53',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.2)),
+            style: TextStyle(
+                fontSize: 11, color: Colors.white.withValues(alpha: 0.2)),
           ),
         ],
       ),
@@ -872,7 +1029,9 @@ class _SocialBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
       ),
       child: Center(
-        child: Text(label, style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.7))),
+        child: Text(label,
+            style: TextStyle(
+                fontSize: 11, color: Colors.white.withValues(alpha: 0.7))),
       ),
     );
   }

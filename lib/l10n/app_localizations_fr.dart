@@ -310,4 +310,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get suggestionPlaceholder => 'Votre suggestion ou proposition...';
+
+  @override
+  String get forgotPasswordTitle => 'Mot de passe oublié';
+
+  @override
+  String get forgotPasswordHint =>
+      'Entrez votre email et nous vous enverrons un lien pour réinitialiser votre mot de passe.';
+
+  @override
+  String get sendResetEmail => 'Envoyer le lien';
+
+  @override
+  String get resetEmailSent =>
+      'Email envoyé ! Vérifiez votre boîte de réception.';
+
+  @override
+  String get forgotPassword => 'Mot de passe oublié ?';
+
+  @override
+  String get continueWithGoogle => 'Continuer avec Google';
+
+  @override
+  String get contentLoadFailed =>
+      'Impossible de charger le contenu. Vérifiez votre connexion.';
+
+  @override
+  String get retry => 'Réessayer';
+
+  @override
+  String get latestNews => 'Actualités';
 }

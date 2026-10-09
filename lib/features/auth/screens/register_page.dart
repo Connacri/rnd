@@ -51,6 +51,22 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  Future<void> _googleSignIn() async {
+    final auth = context.read<AuthProvider>();
+    final l = AppLocalizations.of(context)!;
+    final success = await auth.loginWithGoogle();
+
+    if (!mounted) return;
+
+    if (success) {
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(auth.error ?? l.loginError)),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
@@ -61,72 +77,98 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(title: Text(l.register)),
       body: SafeArea(
         child: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const LanguageSwitcher(),
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: l.fullName,
-                    prefixIcon: const Icon(Icons.person_outlined),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const LanguageSwitcher(),
+                  const SizedBox(height: 24),
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: l.fullName,
+                      prefixIcon: const Icon(Icons.person_outlined),
+                    ),
+                    validator: (v) =>
+                        v == null || v.isEmpty ? l.nomRequired : null,
                   ),
-                  validator: (v) =>
-                      v == null || v.isEmpty ? l.nomRequired : null,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: l.email,
-                    prefixIcon: const Icon(Icons.email_outlined),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: l.email,
+                      prefixIcon: const Icon(Icons.email_outlined),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: Validators.email,
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: Validators.email,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: InputDecoration(
-                    labelText: l.phone,
-                    prefixIcon: const Icon(Icons.phone_outlined),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                      labelText: l.phone,
+                      prefixIcon: const Icon(Icons.phone_outlined),
+                    ),
+                    keyboardType: TextInputType.phone,
+                    validator: Validators.phone,
                   ),
-                  keyboardType: TextInputType.phone,
-                  validator: Validators.phone,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: l.password,
-                    prefixIcon: const Icon(Icons.lock_outlined),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: l.password,
+                      prefixIcon: const Icon(Icons.lock_outlined),
+                    ),
+                    obscureText: true,
+                    validator: Validators.password,
                   ),
-                  obscureText: true,
-                  validator: Validators.password,
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: auth.isLoading ? null : _submit,
-                    child: auth.isLoading
-                        ? const CircularProgressIndicator()
-                        : Text(l.register),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: auth.isLoading ? null : _submit,
+                      child: auth.isLoading
+                          ? const CircularProgressIndicator()
+                          : Text(l.register),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(l.haveAccount),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      const Expanded(child: Divider(color: Colors.white24)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text('•',
+                            style: const TextStyle(color: Colors.white38)),
+                      ),
+                      const Expanded(child: Divider(color: Colors.white24)),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: auth.isLoading ? null : _googleSignIn,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        side: const BorderSide(color: Colors.white30),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      icon: const Icon(Icons.g_mobiledata, size: 28),
+                      label: Text(l.continueWithGoogle),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(l.haveAccount),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
         ),
       ),
     );

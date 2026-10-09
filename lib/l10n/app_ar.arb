@@ -96,5 +96,14 @@
   "professionPlaceholder": "مهنتك",
   "addressPlaceholder": "عنوانك",
   "messagePlaceholder": "رسالتك...",
-  "suggestionPlaceholder": "اقتراحك أو عرضك..."
+  "suggestionPlaceholder": "اقتراحك أو عرضك...",
+  "forgotPasswordTitle": "نسيت كلمة المرور",
+  "forgotPasswordHint": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.",
+  "sendResetEmail": "إرسال الرابط",
+  "resetEmailSent": "تم إرسال البريد الإلكتروني! تحقق من صندوق الوارد.",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "continueWithGoogle": "المتابعة عبر Google",
+  "contentLoadFailed": "تعذر تحميل المحتوى. تحقق من اتصالك بالإنترنت.",
+  "retry": "إعادة المحاولة",
+  "latestNews": "آخر الأخبار"
 }

@@ -100,114 +100,119 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
       backgroundColor: const Color(0xFF0a1628),
       body: SafeArea(
         child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l.membershipTitle,
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                l.membershipDesc,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white.withValues(alpha: 0.6),
-                  height: 1.5,
-                ),
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: _nomController,
-                decoration: _inputDecoration(l.nom, l.namePlaceholder),
-                style: const TextStyle(color: Colors.white),
-                validator: (v) =>
-                    v == null || v.isEmpty ? l.nomRequired : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _emailController,
-                decoration: _inputDecoration(l.emailField, l.emailPlaceholder),
-                keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(color: Colors.white),
-                validator: Validators.email,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _phoneController,
-                decoration: _inputDecoration(l.phone, l.phonePlaceholder),
-                keyboardType: TextInputType.phone,
-                style: const TextStyle(color: Colors.white),
-                validator: Validators.phone,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _ageController,
-                decoration: _inputDecoration(l.ageOptional, l.agePlaceholder),
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _professionController,
-                decoration: _inputDecoration(l.professionOptional, l.professionPlaceholder),
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _adresseController,
-                decoration: _inputDecoration(l.addressOptional, l.addressPlaceholder),
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _messageController,
-                decoration: _inputDecoration(l.messageOptional, l.messagePlaceholder),
-                maxLines: 3,
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _suggestionController,
-                decoration: _inputDecoration(l.suggestionOptional, l.suggestionPlaceholder),
-                maxLines: 3,
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: membership.isLoading ? null : _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00d4ff),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l.membershipTitle,
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
                   ),
-                  child: membership.isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : Text(
-                          l.send,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                          ),
-                        ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                Text(
+                  l.membershipDesc,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white.withValues(alpha: 0.6),
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                TextFormField(
+                  controller: _nomController,
+                  decoration: _inputDecoration(l.nom, l.namePlaceholder),
+                  style: const TextStyle(color: Colors.white),
+                  validator: (v) =>
+                      v == null || v.isEmpty ? l.nomRequired : null,
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _emailController,
+                  decoration:
+                      _inputDecoration(l.emailField, l.emailPlaceholder),
+                  keyboardType: TextInputType.emailAddress,
+                  style: const TextStyle(color: Colors.white),
+                  validator: Validators.email,
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: _inputDecoration(l.phone, l.phonePlaceholder),
+                  keyboardType: TextInputType.phone,
+                  style: const TextStyle(color: Colors.white),
+                  validator: Validators.phone,
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _ageController,
+                  decoration: _inputDecoration(l.ageOptional, l.agePlaceholder),
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _professionController,
+                  decoration: _inputDecoration(
+                      l.professionOptional, l.professionPlaceholder),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _adresseController,
+                  decoration:
+                      _inputDecoration(l.addressOptional, l.addressPlaceholder),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _messageController,
+                  decoration:
+                      _inputDecoration(l.messageOptional, l.messagePlaceholder),
+                  maxLines: 3,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _suggestionController,
+                  decoration: _inputDecoration(
+                      l.suggestionOptional, l.suggestionPlaceholder),
+                  maxLines: 3,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: membership.isLoading ? null : _submit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF00d4ff),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: membership.isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Text(
+                            l.send,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
+                          ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rnd_campaign_app/core/services/program_data.dart';
+import 'package:provider/provider.dart';
+import 'package:rnd_campaign_app/features/content/providers/content_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 
 class ProgramPage extends StatelessWidget {
@@ -9,7 +10,8 @@ class ProgramPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final pillars = ProgramData.getPillars();
+    // Pillars : Supabase si présent, repli automatique sur ProgramData.
+    final pillars = context.watch<ContentProvider>().pillars;
     return Scaffold(
       appBar: AppBar(
         title: Text(l.programTitle),
@@ -19,26 +21,26 @@ class ProgramPage extends StatelessWidget {
       backgroundColor: const Color(0xFF0a1628),
       body: SafeArea(
         child: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          _SloganCard(),
-          const SizedBox(height: 16),
-          ...pillars.map((p) => Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: _PillarCard(
-                  number: p.number,
-                  icon: p.icon,
-                  title: p.title,
-                  subtitle: p.subtitle,
-                  accentColor: p.accentColor,
-                  items: p.items,
-                  tag: p.tag,
-                ),
-              )),
-          _EngagementSection(),
-          const SizedBox(height: 32),
-        ],
-      ),
+          padding: const EdgeInsets.all(20),
+          children: [
+            _SloganCard(),
+            const SizedBox(height: 16),
+            ...pillars.map((p) => Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _PillarCard(
+                    number: p.number,
+                    icon: p.icon,
+                    title: p.title,
+                    subtitle: p.subtitle,
+                    accentColor: p.accentColor,
+                    items: p.items,
+                    tag: p.tag,
+                  ),
+                )),
+            _EngagementSection(),
+            const SizedBox(height: 32),
+          ],
+        ),
       ),
     );
   }
@@ -145,7 +147,8 @@ class _PillarCard extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('• ', style: TextStyle(color: accentColor, fontSize: 16)),
+                  Text('• ',
+                      style: TextStyle(color: accentColor, fontSize: 16)),
                   Expanded(
                     child: Text(
                       item,
@@ -242,11 +245,26 @@ class _EngagementSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(width: 32, height: 4, decoration: BoxDecoration(color: const Color(0xFF0047AB), borderRadius: BorderRadius.circular(2))),
+              Container(
+                  width: 32,
+                  height: 4,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFF0047AB),
+                      borderRadius: BorderRadius.circular(2))),
               const SizedBox(width: 8),
-              Container(width: 32, height: 4, decoration: BoxDecoration(color: const Color(0xFF00A651), borderRadius: BorderRadius.circular(2))),
+              Container(
+                  width: 32,
+                  height: 4,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFF00A651),
+                      borderRadius: BorderRadius.circular(2))),
               const SizedBox(width: 8),
-              Container(width: 32, height: 4, decoration: BoxDecoration(color: const Color(0xFFC8102E), borderRadius: BorderRadius.circular(2))),
+              Container(
+                  width: 32,
+                  height: 4,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFC8102E),
+                      borderRadius: BorderRadius.circular(2))),
             ],
           ),
         ],

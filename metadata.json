@@ -1,0 +1,8 @@
+{
+  "name": "RND Ain El Turck - Campagne Municipale 2026",
+  "description": "Application officielle de campagne de Zenasni Nabil, Secrétaire du Bureau Communal du RND à Aïn El Tûrck, Oran. Élections Communales 2026.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ],
+  "permissions": []
+}

@@ -72,4 +72,26 @@ export interface AppUser {
   name: string;
   email: string;
   avatarUrl?: string;
+  role?: 'admin' | 'user';
+}
+
+export interface CouncilCandidate {
+  id: string;
+  name: string;
+  photoUrl: string;
+  expertise: string; // Titre de l'expert (ex: Ingénieur Urbaniste, Médecin Spécialiste, Économiste...)
+  role: string; // Rôle dans la liste électorale
+  commission: string; // Commission communale (Urbanisme, Tourisme, Social...)
+  bio: string;
+  order: number;
+  phone?: string;
+  email?: string;
+}
+
+export interface CampaignSettings {
+  recipientEmail: string;
+  secondaryEmail?: string;
+  contactPhone?: string;
+  officeAddress?: string;
+  sloganText?: string;
 }

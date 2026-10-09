@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
+import { CampaignProvider } from './context/CampaignContext';
 import { Navbar } from './components/Navbar';
 import { BottomNav } from './components/BottomNav';
 import { HomePage } from './pages/HomePage';
 import { CandidatePage } from './pages/CandidatePage';
 import { ProgramPage } from './pages/ProgramPage';
+import { CouncilPage } from './pages/CouncilPage';
 import { MembershipPage } from './pages/MembershipPage';
 import { EventsPage } from './pages/EventsPage';
+import { AdminPage } from './pages/AdminPage';
 import { AuthPages } from './pages/AuthPages';
 
 const AppContent: React.FC = () => {
@@ -15,9 +18,21 @@ const AppContent: React.FC = () => {
 
   // Listen to hash or internal navigation
   useEffect(() => {
+    const validPages = [
+      'home',
+      'candidate',
+      'program',
+      'council',
+      'membership',
+      'events',
+      'admin',
+      'login',
+      'register',
+      'forgot-password',
+    ];
     const handleHash = () => {
       const hash = window.location.hash.replace('#/', '').replace('#', '');
-      if (['home', 'candidate', 'program', 'membership', 'events', 'login', 'register', 'forgot-password'].includes(hash)) {
+      if (validPages.includes(hash)) {
         setCurrentPage(hash);
       }
     };
@@ -36,7 +51,7 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-zinc-900 dark:bg-[#121110] dark:text-zinc-100 flex flex-col antialiased selection:bg-amber-300 selection:text-zinc-950 font-sans transition-colors duration-200">
-      {/* Top Navbar */}
+      {/* Top Official RND Algeria Navbar */}
       <Navbar currentPage={currentPage} onNavigate={navigateTo} />
 
       {/* Main Content Area */}
@@ -44,8 +59,10 @@ const AppContent: React.FC = () => {
         {currentPage === 'home' && <HomePage onNavigate={navigateTo} />}
         {currentPage === 'candidate' && <CandidatePage onNavigate={navigateTo} />}
         {currentPage === 'program' && <ProgramPage />}
+        {currentPage === 'council' && <CouncilPage onNavigate={navigateTo} />}
         {currentPage === 'membership' && <MembershipPage />}
         {currentPage === 'events' && <EventsPage />}
+        {currentPage === 'admin' && <AdminPage onNavigate={navigateTo} />}
         {isAuthPage && (
           <AuthPages
             view={currentPage as 'login' | 'register' | 'forgot-password'}
@@ -54,8 +71,8 @@ const AppContent: React.FC = () => {
         )}
       </main>
 
-      {/* Floating Bottom Navigation Pill (hidden on auth pages for focus) */}
-      {!isAuthPage && (
+      {/* Floating Bottom Navigation Pill (hidden on auth & admin pages for clean focus) */}
+      {!isAuthPage && currentPage !== 'admin' && (
         <BottomNav currentPage={currentPage} onNavigate={navigateTo} />
       )}
     </div>
@@ -66,7 +83,9 @@ export default function App() {
   return (
     <LanguageProvider>
       <AuthProvider>
-        <AppContent />
+        <CampaignProvider>
+          <AppContent />
+        </CampaignProvider>
       </AuthProvider>
     </LanguageProvider>
   );

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { LogIn, UserPlus, KeyRound, Sparkles, AlertCircle, ArrowLeft } from 'lucide-react';
+import { LogIn, UserPlus, KeyRound, Sparkles, AlertCircle, ArrowLeft, ShieldCheck, Check } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { GoogleSignInModal } from '../components/GoogleSignInModal';
 
 interface AuthPageProps {
   view: 'login' | 'register' | 'forgot-password';
@@ -10,7 +11,7 @@ interface AuthPageProps {
 
 export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
   const { t, isRtl } = useLanguage();
-  const { login, register, loginWithGoogle, sendPasswordReset } = useAuth();
+  const { login, register, loginAsAdmin, sendPasswordReset } = useAuth();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,6 +19,7 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showGoogleModal, setShowGoogleModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,8 +43,12 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
           onNavigate('home');
         }
       } else if (view === 'forgot-password') {
-        await sendPasswordReset(email);
-        setSuccessMsg(t('resetEmailSent'));
+        const res = await sendPasswordReset(email);
+        if (res.success) {
+          setSuccessMsg(res.message);
+        } else {
+          setError(res.message);
+        }
       }
     } catch (err: any) {
       setError(err?.message || 'Une erreur est survenue');
@@ -51,30 +57,30 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
     }
   };
 
-  const handleGoogle = async () => {
-    setLoading(true);
-    await loginWithGoogle();
-    setLoading(false);
-    onNavigate('home');
+  const handleAdminQuickLogin = () => {
+    loginAsAdmin();
+    onNavigate('admin');
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-8 pb-24 space-y-6">
+    <div className="max-w-md mx-auto px-4 py-6 sm:py-8 pb-24 space-y-6">
       {/* Back to Home Button */}
       <button
         onClick={() => onNavigate('home')}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition min-h-[36px]"
       >
         <ArrowLeft className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
-        <span>Retour</span>
+        <span>Retour à l'accueil</span>
       </button>
 
-      {/* Header */}
+      {/* Header with official RND Logo */}
       <div className="text-center">
-        <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 mx-auto flex items-center justify-center mb-3">
-          {view === 'login' && <LogIn className="w-6 h-6" />}
-          {view === 'register' && <UserPlus className="w-6 h-6" />}
-          {view === 'forgot-password' && <KeyRound className="w-6 h-6" />}
+        <div className="w-16 h-16 rounded-3xl bg-white dark:bg-zinc-800 p-2 shadow-md border border-amber-200/80 dark:border-zinc-700 mx-auto flex items-center justify-center mb-3">
+          <img
+            src="/assets/icons/icon.png"
+            alt="RND Algérie"
+            className="w-full h-full object-contain"
+          />
         </div>
 
         <h1 className="text-2xl font-black text-zinc-900 dark:text-white">
@@ -83,7 +89,9 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
           {view === 'forgot-password' && t('forgotPasswordTitle')}
         </h1>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 max-w-xs mx-auto">
-          {view === 'forgot-password' ? t('forgotPasswordHint') : 'Rejoignez la dynamique citoyenne du RND'}
+          {view === 'forgot-password'
+            ? t('forgotPasswordHint')
+            : 'Plateforme citoyenne officielle • RND Aïn El Turck 2026'}
         </p>
       </div>
 
@@ -96,56 +104,57 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
       )}
 
       {successMsg && (
-        <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 text-xs text-emerald-700 dark:text-emerald-300">
-          {successMsg}
+        <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 text-xs text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
+          <Check className="w-4 h-4 flex-shrink-0" />
+          <span>{successMsg}</span>
         </div>
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="p-5 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm space-y-4">
+      <form onSubmit={handleSubmit} className="p-5 sm:p-6 rounded-[32px] bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm space-y-4">
         {view === 'register' && (
           <div>
             <label className="block text-xs font-bold text-zinc-800 dark:text-zinc-200 mb-1">
-              {t('nom')}
+              {t('nom')} <span className="text-rose-500">*</span>
             </label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Votre nom complet"
-              className="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              placeholder="Ex: Mohamed Krim"
+              className="w-full px-3.5 py-3 rounded-2xl text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-400 min-h-[44px]"
             />
           </div>
         )}
 
         <div>
           <label className="block text-xs font-bold text-zinc-800 dark:text-zinc-200 mb-1">
-            {t('emailField')}
+            {t('emailField')} <span className="text-rose-500">*</span>
           </label>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="votre@email.com"
-            className="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            placeholder="votre.email@exemple.com"
+            className="w-full px-3.5 py-3 rounded-2xl text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-400 min-h-[44px]"
           />
         </div>
 
         {view !== 'forgot-password' && (
           <div>
             <label className="block text-xs font-bold text-zinc-800 dark:text-zinc-200 mb-1">
-              {t('password')}
+              {t('password')} <span className="text-rose-500">*</span>
             </label>
             <input
               type="password"
               required
-              minLength={6}
+              minLength={4}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full px-3.5 py-3 rounded-2xl text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-400 min-h-[44px]"
             />
           </div>
         )}
@@ -155,7 +164,7 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
             <button
               type="button"
               onClick={() => onNavigate('forgot-password')}
-              className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:underline"
+              className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:underline min-h-[30px]"
             >
               {t('forgotPassword')}
             </button>
@@ -165,10 +174,10 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 rounded-full bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 font-bold text-xs shadow-md hover:opacity-90 active:scale-95 transition disabled:opacity-50"
+          className="w-full py-3.5 rounded-full bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 font-bold text-xs sm:text-sm shadow-md hover:opacity-90 active:scale-95 transition disabled:opacity-50 min-h-[48px]"
         >
           {loading ? (
-            <span>Traitement...</span>
+            <span>Traitement en cours...</span>
           ) : view === 'login' ? (
             t('login')
           ) : view === 'register' ? (
@@ -183,18 +192,17 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
           <div className="pt-2">
             <div className="relative flex items-center justify-center my-3">
               <div className="border-t border-zinc-200 dark:border-zinc-800 w-full" />
-              <span className="bg-white dark:bg-zinc-900 px-2 text-[10px] text-zinc-400 uppercase font-semibold absolute">
+              <span className="bg-white dark:bg-zinc-900 px-3 text-[10px] text-zinc-400 uppercase font-bold absolute">
                 ou
               </span>
             </div>
 
             <button
               type="button"
-              onClick={handleGoogle}
-              disabled={loading}
-              className="w-full py-3 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold flex items-center justify-center gap-2 hover:bg-zinc-50 dark:hover:bg-zinc-700 active:scale-95 transition"
+              onClick={() => setShowGoogleModal(true)}
+              className="w-full py-3 px-4 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold flex items-center justify-center gap-2.5 hover:bg-zinc-50 dark:hover:bg-zinc-700 active:scale-95 transition shadow-xs min-h-[44px]"
             >
-              <svg className="w-4 h-4" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
                 <path
                   fill="#4285F4"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -218,24 +226,49 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
         )}
       </form>
 
+      {/* Quick Admin Access Card */}
+      <div className="p-4 rounded-3xl bg-amber-50/70 dark:bg-zinc-900/80 border border-amber-200/80 dark:border-zinc-800 text-center space-y-2">
+        <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300">
+          <ShieldCheck className="w-4 h-4 text-amber-600" />
+          <span>Accès Réservé — Bureau Communal RND</span>
+        </div>
+        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+          Pour les administrateurs et membres du bureau électoral d'Aïn El Turck.
+        </p>
+        <button
+          type="button"
+          onClick={handleAdminQuickLogin}
+          className="px-4 py-2 rounded-full bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 text-xs font-bold hover:opacity-90 active:scale-95 transition inline-flex items-center gap-1.5 min-h-[38px]"
+        >
+          <span>Connexion Secrétaire / Admin RND</span>
+        </button>
+      </div>
+
       {/* Switch links */}
       <div className="text-center text-xs">
         {view === 'login' ? (
           <button
             onClick={() => onNavigate('register')}
-            className="font-semibold text-zinc-600 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
+            className="font-semibold text-zinc-600 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 min-h-[36px]"
           >
             {t('noAccount')}
           </button>
         ) : (
           <button
             onClick={() => onNavigate('login')}
-            className="font-semibold text-zinc-600 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
+            className="font-semibold text-zinc-600 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 min-h-[36px]"
           >
             {t('haveAccount')}
           </button>
         )}
       </div>
+
+      {/* Google Modal Dialog */}
+      <GoogleSignInModal
+        isOpen={showGoogleModal}
+        onClose={() => setShowGoogleModal(false)}
+        onSuccess={() => onNavigate('home')}
+      />
     </div>
   );
 };

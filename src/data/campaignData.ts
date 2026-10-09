@@ -500,3 +500,62 @@ export const campaignNews: NewsArticle[] = [
     }
   }
 ];
+
+export const defaultCouncilCandidates: import('../types').CouncilCandidate[] = [
+  {
+    id: "cc1",
+    name: "Dr. Amine Benali",
+    photoUrl: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+    expertise: "Médecin Spécialiste & Expert en Santé Publique",
+    role: "Candidat - Liste RND Ain El Turck",
+    commission: "Commission Santé, Hygiène & Affaires Sociales",
+    bio: "Praticien réputé à Oran et Ain El Turck, engagé pour la modernisation des centres de soins de proximité, les urgences pédiatriques et la prévention sanitaire sur nos plages.",
+    order: 1,
+    email: "dr.benali@rnd-ainturck.dz",
+    phone: "+213 550 12 34 56"
+  },
+  {
+    id: "cc2",
+    name: "Mme. Samira Cherif",
+    photoUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+    expertise: "Architecte Urbaniste & Ingénieur d'État",
+    role: "Candidate - Liste RND Ain El Turck",
+    commission: "Commission Urbanisme, Voirie & Aménagement Côtier",
+    bio: "Spécialiste de la régénération urbaine littorale et de l'aménagement des corniches côtières, artisane du projet de la 2e voie de désengorgement d'Ain El Turck.",
+    order: 2,
+    email: "s.cherif@rnd-ainturck.dz",
+    phone: "+213 661 98 76 54"
+  },
+  {
+    id: "cc3",
+    name: "Karim Mansouri",
+    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    expertise: "Expert en Économie Touristique & Hôtellerie Balnéaire",
+    role: "Candidat - Liste RND Ain El Turck",
+    commission: "Commission Tourisme, Artisanat & Développement Économique",
+    bio: "Consultant chevronné dans l'industrie touristique, promoteur d'un tourisme familial éco-responsable 12 mois sur 12 à Clairefontaine, Trouville et Cap Falcon.",
+    order: 3,
+    email: "k.mansouri@rnd-ainturck.dz",
+    phone: "+213 770 45 67 89"
+  },
+  {
+    id: "cc4",
+    name: "Yassine Daoudi",
+    photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+    expertise: "Ingénieur Télécom & Transformation Numérique",
+    role: "Candidat - Liste RND Ain El Turck",
+    commission: "Commission Numérique, Modernisation de l'APC & Jeunesse",
+    bio: "Pionnier de la numérisation des services municipaux, porteur de la guichet unique dématérialisé pour les actes d'état-civil et le portail citoyen.",
+    order: 4,
+    email: "y.daoudi@rnd-ainturck.dz",
+    phone: "+213 555 33 22 11"
+  }
+];
+
+export const defaultCampaignSettings: import('../types').CampaignSettings = {
+  recipientEmail: "contact@rnd-ainturck.dz",
+  secondaryEmail: "secretariat.rnd.aet@gmail.com",
+  contactPhone: "+213 41 33 55 77",
+  officeAddress: "Bureau Communal RND, Boulevard de la Corniche, Aïn El Turck, Oran",
+  sloganText: "Ensemble pour un Aïn El Turck moderne, prospère et solidaire"
+};

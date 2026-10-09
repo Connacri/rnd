@@ -1,8 +1,23 @@
 .opencode
 .agents
 .claude
-lib/scratch/
-# Flutter
+
+# Node / Vite (stack principale)
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# Restes Flutter locaux (le projet est maintenant React/Vite)
+android/
+ios/
+linux/
+macos/
+windows/
+lib/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -11,22 +26,12 @@ lib/scratch/
 .pub/
 build/
 
-# Android Studio / IntelliJ
-.idea/
-*.iml
-
-# Android generated
-android/.gradle/
-android/local.properties
-android/app/build/
-
 # Signing keys - NEVER commit
 *.jks
 *.keystore
 keystore_base64.txt
 upload-keystore-base64.txt
 rnd.keys.txt
-android/key.properties
 
 # Local patches
 patches/

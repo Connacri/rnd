@@ -27,7 +27,7 @@ export const ProgramPage: React.FC = () => {
       {/* Page Title */}
       <div className="text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-amber-200/80 dark:border-zinc-700 shadow-xs text-amber-800 dark:text-amber-300 text-xs font-bold mb-3">
-          <img src="/assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-cover" />
+          <img src="assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-cover" />
           <span>{t('elections2026')}</span>
         </div>
         <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white">

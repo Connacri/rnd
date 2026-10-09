@@ -28,7 +28,7 @@ export const EventsPage: React.FC = () => {
       {/* Title */}
       <div className="text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-sky-200/80 dark:border-zinc-700 shadow-xs text-sky-800 dark:text-sky-300 text-xs font-bold mb-3">
-          <img src="/assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-contain" />
+          <img src="assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-contain" />
           <span>Agenda Officiel de Campagne</span>
         </div>
         <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white">

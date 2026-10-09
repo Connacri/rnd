@@ -9,7 +9,7 @@ export const AudioPlayer: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Pick audio file according to language
-  const audioSrc = lang === 'ar' ? '/assets/audio/ar.mp3' : '/assets/audio/fr.mp3';
+  const audioSrc = lang === 'ar' ? 'assets/audio/ar.mp3' : 'assets/audio/fr.mp3';
 
   useEffect(() => {
     // When language changes, reset audio

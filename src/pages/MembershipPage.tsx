@@ -108,7 +108,7 @@ export const MembershipPage: React.FC = () => {
       {/* Header */}
       <div className="text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-amber-200/90 dark:border-zinc-700 shadow-xs text-rose-700 dark:text-rose-300 text-xs font-bold mb-3">
-          <img src="/assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-contain" />
+          <img src="assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-contain" />
           <span>Permanence Citoyenne & Adhésion RND</span>
         </div>
         <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white">
@@ -340,7 +340,7 @@ export const MembershipPage: React.FC = () => {
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center text-3xl shadow-sm">
               <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12" />
               <img
-                src="/assets/icons/icon.png"
+                src="assets/icons/icon.png"
                 alt="RND"
                 className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-2 border-white object-contain"
               />

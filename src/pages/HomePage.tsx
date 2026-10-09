@@ -43,10 +43,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   ];
 
   const screenshots = [
-    { src: '/assets/images/1000011155.png', title: t('home') },
-    { src: '/assets/images/1000011156.png', title: t('program') },
-    { src: '/assets/images/1000011157.png', title: t('membership') },
-    { src: '/assets/images/1000011158.png', title: t('events') },
+    { src: 'assets/images/1000011155.png', title: t('home') },
+    { src: 'assets/images/1000011156.png', title: t('program') },
+    { src: 'assets/images/1000011157.png', title: t('membership') },
+    { src: 'assets/images/1000011158.png', title: t('events') },
   ];
 
   return (
@@ -79,7 +79,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 alt={candidate.name}
                 className="w-full h-full object-cover object-top rounded-full bg-amber-50"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+                  (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
                 }}
               />
             </div>
@@ -87,7 +87,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Official RND Party Seal Badge */}
             <div className="absolute -bottom-1 -right-1 sm:bottom-0 sm:right-1 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-zinc-900 shadow-lg border border-amber-200/90 text-xs font-black text-zinc-900 dark:text-zinc-100 z-10">
               <img
-                src="/assets/icons/icon.png"
+                src="assets/icons/icon.png"
                 alt="RND"
                 className="w-4 h-4 rounded-full object-contain"
               />
@@ -285,7 +285,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       alt={cand.name}
                       className="w-12 h-12 rounded-2xl object-cover border border-amber-300/80 flex-shrink-0"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+                        (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
                       }}
                     />
                     <div className="min-w-0">
@@ -435,7 +435,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="p-5 sm:p-7 rounded-[32px] bg-gradient-to-br from-white via-amber-50/40 to-rose-50/30 dark:from-zinc-900 dark:to-zinc-950 border border-amber-200/80 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row items-center gap-6">
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-white dark:bg-zinc-800 p-2 shadow-md border border-amber-200/80 dark:border-zinc-700 flex items-center justify-center flex-shrink-0">
             <img
-              src="/assets/icons/icon.png"
+              src="assets/icons/icon.png"
               alt="Logo Officiel RND"
               className="w-full h-full object-contain"
             />
@@ -469,7 +469,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         {/* Official RND Logo Emblem in Footer */}
         <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 p-1.5 shadow-sm border border-amber-200/80 dark:border-zinc-700 mx-auto mb-3 flex items-center justify-center">
           <img
-            src="/assets/icons/icon.png"
+            src="assets/icons/icon.png"
             alt="RND"
             className="w-full h-full object-contain"
           />

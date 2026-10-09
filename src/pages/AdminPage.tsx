@@ -190,7 +190,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     { label: 'Homme 2', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80' },
     { label: 'Homme 3', url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80' },
     { label: 'Femme 2', url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80' },
-    { label: 'RND Logo', url: '/assets/icons/icon.png' },
+    { label: 'RND Logo', url: 'assets/icons/icon.png' },
   ];
 
   return (
@@ -382,7 +382,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                   alt="Aperçu"
                   className="w-10 h-10 rounded-full object-cover border border-amber-200 flex-shrink-0"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+                    (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
                   }}
                 />
               </div>
@@ -473,7 +473,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                       alt={cand.name}
                       className="w-14 h-14 rounded-2xl object-cover border border-amber-200/60 dark:border-zinc-700 flex-shrink-0"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+                        (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
                       }}
                     />
                     <div className="flex-1 min-w-0">
@@ -876,7 +876,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                 alt="Aperçu"
                 className="w-11 h-11 rounded-full object-cover border border-amber-300 flex-shrink-0"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+                  (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
                 }}
               />
             </div>

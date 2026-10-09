@@ -32,7 +32,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
       {/* Header Banner */}
       <section className="text-center relative">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-amber-200/90 dark:border-zinc-700 shadow-xs text-amber-900 dark:text-amber-300 text-xs font-bold mb-3">
-          <img src="/assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-contain" />
+          <img src="assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-contain" />
           <span>Élections Communales 2026 • Liste RND</span>
         </div>
 
@@ -50,7 +50,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
             alt={candidate.name}
             className="w-7 h-7 rounded-full object-cover border border-amber-300"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+              (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
             }}
           />
           <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
@@ -92,7 +92,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
                     alt={cand.name}
                     className="w-full h-full object-cover rounded-[14px] sm:rounded-[22px] bg-amber-50"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+                      (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
                     }}
                   />
                   <div className="absolute top-1 right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white" />
@@ -154,7 +154,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
       {/* CTA Section */}
       <section className="p-6 sm:p-8 rounded-[36px] bg-[#18181B] text-white text-center shadow-xl space-y-3 max-w-2xl mx-auto">
         <div className="w-12 h-12 rounded-2xl bg-white/10 mx-auto flex items-center justify-center mb-1">
-          <img src="/assets/icons/icon.png" alt="RND" className="w-7 h-7 object-contain" />
+          <img src="assets/icons/icon.png" alt="RND" className="w-7 h-7 object-contain" />
         </div>
         <h2 className="text-base sm:text-xl font-bold">
           Vous souhaitez rejoindre la liste ou apporter votre expertise ?

@@ -39,7 +39,7 @@ export const GoogleSignInModal: React.FC<GoogleSignInModalProps> = ({
     {
       name: 'Bureau RND Ain El Turck',
       email: 'admin@rnd.dz',
-      avatar: '/assets/icons/icon.png',
+      avatar: 'assets/icons/icon.png',
       badge: 'Administrateur RND 🛡️',
       isAdmin: true,
     },
@@ -133,7 +133,7 @@ export const GoogleSignInModal: React.FC<GoogleSignInModalProps> = ({
                   alt={acc.name}
                   className="w-10 h-10 rounded-full object-cover border border-amber-200/60 dark:border-zinc-700 flex-shrink-0"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+                    (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
                   }}
                 />
                 <div>

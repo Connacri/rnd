@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       id: 'usr_' + Date.now().toString(36),
       name: isAdminUser ? 'Administrateur RND' : cleanEmail.split('@')[0].toUpperCase(),
       email: cleanEmail,
-      avatarUrl: isAdminUser ? '/assets/icons/icon.png' : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+      avatarUrl: isAdminUser ? 'assets/icons/icon.png' : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
       role: isAdminUser ? 'admin' : 'user',
     };
 
@@ -80,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       id: 'usr_' + Date.now().toString(36),
       name: cleanName,
       email: cleanEmail,
-      avatarUrl: '/assets/icons/icon.png',
+      avatarUrl: 'assets/icons/icon.png',
       role: isAdminUser ? 'admin' : 'user',
     };
 
@@ -116,7 +116,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       id: 'usr_admin_rnd',
       name: 'Secrétariat RND Ain El Turck',
       email: 'admin@rnd-ainturck.dz',
-      avatarUrl: '/assets/icons/icon.png',
+      avatarUrl: 'assets/icons/icon.png',
       role: 'admin',
     };
     setUser(adminUser);

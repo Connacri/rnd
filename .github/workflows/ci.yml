@@ -1,0 +1,149 @@
+name: rnd-ci
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ##############################################################################
+  # Calcule la prochaine version à partir des tags git existants (vX.Y.Z)
+  ##############################################################################
+  version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute next version
+        id: v
+        run: |
+          git fetch --tags --force
+          LAST_TAG=$(git tag -l "v*" | sort -V | tail -n1)
+          if [ -z "$LAST_TAG" ]; then
+            LAST_TAG="v1.0.0"
+          fi
+          VERSION=${LAST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          # Incrémente jusqu'à trouver un tag qui n'existe pas encore
+          while : ; do
+            PATCH=$((PATCH + 1))
+            CANDIDATE="$MAJOR.$MINOR.$PATCH"
+            if ! git tag -l "v$CANDIDATE" | grep -q .; then
+              break
+            fi
+          done
+
+          echo "version=$CANDIDATE" >> "$GITHUB_OUTPUT"
+          echo "Version calculée : $CANDIDATE"
+
+  ##############################################################################
+  # Qualité : typecheck TypeScript + build de production (bloque si échec)
+  ##############################################################################
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: dist
+          retention-days: 30
+
+  ##############################################################################
+  # Tag + Release GitHub avec le build web
+  ##############################################################################
+  release:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    needs: [version, quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download web build
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: web-build
+
+      - name: Package web build
+        run: |
+          cd web-build
+          zip -r "../rnd-web-v${{ needs.version.outputs.version }}.zip" .
+          cd ..
+          sha256sum "rnd-web-v${{ needs.version.outputs.version }}.zip" > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Create Git Tag
+        run: |
+          git fetch --tags --force
+          TAG="v${{ needs.version.outputs.version }}"
+          if git tag -l "$TAG" | grep -q .; then
+            echo "Le tag $TAG existe déjà, on saute"
+          else
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.version.outputs.version }}
+          name: RND Campagne v${{ needs.version.outputs.version }}
+          body: |
+            ## RND Campagne v${{ needs.version.outputs.version }}
+
+            Application de campagne municipale — Nabil Zenasni, Aïn El Turck.
+
+            ### 📦 Téléchargements
+            | Plateforme | Fichier |
+            |------------|---------|
+            | 🌐 Web (build production) | `rnd-web-v${{ needs.version.outputs.version }}.zip` |
+
+            ### 🔗 Liens
+            - 🌐 Site live : https://connacri.github.io/rnd/
+            - Checksums SHA256 : `SHA256SUMS.txt`
+          files: |
+            rnd-web-v*.zip
+            SHA256SUMS.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -5,6 +5,11 @@ Application officielle de campagne de **Zenasni Nabil**, secrétaire du bureau c
 Réécrite en **React 19 + TypeScript + Vite + Tailwind CSS** avec le thème moderne mobile-first inspiré des créations Purrweb (formes organiques chaleureuses, pastels doux, cartes superposées, lecteur audio candidat interactif et barre de navigation pill).
 
 <p align="center">
+  🌐 <a href="https://connacri.github.io/rnd/">Live Web</a> &nbsp;•&nbsp;
+  📦 <a href="https://github.com/Connacri/rnd/releases">Releases</a>
+</p>
+
+<p align="center">
   <img src="public/assets/icons/icon.png" width="100" alt="RND Logo"/>
   <img src="public/assets/images/nabil-zenasni-profile2.jpg" width="100" alt="Zenasni Nabil" style="border-radius: 50%"/>
 </p>
@@ -40,7 +45,15 @@ npm run dev
 
 # Build de production
 npm run build
+
+# Build pour GitHub Pages (sous-chemin /rnd/)
+BASE_PATH=/rnd/ npm run build   # PowerShell : $env:BASE_PATH='/rnd/'; npm run build
 ```
+
+## 🔄 CI/CD (GitHub Actions)
+
+- **`rnd-ci`** — à chaque push : typecheck TypeScript, build de production, puis release GitHub automatique (`vX.Y.Z`) avec `rnd-web-vX.Y.Z.zip` + checksums SHA256.
+- **`Deploy to GitHub Pages`** — build avec le base path configuré (variable `PAGES_BASE_PATH`, défaut `/rnd/`) puis déploiement de `dist/` sur https://connacri.github.io/rnd/
 
 ---
 

@@ -86,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           {/* Official RND Algerian Emblem */}
           <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-white dark:bg-zinc-800 p-1 shadow-sm border border-amber-300/80 dark:border-zinc-700 flex items-center justify-center overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform">
             <img
-              src="/assets/icons/icon.png"
+              src="assets/icons/icon.png"
               alt="Logo RND Algérie"
               className="w-full h-full object-contain"
               onError={(e) => {

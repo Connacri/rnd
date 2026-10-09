@@ -53,7 +53,7 @@ export const CandidatePage: React.FC<CandidatePageProps> = ({ onNavigate }) => {
               alt={candidate.name}
               className="w-full h-full object-cover object-top rounded-full bg-amber-50"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/assets/icons/icon.png';
+                (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
               }}
             />
           </div>
@@ -61,7 +61,7 @@ export const CandidatePage: React.FC<CandidatePageProps> = ({ onNavigate }) => {
           {/* Official RND Badge on Candidate */}
           <div className="absolute -bottom-1 -right-1 sm:bottom-0 sm:right-1 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-zinc-900 shadow-lg border border-amber-200/90 text-xs font-black text-zinc-900 dark:text-zinc-100 z-10">
             <img
-              src="/assets/icons/icon.png"
+              src="assets/icons/icon.png"
               alt="RND"
               className="w-4 h-4 rounded-full object-contain"
             />
@@ -86,7 +86,7 @@ export const CandidatePage: React.FC<CandidatePageProps> = ({ onNavigate }) => {
 
         {/* Party Badge with official RND icon */}
         <div className="mt-3 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-amber-200/80 dark:border-zinc-700 shadow-xs text-xs font-bold text-zinc-800 dark:text-zinc-200">
-          <img src="/assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-cover" />
+          <img src="assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-cover" />
           <span>{candidate.party[lang] || candidate.party.fr}</span>
         </div>
 
@@ -164,7 +164,7 @@ export const CandidatePage: React.FC<CandidatePageProps> = ({ onNavigate }) => {
       {/* Call to Action */}
       <div className="p-6 sm:p-8 rounded-3xl bg-[#18181B] text-white text-center shadow-lg space-y-3 max-w-xl mx-auto">
         <div className="w-10 h-10 rounded-2xl bg-white/10 mx-auto flex items-center justify-center mb-1">
-          <img src="/assets/icons/icon.png" alt="RND" className="w-6 h-6 object-contain rounded-lg" />
+          <img src="assets/icons/icon.png" alt="RND" className="w-6 h-6 object-contain rounded-lg" />
         </div>
         <h3 className="text-base sm:text-lg font-bold">
           {t('joinMovement')}

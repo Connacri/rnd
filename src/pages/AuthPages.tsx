@@ -77,7 +77,7 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
       <div className="text-center">
         <div className="w-16 h-16 rounded-3xl bg-white dark:bg-zinc-800 p-2 shadow-md border border-amber-200/80 dark:border-zinc-700 mx-auto flex items-center justify-center mb-3">
           <img
-            src="/assets/icons/icon.png"
+            src="assets/icons/icon.png"
             alt="RND Algérie"
             className="w-full h-full object-contain"
           />

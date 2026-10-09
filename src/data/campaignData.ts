@@ -2,7 +2,7 @@ import { ProgramPillar, CandidateInfo, CampaignStat, CampaignEvent, NewsArticle 
 
 export const candidateData: CandidateInfo = {
   name: "Zenasni Nabil",
-  photoUrl: "/assets/images/nabil-zenasni-profile2.jpg",
+  photoUrl: "assets/images/nabil-zenasni-profile2.jpg",
   role: {
     fr: "Secrétaire du Bureau Communal",
     ar: "أمين المكتب البلدي",

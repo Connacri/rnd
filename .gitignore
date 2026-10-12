@@ -11,8 +11,7 @@ dist/
 .idea/
 *.iml
 
-# Restes Flutter locaux (le projet est maintenant React/Vite)
-android/
+# Restes Flutter locaux (le projet est maintenant React/Vite + Capacitor Android)
 ios/
 linux/
 macos/
@@ -25,6 +24,12 @@ lib/
 .pub-cache/
 .pub/
 build/
+
+# Android / Capacitor — secrets locaux et sorties de build
+# (le reste des exclusions Android est géré par android/.gitignore)
+android/key.properties
+android/local.properties
+android/app/google-services.json
 
 # Signing keys - NEVER commit
 *.jks

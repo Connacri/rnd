@@ -80,11 +80,157 @@ jobs:
           retention-days: 30
 
   ##############################################################################
-  # Tag + Release GitHub avec le build web
+  # Android : APK + AAB signés.
+  # Le keystore de signature est reconstruit depuis les GitHub Secrets, utilisé
+  # le temps du build, puis supprimé. Aucun secret n'est jamais affiché.
+  ##############################################################################
+  android:
+    name: Android signé (APK + AAB)
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    needs: [version, quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download web build
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: dist
+
+      - name: Sync Capacitor (android)
+        run: npx cap sync android
+
+      - name: Reconstruct signing keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          for name in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Secret $name manquant dans les GitHub Secrets."
+              exit 1
+            fi
+          done
+          mkdir -p "$RUNNER_TEMP/keystore"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/keystore/upload-keystore.jks"
+          test -s "$RUNNER_TEMP/keystore/upload-keystore.jks"
+          echo "Keystore reconstruit : $(stat -c%s "$RUNNER_TEMP/keystore/upload-keystore.jks") octets"
+
+      - name: Build signed APK + AAB
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/keystore/upload-keystore.jks
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_VERSION_NAME: ${{ needs.version.outputs.version }}
+          ANDROID_VERSION_CODE: ${{ github.run_number }}
+        run: |
+          set -euo pipefail
+          chmod +x gradlew
+          ./gradlew --no-daemon clean assembleRelease bundleRelease
+
+      - name: Verify signature, package name and versions
+        working-directory: android
+        env:
+          EXPECTED_PACKAGE: ${{ vars.ANDROID_PACKAGE_NAME || 'com.rnd.dz' }}
+          EXPECTED_VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/release/app-release.apk
+          AAB=app/build/outputs/bundle/release/app-release.aab
+          test -f "$APK"
+          test -f "$AAB"
+
+          BUILD_TOOLS=$(find "${ANDROID_SDK_ROOT:-$ANDROID_HOME}/build-tools" -maxdepth 1 -mindepth 1 -type d | sort -V | tail -n1)
+          APKSIGNER="$BUILD_TOOLS/apksigner"
+          AAPT2="$BUILD_TOOLS/aapt2"
+
+          echo "== Signature APK (schémas v1/v2/v3) =="
+          "$APKSIGNER" verify --verbose --print-certs "$APK"
+
+          echo "== Signature AAB =="
+          SIGN_OUT=$(jarsigner -verify "$AAB" 2>&1 || true)
+          echo "$SIGN_OUT" | tail -n 3
+          if ! echo "$SIGN_OUT" | grep -q "jar verified"; then
+            echo "::error::La signature de l'AAB est invalide."
+            exit 1
+          fi
+
+          echo "== Empreinte du certificat de signature =="
+          "$APKSIGNER" verify --print-certs "$APK" | grep -i "SHA-256" || true
+
+          echo "== applicationId / versionName =="
+          BADGING=$("$AAPT2" dump badging "$APK")
+          PACKAGE=$(echo "$BADGING" | sed -n "s/^package: name='\([^']*\)'.*/\1/p")
+          # (?<![A-Za-z]) évite de capturer platformBuildVersionName / platformBuildVersionCode
+          VERSION_NAME=$(echo "$BADGING" | grep -oP "(?<![A-Za-z])versionName='\K[^']*" | head -n1)
+          VERSION_CODE=$(echo "$BADGING" | grep -oP "(?<![A-Za-z])versionCode='\K[^']*" | head -n1)
+          echo "applicationId = $PACKAGE"
+          echo "versionName   = $VERSION_NAME"
+          echo "versionCode   = $VERSION_CODE"
+
+          # Garde-fou : l'applicationId ne doit jamais dériver (Play Console).
+          if [ -n "$EXPECTED_PACKAGE" ] && [ "$PACKAGE" != "$EXPECTED_PACKAGE" ]; then
+            echo "::error::applicationId '$PACKAGE' != variable ANDROID_PACKAGE_NAME '$EXPECTED_PACKAGE'"
+            exit 1
+          fi
+          if [ "$VERSION_NAME" != "$EXPECTED_VERSION" ]; then
+            echo "::error::versionName '$VERSION_NAME' != version de release '$EXPECTED_VERSION'"
+            exit 1
+          fi
+
+      - name: Collect artifacts
+        working-directory: android
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p ../out
+          cp app/build/outputs/apk/release/app-release.apk "../out/rnd-android-v${VERSION}.apk"
+          cp app/build/outputs/bundle/release/app-release.aab "../out/rnd-android-v${VERSION}.aab"
+          ls -lh ../out
+
+      - name: Upload Android build
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build
+          path: out/*
+          retention-days: 30
+
+      - name: Remove temporary keystore
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/keystore"
+
+  ##############################################################################
+  # Tag + Release GitHub avec le build web, l'APK et l'AAB signés
   ##############################################################################
   release:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    needs: [version, quality]
+    needs: [version, quality, android]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -101,12 +247,18 @@ jobs:
           name: web-build
           path: web-build
 
+      - name: Download Android build
+        uses: actions/download-artifact@v4
+        with:
+          name: android-build
+          path: android-build
+
       - name: Package web build
         run: |
           cd web-build
           zip -r "../rnd-web-v${{ needs.version.outputs.version }}.zip" .
           cd ..
-          sha256sum "rnd-web-v${{ needs.version.outputs.version }}.zip" > SHA256SUMS.txt
+          sha256sum "rnd-web-v${{ needs.version.outputs.version }}.zip" android-build/* > SHA256SUMS.txt
           cat SHA256SUMS.txt
 
       - name: Create Git Tag
@@ -137,6 +289,8 @@ jobs:
             ### 📦 Téléchargements
             | Plateforme | Fichier |
             |------------|---------|
+            | 🤖 Android (APK signé) | `rnd-android-v${{ needs.version.outputs.version }}.apk` |
+            | 🤖 Android (AAB signé — Play Store) | `rnd-android-v${{ needs.version.outputs.version }}.aab` |
             | 🌐 Web (build production) | `rnd-web-v${{ needs.version.outputs.version }}.zip` |
 
             ### 🔗 Liens
@@ -144,6 +298,7 @@ jobs:
             - Checksums SHA256 : `SHA256SUMS.txt`
           files: |
             rnd-web-v*.zip
+            android-build/*
             SHA256SUMS.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -24,6 +24,7 @@ Réécrite en **React 19 + TypeScript + Vite + Tailwind CSS** avec le thème mod
 - **Authentification** — Connexion, inscription citoyenne, récupération de mot de passe, et connexion rapide Google.
 - **Internationalisation (i18n)** — 3 langues disponibles : Français (`fr`), Arabe (`ar` avec prise en charge intégrale de la mise en page RTL et polices arabes Noto Sans / Cairo), et Anglais (`en`).
 - **Lecteur Audio Intégré** — Lecture fluide du message vocal du candidat (`fr.mp3` ou `ar.mp3`) avec barres égaliseurs animées.
+- **Installation App (PWA)** — Manifeste web (`site.webmanifest`) avec icônes adaptatives (dont *maskable*) et splash, pour installer le site comme une application sur Android/iOS avec icône et écran de démarrage natifs.
 
 ## 🛠️ Stack Technique
 
@@ -32,6 +33,7 @@ Réécrite en **React 19 + TypeScript + Vite + Tailwind CSS** avec le thème mod
 - **Styling** : Tailwind CSS v4 (palette warm sand, pastels, pill components)
 - **Icônes** : Lucide React
 - **Audio** : Lecteur HTML5 Audio dynamique selon la langue
+- **PWA** : Manifeste web + icônes/splash installables (`public/site.webmanifest`)
 - **State & i18n** : Context API (`LanguageContext`, `AuthContext`)
 
 ## 🚀 Démarrage Rapide

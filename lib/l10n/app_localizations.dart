@@ -133,7 +133,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In fr, this message translates to:
-  /// **'RND Campaign'**
+  /// **'RND-ORAN'**
   String get appName;
 
   /// No description provided for @approach.

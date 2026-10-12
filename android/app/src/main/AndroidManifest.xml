@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="RNDAET"
+        android:label="RND-ORAN"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

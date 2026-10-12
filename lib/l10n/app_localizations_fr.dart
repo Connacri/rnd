@@ -24,7 +24,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get algeria => 'Ain El Tûrck, Oran, Algerie';
 
   @override
-  String get appName => 'RND Campaign';
+  String get appName => 'RND-ORAN';
 
   @override
   String get approach =>

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/app/theme.dart';
+import 'package:rnd_campaign_app/core/constants/app_constants.dart';
 import 'package:rnd_campaign_app/core/providers/language_provider.dart';
 import 'package:rnd_campaign_app/features/auth/screens/forgot_password_page.dart';
 import 'package:rnd_campaign_app/features/auth/screens/login_page.dart';
@@ -23,7 +24,7 @@ class CampaignApp extends StatelessWidget {
     return Consumer<LanguageProvider>(
       builder: (context, langProvider, _) {
         return MaterialApp(
-          title: 'RND',
+          title: AppConstants.appName,
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           localizationsDelegates: [

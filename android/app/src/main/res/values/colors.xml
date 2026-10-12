@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Couleurs de marque RND-ORAN (mode clair).
-         Remplacent les valeurs par défaut de Capacitor (indigo #3F51B5).
-         colorPrimaryDark = couleur de la barre de statut = fond clair de l'app. -->
-    <color name="colorPrimary">#047A70</color>
-    <color name="colorPrimaryDark">#FAF7F2</color>
-    <color name="colorAccent">#047A70</color>
-</resources>

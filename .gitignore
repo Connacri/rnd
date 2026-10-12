@@ -1,22 +1,8 @@
 .opencode
 .agents
 .claude
-
-# Node / Vite (stack principale)
-node_modules/
-dist/
-*.tsbuildinfo
-
-# Android Studio / IntelliJ
-.idea/
-*.iml
-
-# Restes Flutter locaux (le projet est maintenant React/Vite + Capacitor Android)
-ios/
-linux/
-macos/
-windows/
-lib/
+lib/scratch/
+# Flutter
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -25,11 +11,14 @@ lib/
 .pub/
 build/
 
-# Android / Capacitor — secrets locaux et sorties de build
-# (le reste des exclusions Android est géré par android/.gitignore)
-android/key.properties
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# Android generated
+android/.gradle/
 android/local.properties
-android/app/google-services.json
+android/app/build/
 
 # Signing keys - NEVER commit
 *.jks
@@ -37,6 +26,7 @@ android/app/google-services.json
 keystore_base64.txt
 upload-keystore-base64.txt
 rnd.keys.txt
+android/key.properties
 
 # Local patches
 patches/
@@ -47,3 +37,7 @@ patches/
 !.env.example
 
 supabase/.temp/
+
+# Restes JS/React (l'app est Flutter) - jamais committes
+node_modules/
+dist/

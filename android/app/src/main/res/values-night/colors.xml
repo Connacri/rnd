@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Couleurs de marque RND-ORAN (mode sombre).
-         Theme.AppCompat.DayNight bascule automatiquement les icônes de la barre
-         de statut (sombres en clair, claires en sombre). -->
-    <color name="colorPrimary">#047A70</color>
-    <color name="colorPrimaryDark">#121110</color>
-    <color name="colorAccent">#047A70</color>
-</resources>

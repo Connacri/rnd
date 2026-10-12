@@ -384,78 +384,6 @@ jobs:
           path: build/web
 
   ##############################################################################
-  # Build Windows (ZIP portable)
-  ##############################################################################
-  build-windows:
-    name: Windows (ZIP portable)
-    needs: [version, quality]
-    runs-on: windows-latest
-    timeout-minutes: 40
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Create dart-define file
-        shell: pwsh
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        run: |
-          $env = @{
-            SUPABASE_URL = $env:SUPABASE_URL
-            SUPABASE_ANON_KEY = $env:SUPABASE_ANON_KEY
-          } | ConvertTo-Json
-          [IO.File]::WriteAllText("$env:RUNNER_TEMP\ci_env.json", $env)
-
-      - name: Build Windows
-        shell: pwsh
-        run: |
-          flutter build windows --release `
-            --build-name=${{ needs.version.outputs.version }} `
-            --build-number=${{ github.run_number }} `
-            --dart-define-from-file="$env:RUNNER_TEMP\ci_env.json"
-
-      - name: Clean up secrets file
-        if: always()
-        shell: pwsh
-        run: Remove-Item -Force "$env:RUNNER_TEMP\ci_env.json" -ErrorAction SilentlyContinue
-
-      - name: Package portable ZIP
-        shell: pwsh
-        run: |
-          $VERSION = "${{ needs.version.outputs.version }}"
-          New-Item -ItemType Directory -Force -Path release | Out-Null
-          Compress-Archive -Path "build\windows\x64\runner\Release\*" `
-            -DestinationPath "release\rnd-windows-v$VERSION.zip"
-          $hash = (Get-FileHash "release\rnd-windows-v$VERSION.zip" -Algorithm SHA256).Hash.ToLower()
-          "$hash  rnd-windows-v$VERSION.zip" | Set-Content "release\SHA256SUMS-windows.txt"
-          Get-Content "release\SHA256SUMS-windows.txt"
-
-      - name: Upload Windows ZIP
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-windows
-          path: release/rnd-windows-v${{ needs.version.outputs.version }}.zip
-          retention-days: 30
-
-      - name: Upload Windows checksums
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-windows-sums
-          path: release/SHA256SUMS-windows.txt
-          retention-days: 30
-
-  ##############################################################################
   # Publication GitHub Pages (site = application web Flutter)
   ##############################################################################
   deploy-pages:
@@ -480,7 +408,7 @@ jobs:
   ##############################################################################
   release:
     name: Tag + GitHub Release
-    needs: [version, build-android, build-web, build-windows]
+    needs: [version, build-android, build-web]
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -539,7 +467,6 @@ jobs:
             | Android (APK, signe) | `rnd-android.apk` |
             | Android App Bundle (Play Console) | `rnd-android.aab` |
             | Web (build Flutter Web) | `rnd-web-v${{ needs.version.outputs.version }}.zip` |
-            | Windows (portable) | `rnd-windows-v${{ needs.version.outputs.version }}.zip` |
 
             Les signatures SHA-256 de tous les fichiers sont dans `SHA256SUMS.txt`.
 

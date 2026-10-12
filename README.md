@@ -51,8 +51,8 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 **Nabil Zenasni** pour les élections communales de 2026 à Aïn El Turck (Oran,
 Algérie).
 
-L'application est écrite en **Flutter** et fonctionne sur **Android** (APK/AAB),
-**Web** (build déployée sur GitHub Pages) et **Windows** (archive portable).
+L'application est écrite en **Flutter** et fonctionne sur **Android** (APK/AAB) et
+**Web** (build déployé sur GitHub Pages).
 
 Le contenu (programme, actualités, événements, chiffres clés) est éditable sans
 redéploiement depuis une base **Supabase** ; l'authentification et les
@@ -96,7 +96,7 @@ notifications push s'appuient sur **Firebase**.
 | Audio | `audioplayers` |
 | Typographie | `google_fonts` |
 | Icônes / splash | `flutter_launcher_icons`, `flutter_native_splash` |
-| CI/CD | **GitHub Actions** (APK + AAB signés, Web, Windows, Releases) |
+| CI/CD | **GitHub Actions** (APK + AAB signés, Web, Releases) |
 
 ## Architecture du projet
 
@@ -268,7 +268,7 @@ $ANDROID_HOME/build-tools/<version>/aapt2 dump badging app-release.apk | head -5
 ## Builds
 
 **Aucune build de production n'est produite localement.** Les APK/AAB release
-signés, la build web et l'archive Windows sont générés par GitHub Actions.
+signés et la build web sont générés par GitHub Actions.
 
 En local, uniquement le développement et la validation :
 
@@ -285,7 +285,6 @@ En CI :
 flutter build apk         --release --build-name=$V --build-number=$N ...
 flutter build appbundle   --release --build-name=$V --build-number=$N ...
 flutter build web         --release --base-href=/rnd/ ...
-flutter build windows     --release --build-name=$V --build-number=$N ...
 ```
 
 ## CI/CD
@@ -304,12 +303,11 @@ git push
    │                    vérification signature + package + version
    ├─ build-web       → flutter build web --release --base-href=/rnd/
    │                    validation du build + artefact GitHub Pages
-   ├─ build-windows   → archive portable Windows
    │
    ├─ deploy-pages    → mise en ligne du build web (GitHub Pages)
    │
    └─ release         → tag git + GitHub Release
-                        (APK, AAB, Web ZIP, Windows ZIP, SHA256SUMS.txt)
+                        (APK, AAB, Web ZIP, SHA256SUMS.txt)
 ```
 
 Chaque artefact de release est accompagné de son empreinte SHA-256 dans
@@ -358,7 +356,6 @@ package `com.rnd.dz` (le job Android échoue sinon).
 | **Android (APK signé)** | [⬇️ rnd-android.apk](https://github.com/Connacri/rnd/releases/latest/download/rnd-android.apk) |
 | **Android App Bundle** | [rnd-android.aab](https://github.com/Connacri/rnd/releases/latest/download/rnd-android.aab) |
 | **Web** | [🌐 connacri.github.io/rnd](https://connacri.github.io/rnd/) |
-| **Windows** | disponibles dans les [releases](https://github.com/Connacri/rnd/releases) |
 
 Toutes les versions sont listées sur la page
 **[Releases](https://github.com/Connacri/rnd/releases)** ; le CI est visible sur

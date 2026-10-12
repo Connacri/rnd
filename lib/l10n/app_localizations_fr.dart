@@ -15,20 +15,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addressOptional => 'Adresse (optionnel)';
 
   @override
-  String get age => 'Age';
+  String get age => 'Âge';
 
   @override
-  String get ageOptional => 'Age (optionnel)';
+  String get ageOptional => 'Âge (optionnel)';
 
   @override
-  String get algeria => 'Ain El Tûrck, Oran, Algerie';
+  String get algeria => 'Aïn El Turck, Oran, Algérie';
 
   @override
   String get appName => 'RND-ORAN';
 
   @override
   String get approach =>
-      'Notre approche repose sur l\'ecoute, la proximite et la transparence. Chaque projet, chaque decision sera prise avec et pour vous.';
+      'Notre approche repose sur l\'écoute, la proximité et la transparence. Chaque projet, chaque décision sera prise avec et pour vous.';
 
   @override
   String get audioMessage => 'Message audio';
@@ -40,51 +40,51 @@ class AppLocalizationsFr extends AppLocalizations {
   String get candidateName => 'Zenasni Nabil';
 
   @override
-  String get city => 'Ain El Tûrck';
+  String get city => 'Aïn El Turck';
 
   @override
-  String get commitment => 'Engagement pour Ain El Tûrck';
+  String get commitment => 'Engagement pour Aïn El Turck';
 
   @override
   String get commitmentText =>
-      'En tant que Secretaire du Bureau Communal du RND a Ain El Tûrck, je m\'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain.';
+      'En tant que Secrétaire du Bureau Communal du RND à Aïn El Turck, je m\'engage personnellement à porter les voix de nos concitoyens et à transformer nos aspirations en actions concrètes sur le terrain.';
 
   @override
-  String get deputesApn => 'Deputes APN';
+  String get deputesApn => 'Députés APN';
 
   @override
   String get description =>
-      'Zenasni Nabil, Secretaire du Bureau Communal du RND a Ain El Tûrck, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens.';
+      'Zenasni Nabil, Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Un engagement fort pour le développement local, la transparence et la proximité avec les citoyens.';
 
   @override
-  String get development => 'Developpement';
+  String get development => 'Développement';
 
   @override
   String get developmentDesc => 'Croissance durable';
 
   @override
-  String get discoverProgram => 'Decouvrir';
+  String get discoverProgram => 'Découvrir';
 
   @override
-  String get elections2026 => 'Elections Communales 2026';
+  String get elections2026 => 'Élections Communales 2026';
 
   @override
-  String get elusCommunaux => 'Elus Communaux';
+  String get elusCommunaux => 'Élus Communaux';
 
   @override
-  String get email => 'Email';
+  String get email => 'Adresse Email';
 
   @override
   String get emailField => 'Email';
 
   @override
-  String get emailInvalid => 'Email invalide';
+  String get emailInvalid => 'Adresse email invalide';
 
   @override
-  String get emailRequired => 'Email requis';
+  String get emailRequired => 'L\'adresse email est requise';
 
   @override
-  String get engagement => 'Notre engagement';
+  String get engagement => 'Notre Engagement Solennel';
 
   @override
   String get engagementText1 =>
@@ -99,11 +99,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ensemble, faisons d\'Aïn El Turck une commune où il fait bon vivre, investir, travailler et accueillir les visiteurs.';
 
   @override
-  String get events => 'Evènements';
+  String get events => 'Événements';
 
   @override
   String get footerDesc =>
-      'Secretaire du Bureau Communal du RND a Ain El Tûrck, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens.';
+      'Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Engagé pour le développement local et le bien-être de tous les citoyens.';
 
   @override
   String get fullName => 'Nom complet';
@@ -115,13 +115,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get innovation => 'Innovation';
 
   @override
-  String get innovationDesc => 'Solutions modernes';
+  String get innovationDesc => 'Solutions modernes et durables';
 
   @override
   String get joinMovement => 'Rejoignez le mouvement';
 
   @override
-  String get joinUs => 'Devenir Adherent';
+  String get joinUs => 'Devenir Adhérent';
 
   @override
   String get learnMore => 'En savoir plus';
@@ -142,14 +142,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mairiesRnd => 'Mairies RND';
 
   @override
-  String get membership => 'Adherer';
+  String get membership => 'Adhérer';
 
   @override
   String get membershipDesc =>
-      'Rejoignez-nous et participez activement a la construction de l\'avenir de notre commune. Ensemble, nous sommes plus forts.';
+      'Rejoignez-nous et participez activement à la construction de l\'avenir de notre commune. Ensemble, nous sommes plus forts.';
 
   @override
-  String get membershipTitle => 'Devenez Adherent au RND';
+  String get membershipTitle => 'Devenez Adhérent au RND';
 
   @override
   String get message => 'Message';
@@ -164,10 +164,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noAccount => 'Pas encore de compte ? S\'inscrire';
 
   @override
-  String get nom => 'Nom';
+  String get nom => 'Nom & Prénom';
 
   @override
-  String get nomRequired => 'Nom requis';
+  String get nomRequired => 'Le nom est obligatoire';
 
   @override
   String get ourProgram => 'Notre Programme';
@@ -179,7 +179,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ourVision => 'Notre Vision';
 
   @override
-  String get party => 'RND - RND';
+  String get party => 'RND - Rassemblement National Démocratique';
 
   @override
   String get password => 'Mot de passe';
@@ -188,16 +188,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get passwordMin => 'Au moins 6 caractères';
 
   @override
-  String get passwordRequired => 'Mot de passe requis';
+  String get passwordRequired => 'Le mot de passe est obligatoire';
 
   @override
   String get phone => 'Téléphone';
 
   @override
-  String get phoneInvalid => 'Numéro invalide';
+  String get phoneInvalid => 'Numéro de téléphone invalide';
 
   @override
-  String get phoneRequired => 'Téléphone requis';
+  String get phoneRequired => 'Le numéro de téléphone est requis';
 
   @override
   String get profession => 'Profession';
@@ -209,13 +209,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get program => 'Programme';
 
   @override
-  String get programTitle => 'PROGRAMME';
+  String get programTitle => 'PROGRAMME ÉLECTORAL';
 
   @override
-  String get proximity => 'Proximite';
+  String get proximity => 'Proximité';
 
   @override
-  String get proximityDesc => 'A l\'ecoute des citoyens';
+  String get proximityDesc => 'À l\'écoute directe des citoyens';
 
   @override
   String get register => 'S\'inscrire';
@@ -224,21 +224,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get registerError => 'Erreur d\'inscription';
 
   @override
-  String get rights =>
-      '2026 Zenasni Nabil - RND Ain El Tûrck. Tous droits reserves.';
+  String get rights => '2026 Zenasni Nabil - RND-ORAN. Tous droits réservés.';
 
   @override
   String get rndDescText =>
-      'Le Rassemblement National Democratique, fonde en 1997, est un parti liberal et progressiste engage pour le developpement national et local.';
+      'Le Rassemblement National Démocratique, fondé en 1997, est un parti libéral et progressiste engagé pour le développement national et local.';
 
   @override
-  String get rndDescription => 'Le RND, une force de progres pour l\'Algerie';
+  String get rndDescription => 'Le RND, une force de progrès pour l\'Algérie';
 
   @override
-  String get secretary => 'Secretaire';
+  String get secretary => 'Secrétaire';
 
   @override
-  String get seeEvents => 'Voir les prochains événements';
+  String get seeEvents => 'Consulter l\'agenda citoyen';
 
   @override
   String get send => 'Envoyer ma Candidature';
@@ -248,19 +247,21 @@ class AppLocalizationsFr extends AppLocalizations {
       '« Ensemble pour une nouvelle dynamique à Aïn El Turck »';
 
   @override
-  String get successMessage => 'Votre message a été envoyé avec succès.';
+  String get successMessage =>
+      'Votre demande d\'adhésion a été enregistrée avec succès. Notre permanence vous contactera rapidement.';
 
   @override
   String get suggestion => 'Suggestion / Proposition';
 
   @override
-  String get suggestionOptional => 'Suggestion / Proposition (optionnel)';
+  String get suggestionOptional =>
+      'Suggestion / Proposition pour la commune (optionnel)';
 
   @override
-  String get thankYou => 'Merci !';
+  String get thankYou => 'Merci pour votre engagement !';
 
   @override
-  String get together => 'Ensemble, construisons\nl\'avenir d\'Ain El Tûrck';
+  String get together => 'Ensemble, construisons\nl\'avenir d\'Aïn El Turck';
 
   @override
   String get togetherHighlight => 'construisons';
@@ -269,14 +270,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get transparency => 'Transparence';
 
   @override
-  String get transparencyDesc => 'Gestion claire et juste';
+  String get transparencyDesc => 'Gestion claire, éthique et juste';
 
   @override
-  String get upcomingEvents => 'Prochains événements à venir...';
+  String get upcomingEvents => 'Prochains événements & Rencontres';
 
   @override
   String get visionText =>
-      'Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays.';
+      'Une Algérie forte, prospère et unie. Le RND œuvre pour une gouvernance transparente, une économie dynamique et une transformation numérique au service de tous les citoyens, dans chaque commune du pays.';
 
   @override
   String get welcome => 'Bienvenue';
@@ -285,7 +286,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get whoWeAre => 'Qui sommes-nous';
 
   @override
-  String get yearsEngagement => 'Annees d\'Engagement';
+  String get yearsEngagement => 'Années d\'Engagement';
 
   @override
   String get namePlaceholder => 'Votre nom';

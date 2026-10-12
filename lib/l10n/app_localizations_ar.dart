@@ -179,7 +179,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ourVision => 'رؤيتنا';
 
   @override
-  String get party => 'التجمع - RND';
+  String get party => 'التجمع الوطني الديمقراطي - RND';
 
   @override
   String get password => 'كلمة المرور';
@@ -224,8 +224,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get registerError => 'خطأ في التسجيل';
 
   @override
-  String get rights =>
-      '2026 زناسني نبيل - التجمع عين الترك. جميع الحقوق محفوظة.';
+  String get rights => '2026 زناسني نبيل - RND-ORAN. جميع الحقوق محفوظة.';
 
   @override
   String get rndDescText =>
@@ -247,7 +246,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get slogan => '« معاً من أجل ديناميكية جديدة في عين الترك »';
 
   @override
-  String get successMessage => 'تم إرسال رسالتك بنجاح.';
+  String get successMessage =>
+      'تم تسجيل طلب انخراطكم بنجاح. سيتواصل معكم فريق المداومة البلدية قريباً.';
 
   @override
   String get suggestion => 'اقتراح';
@@ -256,7 +256,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get suggestionOptional => 'اقتراح (اختياري)';
 
   @override
-  String get thankYou => 'شكراً!';
+  String get thankYou => 'شكراً جزيلاً لالتزامكم !';
 
   @override
   String get together => 'معاً، لنبني\nمستقبل عين الترك';

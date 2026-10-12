@@ -115,19 +115,19 @@ abstract class AppLocalizations {
   /// No description provided for @age.
   ///
   /// In fr, this message translates to:
-  /// **'Age'**
+  /// **'Âge'**
   String get age;
 
   /// No description provided for @ageOptional.
   ///
   /// In fr, this message translates to:
-  /// **'Age (optionnel)'**
+  /// **'Âge (optionnel)'**
   String get ageOptional;
 
   /// No description provided for @algeria.
   ///
   /// In fr, this message translates to:
-  /// **'Ain El Tûrck, Oran, Algerie'**
+  /// **'Aïn El Turck, Oran, Algérie'**
   String get algeria;
 
   /// No description provided for @appName.
@@ -139,7 +139,7 @@ abstract class AppLocalizations {
   /// No description provided for @approach.
   ///
   /// In fr, this message translates to:
-  /// **'Notre approche repose sur l\'ecoute, la proximite et la transparence. Chaque projet, chaque decision sera prise avec et pour vous.'**
+  /// **'Notre approche repose sur l\'écoute, la proximité et la transparence. Chaque projet, chaque décision sera prise avec et pour vous.'**
   String get approach;
 
   /// No description provided for @audioMessage.
@@ -163,37 +163,37 @@ abstract class AppLocalizations {
   /// No description provided for @city.
   ///
   /// In fr, this message translates to:
-  /// **'Ain El Tûrck'**
+  /// **'Aïn El Turck'**
   String get city;
 
   /// No description provided for @commitment.
   ///
   /// In fr, this message translates to:
-  /// **'Engagement pour Ain El Tûrck'**
+  /// **'Engagement pour Aïn El Turck'**
   String get commitment;
 
   /// No description provided for @commitmentText.
   ///
   /// In fr, this message translates to:
-  /// **'En tant que Secretaire du Bureau Communal du RND a Ain El Tûrck, je m\'engage personnellement a porter les voix de nos concitoyens et a transformer nos aspirations en actions concretes sur le terrain.'**
+  /// **'En tant que Secrétaire du Bureau Communal du RND à Aïn El Turck, je m\'engage personnellement à porter les voix de nos concitoyens et à transformer nos aspirations en actions concrètes sur le terrain.'**
   String get commitmentText;
 
   /// No description provided for @deputesApn.
   ///
   /// In fr, this message translates to:
-  /// **'Deputes APN'**
+  /// **'Députés APN'**
   String get deputesApn;
 
   /// No description provided for @description.
   ///
   /// In fr, this message translates to:
-  /// **'Zenasni Nabil, Secretaire du Bureau Communal du RND a Ain El Tûrck, Oran. Un engagement fort pour le developpement local, la transparence et la proximite avec les citoyens.'**
+  /// **'Zenasni Nabil, Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Un engagement fort pour le développement local, la transparence et la proximité avec les citoyens.'**
   String get description;
 
   /// No description provided for @development.
   ///
   /// In fr, this message translates to:
-  /// **'Developpement'**
+  /// **'Développement'**
   String get development;
 
   /// No description provided for @developmentDesc.
@@ -205,25 +205,25 @@ abstract class AppLocalizations {
   /// No description provided for @discoverProgram.
   ///
   /// In fr, this message translates to:
-  /// **'Decouvrir'**
+  /// **'Découvrir'**
   String get discoverProgram;
 
   /// No description provided for @elections2026.
   ///
   /// In fr, this message translates to:
-  /// **'Elections Communales 2026'**
+  /// **'Élections Communales 2026'**
   String get elections2026;
 
   /// No description provided for @elusCommunaux.
   ///
   /// In fr, this message translates to:
-  /// **'Elus Communaux'**
+  /// **'Élus Communaux'**
   String get elusCommunaux;
 
   /// No description provided for @email.
   ///
   /// In fr, this message translates to:
-  /// **'Email'**
+  /// **'Adresse Email'**
   String get email;
 
   /// No description provided for @emailField.
@@ -235,19 +235,19 @@ abstract class AppLocalizations {
   /// No description provided for @emailInvalid.
   ///
   /// In fr, this message translates to:
-  /// **'Email invalide'**
+  /// **'Adresse email invalide'**
   String get emailInvalid;
 
   /// No description provided for @emailRequired.
   ///
   /// In fr, this message translates to:
-  /// **'Email requis'**
+  /// **'L\'adresse email est requise'**
   String get emailRequired;
 
   /// No description provided for @engagement.
   ///
   /// In fr, this message translates to:
-  /// **'Notre engagement'**
+  /// **'Notre Engagement Solennel'**
   String get engagement;
 
   /// No description provided for @engagementText1.
@@ -271,13 +271,13 @@ abstract class AppLocalizations {
   /// No description provided for @events.
   ///
   /// In fr, this message translates to:
-  /// **'Evènements'**
+  /// **'Événements'**
   String get events;
 
   /// No description provided for @footerDesc.
   ///
   /// In fr, this message translates to:
-  /// **'Secretaire du Bureau Communal du RND a Ain El Tûrck, Oran. Engage pour le developpement local et le bien-etre de tous les citoyens.'**
+  /// **'Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Engagé pour le développement local et le bien-être de tous les citoyens.'**
   String get footerDesc;
 
   /// No description provided for @fullName.
@@ -301,7 +301,7 @@ abstract class AppLocalizations {
   /// No description provided for @innovationDesc.
   ///
   /// In fr, this message translates to:
-  /// **'Solutions modernes'**
+  /// **'Solutions modernes et durables'**
   String get innovationDesc;
 
   /// No description provided for @joinMovement.
@@ -313,7 +313,7 @@ abstract class AppLocalizations {
   /// No description provided for @joinUs.
   ///
   /// In fr, this message translates to:
-  /// **'Devenir Adherent'**
+  /// **'Devenir Adhérent'**
   String get joinUs;
 
   /// No description provided for @learnMore.
@@ -355,19 +355,19 @@ abstract class AppLocalizations {
   /// No description provided for @membership.
   ///
   /// In fr, this message translates to:
-  /// **'Adherer'**
+  /// **'Adhérer'**
   String get membership;
 
   /// No description provided for @membershipDesc.
   ///
   /// In fr, this message translates to:
-  /// **'Rejoignez-nous et participez activement a la construction de l\'avenir de notre commune. Ensemble, nous sommes plus forts.'**
+  /// **'Rejoignez-nous et participez activement à la construction de l\'avenir de notre commune. Ensemble, nous sommes plus forts.'**
   String get membershipDesc;
 
   /// No description provided for @membershipTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Devenez Adherent au RND'**
+  /// **'Devenez Adhérent au RND'**
   String get membershipTitle;
 
   /// No description provided for @message.
@@ -397,13 +397,13 @@ abstract class AppLocalizations {
   /// No description provided for @nom.
   ///
   /// In fr, this message translates to:
-  /// **'Nom'**
+  /// **'Nom & Prénom'**
   String get nom;
 
   /// No description provided for @nomRequired.
   ///
   /// In fr, this message translates to:
-  /// **'Nom requis'**
+  /// **'Le nom est obligatoire'**
   String get nomRequired;
 
   /// No description provided for @ourProgram.
@@ -427,7 +427,7 @@ abstract class AppLocalizations {
   /// No description provided for @party.
   ///
   /// In fr, this message translates to:
-  /// **'RND - RND'**
+  /// **'RND - Rassemblement National Démocratique'**
   String get party;
 
   /// No description provided for @password.
@@ -445,7 +445,7 @@ abstract class AppLocalizations {
   /// No description provided for @passwordRequired.
   ///
   /// In fr, this message translates to:
-  /// **'Mot de passe requis'**
+  /// **'Le mot de passe est obligatoire'**
   String get passwordRequired;
 
   /// No description provided for @phone.
@@ -457,13 +457,13 @@ abstract class AppLocalizations {
   /// No description provided for @phoneInvalid.
   ///
   /// In fr, this message translates to:
-  /// **'Numéro invalide'**
+  /// **'Numéro de téléphone invalide'**
   String get phoneInvalid;
 
   /// No description provided for @phoneRequired.
   ///
   /// In fr, this message translates to:
-  /// **'Téléphone requis'**
+  /// **'Le numéro de téléphone est requis'**
   String get phoneRequired;
 
   /// No description provided for @profession.
@@ -487,19 +487,19 @@ abstract class AppLocalizations {
   /// No description provided for @programTitle.
   ///
   /// In fr, this message translates to:
-  /// **'PROGRAMME'**
+  /// **'PROGRAMME ÉLECTORAL'**
   String get programTitle;
 
   /// No description provided for @proximity.
   ///
   /// In fr, this message translates to:
-  /// **'Proximite'**
+  /// **'Proximité'**
   String get proximity;
 
   /// No description provided for @proximityDesc.
   ///
   /// In fr, this message translates to:
-  /// **'A l\'ecoute des citoyens'**
+  /// **'À l\'écoute directe des citoyens'**
   String get proximityDesc;
 
   /// No description provided for @register.
@@ -517,31 +517,31 @@ abstract class AppLocalizations {
   /// No description provided for @rights.
   ///
   /// In fr, this message translates to:
-  /// **'2026 Zenasni Nabil - RND Ain El Tûrck. Tous droits reserves.'**
+  /// **'2026 Zenasni Nabil - RND-ORAN. Tous droits réservés.'**
   String get rights;
 
   /// No description provided for @rndDescText.
   ///
   /// In fr, this message translates to:
-  /// **'Le Rassemblement National Democratique, fonde en 1997, est un parti liberal et progressiste engage pour le developpement national et local.'**
+  /// **'Le Rassemblement National Démocratique, fondé en 1997, est un parti libéral et progressiste engagé pour le développement national et local.'**
   String get rndDescText;
 
   /// No description provided for @rndDescription.
   ///
   /// In fr, this message translates to:
-  /// **'Le RND, une force de progres pour l\'Algerie'**
+  /// **'Le RND, une force de progrès pour l\'Algérie'**
   String get rndDescription;
 
   /// No description provided for @secretary.
   ///
   /// In fr, this message translates to:
-  /// **'Secretaire'**
+  /// **'Secrétaire'**
   String get secretary;
 
   /// No description provided for @seeEvents.
   ///
   /// In fr, this message translates to:
-  /// **'Voir les prochains événements'**
+  /// **'Consulter l\'agenda citoyen'**
   String get seeEvents;
 
   /// No description provided for @send.
@@ -559,7 +559,7 @@ abstract class AppLocalizations {
   /// No description provided for @successMessage.
   ///
   /// In fr, this message translates to:
-  /// **'Votre message a été envoyé avec succès.'**
+  /// **'Votre demande d\'adhésion a été enregistrée avec succès. Notre permanence vous contactera rapidement.'**
   String get successMessage;
 
   /// No description provided for @suggestion.
@@ -571,19 +571,19 @@ abstract class AppLocalizations {
   /// No description provided for @suggestionOptional.
   ///
   /// In fr, this message translates to:
-  /// **'Suggestion / Proposition (optionnel)'**
+  /// **'Suggestion / Proposition pour la commune (optionnel)'**
   String get suggestionOptional;
 
   /// No description provided for @thankYou.
   ///
   /// In fr, this message translates to:
-  /// **'Merci !'**
+  /// **'Merci pour votre engagement !'**
   String get thankYou;
 
   /// No description provided for @together.
   ///
   /// In fr, this message translates to:
-  /// **'Ensemble, construisons\nl\'avenir d\'Ain El Tûrck'**
+  /// **'Ensemble, construisons\nl\'avenir d\'Aïn El Turck'**
   String get together;
 
   /// No description provided for @togetherHighlight.
@@ -601,19 +601,19 @@ abstract class AppLocalizations {
   /// No description provided for @transparencyDesc.
   ///
   /// In fr, this message translates to:
-  /// **'Gestion claire et juste'**
+  /// **'Gestion claire, éthique et juste'**
   String get transparencyDesc;
 
   /// No description provided for @upcomingEvents.
   ///
   /// In fr, this message translates to:
-  /// **'Prochains événements à venir...'**
+  /// **'Prochains événements & Rencontres'**
   String get upcomingEvents;
 
   /// No description provided for @visionText.
   ///
   /// In fr, this message translates to:
-  /// **'Une Algerie forte, prospere et unie. Le RND oeuvre pour une gouvernance transparente, une economie dynamique et une transformation numerique au service de tous les citoyens, dans chaque commune du pays.'**
+  /// **'Une Algérie forte, prospère et unie. Le RND œuvre pour une gouvernance transparente, une économie dynamique et une transformation numérique au service de tous les citoyens, dans chaque commune du pays.'**
   String get visionText;
 
   /// No description provided for @welcome.
@@ -631,7 +631,7 @@ abstract class AppLocalizations {
   /// No description provided for @yearsEngagement.
   ///
   /// In fr, this message translates to:
-  /// **'Annees d\'Engagement'**
+  /// **'Années d\'Engagement'**
   String get yearsEngagement;
 
   /// No description provided for @namePlaceholder.

@@ -21,7 +21,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ageOptional => 'Age (optional)';
 
   @override
-  String get algeria => 'Ain El Tûrck, Oran, Algeria';
+  String get algeria => 'Ain El Turck, Oran, Algeria';
 
   @override
   String get appName => 'RND-ORAN';
@@ -40,21 +40,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get candidateName => 'Zenasni Nabil';
 
   @override
-  String get city => 'Ain El Tûrck';
+  String get city => 'Ain El Turck';
 
   @override
-  String get commitment => 'Commitment to Ain El Tûrck';
+  String get commitment => 'Commitment to Ain El Turck';
 
   @override
   String get commitmentText =>
-      'As Secretary of the RND Communal Bureau in Ain El Tûrck, I personally commit to carry the voices of our fellow citizens and to transform our aspirations into concrete actions on the ground.';
+      'As Secretary of the RND Communal Bureau in Ain El Turck, I personally commit to carry the voices of our fellow citizens and to transform our aspirations into concrete actions on the ground.';
 
   @override
   String get deputesApn => 'APN Deputies';
 
   @override
   String get description =>
-      'Zenasni Nabil, Secretary of the RND Communal Bureau in Ain El Tûrck, Oran. A strong commitment to local development, transparency and proximity with citizens.';
+      'Zenasni Nabil, Secretary of the RND Communal Bureau in Ain El Turck, Oran. A strong commitment to local development, transparency and proximity with citizens.';
 
   @override
   String get development => 'Development';
@@ -103,7 +103,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get footerDesc =>
-      'Secretary of the RND Communal Bureau in Ain El Tûrck, Oran. Committed to local development and the well-being of all citizens.';
+      'Secretary of the RND Communal Bureau in Ain El Turck, Oran. Committed to local development and the well-being of all citizens.';
 
   @override
   String get fullName => 'Full name';
@@ -179,7 +179,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ourVision => 'Our Vision';
 
   @override
-  String get party => 'RND - RND';
+  String get party => 'RND - National Democratic Rally';
 
   @override
   String get password => 'Password';
@@ -224,8 +224,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerError => 'Registration error';
 
   @override
-  String get rights =>
-      '2026 Zenasni Nabil - RND Ain El Tûrck. All rights reserved.';
+  String get rights => '2026 Zenasni Nabil - RND-ORAN. All rights reserved.';
 
   @override
   String get rndDescText =>
@@ -259,7 +258,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thankYou => 'Thank you!';
 
   @override
-  String get together => 'Together, let\'s build\nthe future of Ain El Tûrck';
+  String get together => 'Together, let\'s build\nthe future of Ain El Turck';
 
   @override
   String get togetherHighlight => 'let\'s build';

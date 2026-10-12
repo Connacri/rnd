@@ -306,7 +306,7 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
               ),
               child: Center(
                 child: Text(
-                  _isPlaying ? 'â¸' : 'â–¶',
+                  _isPlaying ? '⏸' : '▶',
                   style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ),
@@ -695,17 +695,17 @@ class _AboutSection extends StatelessWidget {
             childAspectRatio: 2.8,
             children: [
               _FeatureItem(
-                  icon: 'ðŸ¤', title: l.proximity, subtitle: l.proximityDesc),
+                  icon: '🤝', title: l.proximity, subtitle: l.proximityDesc),
               _FeatureItem(
-                  icon: 'ðŸ’¡',
+                  icon: '💡',
                   title: l.innovation,
                   subtitle: l.innovationDesc),
               _FeatureItem(
-                  icon: 'âš–ï¸',
+                  icon: '⚖️',
                   title: l.transparency,
                   subtitle: l.transparencyDesc),
               _FeatureItem(
-                  icon: 'ðŸŒ±',
+                  icon: '🌱',
                   title: l.development,
                   subtitle: l.developmentDesc),
             ],
@@ -783,28 +783,28 @@ class _QuickLinksSection extends StatelessWidget {
         children: [
           const SizedBox(height: 24),
           _LinkCard(
-            icon: 'ðŸ‘¤',
+            icon: '👤',
             title: l.candidate,
             subtitle: l.learnMore,
             onTap: () => Navigator.pushNamed(context, AppRoutes.candidate),
           ),
           const SizedBox(height: 16),
           _LinkCard(
-            icon: 'ðŸ“‹',
+            icon: '📋',
             title: l.program,
             subtitle: l.discoverProgram,
             onTap: () => Navigator.pushNamed(context, AppRoutes.program),
           ),
           const SizedBox(height: 16),
           _LinkCard(
-            icon: 'âœ‹',
+            icon: '✋',
             title: l.membership,
             subtitle: l.joinMovement,
             onTap: () => Navigator.pushNamed(context, AppRoutes.membership),
           ),
           const SizedBox(height: 16),
           _LinkCard(
-            icon: 'ðŸ“…',
+            icon: '📅',
             title: l.events,
             subtitle: l.seeEvents,
             onTap: () => Navigator.pushNamed(context, AppRoutes.events),
@@ -870,8 +870,8 @@ class _ScreenshotsSection extends StatelessWidget {
     const screenshots = [
       ('assets/images/1000011155.png', 'Accueil'),
       ('assets/images/1000011156.png', 'Programme'),
-      ('assets/images/1000011157.png', 'AdhÃ©sion'),
-      ('assets/images/1000011158.png', 'Ã‰vÃ©nements'),
+      ('assets/images/1000011157.png', 'Adhésion'),
+      ('assets/images/1000011158.png', 'Événements'),
     ];
     return Container(
       padding: const EdgeInsets.all(24),
@@ -879,7 +879,7 @@ class _ScreenshotsSection extends StatelessWidget {
         children: [
           const SizedBox(height: 24),
           const Text(
-            'AperÃ§u de l\'application',
+            'Aperçu de l\'application',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w900,
@@ -888,7 +888,7 @@ class _ScreenshotsSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Captures d\'Ã©cran',
+            'Captures d\'écran',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13,
@@ -1003,7 +1003,7 @@ class _FooterSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Â© Developed by FORSLOG LTD â€” Codded by Ramzy Guedouar â€” Contact: 0696 41 09 53',
+            '© Developed by FORSLOG LTD — Coded by Ramzy Guedouar — Contact: 0696 41 09 53',
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 11, color: Colors.white.withValues(alpha: 0.2)),

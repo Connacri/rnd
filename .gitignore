@@ -28,6 +28,10 @@ upload-keystore-base64.txt
 rnd.keys.txt
 android/key.properties
 
+# Configuration Firebase Android
+# Injectee en CI depuis le secret GOOGLE_SERVICES_JSON_BASE64.
+android/app/google-services.json
+
 # Local patches
 patches/
 

@@ -142,7 +142,7 @@ Chaque module de `lib/features/` est autonome (`models/`, `providers/`,
 
 - [Flutter](https://flutter.dev) **3.44.0** (version utilisée en CI)
 - Android SDK / JDK 17+ (pour les builds Android)
-- Un projet **Firebase** (Auth, FCM) — `google-services.json` déjà en place
+- Un projet **Firebase** (Auth, FCM) — `google-services.json` non committé
 - Un projet **Supabase** (contenu éditable)
 
 ## Démarrage rapide
@@ -323,6 +323,7 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | `ANDROID_KEYSTORE_PASSWORD` | Mot de passe du keystore |
 | `ANDROID_KEY_ALIAS` | Alias de la clé de signature |
 | `ANDROID_KEY_PASSWORD` | Mot de passe de la clé |
+| `GOOGLE_SERVICES_JSON_BASE64` | `google-services.json` (base64) |
 | `SUPABASE_URL` | URL du projet Supabase |
 | `SUPABASE_ANON_KEY` | Clé publique (anon) Supabase |
 
@@ -332,6 +333,20 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | --- | --- | --- |
 | `ANDROID_PACKAGE_NAME` | `com.rnd.dz` | Contrôle de l'`applicationId` en CI |
 | `PAGES_BASE_PATH` | `/rnd/` | Base des URLs GitHub Pages |
+
+### Régénérer les secrets base64
+
+```bash
+# Keystore de signature
+base64 -w0 android/app/upload-keystore.jks
+
+# Configuration Firebase Android
+base64 -w0 android/app/google-services.json
+```
+
+Sur macOS : `base64 -i <fichier>`.
+`GOOGLE_SERVICES_JSON_BASE64` doit correspondre au projet `rnd-aet` et au
+package `com.rnd.dz` (le job Android échoue sinon).
 
 > Les secrets ne sont jamais écrits dans le dépôt ni affichés dans les logs :
 > ils sont injectés via des fichiers temporaires supprimés après le build.

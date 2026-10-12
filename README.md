@@ -55,8 +55,9 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 Algérie).
 
 L'application mobile est écrite en **Flutter** et publiée sur **Android**
-(APK/AAB). Le site web (**GitHub Pages**) est le site statique du dépôt
-(`index.html` + `assets/`), publié tel quel par la CI, sans build.
+(APK/AAB). Le site web (**GitHub Pages**) est l'application **React 19 + Vite**
+du dépôt (`index.html` + `src/`), compilée par la CI puis publiée dans
+`dist/`.
 
 Le contenu (programme, actualités, événements, chiffres clés) est éditable sans
 redéploiement depuis une base **Supabase** ; l'authentification et les
@@ -100,13 +101,18 @@ notifications push s'appuient sur **Firebase**.
 | Audio | `audioplayers` |
 | Typographie | `google_fonts` |
 | Icônes / splash | `flutter_launcher_icons`, `flutter_native_splash` |
+| Site web (Pages) | **React 19** + **Vite 6** + **Tailwind CSS 4** (`tsc` en typecheck) |
 | CI/CD | **GitHub Actions** (APK + AAB signés, site GitHub Pages, Releases) |
 
 ## Architecture du projet
 
 ```text
 rnd/
-├── index.html                      # Site statique publie sur GitHub Pages
+├── index.html                      # Point d'entree du site React (Vite)
+├── src/                            # Site web React 19 (pages, composants, i18n)
+├── public/                         # Assets du site (favicons, images, audio, PWA)
+├── package.json                    # Dependances et scripts du site (vite build)
+├── vite.config.ts                  # Config Vite (BASE_PATH pour GitHub Pages)
 ├── android/                        # Projet Android natif (Gradle / Kotlin)
 ├── ios/                            # Projet iOS (Runner Xcode)
 ├── assets/
@@ -273,7 +279,8 @@ $ANDROID_HOME/build-tools/<version>/aapt2 dump badging app-release.apk | head -5
 ## Builds
 
 **Aucune build de production n'est produite localement.** Les APK/AAB release
-signés sont générés par GitHub Actions ; le site web est publié tel quel.
+signés sont générés par GitHub Actions ; le site web React est compilé par la
+CI puis publié sur GitHub Pages.
 
 En local, uniquement le développement et la validation :
 
@@ -282,6 +289,10 @@ flutter run                 # debug
 flutter build apk --debug   # APK de debug
 flutter analyze             # analyse statique
 flutter test                # tests
+
+npm ci                      # dependances du site
+npm run dev                 # site React en local (http://localhost:3000)
+npm run lint                # typecheck TypeScript
 ```
 
 En CI :
@@ -289,7 +300,9 @@ En CI :
 ```bash
 flutter build apk         --release --build-name=$V --build-number=$N ...
 flutter build appbundle   --release --build-name=$V --build-number=$N ...
-flutter build web         --release --base-href=/rnd/ ...
+
+npm ci
+npm run build             # BASE_PATH=/rnd/ → dist/ publie sur GitHub Pages
 ```
 
 ## CI/CD
@@ -308,8 +321,8 @@ git push
    │                    vérification signature + package + version
    ├─ publish-play    → envoi de l'AAB sur Google Play (canal production)
    │                    actif seulement si PLAY_UPLOAD_ENABLED=true
-   ├─ build-site      → assemblage du site statique (index.html + assets/)
-   │                    publié tel quel, sans build
+   ├─ build-site      → site React compilé par Vite (BASE_PATH=/rnd/ → dist/)
+   │                    typecheck TypeScript puis build de production
    │
    ├─ deploy-pages    → mise en ligne du site (GitHub Pages)
    │
@@ -419,7 +432,7 @@ dans la configuration locale de l'outil et dans les *GitHub Secrets*.
 | --- | --- |
 | **Android (APK signé)** | [⬇️ rnd-android.apk](https://github.com/Connacri/rnd/releases/latest/download/rnd-android.apk) |
 | **Android App Bundle** | [rnd-android.aab](https://github.com/Connacri/rnd/releases/latest/download/rnd-android.aab) |
-| **Site web (statique)** | [🌐 connacri.github.io/rnd](https://connacri.github.io/rnd/) |
+| **Site web (React)** | [🌐 connacri.github.io/rnd](https://connacri.github.io/rnd/) |
 
 Toutes les versions sont listées sur la page
 **[Releases](https://github.com/Connacri/rnd/releases)** ; le CI est visible sur

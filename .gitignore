@@ -42,6 +42,7 @@ patches/
 
 supabase/.temp/
 
-# Restes JS/React (l'app est Flutter) - jamais committes
+# Dependances et build du site React/Vite (jamais committes)
 node_modules/
 dist/
+*.tsbuildinfo

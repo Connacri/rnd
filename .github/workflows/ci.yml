@@ -13,6 +13,12 @@ permissions:
 env:
   FLUTTER_VERSION: "3.44.0"
 
+# Une seule execution a la fois par branche : deux pushs rapproches ne doivent
+# pas calculer la meme version et entrer en collision sur le tag git.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   ##############################################################################
   # Calcule la prochaine version a partir des tags git existants (vX.Y.Z)
@@ -337,40 +343,52 @@ jobs:
           status: completed
 
   ##############################################################################
-  # Site web : publication du site statique sur GitHub Pages
+  # Site web (React + Vite) : build de production puis publication sur Pages
   #
-  # Le site publie est exactement celui du depot : index.html + assets/.
-  # Aucun build ni transformation : les fichiers sont copies tels quels.
+  # Le site publie est l'application React/Vite du depot (index.html + src/),
+  # compilee en fichiers statiques dans dist/. L'application Android reste
+  # Flutter : ce job ne touche jamais a android/, lib/ ni web/.
   ##############################################################################
   build-site:
-    name: Site web (Pages)
+    name: Site web (React + Vite)
     needs: [version]
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Assemble the site
-        run: |
-          mkdir -p site
-          cp index.html site/index.html
-          cp -R assets site/assets
-          echo "Contenu publie :"
-          find site -type f | sort
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-      - name: Validate the site
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+        env:
+          BASE_PATH: /rnd/
+
+      - name: Validate the build
         run: |
-          test -f site/index.html
-          test -f site/assets/images/nabil-zenasni-profile2.jpg
-          test -f site/assets/audio/fr.mp3
-          grep -q "RND" site/index.html
-          echo "Site valide."
+          test -f dist/index.html
+          test -f dist/site.webmanifest
+          test -f dist/security-policy/index.html
+          test -f dist/assets/images/nabil-zenasni-profile2.jpg
+          test -f dist/assets/audio/fr.mp3
+          grep -q "/rnd/assets/" dist/index.html
+          echo "Build Vite valide."
 
       - name: Package site ZIP
         run: |
           mkdir -p release
-          cd site
+          cd dist
           zip -qr "$GITHUB_WORKSPACE/release/rnd-site-v${{ needs.version.outputs.version }}.zip" .
           cd "$GITHUB_WORKSPACE/release"
           sha256sum "rnd-site-v${{ needs.version.outputs.version }}.zip" > SHA256SUMS-site.txt
@@ -393,10 +411,10 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: dist
 
   ##############################################################################
-  # Publication GitHub Pages (site statique : index.html + assets/)
+  # Publication GitHub Pages (build React du job build-site)
   ##############################################################################
   deploy-pages:
     name: Deploy GitHub Pages
@@ -451,7 +469,9 @@ jobs:
         run: |
           git fetch --tags --force
           TAG="v${{ needs.version.outputs.version }}"
-          if git tag -l "$TAG" | grep -q .; then
+          # Verification locale ET distante : un autre run peut avoir cree le tag
+          # entre le calcul de la version et cette etape.
+          if git tag -l "$TAG" | grep -q . || git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
             echo "Le tag $TAG existe deja, on saute"
           else
             git config user.name "github-actions"
@@ -478,7 +498,7 @@ jobs:
             | --- | --- |
             | Android (APK, signe) | `rnd-android.apk` |
             | Android App Bundle (Play Console) | `rnd-android.aab` |
-            | Site web (statique) | `rnd-site-v${{ needs.version.outputs.version }}.zip` |
+            | Site web (React + Vite) | `rnd-site-v${{ needs.version.outputs.version }}.zip` |
 
             Les signatures SHA-256 de tous les fichiers sont dans `SHA256SUMS.txt`.
 

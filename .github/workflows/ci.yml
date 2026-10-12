@@ -299,6 +299,46 @@ jobs:
           retention-days: 30
 
   ##############################################################################
+  # Google Play : envoi de l'AAB signe sur le canal "production".
+  #
+  # Desactive par defaut : lancer ce job suppose que le compte de service
+  # PLAY_SERVICE_ACCOUNT_JSON a bien ete invite dans la Play Console
+  # (Utilisateurs et autorisations) avec les droits de publication.
+  # Activer via la variable de depot PLAY_UPLOAD_ENABLED=true.
+  ##############################################################################
+  publish-play:
+    name: Google Play (production)
+    needs: [version, build-android]
+    if: ${{ vars.PLAY_UPLOAD_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Verify required secret
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::error::Secret PLAY_SERVICE_ACCOUNT_JSON manquant."
+            exit 1
+          fi
+          echo "Compte de service Google Play present."
+
+      - name: Download signed AAB
+        uses: actions/download-artifact@v4
+        with:
+          name: release-android-aab
+
+      - name: Upload AAB to Google Play (production)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: ${{ vars.ANDROID_PACKAGE_NAME }}
+          releaseFiles: rnd-android.aab
+          track: production
+          status: completed
+
+  ##############################################################################
   # Web : build de production + artefact GitHub Pages + archive de release
   ##############################################################################
   build-web:

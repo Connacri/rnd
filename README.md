@@ -40,6 +40,9 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 - [Android](#android)
 - [Builds](#builds)
 - [CI/CD](#cicd)
+- [Signatures Android (SHA)](#signatures-android-sha)
+- [Google Play](#google-play)
+- [Outils MCP](#outils-mcp)
 - [Téléchargements](#téléchargements)
 - [Licence et crédits](#licence-et-crédits)
 
@@ -301,6 +304,8 @@ git push
    │
    ├─ build-android   → APK + AAB signés (keystore depuis les secrets)
    │                    vérification signature + package + version
+   ├─ publish-play    → envoi de l'AAB sur Google Play (canal production)
+   │                    actif seulement si PLAY_UPLOAD_ENABLED=true
    ├─ build-web       → flutter build web --release --base-href=/rnd/
    │                    validation du build + artefact GitHub Pages
    │
@@ -324,6 +329,7 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | `GOOGLE_SERVICES_JSON_BASE64` | `google-services.json` (base64) |
 | `SUPABASE_URL` | URL du projet Supabase |
 | `SUPABASE_ANON_KEY` | Clé publique (anon) Supabase |
+| `PLAY_SERVICE_ACCOUNT_JSON` | Clé du compte de service Google Play (JSON) |
 
 ### Variables GitHub
 
@@ -331,6 +337,9 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | --- | --- | --- |
 | `ANDROID_PACKAGE_NAME` | `com.rnd.dz` | Contrôle de l'`applicationId` en CI |
 | `PAGES_BASE_PATH` | `/rnd/` | Base des URLs GitHub Pages |
+| `FIREBASE_PROJECT_ID` | `rnd-aet` | Projet Firebase lié |
+| `SUPABASE_PROJECT_REF` | `liveclvibiqcpekanfbp` | Référence du projet Supabase |
+| `PLAY_UPLOAD_ENABLED` | `true` / `false` | Active l'envoi automatique sur Google Play |
 
 ### Régénérer les secrets base64
 
@@ -348,6 +357,60 @@ package `com.rnd.dz` (le job Android échoue sinon).
 
 > Les secrets ne sont jamais écrits dans le dépôt ni affichés dans les logs :
 > ils sont injectés via des fichiers temporaires supprimés après le build.
+
+## Signatures Android (SHA)
+
+Empreintes du certificat de **signature de release** (keystore CI). Elles sont
+enregistrées dans Firebase (`rnd-aet`) pour autoriser Google Sign-In sur Android.
+
+| Type | Empreinte |
+| --- | --- |
+| SHA-1 | `2bdd863ca63eacf24d326e83bd621b70768cca3d` |
+| SHA-256 | `0c484bd4d96d6eebc9d2054a3b249a0737e84b06c552012edc9fe8bf2497b484` |
+
+> Certificat : `CN=RNDAET, OU=Dev, O=RNDAET, L=Alger, ST=DZ, C=DZ` (RSA 2048,
+> valide jusqu'au 06/12/2053).
+
+Lorsque **Google Play App Signing** est activé, Play re-signe l'application avec
+sa propre clé : les empreintes de cette clé (page *Play Console → App
+integrity*) doivent également être enregistrées dans Firebase, sinon Google
+Sign-In échoue sur les versions distribuées par le Play Store.
+
+## Google Play
+
+| Élément | Valeur |
+| --- | --- |
+| `applicationId` | `com.rnd.dz` |
+| Canal d'envoi | `production` |
+| Fichier envoyé | `rnd-android.aab` (AAB signé, produit par la CI) |
+| Compte de service | `play-console-mcp@cargolink-23dd3.iam.gserviceaccount.com` |
+| Compte développeur | Inturk (`oran.inturk@gmail.com`) |
+
+L'envoi est réalisé par le job `publish-play` (action
+`r0adkll/upload-google-play`) après le build Android signé. Il est **désactivé
+par défaut** : il ne s'exécute que si la variable de dépôt
+`PLAY_UPLOAD_ENABLED` vaut `true`.
+
+Prérequis côté Play Console, dans *Utilisateurs et autorisations* : inviter
+l'adresse du compte de service ci-dessus et lui accorder au minimum
+
+- *Mettre les applications à disposition de tous les utilisateurs, exclure des
+  appareils et utiliser la signature d'application Play* ;
+- *Déployer les applications sur des canaux de test* ;
+- *Gérer les canaux de test et modifier les listes de testeurs*.
+
+## Outils MCP
+
+Le dépôt déclare ses serveurs MCP dans `opencode.json` (racine) :
+
+| Serveur | Transport | Usage |
+| --- | --- | --- |
+| `supabase` | distant (`mcp.supabase.com`) | Base, migrations, branches, edge functions |
+| `firebase` | local (`firebase-tools mcp`) | Projet, applications, SHA, Firestore |
+
+D'autres serveurs (`google-play`, `render`) sont fournis par la configuration
+locale. Aucun secret n'est stocké dans `opencode.json` : les identifiants vivent
+dans la configuration locale de l'outil et dans les *GitHub Secrets*.
 
 ## Téléchargements
 

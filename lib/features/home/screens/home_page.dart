@@ -697,9 +697,7 @@ class _AboutSection extends StatelessWidget {
               _FeatureItem(
                   icon: '🤝', title: l.proximity, subtitle: l.proximityDesc),
               _FeatureItem(
-                  icon: '💡',
-                  title: l.innovation,
-                  subtitle: l.innovationDesc),
+                  icon: '💡', title: l.innovation, subtitle: l.innovationDesc),
               _FeatureItem(
                   icon: '⚖️',
                   title: l.transparency,

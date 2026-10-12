@@ -1,50 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Politique de confidentialité — RND Campagne</title>
+<meta name="theme-color" content="#167447">
+<title>Politique de sécurité — RND Aïn El Turck</title>
+<meta name="description" content="Politique de sécurité du site RND Aïn El Turck : bonnes pratiques et signalement responsable des vulnérabilités.">
 <style>
-  body { max-width: 760px; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif; line-height: 1.6; color: #1a1a2e; }
-  h1 { color: #0a1628; }
+:root{--green:#167447;--ink:#18231d;--muted:#59665e;--line:#e1e9e3;--bg:#f4f7f4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#12613b,#238657);color:white;padding:42px 20px}.wrap{width:min(820px,calc(100% - 32px));margin:auto}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.82rem}h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15;margin:.5rem 0}
+.intro{max-width:680px}main{padding:28px 0 48px}.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,34px);box-shadow:0 8px 26px #163c2510}
+h2{font-size:1.25rem;line-height:1.35;margin:1.7rem 0 .55rem}h2:first-child{margin-top:0}p,ul{margin:.55rem 0 1rem}li{margin:.35rem 0}a{color:var(--green);text-underline-offset:3px}
+.notice{border-left:4px solid var(--green);background:#f0f8f2;padding:14px 16px;border-radius:0 10px 10px 0}footer{padding-bottom:28px;color:var(--muted);font-size:.9rem}.back{color:white}
 </style>
 </head>
 <body>
-<h1>Politique de confidentialité / Privacy Policy</h1>
-<p><strong>Dernière mise à jour : 5 octobre 2026</strong></p>
-
-<h2>Français</h2>
-<p>L'application <strong>RND Campagne</strong> (« l'Application ») est éditée par le parti RND dans le cadre d'une campagne municipale à Aïn El Turck.</p>
-
-<h3>Données collectées</h3>
+<header><div class="wrap">
+<div class="eyebrow">RND · Aïn El Turck, Oran</div>
+<h1>Politique de sécurité</h1>
+<p class="intro">Bonnes pratiques pour une utilisation sûre du site et modalités de signalement responsable des problèmes de sécurité.</p>
+<a class="back" href="../">← Retour au site</a>
+</div></header>
+<main class="wrap"><article class="panel">
+<p><strong>Dernière mise à jour :</strong> 12 octobre 2026</p>
+<p>Cette page décrit les bonnes pratiques de sécurité applicables au site RND Aïn El Turck et la manière de signaler un problème potentiel. Elle ne remplace pas la politique de confidentialité.</p>
+<h2>1. Protection des utilisateurs</h2>
+<p>Nous cherchons à maintenir le site dans un état de fonctionnement sûr et à limiter les risques d’accès non autorisé, de modification ou de divulgation d’informations. L’utilisation d’Internet comporte néanmoins des risques ; aucune mesure ne peut garantir une sécurité absolue.</p>
+<h2>2. Bonnes pratiques recommandées</h2>
 <ul>
-  <li>Nom et adresse e-mail, uniquement si vous créez un compte via Google (Supabase Auth).</li>
-  <li>Préférences et contenus que vous publiez dans l'Application.</li>
-  <li>Données techniques anonymes nécessaires au bon fonctionnement du service.</li>
+<li>Utilisez un navigateur à jour et installez les mises à jour de sécurité de votre appareil.</li>
+<li>Ne partagez pas de mots de passe, de codes de vérification ou d’informations confidentielles dans des formulaires ou messages non vérifiés.</li>
+<li>Vérifiez l’adresse du site avant de transmettre des informations et méfiez-vous des liens ou messages inattendus se présentant comme officiels.</li>
+<li>Si vous pensez qu’un compte ou votre appareil a été compromis, sécurisez-le depuis les paramètres du service concerné.</li>
 </ul>
-
-<h3>Utilisation</h3>
-<p>Les données servent uniquement à faire fonctionner l'Application (compte, partages, notifications). Elles ne sont jamais vendues ni transmises à des tiers à des fins publicitaires.</p>
-
-<h3>Stockage</h3>
-<p>Les données sont hébergées de manière sécurisée via Supabase. Vous pouvez demander la suppression de votre compte et de vos données à tout moment en contactant le support.</p>
-
-<h3>Contact</h3>
-<p>Pour toute question : communauté RND à Aïn El Turck, Algérie.</p>
-
-<h2>English</h2>
-<p>The <strong>RND Campagne</strong> app ("the App") is a municipal campaign application published by the RND party in Aïn El Turck.</p>
-<h3>Data collected</h3>
-<ul>
-  <li>Name and email, only when you sign in with Google (Supabase Auth).</li>
-  <li>Content you choose to publish in the App.</li>
-  <li>Anonymous technical data required for the service to work.</li>
-</ul>
-<h3>Use</h3>
-<p>Data is used solely to operate the App. It is never sold or shared with third parties for advertising.</p>
-<h3>Storage</h3>
-<p>Data is hosted securely via Supabase. You may request account and data deletion at any time.</p>
-
-<p><a href="/rnd/">← Retour à l'accueil</a></p>
-</body>
-</html>
+<h2>3. Signalement responsable d’une vulnérabilité</h2>
+<p>Si vous découvrez une faille de sécurité liée à ce site, signalez-la de manière responsable en utilisant les coordonnées de contact publiées sur le site principal ou en ouvrant un signalement dans le dépôt du projet.</p>
+<p>Si possible, indiquez l’adresse concernée, une description claire du problème, son impact potentiel et les étapes minimales permettant de le reproduire. N’incluez pas de mots de passe, de données personnelles appartenant à autrui ni d’autres informations sensibles.</p>
+<div class="notice"><strong>Respectez la vie privée.</strong> Ne consultez, ne modifiez, ne téléchargez et ne supprimez pas les données d’autres personnes. Évitez les tests interrompant le service, l’ingénierie sociale, les attaques par déni de service et toute action dépassant ce qui est nécessaire pour décrire le problème.</div>
+<h2>4. Traitement des signalements</h2>
+<p>Les signalements sont examinés selon les informations disponibles et les priorités de sécurité. Nous pouvons demander des précisions. La réception d’un signalement ne garantit pas un délai de réponse, une correction ou une récompense.</p>
+<h2>5. Services tiers</h2>
+<p>Le site peut s’appuyer sur des services tiers ou contenir des liens vers des sites externes. Ces services disposent de leurs propres pratiques et politiques de sécurité. Consultez leurs informations officielles avant de leur transmettre des données.</p>
+<h2>6. Modifications</h2>
+<p>Cette politique peut être mise à jour pour refléter l’évolution du site ou de ses pratiques. La date en haut de page correspond à la dernière révision publiée.</p>
+<h2>7. Contact</h2>
+<p>Pour signaler un problème de sécurité, utilisez les coordonnées publiées sur le <a href="../">site principal</a> ou ouvrez un signalement dans le dépôt GitHub <a href="https://github.com/Connacri/rnd">Connacri/rnd</a>.</p>
+</article></main>
+<footer class="wrap">© RND Aïn El Turck · Informations générales de sécurité.</footer>
+</body></html>

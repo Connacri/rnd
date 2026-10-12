@@ -47,7 +47,16 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
+            val releaseSigning = signingConfigs.findByName("release")
+            // Ne jamais livrer une build de production signee avec la cle de
+            // debug : en CI (variable d'environnement CI definie), l'absence de
+            // keystore est une erreur bloquante.
+            if (releaseSigning == null && System.getenv("CI") != null) {
+                throw GradleException(
+                    "Signature release indisponible : android/key.properties manquant en CI."
+                )
+            }
+            signingConfig = releaseSigning
         }
     }
 }

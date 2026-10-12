@@ -1,0 +1,526 @@
+name: rnd-ci
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FLUTTER_VERSION: "3.44.0"
+  # Base des URLs du site publie sur GitHub Pages (ex. /rnd/).
+  PAGES_BASE_HREF: ${{ vars.PAGES_BASE_PATH || '/rnd/' }}
+
+jobs:
+  ##############################################################################
+  # Calcule la prochaine version a partir des tags git existants (vX.Y.Z)
+  ##############################################################################
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute next version
+        id: v
+        run: |
+          git fetch --tags --force
+          LAST_TAG=$(git tag -l "v*" | sort -V | tail -n1)
+          if [ -z "$LAST_TAG" ]; then
+            LAST_TAG="v1.0.0"
+          fi
+          VERSION=${LAST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          # Incremente jusqu'a trouver un tag qui n'existe pas encore
+          while : ; do
+            PATCH=$((PATCH + 1))
+            CANDIDATE="$MAJOR.$MINOR.$PATCH"
+            if ! git tag -l "v$CANDIDATE" | grep -q .; then
+              break
+            fi
+          done
+
+          echo "version=$CANDIDATE" >> "$GITHUB_OUTPUT"
+          echo "Version calculee : $CANDIDATE"
+
+  ##############################################################################
+  # Qualite : format + analyse statique + tests (bloque les builds si echec)
+  ##############################################################################
+  quality:
+    name: Qualite (format, analyse, tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib tool
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+
+      - name: Test
+        run: flutter test
+
+  ##############################################################################
+  # Android : APK + AAB signes avec le keystore issu des secrets GitHub.
+  # Aucun repli sur la cle de debug : si les secrets manquent, le job echoue.
+  ##############################################################################
+  build-android:
+    name: Android signe (APK + AAB)
+    needs: [version, quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify signing secrets
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          missing=""
+          for name in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              missing="$missing $name"
+            fi
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Secrets de signature manquants :$missing"
+            exit 1
+          fi
+          echo "Secrets de signature presents."
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: "21"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Setup Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Decode keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/upload-keystore.jks
+          echo "Keystore decode ($(wc -c < android/app/upload-keystore.jks) octets)."
+
+      - name: Create key.properties
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          {
+            echo "storePassword=$ANDROID_KEYSTORE_PASSWORD"
+            echo "keyPassword=$ANDROID_KEY_PASSWORD"
+            echo "keyAlias=$ANDROID_KEY_ALIAS"
+            echo "storeFile=upload-keystore.jks"
+          } > android/key.properties
+          echo "key.properties cree (signature release)."
+
+      # Les cles Supabase sont injectees via un fichier dart-define temporaire
+      # (supprime apres build) plutot qu'en ligne de commande, pour eviter
+      # qu'elles n'apparaissent dans les logs de processus.
+      - name: Create dart-define file
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          cat > /tmp/ci_env.json <<EOF
+          {
+            "SUPABASE_URL": "${SUPABASE_URL}",
+            "SUPABASE_ANON_KEY": "${SUPABASE_ANON_KEY}"
+          }
+          EOF
+
+      - name: Build APK (universal)
+        run: |
+          flutter build apk --release \
+            --build-name=${{ needs.version.outputs.version }} \
+            --build-number=${{ github.run_number }} \
+            --dart-define-from-file=/tmp/ci_env.json
+
+      - name: Build App Bundle (AAB)
+        run: |
+          flutter build appbundle --release \
+            --build-name=${{ needs.version.outputs.version }} \
+            --build-number=${{ github.run_number }} \
+            --dart-define-from-file=/tmp/ci_env.json
+
+      - name: Clean up secrets files
+        if: always()
+        run: rm -f /tmp/ci_env.json android/app/upload-keystore.jks android/key.properties
+
+      - name: Verify APK signature, package name and version
+        env:
+          EXPECTED_PACKAGE: ${{ vars.ANDROID_PACKAGE_NAME }}
+          EXPECTED_VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          APK=build/app/outputs/flutter-apk/app-release.apk
+          BT=$(ls -d "$ANDROID_SDK_ROOT"/build-tools/* | sort -V | tail -n1)
+          echo "build-tools: $BT"
+
+          ERR=$(mktemp)
+          SIGN_OUT=$("$BT/apksigner" verify --print-certs "$APK" 2>"$ERR" || true)
+          cat "$ERR"
+          echo "$SIGN_OUT"
+          if ! echo "$SIGN_OUT" | grep -q "certificate DN"; then
+            echo "::error::APK non signe (ou signature invalide)."
+            exit 1
+          fi
+          if echo "$SIGN_OUT" | grep -qi "Android Debug"; then
+            echo "::error::APK signe avec la cle de debug : release interdite."
+            exit 1
+          fi
+
+          BADGING=$("$BT/aapt2" dump badging "$APK" | head -5)
+          echo "$BADGING"
+          PKG=$(echo "$BADGING" | grep -oP "^package: name='\K[^']*" || true)
+          VER=$(echo "$BADGING" | grep -oP "(?<![A-Za-z])versionName='\K[^']*" || true)
+          echo "package=$PKG versionName=$VER version attendue=$EXPECTED_VERSION"
+          if [ "$PKG" != "com.rnd.dz" ]; then
+            echo "::error::applicationId inattendu : $PKG"
+            exit 1
+          fi
+          if [ -n "$EXPECTED_PACKAGE" ] && [ "$PKG" != "$EXPECTED_PACKAGE" ]; then
+            echo "::error::applicationId different de la variable ANDROID_PACKAGE_NAME ($EXPECTED_PACKAGE)."
+            exit 1
+          fi
+          if [ "$VER" != "$EXPECTED_VERSION" ]; then
+            echo "::error::versionName inattendu : $VER (attendu $EXPECTED_VERSION)"
+            exit 1
+          fi
+
+      - name: Verify AAB signature
+        run: |
+          AAB=build/app/outputs/bundle/release/app-release.aab
+          OUT=$(mktemp)
+          jarsigner -verify -verbose -certs "$AAB" > "$OUT" 2>&1 || true
+          if ! grep -q "jar verified" "$OUT"; then
+            echo "::error::AAB non signe."
+            tail -20 "$OUT"
+            exit 1
+          fi
+          echo "AAB verifie."
+
+      - name: Prepare artifacts
+        run: |
+          mkdir -p release
+          cp build/app/outputs/flutter-apk/app-release.apk release/rnd-android.apk
+          cp build/app/outputs/bundle/release/app-release.aab release/rnd-android.aab
+          cd release
+          sha256sum rnd-android.apk rnd-android.aab > SHA256SUMS-android.txt
+          cat SHA256SUMS-android.txt
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-android-apk
+          path: release/rnd-android.apk
+          retention-days: 30
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-android-aab
+          path: release/rnd-android.aab
+          retention-days: 30
+
+      - name: Upload Android checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-android-sums
+          path: release/SHA256SUMS-android.txt
+          retention-days: 30
+
+  ##############################################################################
+  # Web : build de production + artefact GitHub Pages + archive de release
+  ##############################################################################
+  build-web:
+    name: Web (Flutter Web + Pages)
+    needs: [version, quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Create dart-define file
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          cat > /tmp/ci_env.json <<EOF
+          {
+            "SUPABASE_URL": "${SUPABASE_URL}",
+            "SUPABASE_ANON_KEY": "${SUPABASE_ANON_KEY}"
+          }
+          EOF
+
+      - name: Build web (release)
+        run: |
+          flutter build web --release \
+            --base-href "${{ env.PAGES_BASE_HREF }}" \
+            --build-name=${{ needs.version.outputs.version }} \
+            --build-number=${{ github.run_number }} \
+            --dart-define-from-file=/tmp/ci_env.json
+
+      - name: Clean up secrets file
+        if: always()
+        run: rm -f /tmp/ci_env.json
+
+      - name: Validate web build
+        run: |
+          test -f build/web/index.html
+          test -f build/web/main.dart.js
+          test -f build/web/manifest.json
+          grep -q "RND-ORAN" build/web/index.html
+          grep -q "RND-ORAN" build/web/manifest.json
+          grep -q "${{ env.PAGES_BASE_HREF }}" build/web/index.html
+          echo "Build web valide."
+
+      - name: Package web ZIP
+        run: |
+          mkdir -p release
+          cd build/web
+          zip -qr "$GITHUB_WORKSPACE/release/rnd-web-v${{ needs.version.outputs.version }}.zip" .
+          cd "$GITHUB_WORKSPACE"
+          cd release
+          sha256sum "rnd-web-v${{ needs.version.outputs.version }}.zip" > SHA256SUMS-web.txt
+          cat SHA256SUMS-web.txt
+
+      - name: Upload web ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-web
+          path: release/rnd-web-v${{ needs.version.outputs.version }}.zip
+          retention-days: 30
+
+      - name: Upload web checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-web-sums
+          path: release/SHA256SUMS-web.txt
+          retention-days: 30
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  ##############################################################################
+  # Build Windows (ZIP portable)
+  ##############################################################################
+  build-windows:
+    name: Windows (ZIP portable)
+    needs: [version, quality]
+    runs-on: windows-latest
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Create dart-define file
+        shell: pwsh
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          $env = @{
+            SUPABASE_URL = $env:SUPABASE_URL
+            SUPABASE_ANON_KEY = $env:SUPABASE_ANON_KEY
+          } | ConvertTo-Json
+          [IO.File]::WriteAllText("$env:RUNNER_TEMP\ci_env.json", $env)
+
+      - name: Build Windows
+        shell: pwsh
+        run: |
+          flutter build windows --release `
+            --build-name=${{ needs.version.outputs.version }} `
+            --build-number=${{ github.run_number }} `
+            --dart-define-from-file="$env:RUNNER_TEMP\ci_env.json"
+
+      - name: Clean up secrets file
+        if: always()
+        shell: pwsh
+        run: Remove-Item -Force "$env:RUNNER_TEMP\ci_env.json" -ErrorAction SilentlyContinue
+
+      - name: Package portable ZIP
+        shell: pwsh
+        run: |
+          $VERSION = "${{ needs.version.outputs.version }}"
+          New-Item -ItemType Directory -Force -Path release | Out-Null
+          Compress-Archive -Path "build\windows\x64\runner\Release\*" `
+            -DestinationPath "release\rnd-windows-v$VERSION.zip"
+          $hash = (Get-FileHash "release\rnd-windows-v$VERSION.zip" -Algorithm SHA256).Hash.ToLower()
+          "$hash  rnd-windows-v$VERSION.zip" | Set-Content "release\SHA256SUMS-windows.txt"
+          Get-Content "release\SHA256SUMS-windows.txt"
+
+      - name: Upload Windows ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-windows
+          path: release/rnd-windows-v${{ needs.version.outputs.version }}.zip
+          retention-days: 30
+
+      - name: Upload Windows checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-windows-sums
+          path: release/SHA256SUMS-windows.txt
+          retention-days: 30
+
+  ##############################################################################
+  # Publication GitHub Pages (site = application web Flutter)
+  ##############################################################################
+  deploy-pages:
+    name: Deploy GitHub Pages
+    needs: [build-web]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  ##############################################################################
+  # Tag + Release GitHub avec tous les artefacts
+  ##############################################################################
+  release:
+    name: Tag + GitHub Release
+    needs: [version, build-android, build-web, build-windows]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          path: out
+          merge-multiple: true
+
+      - name: Merge checksums
+        run: |
+          ls -la out/
+          cat out/SHA256SUMS-*.txt > out/SHA256SUMS.txt
+          rm -f out/SHA256SUMS-*.txt
+          echo "--- SHA256SUMS.txt ---"
+          cat out/SHA256SUMS.txt
+
+      - name: Create Git Tag
+        run: |
+          git fetch --tags --force
+          TAG="v${{ needs.version.outputs.version }}"
+          if git tag -l "$TAG" | grep -q .; then
+            echo "Le tag $TAG existe deja, on saute"
+          else
+            git config user.name "github-actions"
+            git config user.email "github-actions@users.noreply.github.com"
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.version.outputs.version }}
+          name: RND-ORAN v${{ needs.version.outputs.version }}
+          files: out/*
+          body: |
+            ## RND-ORAN v${{ needs.version.outputs.version }}
+
+            Application de campagne municipale (Nabil Zenasni — Ain El Turck),
+            developpee avec Flutter.
+
+            ### Telechargements
+
+            | Plateforme | Fichier |
+            | --- | --- |
+            | Android (APK, signe) | `rnd-android.apk` |
+            | Android App Bundle (Play Console) | `rnd-android.aab` |
+            | Web (build Flutter Web) | `rnd-web-v${{ needs.version.outputs.version }}.zip` |
+            | Windows (portable) | `rnd-windows-v${{ needs.version.outputs.version }}.zip` |
+
+            Les signatures SHA-256 de tous les fichiers sont dans `SHA256SUMS.txt`.
+
+            - Application Android : `com.rnd.dz`
+            - Version : ${{ needs.version.outputs.version }} (build ${{ github.run_number }})

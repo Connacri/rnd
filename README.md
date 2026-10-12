@@ -313,12 +313,13 @@ L'intégralité du pipeline est décrite dans
 ```text
 git push
    │
-   ├─ version         → calcule la prochaine vX.Y.Z (tags git)
+   ├─ version         → calcule la prochaine vX.Y.Z (tags git) et le
+   │                    versionCode Android (MAJEUR*1e6 + MINEUR*1e3 + PATCH)
    │
    ├─ quality         → flutter pub get · dart format · flutter analyze · flutter test
    │
    ├─ build-android   → APK + AAB signés (keystore depuis les secrets)
-   │                    vérification signature + package + version
+   │                    vérification signature + package + versionName/versionCode
    ├─ publish-play    → envoi de l'AAB sur Google Play (canal production)
    │                    actif seulement si PLAY_UPLOAD_ENABLED=true
    ├─ build-site      → site React compilé par Vite (BASE_PATH=/rnd/ → dist/)
@@ -386,9 +387,19 @@ enregistrées dans Firebase (`rnd-aet`) pour autoriser Google Sign-In sur Androi
 > valide jusqu'au 06/12/2053).
 
 Lorsque **Google Play App Signing** est activé, Play re-signe l'application avec
-sa propre clé : les empreintes de cette clé (page *Play Console → App
-integrity*) doivent également être enregistrées dans Firebase, sinon Google
-Sign-In échoue sur les versions distribuées par le Play Store.
+sa propre clé : les empreintes de cette clé doivent également être enregistrées
+dans Firebase, sinon Google Sign-In échoue sur les versions distribuées par le
+Play Store. La lignée de signature se lit via l'API Play (`generatedApks`) ; elle
+a été ajoutée à Firebase `rnd-aet`.
+
+| Certificat | SHA-1 | SHA-256 |
+| --- | --- | --- |
+| Clé de signature d'application (v3.0, Android ≤ 16) | `4cba7a52aa0d2b77c8531de15237a5a35c745a69` | `b5e1ae3800abdce688dba0e37db5ef3c75d251a97764b30db86bad65bd46502e` |
+| v3.2 hybride — classique | `f0f60ca64d8c1f6f78f646417a3f976808bce8c5` | `0ae7cc5ad0db44b29cd7a0a9700ac9e08dcc303124144cc47f0553a5f24a3073` |
+| v3.2 hybride — PQC (identité courante sur Android 17+) | `75193fb808826914a307019b875f7bd6bf52e5a0` | `d25cba2c3814bb080d77f03e58a97eecad1c7b58eff6375e89fb8b1ac628483d` |
+
+> Le certificat « source stamp » de Play n'est **pas** enregistré : ce n'est pas
+> une clé de signature de l'application.
 
 ## Google Play
 

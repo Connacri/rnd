@@ -29,6 +29,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       version: ${{ steps.v.outputs.version }}
+      version_code: ${{ steps.v.outputs.version_code }}
 
     steps:
       - uses: actions/checkout@v4
@@ -55,7 +56,14 @@ jobs:
             fi
           done
 
+          # versionCode Android derive de la version (MAJEUR*1e6 + MINEUR*1e3 +
+          # PATCH) : toujours croissant, donc accepte par Google Play. Le numero
+          # de run GitHub ne convient pas : il repart de 1 sur ce depot, donc il
+          # serait inferieur au versionCode 54 deja publie sur Play.
+          VERSION_CODE=$(( MAJOR * 1000000 + MINOR * 1000 + PATCH ))
+
           echo "version=$CANDIDATE" >> "$GITHUB_OUTPUT"
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
           echo "Version calculee : $CANDIDATE"
 
   ##############################################################################
@@ -201,14 +209,14 @@ jobs:
         run: |
           flutter build apk --release \
             --build-name=${{ needs.version.outputs.version }} \
-            --build-number=${{ github.run_number }} \
+            --build-number=${{ needs.version.outputs.version_code }} \
             --dart-define-from-file=/tmp/ci_env.json
 
       - name: Build App Bundle (AAB)
         run: |
           flutter build appbundle --release \
             --build-name=${{ needs.version.outputs.version }} \
-            --build-number=${{ github.run_number }} \
+            --build-number=${{ needs.version.outputs.version_code }} \
             --dart-define-from-file=/tmp/ci_env.json
 
       - name: Clean up secrets files
@@ -223,6 +231,7 @@ jobs:
         env:
           EXPECTED_PACKAGE: ${{ vars.ANDROID_PACKAGE_NAME }}
           EXPECTED_VERSION: ${{ needs.version.outputs.version }}
+          EXPECTED_VERSION_CODE: ${{ needs.version.outputs.version_code }}
         run: |
           set -euo pipefail
           APK=build/app/outputs/flutter-apk/app-release.apk
@@ -246,7 +255,8 @@ jobs:
           echo "$BADGING"
           PKG=$(echo "$BADGING" | grep -oP "^package: name='\K[^']*" || true)
           VER=$(echo "$BADGING" | grep -oP "(?<![A-Za-z])versionName='\K[^']*" || true)
-          echo "package=$PKG versionName=$VER version attendue=$EXPECTED_VERSION"
+          CODE=$(echo "$BADGING" | grep -oP "(?<![A-Za-z])versionCode='\K[0-9]*" || true)
+          echo "package=$PKG versionName=$VER versionCode=$CODE (attendus $EXPECTED_VERSION / $EXPECTED_VERSION_CODE)"
           if [ "$PKG" != "com.rnd.dz" ]; then
             echo "::error::applicationId inattendu : $PKG"
             exit 1
@@ -257,6 +267,10 @@ jobs:
           fi
           if [ "$VER" != "$EXPECTED_VERSION" ]; then
             echo "::error::versionName inattendu : $VER (attendu $EXPECTED_VERSION)"
+            exit 1
+          fi
+          if [ -n "$EXPECTED_VERSION_CODE" ] && [ "$CODE" != "$EXPECTED_VERSION_CODE" ]; then
+            echo "::error::versionCode inattendu : $CODE (attendu $EXPECTED_VERSION_CODE)"
             exit 1
           fi
 

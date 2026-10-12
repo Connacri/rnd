@@ -54,8 +54,9 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 **Nabil Zenasni** pour les élections communales de 2026 à Aïn El Turck (Oran,
 Algérie).
 
-L'application est écrite en **Flutter** et fonctionne sur **Android** (APK/AAB) et
-**Web** (build déployé sur GitHub Pages).
+L'application mobile est écrite en **Flutter** et publiée sur **Android**
+(APK/AAB). Le site web (**GitHub Pages**) est le site statique du dépôt
+(`index.html` + `assets/`), publié tel quel par la CI, sans build.
 
 Le contenu (programme, actualités, événements, chiffres clés) est éditable sans
 redéploiement depuis une base **Supabase** ; l'authentification et les
@@ -99,12 +100,13 @@ notifications push s'appuient sur **Firebase**.
 | Audio | `audioplayers` |
 | Typographie | `google_fonts` |
 | Icônes / splash | `flutter_launcher_icons`, `flutter_native_splash` |
-| CI/CD | **GitHub Actions** (APK + AAB signés, Web, Releases) |
+| CI/CD | **GitHub Actions** (APK + AAB signés, site GitHub Pages, Releases) |
 
 ## Architecture du projet
 
 ```text
 rnd/
+├── index.html                      # Site statique publie sur GitHub Pages
 ├── android/                        # Projet Android natif (Gradle / Kotlin)
 ├── ios/                            # Projet iOS (Runner Xcode)
 ├── assets/
@@ -271,7 +273,7 @@ $ANDROID_HOME/build-tools/<version>/aapt2 dump badging app-release.apk | head -5
 ## Builds
 
 **Aucune build de production n'est produite localement.** Les APK/AAB release
-signés et la build web sont générés par GitHub Actions.
+signés sont générés par GitHub Actions ; le site web est publié tel quel.
 
 En local, uniquement le développement et la validation :
 
@@ -306,13 +308,13 @@ git push
    │                    vérification signature + package + version
    ├─ publish-play    → envoi de l'AAB sur Google Play (canal production)
    │                    actif seulement si PLAY_UPLOAD_ENABLED=true
-   ├─ build-web       → flutter build web --release --base-href=/rnd/
-   │                    validation du build + artefact GitHub Pages
+   ├─ build-site      → assemblage du site statique (index.html + assets/)
+   │                    publié tel quel, sans build
    │
-   ├─ deploy-pages    → mise en ligne du build web (GitHub Pages)
+   ├─ deploy-pages    → mise en ligne du site (GitHub Pages)
    │
    └─ release         → tag git + GitHub Release
-                        (APK, AAB, Web ZIP, SHA256SUMS.txt)
+                        (APK, AAB, site ZIP, SHA256SUMS.txt)
 ```
 
 Chaque artefact de release est accompagné de son empreinte SHA-256 dans
@@ -336,7 +338,6 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | Variable | Valeur | Rôle |
 | --- | --- | --- |
 | `ANDROID_PACKAGE_NAME` | `com.rnd.dz` | Contrôle de l'`applicationId` en CI |
-| `PAGES_BASE_PATH` | `/rnd/` | Base des URLs GitHub Pages |
 | `FIREBASE_PROJECT_ID` | `rnd-aet` | Projet Firebase lié |
 | `SUPABASE_PROJECT_REF` | `liveclvibiqcpekanfbp` | Référence du projet Supabase |
 | `PLAY_UPLOAD_ENABLED` | `true` / `false` | Active l'envoi automatique sur Google Play |
@@ -418,7 +419,7 @@ dans la configuration locale de l'outil et dans les *GitHub Secrets*.
 | --- | --- |
 | **Android (APK signé)** | [⬇️ rnd-android.apk](https://github.com/Connacri/rnd/releases/latest/download/rnd-android.apk) |
 | **Android App Bundle** | [rnd-android.aab](https://github.com/Connacri/rnd/releases/latest/download/rnd-android.aab) |
-| **Web** | [🌐 connacri.github.io/rnd](https://connacri.github.io/rnd/) |
+| **Site web (statique)** | [🌐 connacri.github.io/rnd](https://connacri.github.io/rnd/) |
 
 Toutes les versions sont listées sur la page
 **[Releases](https://github.com/Connacri/rnd/releases)** ; le CI est visible sur

@@ -78,7 +78,7 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
         <div className="w-16 h-16 rounded-3xl bg-white dark:bg-zinc-800 p-2 shadow-md border border-amber-200/80 dark:border-zinc-700 mx-auto flex items-center justify-center mb-3">
           <img
             src="assets/icons/icon.png"
-            alt="RND Algérie"
+            alt="RND-ORAN"
             className="w-full h-full object-contain"
           />
         </div>
@@ -91,7 +91,7 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 max-w-xs mx-auto">
           {view === 'forgot-password'
             ? t('forgotPasswordHint')
-            : 'Plateforme citoyenne officielle • RND Aïn El Turck 2026'}
+            : 'Plateforme citoyenne officielle • RND-ORAN 2026'}
         </p>
       </div>
 

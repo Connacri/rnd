@@ -87,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-white dark:bg-zinc-800 p-1 shadow-sm border border-amber-300/80 dark:border-zinc-700 flex items-center justify-center overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform">
             <img
               src="assets/icons/icon.png"
-              alt="Logo RND Algérie"
+              alt="Logo RND-ORAN"
               className="w-full h-full object-contain"
               onError={(e) => {
                 (e.target as HTMLElement).style.display = 'none';
@@ -98,7 +98,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           <div>
             <div className="flex items-center gap-1.5">
               <span className="font-black text-xs sm:text-sm tracking-tight text-zinc-950 dark:text-zinc-50 font-sans">
-                RND Algérie
+                RND-ORAN
               </span>
               <span className="font-arabic font-extrabold text-[11px] sm:text-xs text-rose-600 dark:text-rose-400">
                 التجمع الوطني الديمقراطي

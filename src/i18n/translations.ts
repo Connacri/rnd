@@ -2,7 +2,7 @@ import { Language } from '../types';
 
 export const translations: Record<Language, Record<string, string>> = {
   fr: {
-    appName: "RND Campagne",
+    appName: "RND-ORAN",
     candidateName: "Zenasni Nabil",
     party: "RND - Rassemblement National Démocratique",
     partyShort: "RND",
@@ -55,7 +55,7 @@ export const translations: Record<Language, Record<string, string>> = {
     deputesApn: "Députés APN",
     yearsEngagement: "Années d'Engagement",
     footerDesc: "Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Engagé pour le développement local et le bien-être de tous les concitoyens.",
-    rights: "2026 Zenasni Nabil - RND Aïn El Turck. Tous droits réservés.",
+    rights: "2026 Zenasni Nabil - RND-ORAN. Tous droits réservés.",
     developerCredit: "Développé par FORSLOG LTD — Codé par Ramzy Guedouar — Contact : 0696 41 09 53",
     login: "Connexion",
     logout: "Déconnexion",
@@ -129,7 +129,7 @@ export const translations: Record<Language, Record<string, string>> = {
     officialPlatform: "Plateforme Officielle"
   },
   ar: {
-    appName: "حملة التجمع الوطني الديمقراطي",
+    appName: "RND-ORAN",
     candidateName: "زناسني نبيل",
     party: "التجمع الوطني الديمقراطي - RND",
     partyShort: "التجمع RND",
@@ -182,7 +182,7 @@ export const translations: Record<Language, Record<string, string>> = {
     deputesApn: "نواب المجلس",
     yearsEngagement: "سنوات الالتزام",
     footerDesc: "أمين المكتب البلدي للتجمع الوطني الديمقراطي بعين الترك، وهران. ملتزم بالتنمية المحلية ورفاهية جميع المواطنين.",
-    rights: "2026 زناسني نبيل - التجمع عين الترك. جميع الحقوق محفوظة.",
+    rights: "2026 زناسني نبيل - RND-ORAN. جميع الحقوق محفوظة.",
     developerCredit: "تطوير فورسلوغ ليمتد — برمجة رمزي قيدوار — اتصال: 0696 41 09 53",
     login: "تسجيل الدخول",
     logout: "تسجيل الخروج",
@@ -256,7 +256,7 @@ export const translations: Record<Language, Record<string, string>> = {
     officialPlatform: "المنصة الرسمية"
   },
   en: {
-    appName: "RND Campaign",
+    appName: "RND-ORAN",
     candidateName: "Zenasni Nabil",
     party: "RND - National Democratic Rally",
     partyShort: "RND",
@@ -309,7 +309,7 @@ export const translations: Record<Language, Record<string, string>> = {
     deputesApn: "APN Deputies",
     yearsEngagement: "Years of Commitment",
     footerDesc: "Secretary of the RND Communal Bureau in Ain El Turck, Oran. Committed to local development and the well-being of all citizens.",
-    rights: "2026 Zenasni Nabil - RND Ain El Turck. All rights reserved.",
+    rights: "2026 Zenasni Nabil - RND-ORAN. All rights reserved.",
     developerCredit: "Developed by FORSLOG LTD — Coded by Ramzy Guedouar — Contact: 0696 41 09 53",
     login: "Log in",
     logout: "Log out",

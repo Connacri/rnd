@@ -128,9 +128,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.version.outputs.version }}
-          name: RND Campagne v${{ needs.version.outputs.version }}
+          name: RND-ORAN v${{ needs.version.outputs.version }}
           body: |
-            ## RND Campagne v${{ needs.version.outputs.version }}
+            ## RND-ORAN v${{ needs.version.outputs.version }}
 
             Application de campagne municipale — Nabil Zenasni, Aïn El Turck.
 

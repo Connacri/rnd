@@ -1,4 +1,4 @@
--- 003_drop_orphan_tables.sql
+-- 20261009120000_drop_orphan_tables.sql
 --
 -- Suppression des tables présentes dans le projet Supabase mais absentes
 -- du code Flutter (aucune lecture/écriture dans lib/), toutes vides :

@@ -5,6 +5,13 @@
       "type": "remote",
       "url": "https://mcp.supabase.com/mcp?project_ref=liveclvibiqcpekanfbp&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching",
       "enabled": true
+    },
+    "firebase": {
+      "type": "local",
+      "command": ["npx", "-y", "firebase-tools@latest", "mcp"],
+      "cwd": ".",
+      "timeout": 180000,
+      "enabled": true
     }
   }
 }

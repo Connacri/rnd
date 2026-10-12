@@ -57,22 +57,24 @@ class DefaultFirebaseOptions {
     projectId: 'rnd-aet',
     storageBucket: 'rnd-aet.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAUThK2-mg4pUEey8lOnHAvkIcmgFgq7dk',
     appId: '1:557594232565:ios:ca616f7b5be97e1e0a27bc',
     messagingSenderId: '557594232565',
     projectId: 'rnd-aet',
     storageBucket: 'rnd-aet.firebasestorage.app',
+    androidClientId: '557594232565-bffb7lqav7p3l7a3bf5anh7o6589tfnb.apps.googleusercontent.com',
+    iosClientId: '557594232565-munc9l5bv2ql13aebbsk7qqje11051m5.apps.googleusercontent.com',
     iosBundleId: 'com.rnd.dz',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAUThK2-mg4pUEey8lOnHAvkIcmgFgq7dk',
     appId: '1:557594232565:ios:ca616f7b5be97e1e0a27bc',
     messagingSenderId: '557594232565',
     projectId: 'rnd-aet',
     storageBucket: 'rnd-aet.firebasestorage.app',
+    androidClientId: '557594232565-bffb7lqav7p3l7a3bf5anh7o6589tfnb.apps.googleusercontent.com',
+    iosClientId: '557594232565-munc9l5bv2ql13aebbsk7qqje11051m5.apps.googleusercontent.com',
     iosBundleId: 'com.rnd.dz',
   );
 

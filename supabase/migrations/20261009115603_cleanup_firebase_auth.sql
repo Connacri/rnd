@@ -1,4 +1,5 @@
--- 002_cleanup_firebase_auth.sql
+-- 20261009115603_cleanup_firebase_auth.sql
+-- (version distante : 20261009115603, deja appliquee)
 --
 -- Bascule vers Firebase Auth :
 --   * plus de session Supabase Auth (auth.uid() toujours NULL côté client)

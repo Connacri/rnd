@@ -1,4 +1,5 @@
--- 004_content_tables.sql
+-- 20261009120547_content_tables.sql
+-- (version distante : 20261009120547, deja appliquee)
 --
 -- Tables de contenu éditable par l'administrateur depuis le dashboard
 -- Supabase (Table Editor). L'application ne fait que LIRE ces tables.

@@ -1,0 +1,17 @@
+-- 20260727165257_create_hospital_tables.sql
+--
+-- Migration HISTORIQUE, appliquee sur la base Supabase distante
+-- (projet liveclvibiqcpekanfbp) le 27/07/2026, pendant la phase ou ce
+-- projet servait a une autre application (tables « hospitalieres »).
+--
+-- Ce fichier est volontairement sans SQL : il sert uniquement a ce que
+-- l'historique des migrations du depot corresponde exactement a celui de
+-- la base distante (le job GitHub « Supabase Preview » echoue sinon avec
+-- « Remote migration versions not found in local migrations directory »).
+--
+-- Les tables creees par la version distante de cette migration ont ete
+-- supprimees par 20261009120000_drop_orphan_tables.sql ; aucun objet de
+-- cette migration n'est encore present ni utile a l'application RND-ORAN.
+--
+-- Ne pas renommer ni supprimer : ce fichier correspond a la version
+-- `20260727165257` deja enregistree en production.

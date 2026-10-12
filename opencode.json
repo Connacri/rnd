@@ -1,17 +1,26 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "supabase": {
-      "type": "remote",
-      "url": "https://mcp.supabase.com/mcp?project_ref=liveclvibiqcpekanfbp&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching",
-      "enabled": true
+    "timeout": {
+      "startup": 120000,
+      "catalog": 120000,
+      "execution": 600000
     },
-    "firebase": {
-      "type": "local",
-      "command": ["npx", "-y", "firebase-tools@latest", "mcp"],
-      "cwd": ".",
-      "timeout": 180000,
-      "enabled": true
+    "servers": {
+      "supabase": {
+        "type": "remote",
+        "url": "https://mcp.supabase.com/mcp?project_ref=liveclvibiqcpekanfbp&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching"
+      },
+      "firebase": {
+        "type": "local",
+        "command": ["npx", "-y", "firebase-tools@latest", "mcp"],
+        "cwd": ".",
+        "timeout": {
+          "startup": 120000,
+          "catalog": 120000,
+          "execution": 600000
+        }
+      }
     }
   }
 }

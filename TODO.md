@@ -6,6 +6,19 @@ Suivi du travail restant. Dernière mise à jour : 12/10/2026.
 
 - [x] **MCP** : 4 serveurs opérationnels (`firebase`, `google-play`, `render`,
       `supabase`) — config projet dans `opencode.json`.
+- [x] **MCP reconnectés après passage V2** ✅ — config migrée vers
+      `mcp.servers` + `mcp.timeout` (`startup`/`catalog`/`execution`). Le
+      serveur `firebase` (`npx firebase-tools mcp`, handshake ~20 s) échouait
+      au timeout par défaut de 30 s car le `timeout` était placé au mauvais
+      endroit (niveau serveur au lieu de `mcp.timeout` / objet `timeout`).
+      Désormais tous les serveurs se connectent (vérifié via `opencode mcp
+      list` et `/api/experimental/mcp/*/connect`).
+- [x] **Plugin `render` migré vers l'API V2** ✅ —
+      `~/.config/opencode/plugins/render.ts` : `export default Plugin.define`
+      avec `ctx.tool.transform` (outil `render_validate_blueprint`) et
+      `ctx.tool.hook("execute.after", …)`. Le plugin recharge à chaud et
+      s'affiche `status: active` (outil `tools.render_validate_blueprint`
+      disponible).
 - [x] **Supabase** : migrations alignées sur les versions réellement appliquées
       à distance → check CI « Supabase Preview » vert.
 - [x] **Secret / variable GitHub** : `PLAY_SERVICE_ACCOUNT_JSON` (secret),
@@ -67,8 +80,9 @@ Suivi du travail restant. Dernière mise à jour : 12/10/2026.
       depuis la Play Console avant/après le premier envoi CI.
 - [ ] **Thème Flutter** : reporter le thème du site (crème `#FAF7F2`, ambre
       `#FBBF24`) sur `lib/app/theme.dart`.
-- [ ] **Nettoyage** : trancher sur `.config/opencode/opencode.json` (doublon
-      partiel de `opencode.json`).
+- [x] **Nettoyage** : `.config/opencode/opencode.json` supprimé — doublon
+      partiel de `opencode.json` (racine du dépôt). Toute la config de projet
+      reste dans `opencode.json`.
 - [ ] **Ancien site statique** : `assets/` reste requis par Flutter
       (pubspec, icônes, splash) — ne pas le supprimer. Vérifier qu'aucun autre
       fichier de l'ancien site statique n'est devenu inutile.

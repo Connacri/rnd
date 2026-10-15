@@ -317,9 +317,9 @@ jobs:
           retention-days: 30
 
   ##############################################################################
-  # Fiche Google Play : nom de l'application et descriptions.
+  # Fiche Google Play : nom de l'application, descriptions et icone.
   #
-  # Aligne la fiche du Play Store sur store/play/listings.json (fr, en, ar).
+  # Aligne la fiche du Play Store sur store/play/ (listings.json + icon-512.png).
   # Desactive par defaut, comme publish-play : activer via la variable de
   # depot PLAY_UPLOAD_ENABLED=true. Le job est independant de la publication
   # de l'AAB : une erreur de fiche ne bloque jamais une release.
@@ -366,6 +366,12 @@ jobs:
           PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
         run: dart run tool/play_listing.dart apply
+
+      - name: Apply store icon
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
+        run: dart run tool/play_listing.dart icon
 
   ##############################################################################
   # Google Play : envoi de l'AAB signe sur le canal "production".

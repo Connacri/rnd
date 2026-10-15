@@ -1,10 +1,12 @@
-// Gere la fiche Google Play (nom de l'application et descriptions) via
+// Gere la fiche Google Play (nom de l'application, descriptions et icone) via
 // l'API Android Publisher, avec le meme compte de service que la CI.
 //
 // Usage (depuis la racine du projet) :
-//   dart run tool/play_listing.dart list      # etat actuel de la fiche
-//   dart run tool/play_listing.dart check     # compare avec store/play/listings.json
+//   dart run tool/play_listing.dart list      # texte actuel de la fiche
+//   dart run tool/play_listing.dart images    # visuels actuels de la fiche
+//   dart run tool/play_listing.dart check     # compare avec store/play/
 //   dart run tool/play_listing.dart apply     # applique store/play/listings.json
+//   dart run tool/play_listing.dart icon      # televerse store/play/icon-512.png
 //   dart run tool/play_listing.dart signing   # empreintes du certificat Play
 //
 // Identifiants : PLAY_SERVICE_ACCOUNT_JSON (JSON en ligne, utilise par la CI)
@@ -14,19 +16,39 @@
 // dans la langue par defaut. Google limite le nombre de changements de nom :
 // verifier le nombre de modifications restantes dans la Play Console avant
 // d'appliquer un nouveau titre.
+//
+// L'icone de la fiche (512x512) est produite par tool/generate_assets.dart.
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 
 /// Chemin du fichier decrivant la fiche attendue sur le Play Store.
 const _listingsPath = 'store/play/listings.json';
 
+/// Chemin de l'icone de la fiche Play (512x512, produite par
+/// tool/generate_assets.dart).
+const _iconPath = 'store/play/icon-512.png';
+
+/// Type d'image Play de l'icone de l'application.
+const _iconImageType = 'icon';
+
 /// Nom de paquet par defaut (application publiee).
 const _defaultPackageName = 'com.rnd.dz';
 
 const _scopes = <String>['https://www.googleapis.com/auth/androidpublisher'];
+
+/// Types d'images d'une fiche Play, dans l'ordre affiche par la Play Console.
+const _imageTypes = <String>[
+  'icon',
+  'featureGraphic',
+  'phoneScreenshots',
+  'sevenInchScreenshots',
+  'tenInchScreenshots',
+];
 
 Future<void> main(List<String> args) async {
   final command = args.isEmpty ? 'list' : args.first;
@@ -41,15 +63,19 @@ Future<void> main(List<String> args) async {
     switch (command) {
       case 'list':
         await _list(api);
+      case 'images':
+        await _images(api);
       case 'check':
         await _check(api);
       case 'apply':
         await _apply(api, dryRun: dryRun);
+      case 'icon':
+        await _icon(api, dryRun: dryRun);
       case 'signing':
         await _signing(api);
       default:
         stderr.writeln('Commande inconnue : $command');
-        stderr.writeln('Commandes : list, check, apply, signing');
+        stderr.writeln('Commandes : list, images, check, apply, icon, signing');
         exit(1);
     }
   } on PlayApiException {
@@ -96,15 +122,144 @@ Future<void> _check(_PublisherApi api) async {
     }
   }
 
+  drift.addAll(await _iconDrift(api, expected.keys));
+
   if (drift.isEmpty) {
-    stdout.writeln('Fiche Play alignee sur $_listingsPath.');
+    stdout.writeln('Fiche Play alignee sur store/play/ et $_listingsPath.');
     return;
   }
-  stdout.writeln('Fiche Play differente de $_listingsPath :');
+  stdout.writeln('Fiche Play differente des fichiers locaux :');
   for (final item in drift) {
     stdout.writeln('  - $item');
   }
   exit(1);
+}
+
+/// Ecarts entre l'icone locale et celle publiee sur la fiche, par langue.
+Future<List<String>> _iconDrift(
+  _PublisherApi api,
+  Iterable<String> languages,
+) async {
+  final file = _iconFile();
+  final localSha1 = _sha1(file.readAsBytesSync());
+  final drift = <String>[];
+
+  final editId = await api.openEdit();
+  try {
+    for (final String language in languages) {
+      final images = await api.listingImages(editId, language, _iconImageType);
+      if (images.isEmpty) {
+        drift.add('$language : icone absente sur la fiche Play');
+        continue;
+      }
+      if (!images.any((image) => image.sha1 == localSha1)) {
+        drift.add('$language : icone differente de $_iconPath '
+            '(${localSha1.substring(0, 8)}...)');
+      }
+    }
+  } finally {
+    await api.discardEdit(editId);
+  }
+  return drift;
+}
+
+/// Affiche les visuels publies (icone, banniere, captures) par langue.
+Future<void> _images(_PublisherApi api) async {
+  final languages = _readListings().keys.toList();
+  final editId = await api.openEdit();
+  stdout.writeln('Visuels de la fiche ${api.packageName} :');
+  try {
+    for (final String language in languages) {
+      stdout.writeln('\n[$language]');
+      for (final String imageType in _imageTypes) {
+        final images = await api.listingImages(editId, language, imageType);
+        if (images.isEmpty) {
+          stdout.writeln('  ${imageType.padRight(20)}: aucun');
+          continue;
+        }
+        final hashes = images.map((image) => image.sha1.substring(0, 8));
+        stdout.writeln('  ${imageType.padRight(20)}: '
+            '${images.length} image(s) [${hashes.join(', ')}]');
+      }
+    }
+  } finally {
+    await api.discardEdit(editId);
+  }
+}
+
+/// Televerse l'icone de la fiche (store/play/icon-512.png) pour chaque langue.
+Future<void> _icon(_PublisherApi api, {required bool dryRun}) async {
+  final file = _iconFile();
+  final bytes = file.readAsBytesSync();
+  final localSha1 = _sha1(bytes);
+  stdout.writeln('Icone locale : $_iconPath '
+      '(${await _imageSize(file)}, ${bytes.length} octets, '
+      'SHA-1 ${localSha1.substring(0, 8)}...)');
+
+  if (dryRun) {
+    stdout.writeln('--dry-run : rien ne sera televerse.');
+    return;
+  }
+
+  final languages = _readListings().keys.toList();
+  final editId = await api.openEdit();
+  try {
+    for (final String language in languages) {
+      final current = await api.listingImages(editId, language, _iconImageType);
+      if (current.length == 1 && current.single.sha1 == localSha1) {
+        stdout.writeln('  $language : icone deja a jour');
+        continue;
+      }
+      if (current.isNotEmpty) {
+        // La fiche n'accepte qu'une icone : l'ancienne doit partir d'abord.
+        await api.deleteListingImages(editId, language, _iconImageType);
+      }
+      await api.uploadListingImage(editId, language, _iconImageType, bytes);
+      stdout.writeln('  $language : icone mise a jour');
+    }
+    final pendingReview = await api.commitEdit(editId);
+    if (pendingReview) {
+      stdout.writeln('Icone enregistree et en attente : envoyez les '
+          'changements en revue depuis la Play Console.');
+    } else {
+      stdout.writeln('Icone mise a jour (en revue chez Google).');
+    }
+  } catch (_) {
+    try {
+      await api.discardEdit(editId);
+    } catch (_) {
+      // Abandon impossible : la modification reste ouverte et sera reprise.
+    }
+    rethrow;
+  }
+}
+
+/// Icone de la fiche Play, produite par tool/generate_assets.dart.
+File _iconFile() {
+  final file = File(_iconPath);
+  if (!file.existsSync()) {
+    stderr.writeln('ERREUR : $_iconPath introuvable. '
+        'Le generer avec : dart run tool/generate_assets.dart');
+    exit(1);
+  }
+  return file;
+}
+
+/// Empreinte SHA-1 d'un contenu binaire (format renvoye par l'API Play).
+String _sha1(List<int> bytes) => sha1.convert(bytes).toString();
+
+/// Dimensions d'une image PNG, lues dans son en-tete IHDR.
+Future<String> _imageSize(File file) async {
+  final header = await file.openRead(0, 24).fold<List<int>>(
+    <int>[],
+    (buffer, chunk) => buffer..addAll(chunk),
+  );
+  if (header.length < 24) return 'taille inconnue';
+  final width =
+      ByteData.sublistView(Uint8List.fromList(header), 16, 20).getUint32(0);
+  final height =
+      ByteData.sublistView(Uint8List.fromList(header), 20, 24).getUint32(0);
+  return '${width}x$height';
 }
 
 /// Applique la fiche decrite dans [_listingsPath].
@@ -265,6 +420,23 @@ class PlayListing {
   }
 }
 
+/// Image d'une fiche Play (icone, banniere, capture).
+class PlayImage {
+  const PlayImage({required this.id, required this.sha1, required this.url});
+
+  factory PlayImage.fromJson(Map<String, dynamic> json) => PlayImage(
+        id: (json['id'] ?? '').toString(),
+        sha1: (json['sha1'] ?? '').toString(),
+        url: (json['url'] ?? '').toString(),
+      );
+
+  final String id;
+
+  /// Empreinte SHA-1 du fichier televerse, telle que retournee par Google.
+  final String sha1;
+  final String url;
+}
+
 /// Appels REST a l'API Android Publisher.
 class _PublisherApi {
   _PublisherApi(this._client, this.packageName);
@@ -274,6 +446,10 @@ class _PublisherApi {
 
   static const _base = 'https://androidpublisher.googleapis.com'
       '/androidpublisher/v3/applications';
+
+  /// Base des televersements de fichiers (visuels de fiche, APK, AAB).
+  static const _uploadBase = 'https://androidpublisher.googleapis.com'
+      '/upload/androidpublisher/v3/applications';
 
   Uri _uri(String path) => Uri.parse('$_base/$packageName/$path');
 
@@ -354,6 +530,62 @@ class _PublisherApi {
       body: jsonEncode(listing.toJson()),
     );
     _decode(res, 'mise a jour de la fiche $language');
+  }
+
+  /// Images d'une fiche pour un type donne (icon, featureGraphic, captures).
+  Future<List<PlayImage>> listingImages(
+    String editId,
+    String language,
+    String imageType,
+  ) async {
+    final res = await _client.get(
+      _uri('edits/$editId/listings/$language/$imageType'),
+      headers: _headers,
+    );
+    final json = _decode(res, 'lecture des visuels $language/$imageType');
+    return [
+      for (final Object? item in (json['images'] as List<dynamic>? ?? const []))
+        if (item is Map<String, dynamic>) PlayImage.fromJson(item),
+    ];
+  }
+
+  /// Televerse une image de fiche (format PNG).
+  Future<PlayImage> uploadListingImage(
+    String editId,
+    String language,
+    String imageType,
+    List<int> bytes,
+  ) async {
+    final uri = Uri.parse('$_uploadBase/$packageName/edits/$editId'
+        '/listings/$language/$imageType?uploadType=media');
+    final res = await _client.post(
+      uri,
+      headers: const {
+        'Content-Type': 'image/png',
+        'Accept': 'application/json'
+      },
+      body: bytes,
+    );
+    final json = _decode(res, 'televersement du visuel $language/$imageType');
+    final image = json['image'];
+    return PlayImage.fromJson(
+      image is Map<String, dynamic> ? image : json,
+    );
+  }
+
+  /// Supprime tous les visuels d'un type (la fiche n'accepte qu'une icone).
+  Future<void> deleteListingImages(
+    String editId,
+    String language,
+    String imageType,
+  ) async {
+    final res = await _client.delete(
+      _uri('edits/$editId/listings/$language/$imageType'),
+      headers: _headers,
+    );
+    if (res.statusCode >= 300 && res.statusCode != 404) {
+      _decode(res, 'suppression des visuels $language/$imageType');
+    }
   }
 
   /// Code de version le plus recent du canal production.

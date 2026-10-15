@@ -143,6 +143,7 @@ rnd/
 ├── test/                           # Tests
 ├── tool/                           # Scripts utilitaires (assets, fiche Play, notifications)
 ├── store/play/listings.json        # Fiche Play (nom + descriptions fr/en/ar)
+├── store/play/icon-512.png         # Icône de la fiche Play (512x512, générée)
 ├── web/                            # Coquille web (index.html, manifest PWA)
 └── .github/workflows/ci.yml        # Intégration continue
 ```
@@ -248,14 +249,15 @@ Les sources vivent dans `assets/icons/` (`icon.png`, `splash.png`) ; toutes les
 déclinaisons sont générées par des scripts, jamais éditées à la main :
 
 ```bash
-dart run tool/generate_assets.dart      # favicons et icônes du site (public/)
+dart run tool/generate_assets.dart      # favicons et icônes du site (public/) + icône Play
 dart run flutter_launcher_icons         # icônes natives (android, ios, web, windows, macos)
 dart run flutter_native_splash:create   # splashes natifs
 ```
 
 Chaque sortie a un seul producteur : `flutter_launcher_icons` gère `web/` et
-`tool/generate_assets.dart` gère `public/`. Le fond des icônes adaptatives et
-des icônes web reprend le vert du logo (`#026342`) pour éviter toute couture.
+`tool/generate_assets.dart` gère `public/` ainsi que l'icône de la fiche Play
+(`store/play/icon-512.png`). Le fond des icônes adaptatives, des icônes web et
+de l'icône Play reprend le vert du logo (`#026342`) pour éviter toute couture.
 
 ### Signature release
 
@@ -338,7 +340,8 @@ git push
    │                    vérification signature + package + versionName/versionCode
    ├─ publish-play    → envoi de l'AAB sur Google Play (canal production)
    │                    actif seulement si PLAY_UPLOAD_ENABLED=true
-   ├─ play-listing    → alignement de la fiche Play sur store/play/listings.json
+   ├─ play-listing    → alignement de la fiche Play sur store/play/
+   │                    (nom, descriptions et icône)
    │                    actif seulement si PLAY_UPLOAD_ENABLED=true
    ├─ build-site      → site React compilé par Vite (BASE_PATH=/rnd/ → dist/)
    │                    typecheck TypeScript puis build de production
@@ -429,6 +432,7 @@ Firebase `rnd-aet`.
 | Canal d'envoi | `production` |
 | Fichier envoyé | `rnd-android.aab` (AAB signé, produit par la CI) |
 | Fiche (source) | `store/play/listings.json` (`fr-FR`, `en-US`, `ar`) |
+| Icône de la fiche | `store/play/icon-512.png` (512x512, générée par `tool/generate_assets.dart`) |
 | Compte de service | `play-console-mcp@cargolink-23dd3.iam.gserviceaccount.com` |
 | Compte développeur | Inturk (`oran.inturk@gmail.com`) |
 
@@ -450,16 +454,29 @@ l'adresse du compte de service ci-dessus et lui accorder au minimum
 
 ### Fiche du Play Store
 
-Le nom affiché et les descriptions sont versionnés dans
-`store/play/listings.json` et appliqués via `tool/play_listing.dart` (API
-Android Publisher, même compte de service que la CI) :
+Le nom affiché, les descriptions et l'icône sont versionnés dans `store/play/`
+et appliqués via `tool/play_listing.dart` (API Android Publisher, même compte de
+service que la CI) :
 
 ```bash
 dart run tool/play_listing.dart list      # fiche publiée actuelle
-dart run tool/play_listing.dart check     # écart avec listings.json (exit 1 si écart)
+dart run tool/play_listing.dart images    # visuels publiés (icône, bannière, captures)
+dart run tool/play_listing.dart check     # écart avec store/play/ (exit 1 si écart)
 dart run tool/play_listing.dart apply     # applique listings.json (--dry-run pour simuler)
+dart run tool/play_listing.dart icon      # téléverse icon-512.png (--dry-run pour simuler)
 dart run tool/play_listing.dart signing   # empreintes du certificat Play App Signing
 ```
+
+L'icône de la fiche (`store/play/icon-512.png`, 512x512) est produite depuis
+`assets/icons/icon.png` par le même générateur que les icônes du site :
+
+```bash
+dart run tool/generate_assets.dart
+```
+
+`icon` est idempotente : elle compare l'empreinte SHA-1 locale à celle publiée
+et ne téléverse que si le visuel a changé. `check` vérifie la même empreinte,
+donc tout écart entre `store/play/icon-512.png` et la fiche Play est signalé.
 
 Identifiants : `PLAY_SERVICE_ACCOUNT_JSON` (JSON en ligne, utilisé par la CI) ou
 `GOOGLE_APPLICATION_CREDENTIALS` (chemin du fichier, en local).

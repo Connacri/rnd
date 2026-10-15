@@ -80,6 +80,15 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
       **modifications en attente** (`changesNotSentForReview=true`), à envoyer
       en revue depuis la Play Console. `dart run tool/play_listing.dart check`
       confirme l'alignement.
+- [x] **Icône de la fiche Play corrigée** ✅ — l'icône publiée était celle de
+      l'ancienne identité (`1e4484dc…`) alors que le logo courant est
+      `047044ee…`. `tool/generate_assets.dart` produit désormais
+      `store/play/icon-512.png` (512x512, fond vert `#026342`) et
+      `tool/play_listing.dart icon` la téléverse sur les 3 langues (idempotent :
+      comparaison d'empreinte SHA-1 avec la fiche). `images` liste les visuels
+      publiés ; `check` compare désormais **titre + descriptions + icône**
+      (sortie 0 = « Fiche Play alignée »). Le job CI `play-listing` applique la
+      fiche puis l'icône.
 - [x] **Config MCP alignée** ✅ — `opencode.json` (dépôt) déclare les 4 serveurs
       (`firebase`, `google-play`, `render`, `supabase`) ; aucun secret ni chemin
       absolu committé. `GOOGLE_APPLICATION_CREDENTIALS` (compte de service Play,
@@ -110,7 +119,13 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
       passer préalablement par un canal de test.
 - [ ] **Play Console — validation des modifications en attente** : envoyer en
       revue / publier depuis la Play Console (a) la fiche (nom « Nos Candidats »
-      + descriptions fr/en/ar) et (b) la release `production` déposée par la CI.
+      + descriptions fr/en/ar), (b) la nouvelle icône de la fiche et (c) la
+      release `production` déposée par la CI.
+- [ ] **Visuels de fiche incomplets** : seules les listes `fr-FR` ont une
+      bannière (`featureGraphic`) et des captures d'écran ; `en-US` et `ar`
+      n'ont que l'icône. Prévoir une bannière 1024x500 et au moins 2 captures
+      par langue avant publication (les captures `fr-FR` montrent encore
+      l'ancienne interface sombre : les refaire après la refonte du thème).
 - [ ] **Brouillon fantôme sur le canal production** : une release **draft sans
       versionCode** existe sur `production` (créée le 12/10/2026) et bloque
       l'état « Pas encore envoyé pour examen ». À supprimer ou compléter

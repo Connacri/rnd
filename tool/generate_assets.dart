@@ -1,5 +1,5 @@
-// Genere les icones, favicons et images du site (public/) a partir des
-// sources graphiques du projet.
+// Genere les icones, favicons et images du site (public/) et l'icone de la
+// fiche Google Play (store/) a partir des sources graphiques du projet.
 //
 // Usage (depuis la racine du projet) :
 //   dart run tool/generate_assets.dart
@@ -7,6 +7,9 @@
 // Sources :
 //   assets/icons/icon.png    -> icone / logo de l'application
 //   assets/icons/splash.png  -> image de demarrage
+//
+// L'icone de la fiche Play (store/play/icon-512.png) est televersee par
+// `dart run tool/play_listing.dart icon`.
 //
 // Les icones natives (Android, iOS, macOS, Windows) et l'ecran de demarrage
 // sont generes separement par flutter_launcher_icons et flutter_native_splash,
@@ -53,6 +56,11 @@ const _siteMaskableIcons = <String, int>{
 const _faviconPng = 48;
 const _appleTouchIcon = 180;
 
+/// Icone de la fiche Google Play : visuel carre opaque de 512x512 pixels,
+/// format impose par la Play Console. Televersee par tool/play_listing.dart.
+const _playStoreIcon = 'store/play/icon-512.png';
+const _playStoreIconSize = 512;
+
 /// Tailles embarquees dans public/favicon.ico.
 const _faviconIcoSizes = <int>[16, 32, 48];
 
@@ -73,6 +81,8 @@ Future<void> main() async {
     await _writeSquare(icon, path, size, background, maskable: true);
   }
 
+  await _writeSquare(icon, _playStoreIcon, _playStoreIconSize, background);
+
   await _writePng(
       _flatten(icon, _faviconPng, background), 'public/favicon.png');
   await _writePng(_flatten(icon, _appleTouchIcon, background),
@@ -88,7 +98,7 @@ Future<void> main() async {
   await _writeBytes(
       File(_splashSource).readAsBytesSync(), 'public/assets/icons/splash.png');
 
-  stdout.writeln('Assets du site regeneres.');
+  stdout.writeln('Assets du site et de la fiche Play regeneres.');
 }
 
 /// Couleur de fond des visuels composes : le coin du logo, ou le fond de

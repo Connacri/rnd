@@ -48,6 +48,9 @@ dependencies:
 
 dev_dependencies:
 
+  # Empreintes SHA-1 des visuels de la fiche Play (tool/play_listing.dart).
+  crypto: ^3.0.6
+
   flutter_launcher_icons: ^0.14.4
 
   flutter_test:

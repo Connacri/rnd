@@ -88,18 +88,29 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
       `google-play` ne répond aux appels qu'après **redémarrage d'OpenCode**
       (la variable n'existe pas dans le processus en cours) ; `firebase`,
       `render` et `supabase` sont vérifiés connectés.
+- [x] **Renommage publié** — run `38730842663` : `Qualité`, `Version`,
+      `Site web`, `Google Play (fiche)` (nouveau job), `Deploy GitHub Pages`,
+      `Android signé` et `Tag + GitHub Release` verts ; release
+      **Nos Candidats v1.0.35** publiée (`rnd-android.apk`, `rnd-android.aab`,
+      `rnd-site-v1.0.35.zip`, `SHA256SUMS.txt`).
+- [x] **`publish-play` réparé (publication gérée)** — sur le même run, seul
+      `Google Play (production)` échouait :
+      `Changes cannot be sent for review automatically`. Le commit Play est
+      désormais envoyé avec `changesNotSentForReview: true` (release déposée en
+      modification en attente, à valider dans la Play Console).
 
 ## À faire
 
-- [ ] **Envoi Play réel** : passer la variable `PLAY_UPLOAD_ENABLED` à `true`,
-      pousser, puis vérifier que le job `Google Play (production)` envoie bien
-      l'AAB (versionCode `1000034`+) et contrôler le canal avec
-      `get_track_info`. La même variable active le job `play-listing` qui
-      réaligne la fiche. **Décision utilisateur requise** : envoi direct en
-      `production` ou passage préalable par un canal de test.
-- [ ] **Fiche Play — envoi en revue** : envoyer depuis la Play Console les
-      **modifications en attente** (nom « Nos Candidats » + descriptions fr/en/ar)
-      générées par `tool/play_listing.dart apply`.
+- [ ] **Envoi Play réel** : `PLAY_UPLOAD_ENABLED` vaut déjà `true` ; le job
+      `Google Play (production)` dépose l'AAB (versionCode `1000035`+) sur le
+      canal `production`. L'application étant en **publication gérée**, l'AAB
+      est enregistré en **modification en attente** (Google refuse l'envoi
+      automatique en revue) : il reste à valider la release depuis la Play
+      Console. **Décision utilisateur requise** : la garder en `production` ou
+      passer préalablement par un canal de test.
+- [ ] **Play Console — validation des modifications en attente** : envoyer en
+      revue / publier depuis la Play Console (a) la fiche (nom « Nos Candidats »
+      + descriptions fr/en/ar) et (b) la release `production` déposée par la CI.
 - [ ] **Brouillon fantôme sur le canal production** : une release **draft sans
       versionCode** existe sur `production` (créée le 12/10/2026) et bloque
       l'état « Pas encore envoyé pour examen ». À supprimer ou compléter

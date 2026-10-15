@@ -433,9 +433,12 @@ Firebase `rnd-aet`.
 | Compte développeur | Inturk (`oran.inturk@gmail.com`) |
 
 L'envoi est réalisé par le job `publish-play` (action
-`r0adkll/upload-google-play`) après le build Android signé. Il est **désactivé
-par défaut** : il ne s'exécute que si la variable de dépôt
-`PLAY_UPLOAD_ENABLED` vaut `true`.
+`r0adkll/upload-google-play`) après le build Android signé. Il ne s'exécute que
+si la variable de dépôt `PLAY_UPLOAD_ENABLED` vaut `true` (c'est le cas sur ce
+dépôt). L'application étant en **publication gérée**, Google refuse l'envoi en
+revue automatique : l'AAB est déposé en **modification en attente**
+(`changesNotSentForReview: true`), à valider depuis la Play Console — comme la
+fiche ci-dessous.
 
 Prérequis côté Play Console, dans *Utilisateurs et autorisations* : inviter
 l'adresse du compte de service ci-dessus et lui accorder au minimum

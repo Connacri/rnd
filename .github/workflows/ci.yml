@@ -406,6 +406,11 @@ jobs:
           releaseFiles: rnd-android.aab
           track: production
           status: completed
+          # L'application est en publication geree : Play refuse l'envoi en
+          # revue automatique tant que des modifications sont en attente.
+          # L'AAB est donc depose en modification en attente, a valider depuis
+          # la Play Console (comme la fiche via tool/play_listing.dart).
+          changesNotSentForReview: true
 
   ##############################################################################
   # Site web (React + Vite) : build de production puis publication sur Pages

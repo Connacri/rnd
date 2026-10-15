@@ -20,6 +20,26 @@
           "catalog": 120000,
           "execution": 600000
         }
+      },
+      "google-play": {
+        "type": "local",
+        "command": ["uvx", "--with", "mcp<2", "google-play-mcp"],
+        "environment": {
+          "GOOGLE_PLAY_PACKAGE_NAME": "com.rnd.dz"
+        },
+        "timeout": {
+          "startup": 120000,
+          "catalog": 120000,
+          "execution": 600000
+        }
+      },
+      "render": {
+        "type": "remote",
+        "url": "https://mcp.render.com/mcp",
+        "oauth": false,
+        "headers": {
+          "Authorization": "Bearer {env:RENDER_API_KEY}"
+        }
       }
     }
   }

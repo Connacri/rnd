@@ -133,7 +133,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In fr, this message translates to:
-  /// **'RND-ORAN'**
+  /// **'Nos Candidats'**
   String get appName;
 
   /// No description provided for @approach.
@@ -517,7 +517,7 @@ abstract class AppLocalizations {
   /// No description provided for @rights.
   ///
   /// In fr, this message translates to:
-  /// **'2026 Zenasni Nabil - RND-ORAN. Tous droits réservés.'**
+  /// **'2026 Zenasni Nabil - Nos Candidats. Tous droits réservés.'**
   String get rights;
 
   /// No description provided for @rndDescText.

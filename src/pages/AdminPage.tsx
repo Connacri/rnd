@@ -190,7 +190,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     { label: 'Homme 2', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80' },
     { label: 'Homme 3', url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80' },
     { label: 'Femme 2', url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80' },
-    { label: 'RND Logo', url: 'assets/icons/icon.png' },
+    { label: 'Logo Nos Candidats', url: 'assets/icons/icon.png' },
   ];
 
   return (

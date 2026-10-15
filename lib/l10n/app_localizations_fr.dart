@@ -24,7 +24,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get algeria => 'Aïn El Turck, Oran, Algérie';
 
   @override
-  String get appName => 'RND-ORAN';
+  String get appName => 'Nos Candidats';
 
   @override
   String get approach =>
@@ -224,7 +224,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get registerError => 'Erreur d\'inscription';
 
   @override
-  String get rights => '2026 Zenasni Nabil - RND-ORAN. Tous droits réservés.';
+  String get rights =>
+      '2026 Zenasni Nabil - Nos Candidats. Tous droits réservés.';
 
   @override
   String get rndDescText =>

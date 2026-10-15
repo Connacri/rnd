@@ -1,11 +1,11 @@
 {
-    "name": "RND-ORAN",
-    "short_name": "RND-ORAN",
+    "name": "Nos Candidats",
+    "short_name": "Nos Candidats",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#0a1628",
-    "description": "RND-ORAN — Application campagne municipale 2026. © Developed by FORSLOG LTD — Coded by Ramzy Guedouar — Contact: 0696 41 09 53",
+    "description": "Nos Candidats — Application campagne municipale 2026. © Developed by FORSLOG LTD — Coded by Ramzy Guedouar — Contact: 0696 41 09 53",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

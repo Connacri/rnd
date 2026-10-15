@@ -317,6 +317,57 @@ jobs:
           retention-days: 30
 
   ##############################################################################
+  # Fiche Google Play : nom de l'application et descriptions.
+  #
+  # Aligne la fiche du Play Store sur store/play/listings.json (fr, en, ar).
+  # Desactive par defaut, comme publish-play : activer via la variable de
+  # depot PLAY_UPLOAD_ENABLED=true. Le job est independant de la publication
+  # de l'AAB : une erreur de fiche ne bloque jamais une release.
+  ##############################################################################
+  play-listing:
+    name: Google Play (fiche)
+    needs: [version]
+    if: ${{ vars.PLAY_UPLOAD_ENABLED == 'true' }}
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify required secret
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::error::Secret PLAY_SERVICE_ACCOUNT_JSON manquant."
+            exit 1
+          fi
+          echo "Compte de service Google Play present."
+
+      - name: Show target listing
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
+        run: dart run tool/play_listing.dart apply --dry-run
+
+      - name: Apply store listing
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
+        run: dart run tool/play_listing.dart apply
+
+  ##############################################################################
   # Google Play : envoi de l'AAB signe sur le canal "production".
   #
   # Desactive par defaut : lancer ce job suppose que le compte de service
@@ -498,10 +549,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.version.outputs.version }}
-          name: RND-ORAN v${{ needs.version.outputs.version }}
+          name: Nos Candidats v${{ needs.version.outputs.version }}
           files: out/*
           body: |
-            ## RND-ORAN v${{ needs.version.outputs.version }}
+            ## Nos Candidats v${{ needs.version.outputs.version }}
 
             Application de campagne municipale (Nabil Zenasni — Ain El Turck),
             developpee avec Flutter.

@@ -114,7 +114,7 @@ export const GoogleSignInModal: React.FC<GoogleSignInModalProps> = ({
             Choisir un compte
           </h3>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            pour continuer vers <span className="font-bold text-zinc-800 dark:text-zinc-200">RND-ORAN</span>
+            pour continuer vers <span className="font-bold text-zinc-800 dark:text-zinc-200">Nos Candidats</span>
           </p>
         </div>
 

@@ -56,9 +56,9 @@ class _HomeTopBar extends StatelessWidget {
                 errorBuilder: (_, __, ___) => const SizedBox(),
               ),
               const SizedBox(width: 8),
-              const Text(
-                'RND',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.appName,
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,

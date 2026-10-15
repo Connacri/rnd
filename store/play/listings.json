@@ -1,0 +1,20 @@
+{
+  "defaultLanguage": "fr-FR",
+  "listings": {
+    "fr-FR": {
+      "title": "Nos Candidats",
+      "shortDescription": "Programme, actualités et adhésion : la campagne 2026 à Aïn El Turck.",
+      "fullDescription": "Nos Candidats est l'application officielle de campagne de Nabil Zenasni, secrétaire du bureau communal du RND à Aïn El Turck (Oran, Algérie), pour les élections municipales de 2026.\n\nToute la campagne dans votre poche :\n\n• Programme : les piliers et les engagements détaillés, mis à jour en continu.\n• Actualités : les annonces de la campagne, avec une notification dès leur publication.\n• Événements : le calendrier des rencontres et des sorties de terrain.\n• Adhésion : rejoignez le mouvement en quelques secondes.\n• Candidat : parcours, vision et valeurs.\n• Message audio : le mot du candidat.\n\nDisponible en français, en arabe et en anglais, l'application reste consultable même sans connexion : le contenu essentiel est accessible hors ligne.\n\nVotre commune, vos voix. Téléchargez Nos Candidats et suivez la campagne au plus près."
+    },
+    "en-US": {
+      "title": "Nos Candidats",
+      "shortDescription": "Program, news and membership: the 2026 campaign in Aïn El Turck.",
+      "fullDescription": "Nos Candidats is the official campaign app of Nabil Zenasni, secretary of the RND communal bureau in Aïn El Turck (Oran, Algeria), for the 2026 municipal elections.\n\nThe whole campaign in your pocket:\n\n• Program: the pillars and the detailed commitments, updated continuously.\n• News: campaign announcements, with a notification as soon as they are published.\n• Events: the calendar of meetings and field visits.\n• Membership: join the movement in a few seconds.\n• Candidate: background, vision and values.\n• Audio message: a word from the candidate.\n\nAvailable in French, Arabic and English, the app stays readable even without a connection: the essential content is available offline.\n\nYour town, your voice. Download Nos Candidats and follow the campaign up close."
+    },
+    "ar": {
+      "title": "Nos Candidats",
+      "shortDescription": "البرنامج والأخبار والانضمام: حملة 2026 في عين الترك.",
+      "fullDescription": "Nos Candidats هو التطبيق الرسمي لحملة نبيل زناسني، أمين المكتب البلدي للتجمع الوطني الديمقراطي في عين الترك (وهران، الجزائر)، لانتخابات 2026 البلدية.\n\nالحملة كاملة في جيبك:\n\n• البرنامج: المحاور والالتزامات المفصلة، محدثة باستمرار.\n• الأخبار: إعلانات الحملة، مع إشعار فور نشرها.\n• الفعاليات: رزنامة اللقاءات والخرجات الميدانية.\n• الانضمام: انضم إلى الحركة في ثوانٍ.\n• المترشح: المسار والرؤية والقيم.\n• رسالة صوتية: كلمة المترشح.\n\nمتوفر بالفرنسية والعربية والإنجليزية، ويبقى التطبيق قابلا للاستعمال حتى بدون اتصال: المحتوى الأساسي متاح دون إنترنت.\n\nبلديتكم، أصواتكم. حمّلوا Nos Candidats وتابعوا الحملة عن قرب."
+    }
+  }
+}

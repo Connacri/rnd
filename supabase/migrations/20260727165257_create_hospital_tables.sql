@@ -11,7 +11,7 @@
 --
 -- Les tables creees par la version distante de cette migration ont ete
 -- supprimees par 20261009120000_drop_orphan_tables.sql ; aucun objet de
--- cette migration n'est encore present ni utile a l'application RND-ORAN.
+-- cette migration n'est encore present ni utile a l'application Nos Candidats.
 --
 -- Ne pas renommer ni supprimer : ce fichier correspond a la version
 -- `20260727165257` deja enregistree en production.

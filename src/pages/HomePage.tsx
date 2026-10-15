@@ -88,7 +88,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="absolute -bottom-1 -right-1 sm:bottom-0 sm:right-1 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-zinc-900 shadow-lg border border-amber-200/90 text-xs font-black text-zinc-900 dark:text-zinc-100 z-10">
               <img
                 src="assets/icons/icon.png"
-                alt="RND"
+                alt="Nos Candidats"
                 className="w-4 h-4 rounded-full object-contain"
               />
               <span>RND</span>
@@ -436,7 +436,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-white dark:bg-zinc-800 p-2 shadow-md border border-amber-200/80 dark:border-zinc-700 flex items-center justify-center flex-shrink-0">
             <img
               src="assets/icons/icon.png"
-              alt="Logo Officiel RND"
+              alt="Logo officiel Nos Candidats"
               className="w-full h-full object-contain"
             />
           </div>
@@ -466,11 +466,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* ================= FOOTER ================= */}
       <footer className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4 pt-8 border-t border-amber-200/50 dark:border-zinc-800 text-center">
-        {/* Official RND Logo Emblem in Footer */}
+        {/* Official logo emblem in footer */}
         <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 p-1.5 shadow-sm border border-amber-200/80 dark:border-zinc-700 mx-auto mb-3 flex items-center justify-center">
           <img
             src="assets/icons/icon.png"
-            alt="RND"
+            alt="Nos Candidats"
             className="w-full h-full object-contain"
           />
         </div>

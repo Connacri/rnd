@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="assets/icons/icon.png" width="140" alt="RND-ORAN"/>
+<img src="assets/icons/icon.png" width="140" alt="Nos Candidats"/>
 
-# RND-ORAN
+# Nos Candidats
 
 **Application de campagne municipale 2026 — Aïn El Turck, Oran**
 
@@ -50,7 +50,7 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 
 ## Présentation
 
-**RND-ORAN** est l'application de campagne mobile et web du candidat
+**Nos Candidats** est l'application de campagne mobile et web du candidat
 **Nabil Zenasni** pour les élections communales de 2026 à Aïn El Turck (Oran,
 Algérie).
 
@@ -141,7 +141,8 @@ rnd/
 │   ├── widgets/                    # Composants partagés
 │   └── main.dart                   # Point d'entrée (Firebase, FCM, providers)
 ├── test/                           # Tests
-├── tool/                           # Scripts utilitaires (notifications)
+├── tool/                           # Scripts utilitaires (assets, fiche Play, notifications)
+├── store/play/listings.json        # Fiche Play (nom + descriptions fr/en/ar)
 ├── web/                            # Coquille web (index.html, manifest PWA)
 └── .github/workflows/ci.yml        # Intégration continue
 ```
@@ -241,6 +242,21 @@ d'erreur avec possibilité de réessayer.
 L'`applicationId` **ne doit pas changer** : il est lié à la fiche Google Play
 Console et aux certificats SHA enregistrés dans Firebase.
 
+### Icônes, splash et assets
+
+Les sources vivent dans `assets/icons/` (`icon.png`, `splash.png`) ; toutes les
+déclinaisons sont générées par des scripts, jamais éditées à la main :
+
+```bash
+dart run tool/generate_assets.dart      # favicons et icônes du site (public/)
+dart run flutter_launcher_icons         # icônes natives (android, ios, web, windows, macos)
+dart run flutter_native_splash:create   # splashes natifs
+```
+
+Chaque sortie a un seul producteur : `flutter_launcher_icons` gère `web/` et
+`tool/generate_assets.dart` gère `public/`. Le fond des icônes adaptatives et
+des icônes web reprend le vert du logo (`#026342`) pour éviter toute couture.
+
 ### Signature release
 
 La signature de production est réalisée **exclusivement en CI**, à partir de :
@@ -322,6 +338,8 @@ git push
    │                    vérification signature + package + versionName/versionCode
    ├─ publish-play    → envoi de l'AAB sur Google Play (canal production)
    │                    actif seulement si PLAY_UPLOAD_ENABLED=true
+   ├─ play-listing    → alignement de la fiche Play sur store/play/listings.json
+   │                    actif seulement si PLAY_UPLOAD_ENABLED=true
    ├─ build-site      → site React compilé par Vite (BASE_PATH=/rnd/ → dist/)
    │                    typecheck TypeScript puis build de production
    │
@@ -354,7 +372,7 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | `ANDROID_PACKAGE_NAME` | `com.rnd.dz` | Contrôle de l'`applicationId` en CI |
 | `FIREBASE_PROJECT_ID` | `rnd-aet` | Projet Firebase lié |
 | `SUPABASE_PROJECT_REF` | `liveclvibiqcpekanfbp` | Référence du projet Supabase |
-| `PLAY_UPLOAD_ENABLED` | `true` / `false` | Active l'envoi automatique sur Google Play |
+| `PLAY_UPLOAD_ENABLED` | `true` / `false` | Active l'envoi Play et l'alignement de la fiche |
 
 ### Régénérer les secrets base64
 
@@ -389,8 +407,9 @@ enregistrées dans Firebase (`rnd-aet`) pour autoriser Google Sign-In sur Androi
 Lorsque **Google Play App Signing** est activé, Play re-signe l'application avec
 sa propre clé : les empreintes de cette clé doivent également être enregistrées
 dans Firebase, sinon Google Sign-In échoue sur les versions distribuées par le
-Play Store. La lignée de signature se lit via l'API Play (`generatedApks`) ; elle
-a été ajoutée à Firebase `rnd-aet`.
+Play Store. La lignée de signature se lit via l'API Play (`generatedApks`,
+commande `dart run tool/play_listing.dart signing`) ; elle a été ajoutée à
+Firebase `rnd-aet`.
 
 | Certificat | SHA-1 | SHA-256 |
 | --- | --- | --- |
@@ -405,9 +424,11 @@ a été ajoutée à Firebase `rnd-aet`.
 
 | Élément | Valeur |
 | --- | --- |
+| Nom affiché | `Nos Candidats` |
 | `applicationId` | `com.rnd.dz` |
 | Canal d'envoi | `production` |
 | Fichier envoyé | `rnd-android.aab` (AAB signé, produit par la CI) |
+| Fiche (source) | `store/play/listings.json` (`fr-FR`, `en-US`, `ar`) |
 | Compte de service | `play-console-mcp@cargolink-23dd3.iam.gserviceaccount.com` |
 | Compte développeur | Inturk (`oran.inturk@gmail.com`) |
 
@@ -424,6 +445,28 @@ l'adresse du compte de service ci-dessus et lui accorder au minimum
 - *Déployer les applications sur des canaux de test* ;
 - *Gérer les canaux de test et modifier les listes de testeurs*.
 
+### Fiche du Play Store
+
+Le nom affiché et les descriptions sont versionnés dans
+`store/play/listings.json` et appliqués via `tool/play_listing.dart` (API
+Android Publisher, même compte de service que la CI) :
+
+```bash
+dart run tool/play_listing.dart list      # fiche publiée actuelle
+dart run tool/play_listing.dart check     # écart avec listings.json (exit 1 si écart)
+dart run tool/play_listing.dart apply     # applique listings.json (--dry-run pour simuler)
+dart run tool/play_listing.dart signing   # empreintes du certificat Play App Signing
+```
+
+Identifiants : `PLAY_SERVICE_ACCOUNT_JSON` (JSON en ligne, utilisé par la CI) ou
+`GOOGLE_APPLICATION_CREDENTIALS` (chemin du fichier, en local).
+
+> Le **nom** d'une application Play ne peut être modifié qu'un nombre limité de
+> fois et repasse par une revue Google. Lorsque l'envoi automatique en revue est
+> refusé par Google, l'outil enregistre la fiche en **modifications en attente**
+> (paramètre `changesNotSentForReview=true`) : il reste à les envoyer en revue
+> depuis la Play Console. Les descriptions ne sont pas soumises à cette limite.
+
 ## Outils MCP
 
 Le dépôt déclare ses serveurs MCP dans `opencode.json` (racine) :
@@ -432,10 +475,14 @@ Le dépôt déclare ses serveurs MCP dans `opencode.json` (racine) :
 | --- | --- | --- |
 | `supabase` | distant (`mcp.supabase.com`) | Base, migrations, branches, edge functions |
 | `firebase` | local (`firebase-tools mcp`) | Projet, applications, SHA, Firestore |
+| `google-play` | local (`google-play-mcp`) | Fiche, canaux, AAB, vitals |
+| `render` | distant (`mcp.render.com`) | Services, Blueprints, déploiements |
 
-D'autres serveurs (`google-play`, `render`) sont fournis par la configuration
-locale. Aucun secret n'est stocké dans `opencode.json` : les identifiants vivent
-dans la configuration locale de l'outil et dans les *GitHub Secrets*.
+Aucun secret ni chemin absolu n'est stocké dans `opencode.json` : les
+identifiants passent par des variables d'environnement lues à la connexion —
+`GOOGLE_APPLICATION_CREDENTIALS` (fichier du compte de service Play) et
+`RENDER_API_KEY` (clé d'API Render) — elles-mêmes définies dans la
+configuration locale de l'outil et dans les *GitHub Secrets*.
 
 ## Téléchargements
 

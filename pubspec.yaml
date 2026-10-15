@@ -1,6 +1,6 @@
 name: rnd_campaign_app
 
-description: RND-ORAN - Application de campagne municipale (Nabil Zenasni, Ain El Turck)
+description: Nos Candidats - Application de campagne municipale (Nabil Zenasni, Ain El Turck)
 
 environment:
   sdk: ">=3.6.0 <4.0.0"
@@ -59,6 +59,9 @@ dev_dependencies:
   googleapis_auth: ^2.3.4
   http: ^1.6.0
 
+  # Generation des icones/favicons du site (tool/generate_assets.dart).
+  image: ^4.5.0
+
 flutter:
   generate: true
 
@@ -77,16 +80,20 @@ flutter_launcher_icons:
     generate: true
     image_path: "assets/icons/icon.png"
     icon_size: 256
+  macos:
+    generate: true
+    image_path: "assets/icons/icon.png"
   image_path: "assets/icons/icon.png"
-  # Le logo est opaque avec un fond blanc : on conserve ce fond pour eviter
-  # tout raccord visible sur les icones adaptatives et le splash.
-  adaptive_icon_background: "#ffffff"
+  # Le logo est opaque, plein cadre, sur fond vert (#026342) : le fond des
+  # icones adaptatives et du web reprend cette couleur pour rester sans raccord.
+  # Le splash utilise le meme logo sur fond blanc (assets/icons/splash.png).
+  adaptive_icon_background: "#026342"
   adaptive_icon_foreground: "assets/icons/icon.png"
   adaptive_icon_foreground_inset: 17
   web:
     generate: true
     image_path: "assets/icons/icon.png"
-    background: "#ffffff"
+    background: "#026342"
     theme_color: "#0a1628"
 
 flutter_native_splash:

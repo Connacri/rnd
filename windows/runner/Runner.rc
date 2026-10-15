@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.rnd.dz" "\0"
-            VALUE "FileDescription", "RND-ORAN" "\0"
+            VALUE "FileDescription", "Nos Candidats" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "rnd" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.rnd.dz. All rights reserved." "\0"
             VALUE "OriginalFilename", "rnd.exe" "\0"
-            VALUE "ProductName", "RND-ORAN" "\0"
+            VALUE "ProductName", "Nos Candidats" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

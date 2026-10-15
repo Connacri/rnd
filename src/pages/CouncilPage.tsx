@@ -32,7 +32,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
       {/* Header Banner */}
       <section className="text-center relative">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-amber-200/90 dark:border-zinc-700 shadow-xs text-amber-900 dark:text-amber-300 text-xs font-bold mb-3">
-          <img src="assets/icons/icon.png" alt="RND" className="w-4 h-4 rounded-full object-contain" />
+          <img src="assets/icons/icon.png" alt="Nos Candidats" className="w-4 h-4 rounded-full object-contain" />
           <span>Élections Communales 2026 • Liste RND</span>
         </div>
 
@@ -154,7 +154,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
       {/* CTA Section */}
       <section className="p-6 sm:p-8 rounded-[36px] bg-[#18181B] text-white text-center shadow-xl space-y-3 max-w-2xl mx-auto">
         <div className="w-12 h-12 rounded-2xl bg-white/10 mx-auto flex items-center justify-center mb-1">
-          <img src="assets/icons/icon.png" alt="RND" className="w-7 h-7 object-contain" />
+          <img src="assets/icons/icon.png" alt="Nos Candidats" className="w-7 h-7 object-contain" />
         </div>
         <h2 className="text-base sm:text-xl font-bold">
           Vous souhaitez rejoindre la liste ou apporter votre expertise ?

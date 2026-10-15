@@ -1,6 +1,6 @@
-# TODO — RND-ORAN
+# TODO — Nos Candidats
 
-Suivi du travail restant. Dernière mise à jour : 12/10/2026.
+Suivi du travail restant. Dernière mise à jour : 15/10/2026.
 
 ## Fait
 
@@ -66,14 +66,40 @@ Suivi du travail restant. Dernière mise à jour : 12/10/2026.
       création.
 - [x] **README / TODO / .gitignore** réalignés sur le site React et sur les
       empreintes Play App Signing.
+- [x] **Renommage « Nos Candidats »** ✅ — nom affiché remplacé partout
+      (`lib/`, `src/`, `android/`, `ios/`, `macos/`, `windows/`, `linux/`,
+      `web/`, `public/`, `index.html`, CI) ; identifiants techniques conservés
+      (`com.rnd.dz`, `rnd_campaign_app`, `rnd-android.*`). Icônes, splash et
+      favicons régénérés (`tool/generate_assets.dart`, `flutter_launcher_icons`,
+      `flutter_native_splash`) avec fond vert `#026342` sans raccord.
+- [x] **Fiche Google Play appliquée en direct** ✅ — nom « Nos Candidats » et
+      descriptions fr/en/ar enregistrés via `tool/play_listing.dart` (API
+      Android Publisher, compte de service CI), source de vérité
+      `store/play/listings.json`. Google refuse l'envoi automatique en revue
+      pour cette application : les changements sont enregistrés en
+      **modifications en attente** (`changesNotSentForReview=true`), à envoyer
+      en revue depuis la Play Console. `dart run tool/play_listing.dart check`
+      confirme l'alignement.
+- [x] **Config MCP alignée** ✅ — `opencode.json` (dépôt) déclare les 4 serveurs
+      (`firebase`, `google-play`, `render`, `supabase`) ; aucun secret ni chemin
+      absolu committé. `GOOGLE_APPLICATION_CREDENTIALS` (compte de service Play,
+      variable utilisateur créée le 15/10/2026) est lu depuis l'environnement et
+      `RENDER_API_KEY` par substitution `{env:RENDER_API_KEY}`. Le serveur
+      `google-play` ne répond aux appels qu'après **redémarrage d'OpenCode**
+      (la variable n'existe pas dans le processus en cours) ; `firebase`,
+      `render` et `supabase` sont vérifiés connectés.
 
 ## À faire
 
 - [ ] **Envoi Play réel** : passer la variable `PLAY_UPLOAD_ENABLED` à `true`,
       pousser, puis vérifier que le job `Google Play (production)` envoie bien
-      l'AAB (versionCode `1000031`+) et contrôler le canal avec
-      `get_track_info`. **Décision utilisateur requise** : envoi direct en
+      l'AAB (versionCode `1000034`+) et contrôler le canal avec
+      `get_track_info`. La même variable active le job `play-listing` qui
+      réaligne la fiche. **Décision utilisateur requise** : envoi direct en
       `production` ou passage préalable par un canal de test.
+- [ ] **Fiche Play — envoi en revue** : envoyer depuis la Play Console les
+      **modifications en attente** (nom « Nos Candidats » + descriptions fr/en/ar)
+      générées par `tool/play_listing.dart apply`.
 - [ ] **Brouillon fantôme sur le canal production** : une release **draft sans
       versionCode** existe sur `production` (créée le 12/10/2026) et bloque
       l'état « Pas encore envoyé pour examen ». À supprimer ou compléter
@@ -84,8 +110,11 @@ Suivi du travail restant. Dernière mise à jour : 12/10/2026.
       partiel de `opencode.json` (racine du dépôt). Toute la config de projet
       reste dans `opencode.json`.
 - [ ] **Ancien site statique** : `assets/` reste requis par Flutter
-      (pubspec, icônes, splash) — ne pas le supprimer. Vérifier qu'aucun autre
-      fichier de l'ancien site statique n'est devenu inutile.
+      (`assets/images/`, `assets/icons/`, `assets/audio/` déclarés dans
+      `pubspec.yaml`) — ne pas le supprimer. `assets/logo.png` (duplicata
+      inutilisé de `assets/icons/icon.png`) a été supprimé. `public/rnd-icon.png`
+      n'est référencé par aucune page mais reste généré comme chemin public
+      stable (au même titre que `com.rnd.dz`).
 
 ## Contraintes à ne jamais enfreindre
 

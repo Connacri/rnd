@@ -103,13 +103,13 @@ abstract class AppLocalizations {
   /// No description provided for @address.
   ///
   /// In fr, this message translates to:
-  /// **'Adresse'**
+  /// **'Adresse / Quartier'**
   String get address;
 
   /// No description provided for @addressOptional.
   ///
   /// In fr, this message translates to:
-  /// **'Adresse (optionnel)'**
+  /// **'Adresse / Quartier (optionnel)'**
   String get addressOptional;
 
   /// No description provided for @age.
@@ -136,6 +136,18 @@ abstract class AppLocalizations {
   /// **'Nos Candidats'**
   String get appName;
 
+  /// No description provided for @appPreviewSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvrez les écrans officiels de la campagne'**
+  String get appPreviewSubtitle;
+
+  /// No description provided for @appPreviewTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu de l\'application'**
+  String get appPreviewTitle;
+
   /// No description provided for @approach.
   ///
   /// In fr, this message translates to:
@@ -145,13 +157,13 @@ abstract class AppLocalizations {
   /// No description provided for @audioMessage.
   ///
   /// In fr, this message translates to:
-  /// **'Message audio'**
+  /// **'Message audio du candidat'**
   String get audioMessage;
 
   /// No description provided for @candidate.
   ///
   /// In fr, this message translates to:
-  /// **'Candidat'**
+  /// **'Le Candidat'**
   String get candidate;
 
   /// No description provided for @candidateName.
@@ -190,6 +202,12 @@ abstract class AppLocalizations {
   /// **'Zenasni Nabil, Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Un engagement fort pour le développement local, la transparence et la proximité avec les citoyens.'**
   String get description;
 
+  /// No description provided for @developerCredit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Développé par FORSLOG LTD — Codé par Ramzy Guedouar — Contact : 0696 41 09 53'**
+  String get developerCredit;
+
   /// No description provided for @development.
   ///
   /// In fr, this message translates to:
@@ -199,13 +217,13 @@ abstract class AppLocalizations {
   /// No description provided for @developmentDesc.
   ///
   /// In fr, this message translates to:
-  /// **'Croissance durable'**
+  /// **'Croissance économique durable'**
   String get developmentDesc;
 
   /// No description provided for @discoverProgram.
   ///
   /// In fr, this message translates to:
-  /// **'Découvrir'**
+  /// **'Découvrir nos 6 piliers'**
   String get discoverProgram;
 
   /// No description provided for @elections2026.
@@ -277,7 +295,7 @@ abstract class AppLocalizations {
   /// No description provided for @footerDesc.
   ///
   /// In fr, this message translates to:
-  /// **'Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Engagé pour le développement local et le bien-être de tous les citoyens.'**
+  /// **'Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Engagé pour le développement local et le bien-être de tous les concitoyens.'**
   String get footerDesc;
 
   /// No description provided for @fullName.
@@ -316,6 +334,12 @@ abstract class AppLocalizations {
   /// **'Devenir Adhérent'**
   String get joinUs;
 
+  /// No description provided for @languageLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue'**
+  String get languageLabel;
+
   /// No description provided for @learnMore.
   ///
   /// In fr, this message translates to:
@@ -325,7 +349,7 @@ abstract class AppLocalizations {
   /// No description provided for @login.
   ///
   /// In fr, this message translates to:
-  /// **'Se connecter'**
+  /// **'Connexion'**
   String get login;
 
   /// No description provided for @loginError.
@@ -382,6 +406,36 @@ abstract class AppLocalizations {
   /// **'Message (optionnel)'**
   String get messageOptional;
 
+  /// No description provided for @navCandidate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Candidat'**
+  String get navCandidate;
+
+  /// No description provided for @navEvents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Agenda'**
+  String get navEvents;
+
+  /// No description provided for @navHome.
+  ///
+  /// In fr, this message translates to:
+  /// **'Accueil'**
+  String get navHome;
+
+  /// No description provided for @navMembership.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adhésion'**
+  String get navMembership;
+
+  /// No description provided for @navProgram.
+  ///
+  /// In fr, this message translates to:
+  /// **'Programme'**
+  String get navProgram;
+
   /// No description provided for @name.
   ///
   /// In fr, this message translates to:
@@ -429,6 +483,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'RND - Rassemblement National Démocratique'**
   String get party;
+
+  /// No description provided for @partyShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'RND'**
+  String get partyShort;
 
   /// No description provided for @password.
   ///
@@ -505,7 +565,7 @@ abstract class AppLocalizations {
   /// No description provided for @register.
   ///
   /// In fr, this message translates to:
-  /// **'S\'inscrire'**
+  /// **'Créer un compte'**
   String get register;
 
   /// No description provided for @registerError.
@@ -535,7 +595,7 @@ abstract class AppLocalizations {
   /// No description provided for @secretary.
   ///
   /// In fr, this message translates to:
-  /// **'Secrétaire'**
+  /// **'Secrétaire du Bureau Communal'**
   String get secretary;
 
   /// No description provided for @seeEvents.
@@ -649,49 +709,49 @@ abstract class AppLocalizations {
   /// No description provided for @phonePlaceholder.
   ///
   /// In fr, this message translates to:
-  /// **'0X XX XX XX XX'**
+  /// **'05 XX XX XX XX'**
   String get phonePlaceholder;
 
   /// No description provided for @agePlaceholder.
   ///
   /// In fr, this message translates to:
-  /// **'Votre âge'**
+  /// **'Ex. 28'**
   String get agePlaceholder;
 
   /// No description provided for @professionPlaceholder.
   ///
   /// In fr, this message translates to:
-  /// **'Votre profession'**
+  /// **'Ex. Enseignant, Commerçant...'**
   String get professionPlaceholder;
 
   /// No description provided for @addressPlaceholder.
   ///
   /// In fr, this message translates to:
-  /// **'Votre adresse'**
+  /// **'Ex. Trouville, Bouisseville...'**
   String get addressPlaceholder;
 
   /// No description provided for @messagePlaceholder.
   ///
   /// In fr, this message translates to:
-  /// **'Votre message...'**
+  /// **'Partagez votre message ou vos attentes...'**
   String get messagePlaceholder;
 
   /// No description provided for @suggestionPlaceholder.
   ///
   /// In fr, this message translates to:
-  /// **'Votre suggestion ou proposition...'**
+  /// **'Votre idée pour améliorer Aïn El Turck...'**
   String get suggestionPlaceholder;
 
   /// No description provided for @forgotPasswordTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Mot de passe oublié'**
+  /// **'Réinitialisation'**
   String get forgotPasswordTitle;
 
   /// No description provided for @forgotPasswordHint.
   ///
   /// In fr, this message translates to:
-  /// **'Entrez votre email et nous vous enverrons un lien pour réinitialiser votre mot de passe.'**
+  /// **'Entrez votre email pour recevoir le lien de réinitialisation.'**
   String get forgotPasswordHint;
 
   /// No description provided for @sendResetEmail.
@@ -733,7 +793,7 @@ abstract class AppLocalizations {
   /// No description provided for @latestNews.
   ///
   /// In fr, this message translates to:
-  /// **'Actualités'**
+  /// **'Actualités & Communiqués'**
   String get latestNews;
 }
 

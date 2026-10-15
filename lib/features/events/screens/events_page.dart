@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rnd_campaign_app/app/app_shell.dart';
+import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/app/theme.dart';
 import 'package:rnd_campaign_app/core/services/translation_service.dart';
 import 'package:rnd_campaign_app/features/content/providers/content_provider.dart';
@@ -14,14 +16,9 @@ class EventsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final content = context.watch<ContentProvider>();
-    return Scaffold(
-      backgroundColor: AppTheme.bgDark,
-      appBar: AppBar(
-        title: Text(l.events),
-        backgroundColor: AppTheme.bgDark,
-        foregroundColor: Colors.white,
-      ),
-      body: SafeArea(child: _buildBody(context, l, content)),
+    return AppShell(
+      currentRoute: AppRoutes.events,
+      child: _buildBody(context, l, content),
     );
   }
 
@@ -32,7 +29,7 @@ class EventsPage extends StatelessWidget {
   ) {
     if (content.isLoading) {
       return const Center(
-        child: CircularProgressIndicator(color: AppTheme.accentCyan),
+        child: CircularProgressIndicator(color: AppColors.ink),
       );
     }
     if (content.status == ContentStatus.error) {
@@ -50,11 +47,22 @@ class EventsPage extends StatelessWidget {
         message: l.upcomingEvents,
       );
     }
-    return ListView.builder(
+    return ListView(
       padding: const EdgeInsets.all(20),
-      itemCount: events.length,
-      itemBuilder: (context, index) =>
-          _EventCard(event: events[index], fallback: l.upcomingEvents),
+      children: [
+        Text(
+          l.events,
+          style: const TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w900,
+            color: AppColors.ink,
+          ),
+        ),
+        const SizedBox(height: 16),
+        ...events.map(
+          (event) => _EventCard(event: event, fallback: l.upcomingEvents),
+        ),
+      ],
     );
   }
 }
@@ -76,13 +84,8 @@ class _EventCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.white.withValues(alpha: 0.05),
-            Colors.white.withValues(alpha: 0.02),
-          ],
-        ),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        color: Colors.white,
+        border: Border.all(color: AppColors.amber200.withValues(alpha: 0.9)),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -98,7 +101,7 @@ class _EventCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: AppColors.ink,
                   ),
                 ),
               ),
@@ -111,7 +114,7 @@ class _EventCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: AppTheme.accentCyan,
+                color: AppColors.ink,
               ),
             ),
           ],
@@ -121,7 +124,7 @@ class _EventCard extends StatelessWidget {
               description,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white.withValues(alpha: 0.7),
+                color: AppColors.zinc700,
                 height: 1.5,
               ),
             ),
@@ -133,7 +136,7 @@ class _EventCard extends StatelessWidget {
                 Icon(
                   Icons.place_outlined,
                   size: 16,
-                  color: Colors.white.withValues(alpha: 0.5),
+                  color: AppColors.zinc500,
                 ),
                 const SizedBox(width: 6),
                 Expanded(
@@ -141,7 +144,7 @@ class _EventCard extends StatelessWidget {
                     location,
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: AppColors.zinc500,
                     ),
                   ),
                 ),
@@ -180,18 +183,17 @@ class _MessageState extends StatelessWidget {
               height: 88,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppTheme.accentCyan.withValues(alpha: 0.1),
-                border: Border.all(
-                    color: AppTheme.accentCyan.withValues(alpha: 0.3)),
+                color: AppColors.ink.withValues(alpha: 0.1),
+                border: Border.all(color: AppColors.ink.withValues(alpha: 0.3)),
               ),
-              child: Icon(icon, color: AppTheme.accentCyan, size: 40),
+              child: Icon(icon, color: AppColors.ink, size: 40),
             ),
             const SizedBox(height: 20),
             Text(
               message,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.white70,
+                color: AppColors.zinc700,
                 fontSize: 15,
                 height: 1.5,
               ),
@@ -200,10 +202,10 @@ class _MessageState extends StatelessWidget {
               const SizedBox(height: 20),
               TextButton.icon(
                 onPressed: onRetry,
-                icon: const Icon(Icons.refresh, color: AppTheme.accentCyan),
+                icon: const Icon(Icons.refresh, color: AppColors.ink),
                 label: Text(
                   retryLabel ?? '',
-                  style: const TextStyle(color: AppTheme.accentCyan),
+                  style: const TextStyle(color: AppColors.ink),
                 ),
               ),
             ],

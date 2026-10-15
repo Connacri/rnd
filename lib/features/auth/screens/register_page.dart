@@ -5,6 +5,7 @@ import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 import 'package:rnd_campaign_app/widgets/language_switcher.dart';
+import 'package:rnd_campaign_app/app/theme.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -73,7 +74,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final l = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0a1628),
+      backgroundColor: AppColors.cream,
       appBar: AppBar(title: Text(l.register)),
       body: SafeArea(
         child: Center(
@@ -137,13 +138,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      const Expanded(child: Divider(color: Colors.white24)),
+                      const Expanded(child: Divider(color: AppColors.amber200)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text('•',
-                            style: const TextStyle(color: Colors.white38)),
+                            style: const TextStyle(color: AppColors.zinc500)),
                       ),
-                      const Expanded(child: Divider(color: Colors.white24)),
+                      const Expanded(child: Divider(color: AppColors.amber200)),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -152,8 +153,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: OutlinedButton.icon(
                       onPressed: auth.isLoading ? null : _googleSignIn,
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(color: Colors.white30),
+                        foregroundColor: AppColors.ink,
+                        side: const BorderSide(color: AppColors.amber200),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       icon: const Icon(Icons.g_mobiledata, size: 28),

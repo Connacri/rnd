@@ -27,6 +27,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Nos Candidats';
 
   @override
+  String get appPreviewSubtitle => 'Discover the official campaign screens';
+
+  @override
+  String get appPreviewTitle => 'App preview';
+
+  @override
   String get approach =>
       'Our approach is based on listening, proximity and transparency. Every project, every decision will be made with and for you.';
 
@@ -55,6 +61,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get description =>
       'Zenasni Nabil, Secretary of the RND Communal Bureau in Ain El Turck, Oran. A strong commitment to local development, transparency and proximity with citizens.';
+
+  @override
+  String get developerCredit =>
+      'Developed by FORSLOG LTD — Coded by Ramzy Guedouar — Contact: 0696 41 09 53';
 
   @override
   String get development => 'Development';
@@ -124,6 +134,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinUs => 'Join Us';
 
   @override
+  String get languageLabel => 'Language';
+
+  @override
   String get learnMore => 'Learn more';
 
   @override
@@ -158,6 +171,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageOptional => 'Message (optional)';
 
   @override
+  String get navCandidate => 'Candidate';
+
+  @override
+  String get navEvents => 'Agenda';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navMembership => 'Membership';
+
+  @override
+  String get navProgram => 'Program';
+
+  @override
   String get name => 'Last Name';
 
   @override
@@ -180,6 +208,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get party => 'RND - National Democratic Rally';
+
+  @override
+  String get partyShort => 'RND';
 
   @override
   String get password => 'Password';

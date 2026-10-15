@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rnd_campaign_app/core/services/translation_service.dart';
+import 'package:rnd_campaign_app/app/theme.dart';
 
 class PillarItem {
   final String number;
@@ -33,7 +34,7 @@ class ProgramData {
           title: 'التنمية الاقتصادية والتجارة والتوظيف',
           subtitle: 'أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة.',
           tag: 'التنمية الاقتصادية',
-          accentColor: const Color(0xFF00d4ff),
+          accentColor: AppColors.ink,
           items: const [
             "فتح طريق ثانٍ يربط طرفي البلدية لتخفيف الازدحام المروري.",
             "إنجاز التوصيلات اللازمة على هذا الطريق الموجود بالفعل.",
@@ -72,7 +73,7 @@ class ProgramData {
           subtitle:
               'يجب أن تصبح عين الترك مرجعاً وطنياً بين المنتجعات البحرية.',
           tag: 'السياحة',
-          accentColor: const Color(0xFFd4af37),
+          accentColor: AppColors.amber400,
           items: const [
             "مداخل شاطئ مصممة لتدوم بفضل تصنيع البلدية لقوالبها الخاصة من جدران على الطراز العثماني.",
             "استخدام مونة ملونة أكثر مقاومة لرطوبة البحر.",
@@ -106,7 +107,7 @@ class ProgramData {
           title: 'بلدية رقمية وإدارة حديثة',
           subtitle: 'يجب أن يتمكن المواطن من التواصل بسهولة مع بلديته.',
           tag: 'الرقمية',
-          accentColor: const Color(0xFF00d4ff),
+          accentColor: AppColors.ink,
           items: const [
             "الإبلاغ عن المشاكل مع تحديد الموقع الجغرافي؛",
             "الإبلاغ عن الحوادث؛",
@@ -129,7 +130,7 @@ class ProgramData {
           title: 'الحوكمة والشفافية والمشاركة المواطنة',
           subtitle: 'الثقة تُبنى بالشفافية.',
           tag: 'الحوكمة',
-          accentColor: const Color(0xFFd4af37),
+          accentColor: AppColors.amber400,
           items: const [
             "نشر برنامجنا كاملاً؛",
             "نشر تقرير مفصل بالإنجازات في نهاية كل سنة أو كل ولاية؛",
@@ -148,7 +149,7 @@ class ProgramData {
           subtitle:
               'Our priority is to transform Ain El Turck into a wealth-generating communality.',
           tag: 'Economic Development',
-          accentColor: const Color(0xFF00d4ff),
+          accentColor: AppColors.ink,
           items: const [
             "Opening a second road connecting the two ends of the communality to ease traffic flow.",
             "Carrying out the necessary connections on this already existing road.",
@@ -187,7 +188,7 @@ class ProgramData {
           subtitle:
               'Ain El Turck must become a national reference among seaside resorts.',
           tag: 'Tourism',
-          accentColor: const Color(0xFFd4af37),
+          accentColor: AppColors.amber400,
           items: const [
             "Beach access designed to last thanks to the APC manufacturing its own Ottoman-style wall molds.",
             "Using tinted mortars more resistant to marine humidity.",
@@ -223,7 +224,7 @@ class ProgramData {
           subtitle:
               'The citizen must be able to communicate easily with their communality.',
           tag: 'Digital',
-          accentColor: const Color(0xFF00d4ff),
+          accentColor: AppColors.ink,
           items: const [
             "reporting issues with geolocation;",
             "reporting accidents;",
@@ -246,7 +247,7 @@ class ProgramData {
           title: 'Governance, Transparency and Citizen Participation',
           subtitle: 'Trust is built through transparency.',
           tag: 'Governance',
-          accentColor: const Color(0xFFd4af37),
+          accentColor: AppColors.amber400,
           items: const [
             "publishing our entire program;",
             "publishing a detailed balance sheet of achievements at the end of each year or each term;",
@@ -266,7 +267,7 @@ class ProgramData {
           subtitle:
               'Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse.',
           tag: 'Développement Économique',
-          accentColor: const Color(0xFF00d4ff),
+          accentColor: AppColors.ink,
           items: const [
             "L'ouverture d'une deuxième route reliant les deux extrémités de la commune afin de désengorger la circulation.",
             "La réalisation des raccordements nécessaires sur cette route déjà existante.",
@@ -306,7 +307,7 @@ class ProgramData {
           subtitle:
               'Aïn El Turck doit de venir une référence nationale parmi les stations balnéaires.',
           tag: 'Tourisme',
-          accentColor: const Color(0xFFd4af37),
+          accentColor: AppColors.amber400,
           items: const [
             "Des accès aux plages conçus pour durer grâce à la fabrication par l'APC de ses propres moules de murs de style architecture osmanienne.",
             "L'utilisation de mortiers teintés plus résistants à l'humidité marine.",
@@ -342,7 +343,7 @@ class ProgramData {
           subtitle:
               'Le citoyen doit pouvoir communiquer facilement avec sa commune.',
           tag: 'Numérique',
-          accentColor: const Color(0xFF00d4ff),
+          accentColor: AppColors.ink,
           items: const [
             "de signaler les problèmes avec géolocalisation ;",
             "de signaler les accidents ;",
@@ -365,7 +366,7 @@ class ProgramData {
           title: 'Gouvernance, transparence et participation citoyenne',
           subtitle: 'La confiance se construit par la transparence.',
           tag: 'Gouvernance',
-          accentColor: const Color(0xFFd4af37),
+          accentColor: AppColors.amber400,
           items: const [
             "publier l'intégralité de notre programme ;",
             "publier un bilan détaillé des réalisations à la fin de chaque année ou de chaque mandat ;",

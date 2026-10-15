@@ -9,10 +9,10 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get address => 'العنوان';
+  String get address => 'العنوان / الحي';
 
   @override
-  String get addressOptional => 'العنوان (اختياري)';
+  String get addressOptional => 'العنوان أو الحي (اختياري)';
 
   @override
   String get age => 'العمر';
@@ -27,14 +27,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appName => 'Nos Candidats';
 
   @override
+  String get appPreviewSubtitle => 'اكتشف شاشات الحملة الرسمية';
+
+  @override
+  String get appPreviewTitle => 'معاينة التطبيق';
+
+  @override
   String get approach =>
       'يرتكز نهجنا على الاستماع والقرب والشفافية. سيتم اتخاذ كل مشروع وكل قرار معكم ومن أجلكم.';
 
   @override
-  String get audioMessage => 'رسالة صوتية';
+  String get audioMessage => 'رسالة صوتية للمترشح';
 
   @override
-  String get candidate => 'المرشح';
+  String get candidate => 'المترشح';
 
   @override
   String get candidateName => 'زناسني نبيل';
@@ -54,16 +60,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get description =>
-      'زناسني نبيل، الأمين لمكتب حزب التجمع الوطني الديمقراطي بعين الترك، وهران. التزام قوي من أجل التنمية المحلية، الشفافية والقرب من المواطنين.';
+      'زناسني نبيل، أمين مكتب حزب التجمع الوطني الديمقراطي بعين الترك، وهران. التزام قوي من أجل التنمية المحلية، الشفافية والقرب من المواطنين.';
+
+  @override
+  String get developerCredit =>
+      'تطوير فورسلوغ ليمتد — برمجة رمزي قيدوار — اتصال: 0696 41 09 53';
 
   @override
   String get development => 'التنمية';
 
   @override
-  String get developmentDesc => 'نمو مستدام';
+  String get developmentDesc => 'نمو اقتصادي ومحلي مستدام';
 
   @override
-  String get discoverProgram => 'استكشف';
+  String get discoverProgram => 'استكشف محاورنا الستة';
 
   @override
   String get elections2026 => 'انتخابات البلدية 2026';
@@ -84,7 +94,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get emailRequired => 'البريد الإلكتروني مطلوب';
 
   @override
-  String get engagement => 'التزامنا';
+  String get engagement => 'التزامنا الرسمي الصادق';
 
   @override
   String get engagementText1 =>
@@ -96,32 +106,35 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get engagementText3 =>
-      'معا، لنجعل عين الترك بلدية يحسن العيش فيها والاستثمار والعمل واستقبال الزوار.';
+      'معاً، لنجعل عين الترك بلدية يحسن العيش فيها والاستثمار والعمل واستقبال الزوار الكرام.';
 
   @override
   String get events => 'الفعاليات';
 
   @override
   String get footerDesc =>
-      'الأمين لمكتب التجمع الوطني الديمقراطي بعين الترك، وهران. ملتزم بالتنمية المحلية ورفاهية جميع المواطنين.';
+      'أمين المكتب البلدي للتجمع الوطني الديمقراطي بعين الترك، وهران. ملتزم بالتنمية المحلية ورفاهية جميع المواطنين.';
 
   @override
   String get fullName => 'الاسم الكامل';
 
   @override
-  String get haveAccount => 'لديك حساب؟ تسجيل الدخول';
+  String get haveAccount => 'لديك حساب بالفعل؟ تسجيل الدخول';
 
   @override
   String get innovation => 'الابتكار';
 
   @override
-  String get innovationDesc => 'حلول حديثة';
+  String get innovationDesc => 'حلول حديثة ومستدامة للتسيير';
 
   @override
-  String get joinMovement => 'انضم إلى الحركة';
+  String get joinMovement => 'انضم إلى المبادرة';
 
   @override
-  String get joinUs => 'انضم إلينا';
+  String get joinUs => 'انضم إلينا كعضو';
+
+  @override
+  String get languageLabel => 'اللغة';
 
   @override
   String get learnMore => 'معرفة المزيد';
@@ -142,44 +155,62 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mairiesRnd => 'بلديات التجمع';
 
   @override
-  String get membership => 'انضم';
+  String get membership => 'الانخراط';
 
   @override
   String get membershipDesc =>
-      'انضم إلينا وشارك بنشاط في بناء مستقبل بلديتنا. معاً، نحن أقوى.';
+      'انضم إلينا وشارك بنشاط في بناء مستقبل بلديتنا. معاً، نحن أقوى لنحقق تطلعات مدينتنا.';
 
   @override
-  String get membershipTitle => 'كن عضواً في التجمع';
+  String get membershipTitle => 'كن عضواً في التجمع الوطني الديمقراطي';
 
   @override
-  String get message => 'الرسالة';
+  String get message => 'رسالة خاصة';
 
   @override
-  String get messageOptional => 'الرسالة (اختياري)';
+  String get messageOptional => 'رسالة (اختياري)';
+
+  @override
+  String get navCandidate => 'المترشح';
+
+  @override
+  String get navEvents => 'الفعاليات';
+
+  @override
+  String get navHome => 'الرئيسية';
+
+  @override
+  String get navMembership => 'الانخراط';
+
+  @override
+  String get navProgram => 'البرنامج';
 
   @override
   String get name => 'الاسم';
 
   @override
-  String get noAccount => 'ليس لديك حساب؟ سجل';
+  String get noAccount => 'ليس لديك حساب؟ إنشاء حساب';
 
   @override
-  String get nom => 'الاسم';
+  String get nom => 'الاسم واللقب';
 
   @override
   String get nomRequired => 'الاسم مطلوب';
 
   @override
-  String get ourProgram => 'برنامجنا';
+  String get ourProgram => 'برنامجنا الانتخابي';
 
   @override
-  String get ourValues => 'قيمنا';
+  String get ourValues => 'قيمنا الأساسية';
 
   @override
   String get ourVision => 'رؤيتنا';
 
   @override
   String get party => 'التجمع الوطني الديمقراطي - RND';
+
+  @override
+  String get partyShort => 'التجمع RND';
 
   @override
   String get password => 'كلمة المرور';
@@ -191,13 +222,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordRequired => 'كلمة المرور مطلوبة';
 
   @override
-  String get phone => 'الهاتف';
+  String get phone => 'رقم الهاتف';
 
   @override
-  String get phoneInvalid => 'رقم غير صالح';
+  String get phoneInvalid => 'رقم هاتف غير صالح';
 
   @override
-  String get phoneRequired => 'الهاتف مطلوب';
+  String get phoneRequired => 'رقم الهاتف مطلوب';
 
   @override
   String get profession => 'المهنة';
@@ -209,16 +240,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get program => 'البرنامج';
 
   @override
-  String get programTitle => 'البرنامج';
+  String get programTitle => 'البرنامج الانتخابي البلدي';
 
   @override
   String get proximity => 'القرب';
 
   @override
-  String get proximityDesc => 'الاستماع للمواطنين';
+  String get proximityDesc => 'الاستماع المباشر لانشغالات المواطنين';
 
   @override
-  String get register => 'التسجيل';
+  String get register => 'إنشاء حساب جديد';
 
   @override
   String get registerError => 'خطأ في التسجيل';
@@ -228,19 +259,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get rndDescText =>
-      'التجمع الوطني الديمقراطي، الذي تأسس عام 1997، هو حزب ليبرالي وتقدمي ملتزم بالتنمية الوطنية والمحلية.';
+      'التجمع الوطني الديمقراطي، الذي تأسس عام 1997، هو حزب وطني تقدمي ملتزم بالتنمية الوطنية والمحلية الشاملة.';
 
   @override
   String get rndDescription => 'التجمع، قوة التقدم للجزائر';
 
   @override
-  String get secretary => 'الأمين';
+  String get secretary => 'أمين المكتب البلدي';
 
   @override
-  String get seeEvents => 'شاهد الفعاليات القادمة';
+  String get seeEvents => 'جدول اللقاءات الشعبية';
 
   @override
-  String get send => 'إرسال طلبي';
+  String get send => 'إرسال طلب الانخراط';
 
   @override
   String get slogan => '« معاً من أجل ديناميكية جديدة في عين الترك »';
@@ -250,10 +281,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم تسجيل طلب انخراطكم بنجاح. سيتواصل معكم فريق المداومة البلدية قريباً.';
 
   @override
-  String get suggestion => 'اقتراح';
+  String get suggestion => 'اقتراح أو فكرة';
 
   @override
-  String get suggestionOptional => 'اقتراح (اختياري)';
+  String get suggestionOptional => 'اقتراح أو فكرة للبلدية (اختياري)';
 
   @override
   String get thankYou => 'شكراً جزيلاً لالتزامكم !';
@@ -268,10 +299,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get transparency => 'الشفافية';
 
   @override
-  String get transparencyDesc => 'إدارة واضحة وعادلة';
+  String get transparencyDesc => 'إدارة واضحة ونزيهة وعادلة';
 
   @override
-  String get upcomingEvents => 'الفعاليات القادمة قريباً...';
+  String get upcomingEvents => 'الفعاليات واللقاءات القادمة';
 
   @override
   String get visionText =>
@@ -293,36 +324,35 @@ class AppLocalizationsAr extends AppLocalizations {
   String get emailPlaceholder => 'votre@email.com';
 
   @override
-  String get phonePlaceholder => '0X XX XX XX XX';
+  String get phonePlaceholder => '05 XX XX XX XX';
 
   @override
-  String get agePlaceholder => 'عمرك';
+  String get agePlaceholder => 'مثال: 28';
 
   @override
-  String get professionPlaceholder => 'مهنتك';
+  String get professionPlaceholder => 'مثال: تاجر، أستاذ...';
 
   @override
-  String get addressPlaceholder => 'عنوانك';
+  String get addressPlaceholder => 'مثال: تروفيل، بويسفيل...';
 
   @override
-  String get messagePlaceholder => 'رسالتك...';
+  String get messagePlaceholder => 'شاركنا ملاحظاتك أو تطلعاتك...';
 
   @override
-  String get suggestionPlaceholder => 'اقتراحك أو عرضك...';
+  String get suggestionPlaceholder => 'فكرتك لتطوير عين الترك...';
 
   @override
-  String get forgotPasswordTitle => 'نسيت كلمة المرور';
+  String get forgotPasswordTitle => 'استعادة كلمة المرور';
 
   @override
   String get forgotPasswordHint =>
-      'أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.';
+      'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.';
 
   @override
   String get sendResetEmail => 'إرسال الرابط';
 
   @override
-  String get resetEmailSent =>
-      'تم إرسال البريد الإلكتروني! تحقق من صندوق الوارد.';
+  String get resetEmailSent => 'تم إرسال الرابط بنجاح! تفقد بريدك.';
 
   @override
   String get forgotPassword => 'نسيت كلمة المرور؟';
@@ -338,5 +368,5 @@ class AppLocalizationsAr extends AppLocalizations {
   String get retry => 'إعادة المحاولة';
 
   @override
-  String get latestNews => 'آخر الأخبار';
+  String get latestNews => 'آخر الأخبار والبيانات';
 }

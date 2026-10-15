@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rnd_campaign_app/app/app_shell.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/features/membership/providers/membership_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
+import 'package:rnd_campaign_app/app/theme.dart';
 
 class MembershipFormPage extends StatefulWidget {
   const MembershipFormPage({super.key});
@@ -91,126 +93,117 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
     final membership = context.watch<MembershipProvider>();
     final l = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l.membership),
-        backgroundColor: const Color(0xFF0a1628),
-        foregroundColor: Colors.white,
-      ),
-      backgroundColor: const Color(0xFF0a1628),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l.membershipTitle,
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                  ),
+    return AppShell(
+      currentRoute: AppRoutes.membership,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l.membershipTitle,
+                style: const TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.ink,
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  l.membershipDesc,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white.withValues(alpha: 0.6),
-                    height: 1.5,
-                  ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l.membershipDesc,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppColors.zinc700,
+                  height: 1.5,
                 ),
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: _nomController,
-                  decoration: _inputDecoration(l.nom, l.namePlaceholder),
-                  style: const TextStyle(color: Colors.white),
-                  validator: (v) =>
-                      v == null || v.isEmpty ? l.nomRequired : null,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _emailController,
-                  decoration:
-                      _inputDecoration(l.emailField, l.emailPlaceholder),
-                  keyboardType: TextInputType.emailAddress,
-                  style: const TextStyle(color: Colors.white),
-                  validator: Validators.email,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: _inputDecoration(l.phone, l.phonePlaceholder),
-                  keyboardType: TextInputType.phone,
-                  style: const TextStyle(color: Colors.white),
-                  validator: Validators.phone,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _ageController,
-                  decoration: _inputDecoration(l.ageOptional, l.agePlaceholder),
-                  keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _professionController,
-                  decoration: _inputDecoration(
-                      l.professionOptional, l.professionPlaceholder),
-                  style: const TextStyle(color: Colors.white),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _adresseController,
-                  decoration:
-                      _inputDecoration(l.addressOptional, l.addressPlaceholder),
-                  style: const TextStyle(color: Colors.white),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _messageController,
-                  decoration:
-                      _inputDecoration(l.messageOptional, l.messagePlaceholder),
-                  maxLines: 3,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _suggestionController,
-                  decoration: _inputDecoration(
-                      l.suggestionOptional, l.suggestionPlaceholder),
-                  maxLines: 3,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: membership.isLoading ? null : _submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF00d4ff),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+              ),
+              const SizedBox(height: 24),
+              TextFormField(
+                controller: _nomController,
+                decoration: _inputDecoration(l.nom, l.namePlaceholder),
+                style: const TextStyle(color: AppColors.ink),
+                validator: (v) => v == null || v.isEmpty ? l.nomRequired : null,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _emailController,
+                decoration: _inputDecoration(l.emailField, l.emailPlaceholder),
+                keyboardType: TextInputType.emailAddress,
+                style: const TextStyle(color: AppColors.ink),
+                validator: Validators.email,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _phoneController,
+                decoration: _inputDecoration(l.phone, l.phonePlaceholder),
+                keyboardType: TextInputType.phone,
+                style: const TextStyle(color: AppColors.ink),
+                validator: Validators.phone,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _ageController,
+                decoration: _inputDecoration(l.ageOptional, l.agePlaceholder),
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: AppColors.ink),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _professionController,
+                decoration: _inputDecoration(
+                    l.professionOptional, l.professionPlaceholder),
+                style: const TextStyle(color: AppColors.ink),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _adresseController,
+                decoration:
+                    _inputDecoration(l.addressOptional, l.addressPlaceholder),
+                style: const TextStyle(color: AppColors.ink),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _messageController,
+                decoration:
+                    _inputDecoration(l.messageOptional, l.messagePlaceholder),
+                maxLines: 3,
+                style: const TextStyle(color: AppColors.ink),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _suggestionController,
+                decoration: _inputDecoration(
+                    l.suggestionOptional, l.suggestionPlaceholder),
+                maxLines: 3,
+                style: const TextStyle(color: AppColors.ink),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: membership.isLoading ? null : _submit,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.ink,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: membership.isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : Text(
-                            l.send,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                            ),
-                          ),
                   ),
+                  child: membership.isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          l.send,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                        ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -220,22 +213,24 @@ class _MembershipFormPageState extends State<MembershipFormPage> {
   InputDecoration _inputDecoration(String label, String placeholder) {
     return InputDecoration(
       labelText: label,
-      labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+      labelStyle: TextStyle(color: AppColors.zinc700),
       hintText: placeholder,
-      hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
+      hintStyle: TextStyle(color: AppColors.amber200.withValues(alpha: 0.6)),
       filled: true,
-      fillColor: Colors.white.withValues(alpha: 0.05),
+      fillColor: Colors.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+        borderSide:
+            BorderSide(color: AppColors.amber200.withValues(alpha: 0.9)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+        borderSide:
+            BorderSide(color: AppColors.amber200.withValues(alpha: 0.9)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF00d4ff)),
+        borderSide: const BorderSide(color: AppColors.ink),
       ),
     );
   }

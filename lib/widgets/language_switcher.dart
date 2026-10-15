@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:rnd_campaign_app/app/theme.dart';
 import 'package:rnd_campaign_app/core/providers/language_provider.dart';
+import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 
 /// Sélecteur de langue FR/AR/EN réutilisable, utilisé sur les écrans
 /// d'accueil, de connexion et d'inscription.
@@ -57,28 +58,29 @@ class _LangChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isActive = currentLang == langCode;
+    final l = AppLocalizations.of(context)!;
     return Semantics(
       button: true,
       selected: isActive,
-      label: 'Langue $label',
+      label: '${l.languageLabel} $label',
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
-            color: isActive ? AppTheme.accentCyan : Colors.transparent,
+            color: isActive ? AppColors.ink : Colors.transparent,
             border: Border.all(
               color: isActive
-                  ? AppTheme.accentCyan
-                  : Colors.white.withValues(alpha: 0.3),
+                  ? AppColors.ink
+                  : AppColors.amber200.withValues(alpha: 0.6),
             ),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             label,
             style: TextStyle(
-              color: isActive ? Colors.white : Colors.white70,
+              color: isActive ? Colors.white : AppColors.ink,
               fontWeight: FontWeight.w700,
               fontSize: 13,
             ),

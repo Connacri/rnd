@@ -9,10 +9,10 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get address => 'Adresse';
+  String get address => 'Adresse / Quartier';
 
   @override
-  String get addressOptional => 'Adresse (optionnel)';
+  String get addressOptional => 'Adresse / Quartier (optionnel)';
 
   @override
   String get age => 'Âge';
@@ -27,14 +27,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get appName => 'Nos Candidats';
 
   @override
+  String get appPreviewSubtitle =>
+      'Découvrez les écrans officiels de la campagne';
+
+  @override
+  String get appPreviewTitle => 'Aperçu de l\'application';
+
+  @override
   String get approach =>
       'Notre approche repose sur l\'écoute, la proximité et la transparence. Chaque projet, chaque décision sera prise avec et pour vous.';
 
   @override
-  String get audioMessage => 'Message audio';
+  String get audioMessage => 'Message audio du candidat';
 
   @override
-  String get candidate => 'Candidat';
+  String get candidate => 'Le Candidat';
 
   @override
   String get candidateName => 'Zenasni Nabil';
@@ -57,13 +64,17 @@ class AppLocalizationsFr extends AppLocalizations {
       'Zenasni Nabil, Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Un engagement fort pour le développement local, la transparence et la proximité avec les citoyens.';
 
   @override
+  String get developerCredit =>
+      'Développé par FORSLOG LTD — Codé par Ramzy Guedouar — Contact : 0696 41 09 53';
+
+  @override
   String get development => 'Développement';
 
   @override
-  String get developmentDesc => 'Croissance durable';
+  String get developmentDesc => 'Croissance économique durable';
 
   @override
-  String get discoverProgram => 'Découvrir';
+  String get discoverProgram => 'Découvrir nos 6 piliers';
 
   @override
   String get elections2026 => 'Élections Communales 2026';
@@ -103,7 +114,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get footerDesc =>
-      'Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Engagé pour le développement local et le bien-être de tous les citoyens.';
+      'Secrétaire du Bureau Communal du RND à Aïn El Turck, Oran. Engagé pour le développement local et le bien-être de tous les concitoyens.';
 
   @override
   String get fullName => 'Nom complet';
@@ -124,10 +135,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get joinUs => 'Devenir Adhérent';
 
   @override
+  String get languageLabel => 'Langue';
+
+  @override
   String get learnMore => 'En savoir plus';
 
   @override
-  String get login => 'Se connecter';
+  String get login => 'Connexion';
 
   @override
   String get loginError => 'Erreur de connexion';
@@ -158,6 +172,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get messageOptional => 'Message (optionnel)';
 
   @override
+  String get navCandidate => 'Candidat';
+
+  @override
+  String get navEvents => 'Agenda';
+
+  @override
+  String get navHome => 'Accueil';
+
+  @override
+  String get navMembership => 'Adhésion';
+
+  @override
+  String get navProgram => 'Programme';
+
+  @override
   String get name => 'Nom';
 
   @override
@@ -180,6 +209,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get party => 'RND - Rassemblement National Démocratique';
+
+  @override
+  String get partyShort => 'RND';
 
   @override
   String get password => 'Mot de passe';
@@ -218,7 +250,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get proximityDesc => 'À l\'écoute directe des citoyens';
 
   @override
-  String get register => 'S\'inscrire';
+  String get register => 'Créer un compte';
 
   @override
   String get registerError => 'Erreur d\'inscription';
@@ -235,7 +267,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rndDescription => 'Le RND, une force de progrès pour l\'Algérie';
 
   @override
-  String get secretary => 'Secrétaire';
+  String get secretary => 'Secrétaire du Bureau Communal';
 
   @override
   String get seeEvents => 'Consulter l\'agenda citoyen';
@@ -296,29 +328,30 @@ class AppLocalizationsFr extends AppLocalizations {
   String get emailPlaceholder => 'votre@email.com';
 
   @override
-  String get phonePlaceholder => '0X XX XX XX XX';
+  String get phonePlaceholder => '05 XX XX XX XX';
 
   @override
-  String get agePlaceholder => 'Votre âge';
+  String get agePlaceholder => 'Ex. 28';
 
   @override
-  String get professionPlaceholder => 'Votre profession';
+  String get professionPlaceholder => 'Ex. Enseignant, Commerçant...';
 
   @override
-  String get addressPlaceholder => 'Votre adresse';
+  String get addressPlaceholder => 'Ex. Trouville, Bouisseville...';
 
   @override
-  String get messagePlaceholder => 'Votre message...';
+  String get messagePlaceholder => 'Partagez votre message ou vos attentes...';
 
   @override
-  String get suggestionPlaceholder => 'Votre suggestion ou proposition...';
+  String get suggestionPlaceholder =>
+      'Votre idée pour améliorer Aïn El Turck...';
 
   @override
-  String get forgotPasswordTitle => 'Mot de passe oublié';
+  String get forgotPasswordTitle => 'Réinitialisation';
 
   @override
   String get forgotPasswordHint =>
-      'Entrez votre email et nous vous enverrons un lien pour réinitialiser votre mot de passe.';
+      'Entrez votre email pour recevoir le lien de réinitialisation.';
 
   @override
   String get sendResetEmail => 'Envoyer le lien';
@@ -341,5 +374,5 @@ class AppLocalizationsFr extends AppLocalizations {
   String get retry => 'Réessayer';
 
   @override
-  String get latestNews => 'Actualités';
+  String get latestNews => 'Actualités & Communiqués';
 }

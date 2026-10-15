@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rnd_campaign_app/core/utils/localized_text.dart';
+import 'package:rnd_campaign_app/app/theme.dart';
 
 /// Chiffre de la page d'accueil (table `home_stats`).
 class HomeStat {
@@ -57,7 +58,7 @@ class NewsItem {
 }
 
 /// Utilitaire hex → Color pour les accents du programme.
-Color colorFromHex(String? hex, {Color fallback = const Color(0xFF00d4ff)}) {
+Color colorFromHex(String? hex, {Color fallback = AppColors.ink}) {
   if (hex == null || hex.isEmpty) return fallback;
   final value = hex.replaceFirst('#', '');
   if (value.length != 6) return fallback;

@@ -108,6 +108,29 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
       désormais envoyé avec `changesNotSentForReview: true` (release déposée en
       modification en attente, à valider dans la Play Console).
 
+- [x] **Thème Flutter aligné sur le site** ✅ — `lib/app/theme.dart` porte la
+      palette claire du site (crème `#FAF7F2`, ambre `#FBBF24`/`#FDE68A`, encre
+      `#18181B`, zinc, rose) et `AppTheme.lightTheme` remplace l'ancien thème
+      sombre. Nouvelle coquille `lib/app/app_shell.dart` : ruban tricolore +
+      bandeau officiel, en-tête de marque, navigation desktop en pilules
+      (max 1152 px) et barre mobile flottante sombre à onglet actif
+      ambre→rose, bascule de langue FR/AR/EN (chips sur desktop, menu collant
+      comprenant globe sur mobile). Les 5 écrans de navigation (accueil,
+      programme, candidat, événements, adhésion) sont enveloppés dans la
+      coquille ; le héro reprend les éléments du site (pastille « Élections
+      Communales 2026 », avatar, nom, fonction, parti, carte slogan/biographie,
+      lecteur audio, boutons pilules).
+- [x] **Textes de l'app alignés sur le site** ✅ — 66 valeurs (`fr`/`en`/`ar`)
+      harmonisées avec `src/i18n/translations.ts`, dont `phonePlaceholder`
+      (`05 XX XX XX XX`), `forgotPasswordTitle`, `latestNews`,
+      `candidate` (« Le Candidat »), `discoverProgram`, `footerDesc`,
+      `login`/`register`. Nouvelles clés : `navHome`, `navProgram`,
+      `navCandidate`, `navEvents`, `navMembership`, `partyShort`,
+      `developerCredit`, `appPreviewTitle`, `appPreviewSubtitle` (ARB +
+      `flutter gen-l10n`). Le pied de page reprend le modèle clair du site
+      (emblème, ruban tricolore, pastilles réseaux, crédit développeur
+      localisé) ; plus aucune chaîne accentuée codée en dur dans les écrans.
+
 ## À faire
 
 - [ ] **Envoi Play réel** : `PLAY_UPLOAD_ENABLED` vaut déjà `true` ; le job
@@ -124,14 +147,14 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
 - [ ] **Visuels de fiche incomplets** : seules les listes `fr-FR` ont une
       bannière (`featureGraphic`) et des captures d'écran ; `en-US` et `ar`
       n'ont que l'icône. Prévoir une bannière 1024x500 et au moins 2 captures
-      par langue avant publication (les captures `fr-FR` montrent encore
-      l'ancienne interface sombre : les refaire après la refonte du thème).
+      par langue avant publication. Le thème clair est désormais en place : les
+      captures `fr-FR` (ancienne interface sombre) et les visuels du README
+      (`assets/images/10000111xx.png`) sont à refaire à partir de l'app
+      restylée.
 - [ ] **Brouillon fantôme sur le canal production** : une release **draft sans
       versionCode** existe sur `production` (créée le 12/10/2026) et bloque
       l'état « Pas encore envoyé pour examen ». À supprimer ou compléter
       depuis la Play Console avant/après le premier envoi CI.
-- [ ] **Thème Flutter** : reporter le thème du site (crème `#FAF7F2`, ambre
-      `#FBBF24`) sur `lib/app/theme.dart`.
 - [x] **Nettoyage** : `.config/opencode/opencode.json` supprimé — doublon
       partiel de `opencode.json` (racine du dépôt). Toute la config de projet
       reste dans `opencode.json`.

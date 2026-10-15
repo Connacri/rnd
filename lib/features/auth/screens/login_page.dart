@@ -6,6 +6,7 @@ import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 import 'package:rnd_campaign_app/widgets/language_switcher.dart';
+import 'package:rnd_campaign_app/app/theme.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -69,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     final l = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0a1628),
+      backgroundColor: AppColors.cream,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -85,12 +86,12 @@ class _LoginPageState extends State<LoginPage> {
                     AppConstants.appName,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppColors.ink,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(AppConstants.slogan,
-                      style: const TextStyle(color: Colors.white70)),
+                      style: const TextStyle(color: AppColors.zinc700)),
                   const SizedBox(height: 48),
                   TextFormField(
                     controller: _emailController,
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: Text(
                         l.forgotPassword,
-                        style: const TextStyle(color: Colors.white70),
+                        style: const TextStyle(color: AppColors.zinc700),
                       ),
                     ),
                   ),
@@ -136,15 +137,15 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      const Expanded(child: Divider(color: Colors.white24)),
+                      const Expanded(child: Divider(color: AppColors.amber200)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
                           '•',
-                          style: const TextStyle(color: Colors.white38),
+                          style: const TextStyle(color: AppColors.zinc500),
                         ),
                       ),
-                      const Expanded(child: Divider(color: Colors.white24)),
+                      const Expanded(child: Divider(color: AppColors.amber200)),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -153,8 +154,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: OutlinedButton.icon(
                       onPressed: auth.isLoading ? null : _googleSignIn,
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(color: Colors.white30),
+                        foregroundColor: AppColors.ink,
+                        side: const BorderSide(color: AppColors.amber200),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       icon: const Icon(Icons.g_mobiledata, size: 28),

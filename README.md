@@ -87,6 +87,7 @@ notifications push s'appuient sur **Firebase**.
 | **Notifications** | Actualités poussées via FCM (topic `news`) + notifications locales |
 | **Langues** | Français, Arabe (RTL) et Anglais |
 | **Hors ligne** | Repli automatique sur les données statiques si Supabase est injoignable |
+| **Design** | Identité visuelle alignée sur le site web (thème clair crème/ambre, ruban tricolore, navigation en pilules, bascule FR/AR/EN) |
 
 ## Stack technique
 
@@ -120,10 +121,11 @@ rnd/
 │   ├── icons/                      # Icône et splash sources + générés
 │   └── images/                     # Visuels et captures d'écran
 ├── lib/
-│   ├── app/                        # MaterialApp, routes, thème
+│   ├── app/                        # MaterialApp, routes, coquille, thème
 │   │   ├── app.dart
+│   │   ├── app_shell.dart          # En-tête + ruban + navigation (identité du site)
 │   │   ├── routes.dart
-│   │   └── theme.dart
+│   │   └── theme.dart              # Palette claire partagée avec le site (crème/ambre)
 │   ├── core/
 │   │   ├── constants/              # Constantes applicatives et Supabase
 │   │   ├── providers/              # Providers transverses (langue)

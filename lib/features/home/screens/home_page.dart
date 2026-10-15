@@ -2,106 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:rnd_campaign_app/app/app_shell.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/providers/language_provider.dart';
 import 'package:rnd_campaign_app/core/services/translation_service.dart';
-import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/features/content/models/content_models.dart';
 import 'package:rnd_campaign_app/features/content/providers/content_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
-import 'package:rnd_campaign_app/widgets/language_switcher.dart';
+import 'package:rnd_campaign_app/app/theme.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF0a1628),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const _HomeTopBar(),
-              const _HeroSection(),
-              const _StatsSection(),
-              const _NewsSection(),
-              const _AboutSection(),
-              const _QuickLinksSection(),
-              const _ScreenshotsSection(),
-              const _FooterSection(),
-            ],
-          ),
+    return AppShell(
+      currentRoute: AppRoutes.home,
+      child: SingleChildScrollView(
+        child: Column(
+          children: const [
+            _HeroSection(),
+            _StatsSection(),
+            _NewsSection(),
+            _AboutSection(),
+            _QuickLinksSection(),
+            _ScreenshotsSection(),
+            _FooterSection(),
+          ],
         ),
       ),
-    );
-  }
-}
-
-class _HomeTopBar extends StatelessWidget {
-  const _HomeTopBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Image.asset(
-                'assets/icons/icon.png',
-                height: 36,
-                errorBuilder: (_, __, ___) => const SizedBox(),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                AppLocalizations.of(context)!.appName,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  letterSpacing: 1.5,
-                ),
-              ),
-            ],
-          ),
-          const Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              LanguageSwitcher(),
-              SizedBox(width: 8),
-              _AuthAction(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _AuthAction extends StatelessWidget {
-  const _AuthAction();
-
-  @override
-  Widget build(BuildContext context) {
-    final auth = context.watch<AuthProvider>();
-    final l = AppLocalizations.of(context)!;
-    return IconButton(
-      tooltip: auth.isAuthenticated ? l.logout : l.login,
-      icon: Icon(
-        auth.isAuthenticated ? Icons.logout : Icons.login,
-        color: Colors.white70,
-        size: 20,
-      ),
-      onPressed: () {
-        if (auth.isAuthenticated) {
-          auth.logout();
-        } else {
-          Navigator.pushNamed(context, AppRoutes.login);
-        }
-      },
     );
   }
 }
@@ -112,29 +41,61 @@ class _HeroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final togetherParts = l.together.split(l.togetherHighlight);
+    // Candidat : Supabase si présent, sinon libellés L10n statiques.
+    final candidate = context.watch<ContentProvider>().candidate;
+    final lang = TranslationService.currentLang;
+    final name =
+        candidate?.name.isNotEmpty == true ? candidate!.name : l.candidateName;
+    final role = candidate != null && candidate.roleFor(lang).isNotEmpty
+        ? candidate.roleFor(lang)
+        : l.secretary;
+    final party = candidate != null && candidate.partyFor(lang).isNotEmpty
+        ? candidate.partyFor(lang)
+        : l.party;
+    final biography =
+        candidate != null && candidate.biographyFor(lang).isNotEmpty
+            ? candidate.biographyFor(lang)
+            : l.description;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
-      decoration: const BoxDecoration(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF0a1628), Color(0xFF0d1b2a)],
+          colors: [
+            AppColors.amber200.withValues(alpha: 0.35),
+            AppColors.cream,
+          ],
         ),
       ),
       child: Column(
         children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+            decoration: BoxDecoration(
+              color: AppColors.ink,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              '✨ ${l.elections2026}',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: AppColors.amber300,
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
           Container(
-            width: 120,
-            height: 120,
+            width: 130,
+            height: 130,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFF00d4ff), width: 3),
+              border: Border.all(color: AppColors.amber400, width: 3),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF00d4ff).withValues(alpha: 0.3),
+                  color: AppColors.amber.withValues(alpha: 0.25),
                   blurRadius: 30,
                 ),
               ],
@@ -146,55 +107,71 @@ class _HeroSection extends StatelessWidget {
                 errorBuilder: (_, __, ___) => const Icon(
                   Icons.person,
                   size: 60,
-                  color: Colors.white,
+                  color: AppColors.ink,
                 ),
               ),
             ),
           ),
           const SizedBox(height: 16),
           Text(
-            l.elections2026,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF00d4ff),
-              letterSpacing: 3,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                    text: togetherParts.isNotEmpty ? togetherParts[0] : ''),
-                TextSpan(
-                  text: l.togetherHighlight,
-                  style: TextStyle(
-                    color: const Color(0xFF00d4ff),
-                    fontFamily: GoogleFonts.roboto().fontFamily,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                TextSpan(
-                    text: togetherParts.length > 1 ? togetherParts[1] : ''),
-              ],
-            ),
+            name,
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(
               fontSize: 28,
               fontWeight: FontWeight.w900,
-              color: Colors.white,
-              height: 1.1,
+              color: AppColors.ink,
+              letterSpacing: -0.5,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 4),
           Text(
-            l.description,
+            role,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white.withValues(alpha: 0.65),
-              height: 1.6,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: AppColors.rose600,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            party,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12, color: AppColors.zinc500),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.8),
+              border:
+                  Border.all(color: AppColors.amber200.withValues(alpha: 0.6)),
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  l.slogan,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.italic,
+                    color: AppColors.zinc700,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  biography,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.zinc500,
+                    height: 1.6,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 20),
@@ -283,10 +260,13 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0x330047AB), Color(0x2A00A651)],
+        gradient: LinearGradient(
+          colors: [
+            AppColors.amber200.withValues(alpha: 0.35),
+            AppColors.surfaceBeige.withValues(alpha: 0.6),
+          ],
         ),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        border: Border.all(color: AppColors.amber200.withValues(alpha: 0.9)),
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -299,15 +279,15 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
               height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFF00d4ff)),
+                border: Border.all(color: AppColors.ink),
                 color: _isPlaying
-                    ? const Color(0xFF00d4ff)
-                    : const Color(0xFF00d4ff).withValues(alpha: 0.15),
+                    ? AppColors.ink
+                    : AppColors.ink.withValues(alpha: 0.12),
               ),
               child: Center(
                 child: Text(
                   _isPlaying ? '⏸' : '▶',
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  style: const TextStyle(color: AppColors.ink, fontSize: 14),
                 ),
               ),
             ),
@@ -324,7 +304,7 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
                       gradient: const LinearGradient(
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
-                        colors: [Color(0xFF00d4ff), Color(0xFFd4af37)],
+                        colors: [AppColors.ink, AppColors.amber400],
                       ),
                       borderRadius: BorderRadius.circular(2),
                     ),
@@ -334,7 +314,7 @@ class _AudioPlayerWidgetState extends State<_AudioPlayerWidget> {
             l.audioMessage,
             style: TextStyle(
               fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.7),
+              color: AppColors.zinc700,
             ),
           ),
         ],
@@ -360,7 +340,7 @@ class _HeroButton extends StatelessWidget {
       return ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF00d4ff),
+          backgroundColor: AppColors.ink,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
           shape:
@@ -373,8 +353,8 @@ class _HeroButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onTap,
       style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.white,
-        side: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+        foregroundColor: AppColors.ink,
+        side: BorderSide(color: AppColors.amber200.withValues(alpha: 0.6)),
         padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       ),
@@ -394,12 +374,15 @@ class _StatsSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0x4D0047AB), Color(0x3300A651)],
+        gradient: LinearGradient(
+          colors: [
+            AppColors.amber200.withValues(alpha: 0.5),
+            AppColors.amber400.withValues(alpha: 0.3)
+          ],
         ),
         border: Border(
-          top: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
-          bottom: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+          top: BorderSide(color: AppColors.amber200.withValues(alpha: 0.9)),
+          bottom: BorderSide(color: AppColors.amber200.withValues(alpha: 0.9)),
         ),
       ),
       child: LayoutBuilder(
@@ -449,7 +432,7 @@ class _NewsSection extends StatelessWidget {
             style: GoogleFonts.roboto(
               fontSize: 26,
               fontWeight: FontWeight.w900,
-              color: Colors.white,
+              color: AppColors.ink,
             ),
           ),
           const SizedBox(height: 16),
@@ -473,8 +456,8 @@ class _NewsTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        color: AppColors.surfaceBeige.withValues(alpha: 0.5),
+        border: Border.all(color: AppColors.amber200.withValues(alpha: 0.9)),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -483,7 +466,7 @@ class _NewsTile extends StatelessWidget {
           Row(
             children: [
               const Icon(Icons.campaign_outlined,
-                  color: Color(0xFF00d4ff), size: 20),
+                  color: AppColors.ink, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -491,7 +474,7 @@ class _NewsTile extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 15,
-                    color: Colors.white,
+                    color: AppColors.ink,
                   ),
                 ),
               ),
@@ -503,7 +486,7 @@ class _NewsTile extends StatelessWidget {
               item.bodyFor(lang),
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white.withValues(alpha: 0.7),
+                color: AppColors.zinc700,
                 height: 1.5,
               ),
             ),
@@ -514,7 +497,7 @@ class _NewsTile extends StatelessWidget {
               '${date.day}/${date.month}/${date.year}',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.white.withValues(alpha: 0.4),
+                color: AppColors.zinc500,
               ),
             ),
           ],
@@ -540,8 +523,8 @@ class _StatItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        color: Colors.white,
+        border: Border.all(color: AppColors.amber200.withValues(alpha: 0.9)),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -549,25 +532,20 @@ class _StatItem extends StatelessWidget {
         children: [
           Text(icon, style: const TextStyle(fontSize: 28)),
           const SizedBox(height: 6),
-          ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [Color(0xFF00d4ff), Color(0xFFd4af37)],
-            ).createShader(bounds),
-            child: Text(
-              number,
-              style: GoogleFonts.roboto(
-                fontSize: 22,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
-              ),
+          Text(
+            number,
+            style: GoogleFonts.roboto(
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+              color: AppColors.ink,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppColors.zinc500,
               letterSpacing: 1,
             ),
           ),
@@ -590,8 +568,7 @@ class _AboutSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             decoration: BoxDecoration(
-              border: Border.all(
-                  color: const Color(0xFF00d4ff).withValues(alpha: 0.3)),
+              border: Border.all(color: AppColors.ink.withValues(alpha: 0.3)),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Text(
@@ -599,7 +576,7 @@ class _AboutSection extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF00d4ff),
+                color: AppColors.ink,
                 letterSpacing: 3,
               ),
             ),
@@ -611,7 +588,7 @@ class _AboutSection extends StatelessWidget {
             style: GoogleFonts.roboto(
               fontSize: 28,
               fontWeight: FontWeight.w900,
-              color: Colors.white,
+              color: AppColors.ink,
             ),
           ),
           const SizedBox(height: 16),
@@ -620,7 +597,7 @@ class _AboutSection extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppColors.zinc700,
               height: 1.7,
             ),
           ),
@@ -628,10 +605,14 @@ class _AboutSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0x260047AB), Color(0x1A00A651)],
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.amber200.withValues(alpha: 0.2),
+                  AppColors.amber400.withValues(alpha: 0.1)
+                ],
               ),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+              border:
+                  Border.all(color: AppColors.amber200.withValues(alpha: 0.9)),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
@@ -641,7 +622,7 @@ class _AboutSection extends StatelessWidget {
                   '"',
                   style: TextStyle(
                     fontSize: 64,
-                    color: const Color(0xFF00d4ff).withValues(alpha: 0.1),
+                    color: AppColors.ink.withValues(alpha: 0.1),
                     height: 0.8,
                   ),
                 ),
@@ -651,7 +632,7 @@ class _AboutSection extends StatelessWidget {
                   style: GoogleFonts.roboto(
                     fontSize: 22,
                     fontWeight: FontWeight.w900,
-                    color: Colors.white,
+                    color: AppColors.ink,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -659,7 +640,7 @@ class _AboutSection extends StatelessWidget {
                   l.visionText,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.white.withValues(alpha: 0.7),
+                    color: AppColors.zinc700,
                     height: 1.7,
                   ),
                 ),
@@ -672,7 +653,7 @@ class _AboutSection extends StatelessWidget {
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF00d4ff),
+              color: AppColors.ink,
             ),
           ),
           const SizedBox(height: 16),
@@ -681,7 +662,7 @@ class _AboutSection extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.white.withValues(alpha: 0.7),
+              color: AppColors.zinc700,
               height: 1.7,
             ),
           ),
@@ -730,8 +711,8 @@ class _FeatureItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        color: Colors.white,
+        border: Border.all(color: AppColors.amber200.withValues(alpha: 0.9)),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -748,15 +729,15 @@ class _FeatureItem extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
-                    color: Colors.white,
+                    color: AppColors.ink,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withValues(alpha: 0.6),
+                    color: AppColors.zinc500,
                   ),
                   maxLines: 2,
                 ),
@@ -829,14 +810,15 @@ class _LinkCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white.withValues(alpha: 0.05),
+      color: Colors.white,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
         child: Ink(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+            border:
+                Border.all(color: AppColors.amber200.withValues(alpha: 0.9)),
             borderRadius: BorderRadius.circular(16),
           ),
           child: ListTile(
@@ -845,12 +827,10 @@ class _LinkCard extends StatelessWidget {
                 style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
-                    color: Colors.white)),
+                    color: AppColors.ink)),
             subtitle: Text(subtitle,
-                style: TextStyle(
-                    fontSize: 13, color: Colors.white.withValues(alpha: 0.5))),
-            trailing: Icon(Icons.chevron_right,
-                color: Colors.white.withValues(alpha: 0.3)),
+                style: const TextStyle(fontSize: 13, color: AppColors.zinc500)),
+            trailing: const Icon(Icons.chevron_right, color: AppColors.amber),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           ),
@@ -865,62 +845,87 @@ class _ScreenshotsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const screenshots = [
-      ('assets/images/1000011155.png', 'Accueil'),
-      ('assets/images/1000011156.png', 'Programme'),
-      ('assets/images/1000011157.png', 'Adhésion'),
-      ('assets/images/1000011158.png', 'Événements'),
+    final l = AppLocalizations.of(context)!;
+    final screenshots = [
+      ('assets/images/1000011155.png', l.navHome),
+      ('assets/images/1000011156.png', l.program),
+      ('assets/images/1000011157.png', l.membership),
+      ('assets/images/1000011158.png', l.events),
     ];
     return Container(
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
           const SizedBox(height: 24),
-          const Text(
-            'Aperçu de l\'application',
-            style: TextStyle(
+          Text(
+            l.appPreviewTitle,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w900,
-              color: Colors.white,
+              color: AppColors.ink,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Text(
-            'Captures d\'écran',
+            l.appPreviewSubtitle,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.white.withValues(alpha: 0.5),
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.zinc500,
             ),
           ),
           const SizedBox(height: 24),
-          ...screenshots.map((s) => Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.15)),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: Image.asset(s.$1,
-                          fit: BoxFit.contain,
-                          errorBuilder: (_, __, ___) => const SizedBox()),
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            childAspectRatio: 0.62,
+            children: screenshots
+                .map(
+                  (s) => Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color: AppColors.amber200.withValues(alpha: 0.9)),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      s.$2,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white.withValues(alpha: 0.7),
-                        fontWeight: FontWeight.w600,
-                      ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(14),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Image.asset(
+                                s.$1,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) =>
+                                    const SizedBox.shrink(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          s.$2,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.ink,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                )
+                .toList(),
+          ),
         ],
       ),
     );
@@ -934,79 +939,110 @@ class _FooterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 48, 24, 32),
-      color: const Color(0xFF070f1a),
+      padding: const EdgeInsets.fromLTRB(24, 32, 24, 28),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: AppColors.amber200.withValues(alpha: 0.5)),
+        ),
+      ),
       child: Column(
         children: [
-          Text(
-            '${l.candidateName} - ${l.party}',
-            style: GoogleFonts.roboto(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
+          Container(
+            width: 48,
+            height: 48,
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
               color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border:
+                  Border.all(color: AppColors.amber200.withValues(alpha: 0.8)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Image.asset(
+              'assets/icons/icon.png',
+              fit: BoxFit.contain,
+              errorBuilder: (_, __, ___) => const SizedBox.shrink(),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _FlagBar(color: AppColors.partyBlue),
+              const SizedBox(width: 6),
+              _FlagBar(color: AppColors.partyGreen),
+              const SizedBox(width: 6),
+              _FlagBar(color: AppColors.partyRed),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '${l.candidateName} — ${l.partyShort}',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.roboto(
+              fontSize: 15,
+              fontWeight: FontWeight.w900,
+              color: AppColors.ink,
+            ),
+          ),
+          const SizedBox(height: 4),
           Text(
             l.footerDesc,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 13, color: Colors.white.withValues(alpha: 0.5)),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _SocialBadge(label: 'FB'),
-              const SizedBox(width: 8),
-              _SocialBadge(label: 'TW'),
-              const SizedBox(width: 8),
-              _SocialBadge(label: 'IG'),
-              const SizedBox(width: 8),
-              _SocialBadge(label: 'LI'),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                  width: 24,
-                  height: 3,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF0047AB),
-                      borderRadius: BorderRadius.circular(2))),
-              const SizedBox(width: 4),
-              Container(
-                  width: 24,
-                  height: 3,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF00A651),
-                      borderRadius: BorderRadius.circular(2))),
-              const SizedBox(width: 4),
-              Container(
-                  width: 24,
-                  height: 3,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFFC8102E),
-                      borderRadius: BorderRadius.circular(2))),
-            ],
+            style: const TextStyle(fontSize: 12, color: AppColors.zinc500),
           ),
           const SizedBox(height: 16),
+          const Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _SocialBadge(label: 'Facebook'),
+              _SocialBadge(label: 'Twitter'),
+              _SocialBadge(label: 'Instagram'),
+              _SocialBadge(label: 'Telegram'),
+            ],
+          ),
+          const SizedBox(height: 20),
           Text(
             l.rights,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 12, color: Colors.white.withValues(alpha: 0.3)),
+            style: const TextStyle(fontSize: 11, color: AppColors.zinc500),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Text(
-            '© Developed by FORSLOG LTD — Coded by Ramzy Guedouar — Contact: 0696 41 09 53',
+            l.developerCredit,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 11, color: Colors.white.withValues(alpha: 0.2)),
+              fontSize: 10,
+              color: AppColors.zinc500.withValues(alpha: 0.8),
+            ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _FlagBar extends StatelessWidget {
+  const _FlagBar({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 32,
+      height: 6,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(3),
       ),
     );
   }
@@ -1019,17 +1055,18 @@ class _SocialBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 36,
-      height: 36,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        color: const Color(0xFFE4E4E7).withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(50),
       ),
-      child: Center(
-        child: Text(label,
-            style: TextStyle(
-                fontSize: 11, color: Colors.white.withValues(alpha: 0.7))),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          color: AppColors.zinc700,
+        ),
       ),
     );
   }

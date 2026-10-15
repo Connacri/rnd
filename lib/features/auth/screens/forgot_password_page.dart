@@ -5,6 +5,7 @@ import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
 import 'package:rnd_campaign_app/widgets/language_switcher.dart';
+import 'package:rnd_campaign_app/app/theme.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -48,7 +49,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final l = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0a1628),
+      backgroundColor: AppColors.cream,
       appBar: AppBar(title: Text(l.forgotPasswordTitle)),
       body: SafeArea(
         child: Center(
@@ -70,14 +71,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               .headlineMedium
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: AppColors.ink,
                               ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           l.forgotPasswordHint,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white70),
+                          style: const TextStyle(color: AppColors.zinc700),
                         ),
                         const SizedBox(height: 32),
                         TextFormField(
@@ -122,23 +123,23 @@ class _SentConfirmation extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Icon(Icons.mark_email_read_outlined,
-            size: 72, color: Colors.white70),
+            size: 72, color: AppColors.zinc700),
         const SizedBox(height: 24),
         Text(
           l.resetEmailSent,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
+          style: const TextStyle(color: AppColors.ink, fontSize: 16),
         ),
         const SizedBox(height: 8),
         Text(
           email,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white70),
+          style: const TextStyle(color: AppColors.zinc700),
         ),
         const SizedBox(height: 32),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(l.login, style: const TextStyle(color: Colors.white)),
+          child: Text(l.login, style: const TextStyle(color: AppColors.ink)),
         ),
       ],
     );

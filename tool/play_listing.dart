@@ -7,6 +7,7 @@
 //   dart run tool/play_listing.dart check     # compare avec store/play/
 //   dart run tool/play_listing.dart apply     # applique store/play/listings.json
 //   dart run tool/play_listing.dart icon      # televerse store/play/icon-512.png
+//   dart run tool/play_listing.dart graphics  # televerse la banniere + les captures
 //   dart run tool/play_listing.dart signing   # empreintes du certificat Play
 //
 // Identifiants : PLAY_SERVICE_ACCOUNT_JSON (JSON en ligne, utilise par la CI)
@@ -33,8 +34,22 @@ const _listingsPath = 'store/play/listings.json';
 /// tool/generate_assets.dart).
 const _iconPath = 'store/play/icon-512.png';
 
+/// Banniere de la fiche Play (1024x500, produite par
+/// `flutter test tool/play_graphics_test.dart`).
+const _featureGraphicPath = 'store/play/feature-graphic-1024x500.png';
+
+/// Captures d'ecran de la fiche, rangees par langue :
+/// `store/play/screenshots/<langue>/NN.png` (dans l'ordre alphabetique).
+const _screenshotsDir = 'store/play/screenshots';
+
 /// Type d'image Play de l'icone de l'application.
 const _iconImageType = 'icon';
+
+/// Type d'image Play de la banniere de la fiche.
+const _featureGraphicType = 'featureGraphic';
+
+/// Type d'image Play des captures d'ecran pour telephone.
+const _phoneScreenshotType = 'phoneScreenshots';
 
 /// Nom de paquet par defaut (application publiee).
 const _defaultPackageName = 'com.rnd.dz';
@@ -71,11 +86,14 @@ Future<void> main(List<String> args) async {
         await _apply(api, dryRun: dryRun);
       case 'icon':
         await _icon(api, dryRun: dryRun);
+      case 'graphics':
+        await _graphics(api, dryRun: dryRun);
       case 'signing':
         await _signing(api);
       default:
         stderr.writeln('Commande inconnue : $command');
-        stderr.writeln('Commandes : list, images, check, apply, icon, signing');
+        stderr.writeln(
+            'Commandes : list, images, check, apply, icon, graphics, signing');
         exit(1);
     }
   } on PlayApiException {
@@ -243,6 +261,116 @@ File _iconFile() {
     exit(1);
   }
   return file;
+}
+
+/// Televerse la banniere (_featureGraphicPath) et les captures
+/// (`_screenshotsDir/<langue>/NN.png`) pour chaque langue de la fiche.
+///
+/// Les visuels absents localement sont ignores : la commande peut donc etre
+/// executee en continu par la CI avant que tous les visuels soient prets.
+Future<void> _graphics(_PublisherApi api, {required bool dryRun}) async {
+  final languages = _readListings().keys.toList();
+  final banner = File(_featureGraphicPath);
+  final hasBanner = banner.existsSync();
+  final screenshots = <String, List<File>>{
+    for (final String lang in languages) lang: _screenshotFiles(lang),
+  };
+
+  if (dryRun) {
+    stdout.writeln('--dry-run : rien ne sera televerse. Visuels locaux :');
+    stdout.writeln('  banniere : '
+        '${hasBanner ? _featureGraphicPath : 'absente ($_featureGraphicPath)'}');
+    for (final MapEntry(key: lang, value: files) in screenshots.entries) {
+      stdout.writeln('  captures $lang : ${files.length}');
+    }
+    return;
+  }
+
+  final editId = await api.openEdit();
+  try {
+    if (hasBanner) {
+      final bytes = banner.readAsBytesSync();
+      final localSha1 = _sha1(bytes);
+      stdout.writeln('Banniere locale : ${await _imageSize(banner)}, '
+          'SHA-1 ${localSha1.substring(0, 8)}...');
+      for (final String lang in languages) {
+        final current =
+            await api.listingImages(editId, lang, _featureGraphicType);
+        if (current.length == 1 && current.single.sha1 == localSha1) {
+          stdout.writeln('  $lang : banniere deja a jour');
+          continue;
+        }
+        if (current.isNotEmpty) {
+          // La fiche n'accepte qu'une banniere : l'ancienne doit partir.
+          await api.deleteListingImages(editId, lang, _featureGraphicType);
+        }
+        await api.uploadListingImage(editId, lang, _featureGraphicType, bytes);
+        stdout.writeln('  $lang : banniere mise a jour');
+      }
+    } else {
+      stdout.writeln('Banniere absente ($_featureGraphicPath), ignoree.');
+    }
+
+    for (final String lang in languages) {
+      final files = screenshots[lang]!;
+      if (files.isEmpty) {
+        stdout.writeln('  $lang : aucune capture locale, ignorees');
+        continue;
+      }
+      final local = {
+        for (final file in files) _sha1(file.readAsBytesSync()),
+      };
+      final current =
+          await api.listingImages(editId, lang, _phoneScreenshotType);
+      if (_sameImages(current.map((image) => image.sha1), local)) {
+        stdout.writeln('  $lang : ${files.length} capture(s) deja a jour');
+        continue;
+      }
+      if (current.isNotEmpty) {
+        await api.deleteListingImages(editId, lang, _phoneScreenshotType);
+      }
+      for (final file in files) {
+        await api.uploadListingImage(
+            editId, lang, _phoneScreenshotType, file.readAsBytesSync());
+      }
+      stdout.writeln('  $lang : ${files.length} capture(s) mises a jour');
+    }
+
+    final pendingReview = await api.commitEdit(editId);
+    if (pendingReview) {
+      stdout.writeln('Visuels enregistres et en attente : envoyez les '
+          'changements en revue depuis la Play Console.');
+    } else {
+      stdout.writeln('Visuels mis a jour (en revue chez Google).');
+    }
+  } catch (_) {
+    try {
+      await api.discardEdit(editId);
+    } catch (_) {
+      // Abandon impossible : la modification reste ouverte et sera reprise.
+    }
+    rethrow;
+  }
+}
+
+/// Captures locales d'une langue, triees par nom de fichier (NN.png).
+List<File> _screenshotFiles(String language) {
+  final dir = Directory('$_screenshotsDir/$language');
+  if (!dir.existsSync()) return const [];
+  final files = dir
+      .listSync()
+      .whereType<File>()
+      .where((file) => file.path.toLowerCase().endsWith('.png'))
+      .toList()
+    ..sort((a, b) => a.path.compareTo(b.path));
+  return files;
+}
+
+/// Vrai si deux ensembles d'empreintes SHA-1 sont identiques (meme contenu).
+bool _sameImages(Iterable<String> current, Iterable<String> local) {
+  final a = current.toSet();
+  final b = local.toSet();
+  return a.length == b.length && a.containsAll(b);
 }
 
 /// Empreinte SHA-1 d'un contenu binaire (format renvoye par l'API Play).

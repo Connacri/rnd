@@ -146,6 +146,8 @@ rnd/
 ├── tool/                           # Scripts utilitaires (assets, fiche Play, notifications)
 ├── store/play/listings.json        # Fiche Play (nom + descriptions fr/en/ar)
 ├── store/play/icon-512.png         # Icône de la fiche Play (512x512, générée)
+├── store/play/feature-graphic-*.png # Bannière de la fiche Play (1024x500, générée)
+├── store/play/screenshots/<lang>/   # Captures de la fiche Play (1080x1920, générées)
 ├── web/                            # Coquille web (index.html, manifest PWA)
 └── .github/workflows/ci.yml        # Intégration continue
 ```
@@ -256,10 +258,22 @@ dart run flutter_launcher_icons         # icônes natives (android, ios, web, wi
 dart run flutter_native_splash:create   # splashes natifs
 ```
 
+Les visuels de la fiche Play (bannière 1024x500, captures 9:16) suivent la même
+règle de producteur unique et sont rendus par Flutter :
+
+```bash
+flutter test tool/play_graphics_test.dart      # bannière de la fiche Play
+flutter test tool/play_screenshots_test.dart   # captures de la fiche Play
+```
+
 Chaque sortie a un seul producteur : `flutter_launcher_icons` gère `web/` et
 `tool/generate_assets.dart` gère `public/` ainsi que l'icône de la fiche Play
-(`store/play/icon-512.png`). Le fond des icônes adaptatives, des icônes web et
-de l'icône Play reprend le vert du logo (`#026342`) pour éviter toute couture.
+(`store/play/icon-512.png`). L'aperçu de l'application
+(`assets/images/100001115x.png` et son reflet `public/assets/images/`, affiché en
+`aspect-[9/16]` par le site) est produit par
+`flutter test tool/play_screenshots_test.dart` : il ne peut donc pas diverger des
+captures de la fiche Play. Le fond des icônes adaptatives, des icônes web et de
+l'icône Play reprend le vert du logo (`#026342`) pour éviter toute couture.
 
 ### Signature release
 
@@ -466,8 +480,24 @@ dart run tool/play_listing.dart images    # visuels publiés (icône, bannière,
 dart run tool/play_listing.dart check     # écart avec store/play/ (exit 1 si écart)
 dart run tool/play_listing.dart apply     # applique listings.json (--dry-run pour simuler)
 dart run tool/play_listing.dart icon      # téléverse icon-512.png (--dry-run pour simuler)
+dart run tool/play_listing.dart graphics  # téléverse la bannière et les captures (--dry-run pour simuler)
 dart run tool/play_listing.dart signing   # empreintes du certificat Play App Signing
 ```
+
+Les visuels sont générés par le moteur de rendu Flutter, donc avec les vraies
+polices et les accents corrects, sans aucun accès réseau :
+
+```bash
+dart run tool/generate_assets.dart               # icône de la fiche (icon-512.png)
+flutter test tool/play_graphics_test.dart        # bannière 1024x500 (opaque)
+flutter test tool/play_screenshots_test.dart     # captures 1080x1920, 3 langues
+```
+
+La bannière (`store/play/feature-graphic-1024x500.png`) et les captures
+(`store/play/screenshots/<lang>/NN.png`, 5 écrans × 3 langues) sont versionnées
+dans le dépôt. La commande `graphics` est idempotente (comparaison SHA-1) et
+ignore un visuel absent : elle peut donc tourner en CI avant que tout soit prêt
+(le job `play-listing` l'exécute après l'icône).
 
 L'icône de la fiche (`store/play/icon-512.png`, 512x512) est produite depuis
 `assets/icons/icon.png` par le même générateur que les icônes du site :

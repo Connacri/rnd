@@ -373,6 +373,12 @@ jobs:
           PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
         run: dart run tool/play_listing.dart icon
 
+      - name: Apply store visuals (banniere + captures)
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
+        run: dart run tool/play_listing.dart graphics
+
   ##############################################################################
   # Google Play : envoi de l'AAB signe sur le canal "production".
   #

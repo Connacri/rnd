@@ -140,17 +140,24 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
       automatique en revue) : il reste à valider la release depuis la Play
       Console. **Décision utilisateur requise** : la garder en `production` ou
       passer préalablement par un canal de test.
+- [x] **Visuels de la fiche Play complets** ✅ — la bannière
+      `store/play/feature-graphic-1024x500.png` (1024x500, opaque) est générée
+      par `flutter test tool/play_graphics_test.dart` (rendu Flutter, donc
+      texte Unicode et accents corrects) ; les captures
+      `store/play/screenshots/<langue>/NN.png` (5 écrans : accueil, programme,
+      candidat, agenda, adhésion) sont générées par
+      `flutter test tool/play_screenshots_test.dart` (1080x1920, rapport 9:16,
+      police et plugin audio neutralisés, contenu depuis le repli statique).
+      La commande `dart run tool/play_listing.dart graphics` téléverse bannière
+      + captures pour les 3 langues (idempotent par empreinte SHA-1) ; le job CI
+      `play-listing` l'exécute après l'icône. Les 4 visuels de l'aperçu
+      (`assets/images/` et `public/assets/images/100001115x.png`, affichés en
+      `aspect-[9/16]` par le site) sont remplacés par les captures de la nouvelle
+      interface claire.
 - [ ] **Play Console — validation des modifications en attente** : envoyer en
       revue / publier depuis la Play Console (a) la fiche (nom « Nos Candidats »
-      + descriptions fr/en/ar), (b) la nouvelle icône de la fiche et (c) la
-      release `production` déposée par la CI.
-- [ ] **Visuels de fiche incomplets** : seules les listes `fr-FR` ont une
-      bannière (`featureGraphic`) et des captures d'écran ; `en-US` et `ar`
-      n'ont que l'icône. Prévoir une bannière 1024x500 et au moins 2 captures
-      par langue avant publication. Le thème clair est désormais en place : les
-      captures `fr-FR` (ancienne interface sombre) et les visuels du README
-      (`assets/images/10000111xx.png`) sont à refaire à partir de l'app
-      restylée.
+      + descriptions fr/en/ar), (b) l'icône de la fiche, (c) la bannière et les
+      captures, et (d) la release `production` déposée par la CI.
 - [ ] **Brouillon fantôme sur le canal production** : une release **draft sans
       versionCode** existe sur `production` (créée le 12/10/2026) et bloque
       l'état « Pas encore envoyé pour examen ». À supprimer ou compléter

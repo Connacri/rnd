@@ -7,7 +7,10 @@ import 'package:rnd_campaign_app/core/constants/supabase_constants.dart';
 /// RLS : SELECT public uniquement. Toute écriture passe par le dashboard
 /// (service role) — jamais par l'app.
 class ContentService {
-  final _client = Supabase.instance.client;
+  /// Client Supabase resolu a l'usage (et non a la construction) : le
+  /// fournisseur de contenu peut ainsi etre construit, et son repli statique
+  /// utilise, sans instance Supabase initialisee (tests, apercus).
+  SupabaseClient get _client => Supabase.instance.client;
 
   Future<List<Map<String, dynamic>>> fetchPrograms() async {
     final rows = await _client

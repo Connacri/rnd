@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rnd_campaign_app/app/app_shell.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
-import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 import 'package:rnd_campaign_app/app/theme.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -73,100 +73,103 @@ class _RegisterPageState extends State<RegisterPage> {
     final auth = context.watch<AuthProvider>();
     final l = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: AppColors.cream,
-      appBar: AppBar(title: Text(l.register)),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const LanguageSwitcher(),
-                  const SizedBox(height: 24),
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: l.fullName,
-                      prefixIcon: const Icon(Icons.person_outlined),
-                    ),
-                    validator: (v) =>
-                        v == null || v.isEmpty ? l.nomRequired : null,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: l.email,
-                      prefixIcon: const Icon(Icons.email_outlined),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: Validators.email,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _phoneController,
-                    decoration: InputDecoration(
-                      labelText: l.phone,
-                      prefixIcon: const Icon(Icons.phone_outlined),
-                    ),
-                    keyboardType: TextInputType.phone,
-                    validator: Validators.phone,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: l.password,
-                      prefixIcon: const Icon(Icons.lock_outlined),
-                    ),
-                    obscureText: true,
-                    validator: Validators.password,
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: auth.isLoading ? null : _submit,
-                      child: auth.isLoading
-                          ? const CircularProgressIndicator()
-                          : Text(l.register),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      const Expanded(child: Divider(color: AppColors.amber200)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Text('•',
-                            style: const TextStyle(color: AppColors.zinc500)),
+    return AppShell(
+      currentRoute: AppRoutes.register,
+      showBottomNav: false,
+      child: Container(
+        color: AppColors.cream,
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: l.fullName,
+                        prefixIcon: const Icon(Icons.person_outlined),
                       ),
-                      const Expanded(child: Divider(color: AppColors.amber200)),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: auth.isLoading ? null : _googleSignIn,
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.ink,
-                        side: const BorderSide(color: AppColors.amber200),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      icon: const Icon(Icons.g_mobiledata, size: 28),
-                      label: Text(l.continueWithGoogle),
+                      validator: (v) =>
+                          v == null || v.isEmpty ? l.nomRequired : null,
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(l.haveAccount),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: l.email,
+                        prefixIcon: const Icon(Icons.email_outlined),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: Validators.email,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _phoneController,
+                      decoration: InputDecoration(
+                        labelText: l.phone,
+                        prefixIcon: const Icon(Icons.phone_outlined),
+                      ),
+                      keyboardType: TextInputType.phone,
+                      validator: Validators.phone,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: l.password,
+                        prefixIcon: const Icon(Icons.lock_outlined),
+                      ),
+                      obscureText: true,
+                      validator: Validators.password,
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: auth.isLoading ? null : _submit,
+                        child: auth.isLoading
+                            ? const CircularProgressIndicator()
+                            : Text(l.register),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        const Expanded(
+                            child: Divider(color: AppColors.amber200)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text('•',
+                              style: const TextStyle(color: AppColors.zinc500)),
+                        ),
+                        const Expanded(
+                            child: Divider(color: AppColors.amber200)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: auth.isLoading ? null : _googleSignIn,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.ink,
+                          side: const BorderSide(color: AppColors.amber200),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        icon: const Icon(Icons.g_mobiledata, size: 28),
+                        label: Text(l.continueWithGoogle),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(l.haveAccount),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

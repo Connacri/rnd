@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rnd_campaign_app/core/constants/app_constants.dart';
+import 'package:rnd_campaign_app/app/app_shell.dart';
+import 'package:rnd_campaign_app/app/routes.dart';
 import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
-import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 import 'package:rnd_campaign_app/app/theme.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -48,10 +48,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final auth = context.watch<AuthProvider>();
     final l = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: AppColors.cream,
-      appBar: AppBar(title: Text(l.forgotPasswordTitle)),
-      body: SafeArea(
+    return AppShell(
+      currentRoute: AppRoutes.forgotPassword,
+      showBottomNav: false,
+      child: Container(
+        color: AppColors.cream,
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -62,15 +63,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const LanguageSwitcher(),
-                        const SizedBox(height: 24),
                         Text(
-                          AppConstants.appName,
+                          l.forgotPasswordTitle,
+                          textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
-                              .headlineMedium
+                              .headlineSmall
                               ?.copyWith(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w800,
                                 color: AppColors.ink,
                               ),
                         ),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rnd_campaign_app/app/app_shell.dart';
 import 'package:rnd_campaign_app/app/routes.dart';
-import 'package:rnd_campaign_app/core/constants/app_constants.dart';
 import 'package:rnd_campaign_app/core/utils/validators.dart';
 import 'package:rnd_campaign_app/features/auth/providers/auth_provider.dart';
 import 'package:rnd_campaign_app/l10n/app_localizations.dart';
-import 'package:rnd_campaign_app/widgets/language_switcher.dart';
 import 'package:rnd_campaign_app/app/theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -69,107 +68,111 @@ class _LoginPageState extends State<LoginPage> {
     final auth = context.watch<AuthProvider>();
     final l = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: AppColors.cream,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const LanguageSwitcher(),
-                  const SizedBox(height: 24),
-                  Text(
-                    AppConstants.appName,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.ink,
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(AppConstants.slogan,
-                      style: const TextStyle(color: AppColors.zinc700)),
-                  const SizedBox(height: 48),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: l.email,
-                      prefixIcon: const Icon(Icons.email_outlined),
+    return AppShell(
+      currentRoute: AppRoutes.login,
+      showBottomNav: false,
+      child: Container(
+        color: AppColors.cream,
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      l.login,
+                      textAlign: TextAlign.center,
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.ink,
+                              ),
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: Validators.email,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: l.password,
-                      prefixIcon: const Icon(Icons.lock_outlined),
-                    ),
-                    obscureText: true,
-                    validator: Validators.password,
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.forgotPassword);
-                      },
-                      child: Text(
-                        l.forgotPassword,
-                        style: const TextStyle(color: AppColors.zinc700),
+                    const SizedBox(height: 32),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: l.email,
+                        prefixIcon: const Icon(Icons.email_outlined),
                       ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: Validators.email,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: auth.isLoading ? null : _submit,
-                      child: auth.isLoading
-                          ? const CircularProgressIndicator()
-                          : Text(l.login),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: l.password,
+                        prefixIcon: const Icon(Icons.lock_outlined),
+                      ),
+                      obscureText: true,
+                      validator: Validators.password,
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      const Expanded(child: Divider(color: AppColors.amber200)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.forgotPassword);
+                        },
                         child: Text(
-                          '•',
-                          style: const TextStyle(color: AppColors.zinc500),
+                          l.forgotPassword,
+                          style: const TextStyle(color: AppColors.zinc700),
                         ),
                       ),
-                      const Expanded(child: Divider(color: AppColors.amber200)),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: auth.isLoading ? null : _googleSignIn,
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.ink,
-                        side: const BorderSide(color: AppColors.amber200),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      icon: const Icon(Icons.g_mobiledata, size: 28),
-                      label: Text(l.continueWithGoogle),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.register);
-                    },
-                    child: Text(l.noAccount),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: auth.isLoading ? null : _submit,
+                        child: auth.isLoading
+                            ? const CircularProgressIndicator()
+                            : Text(l.login),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        const Expanded(
+                            child: Divider(color: AppColors.amber200)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            '•',
+                            style: const TextStyle(color: AppColors.zinc500),
+                          ),
+                        ),
+                        const Expanded(
+                            child: Divider(color: AppColors.amber200)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: auth.isLoading ? null : _googleSignIn,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.ink,
+                          side: const BorderSide(color: AppColors.amber200),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        icon: const Icon(Icons.g_mobiledata, size: 28),
+                        label: Text(l.continueWithGoogle),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.register);
+                      },
+                      child: Text(l.noAccount),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

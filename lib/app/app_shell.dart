@@ -34,7 +34,7 @@ class AppShell extends StatelessWidget {
       body: Column(
         children: [
           _RibbonBanner(),
-          _BrandHeader(isDesktop: isDesktop),
+          _BrandHeader(isDesktop: isDesktop, currentRoute: currentRoute),
           if (isDesktop) _DesktopNav(currentRoute: currentRoute),
           Expanded(
             child: Align(
@@ -119,9 +119,10 @@ class _RibbonBanner extends StatelessWidget {
 }
 
 class _BrandHeader extends StatelessWidget {
-  const _BrandHeader({required this.isDesktop});
+  const _BrandHeader({required this.isDesktop, required this.currentRoute});
 
   final bool isDesktop;
+  final String currentRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +230,10 @@ class _BrandHeader extends StatelessWidget {
               if (isDesktop) const LanguageSwitcher(),
               if (!isDesktop) const _LanguageMenu(),
               const SizedBox(width: 8),
-              _AuthButton(isDesktop: isDesktop),
+              if (currentRoute != AppRoutes.login &&
+                  currentRoute != AppRoutes.register &&
+                  currentRoute != AppRoutes.forgotPassword)
+                _AuthButton(isDesktop: isDesktop),
             ],
           ),
         ),

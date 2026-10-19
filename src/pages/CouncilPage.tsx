@@ -3,6 +3,7 @@ import { Users, Award, ShieldCheck, Mail, Phone, Sparkles, Filter, ChevronRight,
 import { useCampaign } from '../context/CampaignContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { CouncilCandidate } from '../types';
+import { ShareButton } from '../components/ShareButton';
 
 interface CouncilPageProps {
   onNavigate: (page: string, params?: any) => void;
@@ -56,6 +57,17 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
           <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
             Liste conduite par {candidate.name}
           </span>
+        </div>
+
+        {/* Share Council list */}
+        <div className="mt-3 flex justify-center">
+          <ShareButton
+            variant="pill"
+            size="sm"
+            title="Liste des Candidats au Conseil Communal — RND Aïn El Turck 2026"
+            text={`Découvrez l'équipe d'experts et citoyens engagés conduite par ${candidate.name} pour les Élections Communales 2026.`}
+            label={t('share')}
+          />
         </div>
       </section>
 
@@ -135,17 +147,27 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
 
             {/* Bottom Actions */}
             <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between gap-2">
-              <span className="text-[11px] text-zinc-400 font-medium">
+              <span className="text-[11px] text-zinc-400 font-medium truncate">
                 {cand.email || 'Permanence RND Ain El Turck'}
               </span>
 
-              <button
-                onClick={() => onNavigate('membership')}
-                className="px-3.5 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 dark:bg-zinc-800 text-amber-900 dark:text-amber-200 text-xs font-bold flex items-center gap-1 transition min-h-[36px]"
-              >
-                <MessageSquare className="w-3 h-3" />
-                <span>Échanger / Proposer</span>
-              </button>
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                <ShareButton
+                  variant="icon"
+                  size="sm"
+                  title={`${cand.name} — Candidat Conseil Communal RND Aïn El Turck`}
+                  text={`${cand.name} (${cand.expertise}), candidat(e) au Conseil Communal d'Aïn El Turck sur la liste RND.`}
+                  label={t('shareProfile')}
+                />
+                <button
+                  type="button"
+                  onClick={() => onNavigate('membership')}
+                  className="px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 dark:bg-zinc-800 text-amber-900 dark:text-amber-200 text-xs font-bold flex items-center gap-1 transition min-h-[34px] cursor-pointer"
+                >
+                  <MessageSquare className="w-3 h-3" />
+                  <span>Échanger</span>
+                </button>
+              </div>
             </div>
           </div>
         ))}

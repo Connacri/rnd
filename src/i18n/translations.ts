@@ -124,6 +124,10 @@ export const translations: Record<Language, Record<string, string>> = {
     memberBadge: "Adhérent RND",
     themeStyle: "Thème Warm Purrweb",
     share: "Partager",
+    shareProfile: "Partager ce profil",
+    shareEvent: "Partager cet événement",
+    shareOn: "Partager sur",
+    shareDescription: "Partagez avec vos proches pour soutenir le mouvement à Aïn El Turck !",
     copyLink: "Copier le lien",
     copied: "Lien copié !",
     officialPlatform: "Plateforme Officielle"
@@ -251,6 +255,10 @@ export const translations: Record<Language, Record<string, string>> = {
     memberBadge: "عضو التجمع",
     themeStyle: "ستايل Purrweb الدافئ",
     share: "مشاركة",
+    shareProfile: "مشاركة هذا الملف",
+    shareEvent: "مشاركة هذه الفعالية",
+    shareOn: "مشاركة عبر",
+    shareDescription: "شارك مع أصدقائك لدعم حركتنا في عين الترك!",
     copyLink: "نسخ الرابط",
     copied: "تم نسخ الرابط !",
     officialPlatform: "المنصة الرسمية"
@@ -378,6 +386,10 @@ export const translations: Record<Language, Record<string, string>> = {
     memberBadge: "RND Member",
     themeStyle: "Warm Purrweb Theme",
     share: "Share",
+    shareProfile: "Share this profile",
+    shareEvent: "Share this event",
+    shareOn: "Share on",
+    shareDescription: "Share with friends to support the movement in Ain El Turck!",
     copyLink: "Copy Link",
     copied: "Link copied!",
     officialPlatform: "Official Platform"

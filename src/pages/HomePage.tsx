@@ -4,6 +4,7 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { useCampaign } from '../context/CampaignContext';
 import { campaignStats } from '../data/campaignData';
 import { AudioPlayer } from '../components/AudioPlayer';
+import { ShareButton } from '../components/ShareButton';
 import { ProgramPillar } from '../types';
 
 interface HomePageProps {
@@ -147,6 +148,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             >
               <span>{t('joinUs')}</span>
             </button>
+          </div>
+
+          {/* Quick Share Action */}
+          <div className="mt-3 flex justify-center">
+            <ShareButton
+              variant="subtle"
+              size="sm"
+              title={`${candidate.name} — ${candidate.role[lang] || candidate.role.fr} (RND Aïn El Turck)`}
+              text={`Découvrez la campagne officielle de ${candidate.name} pour les Élections Communales 2026 à Aïn El Turck.`}
+              label={t('shareProfile')}
+            />
           </div>
         </div>
       </section>

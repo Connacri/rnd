@@ -3,6 +3,7 @@ import { Star, Shield, Award, HeartHandshake, Lightbulb, Scale, Sprout, ArrowRig
 import { useLanguage } from '../i18n/LanguageContext';
 import { useCampaign } from '../context/CampaignContext';
 import { AudioPlayer } from '../components/AudioPlayer';
+import { ShareButton } from '../components/ShareButton';
 
 interface CandidatePageProps {
   onNavigate: (page: string) => void;
@@ -91,8 +92,17 @@ export const CandidatePage: React.FC<CandidatePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Audio Speech Player */}
-        <div className="mt-6 max-w-sm mx-auto">
+        <div className="mt-6 max-w-sm mx-auto space-y-3">
           <AudioPlayer />
+          <div className="flex justify-center">
+            <ShareButton
+              variant="pill"
+              size="md"
+              title={`${candidate.name} — ${candidate.role[lang] || candidate.role.fr}`}
+              text={`Découvrez la biographie, la vision et les engagements de ${candidate.name} (RND Aïn El Turck 2026).`}
+              label={t('shareProfile')}
+            />
+          </div>
         </div>
       </section>
 

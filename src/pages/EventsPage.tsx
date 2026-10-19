@@ -2,6 +2,7 @@ import React from 'react';
 import { Calendar, MapPin, Clock, Sparkles, Building2 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { campaignEvents } from '../data/campaignData';
+import { ShareButton } from '../components/ShareButton';
 
 export const EventsPage: React.FC = () => {
   const { lang, t } = useLanguage();
@@ -69,16 +70,25 @@ export const EventsPage: React.FC = () => {
               </p>
             </div>
 
-            {/* Date & Location Chips */}
-            <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold text-rose-600 dark:text-rose-400">
-                <Calendar className="w-4 h-4 flex-shrink-0" />
-                <span>{formatDate(ev.date)}</span>
+            {/* Date & Location Chips + Share Action */}
+            <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-2">
+              <div className="space-y-1.5 min-w-0">
+                <div className="flex items-center gap-2 text-xs font-bold text-rose-600 dark:text-rose-400">
+                  <Calendar className="w-4 h-4 flex-shrink-0" />
+                  <span className="truncate">{formatDate(ev.date)}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
+                  <MapPin className="w-4 h-4 flex-shrink-0 text-amber-500" />
+                  <span className="truncate">{ev.location[lang]}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
-                <MapPin className="w-4 h-4 flex-shrink-0 text-amber-500" />
-                <span>{ev.location[lang]}</span>
-              </div>
+              <ShareButton
+                variant="subtle"
+                size="sm"
+                title={`${ev.title[lang]} — Événement Campagne RND`}
+                text={`${ev.description[lang]} • ${formatDate(ev.date)} à ${ev.location[lang]}`}
+                label={t('share')}
+              />
             </div>
           </div>
         ))}

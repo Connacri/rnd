@@ -10,8 +10,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
-  const { lang, setLang, t } = useLanguage();
-  const { user, isAuthenticated, isAdmin, logout, loginAsAdmin } = useAuth();
+  const { lang, setLang, t, isRtl } = useLanguage();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const languages: { code: Language; label: string }[] = [
@@ -35,22 +35,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-md bg-[#FAF7F2]/95 dark:bg-[#141312]/95 border-b border-amber-200/60 dark:border-zinc-800/70 shadow-xs transition-colors">
+    <header className="sticky top-0 z-40 backdrop-blur-md bg-[#FAF7F2]/95 dark:bg-[#141312]/95 border-b border-amber-200/60 dark:border-zinc-800/70 shadow-xs transition-colors w-full overflow-hidden">
       {/* ================= OFFICIAL ALGERIAN RND PARTY TOP RIBBON ================= */}
       <div className="bg-gradient-to-r from-[#00A651] via-[#FFFFFF] to-[#C8102E] p-[1.5px] shadow-xs">
-        <div className="bg-[#18181B] text-white py-1 px-3 text-[10px] sm:text-[11px] font-bold flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1 font-arabic text-emerald-400">
+        <div className="bg-[#18181B] text-white py-1 px-2.5 sm:px-4 text-[10px] sm:text-[11px] font-bold flex items-center justify-between gap-2 overflow-hidden">
+          <div className="flex items-center gap-1.5 sm:gap-2 truncate min-w-0">
+            <span className="font-arabic text-emerald-400 truncate flex-shrink">
               🇩🇿 الجمهورية الجزائرية الديمقراطية الشعبية
             </span>
             <span className="hidden sm:inline text-zinc-500">•</span>
-            <span className="hidden sm:inline text-amber-300 font-extrabold tracking-wide uppercase">
+            <span className="hidden md:inline text-amber-300 font-extrabold tracking-wide uppercase truncate">
               Rassemblement National Démocratique
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-zinc-300 text-[10px] font-medium hidden md:inline">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <span className="text-zinc-300 text-[10px] font-medium hidden lg:inline">
               Bureau Communal d'Aïn El Turck — Wilaya d'Oran
             </span>
 
@@ -58,18 +58,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             {isAdmin ? (
               <button
                 onClick={() => handleNavClick('admin')}
-                className="px-2 py-0.5 rounded-full bg-amber-400 text-zinc-950 font-black text-[9px] hover:bg-amber-300 transition flex items-center gap-1 shadow-xs"
+                className="px-2 py-0.5 rounded-full bg-amber-400 text-zinc-950 font-black text-[9px] hover:bg-amber-300 transition flex items-center gap-1 shadow-xs whitespace-nowrap cursor-pointer"
               >
                 <ShieldCheck className="w-3 h-3" />
-                <span>Panneau Admin Actif</span>
+                <span>Admin</span>
               </button>
             ) : (
               <button
                 onClick={() => handleNavClick('admin')}
-                className="text-[9px] text-zinc-400 hover:text-amber-300 transition flex items-center gap-1 underline underline-offset-2"
+                className="text-[9px] text-zinc-400 hover:text-amber-300 transition flex items-center gap-1 underline underline-offset-2 whitespace-nowrap cursor-pointer"
               >
                 <ShieldCheck className="w-2.5 h-2.5" />
-                <span>Espace Bureau RND</span>
+                <span>Bureau RND</span>
               </button>
             )}
           </div>
@@ -77,14 +77,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
       </div>
 
       {/* ================= MAIN PARTY HEADER BAR ================= */}
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
+      <div className="max-w-6xl mx-auto px-2.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-4 w-full">
         {/* Official logo & title */}
         <button
           onClick={() => handleNavClick('home')}
-          className="flex items-center gap-2.5 sm:gap-3.5 text-left group transition-transform active:scale-95 flex-shrink-0"
+          className="flex items-center gap-2 sm:gap-3 text-left group transition-transform active:scale-95 min-w-0 flex-shrink cursor-pointer"
         >
           {/* Official RND Algerian Emblem */}
-          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-white dark:bg-zinc-800 p-1 shadow-sm border border-amber-300/80 dark:border-zinc-700 flex items-center justify-center overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform">
+          <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-white dark:bg-zinc-800 p-1 shadow-sm border border-amber-300/80 dark:border-zinc-700 flex items-center justify-center overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform">
             <img
               src="assets/icons/icon.png"
               alt="Logo Nos Candidats"
@@ -95,24 +95,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             />
           </div>
 
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-black text-xs sm:text-sm tracking-tight text-zinc-950 dark:text-zinc-50 font-sans">
+          <div className="min-w-0 truncate">
+            <div className="flex items-center gap-1 sm:gap-1.5 truncate">
+              <span className="font-black text-xs sm:text-sm tracking-tight text-zinc-950 dark:text-zinc-50 font-sans truncate">
                 Nos Candidats
               </span>
-              <span className="font-arabic font-extrabold text-[11px] sm:text-xs text-rose-600 dark:text-rose-400">
+              <span className="hidden md:inline font-arabic font-extrabold text-[11px] sm:text-xs text-rose-600 dark:text-rose-400 truncate">
                 التجمع الوطني الديمقراطي
               </span>
               <span className="hidden sm:inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-[#18181B] text-amber-300 dark:bg-amber-950 dark:text-amber-300">
                 2026
               </span>
             </div>
-            <div className="flex items-center gap-1 text-[10px] sm:text-[11px] text-zinc-500 dark:text-zinc-400 font-semibold leading-none mt-0.5">
+            <div className="flex items-center gap-1 text-[9px] sm:text-[11px] text-zinc-500 dark:text-zinc-400 font-semibold leading-none mt-0.5 truncate">
               <span className="text-zinc-700 dark:text-zinc-300">Aïn El Turck</span>
               <span>•</span>
-              <span>Zenasni Nabil</span>
-              <span>•</span>
-              <span className="hidden sm:inline font-normal">Élections Communales</span>
+              <span className="truncate">Zenasni Nabil</span>
             </div>
           </div>
         </button>
@@ -125,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
               <button
                 key={link.id}
                 onClick={() => handleNavClick(link.id)}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                   isActive
                     ? 'bg-[#18181B] text-white dark:bg-white dark:text-zinc-950 shadow-sm scale-[1.02]'
                     : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-700/50'
@@ -138,18 +136,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         </nav>
 
         {/* Right Actions: Lang Switcher & Auth */}
-        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-          {/* Language Switcher Pills */}
-          <div className="flex items-center bg-[#EFE9DF] dark:bg-zinc-800/80 p-0.5 rounded-full text-xs font-semibold shadow-inner">
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          {/* Language Switcher Pills (Clean, compact, guaranteed responsive on all mobile widths) */}
+          <div className="flex items-center bg-[#EFE9DF] dark:bg-zinc-800/80 p-0.5 rounded-full text-xs font-semibold shadow-inner border border-amber-200/40 dark:border-zinc-700/50">
             {languages.map((l) => (
               <button
                 key={l.code}
                 onClick={() => setLang(l.code)}
                 aria-label={`Changer en langue ${l.label}`}
-                className={`px-2 sm:px-2.5 py-1 rounded-full transition-all text-[10px] sm:text-[11px] min-h-[28px] sm:min-h-[30px] flex items-center justify-center ${
+                className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full transition-all text-[10px] sm:text-[11px] min-h-[26px] sm:min-h-[28px] flex items-center justify-center cursor-pointer ${
                   lang === l.code
-                    ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-100 shadow-sm font-bold scale-[1.02]'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950'
+                    ? 'bg-white dark:bg-zinc-900 text-zinc-950 dark:text-zinc-100 shadow-xs font-bold scale-[1.02]'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-100'
                 }`}
               >
                 {l.label}
@@ -159,34 +157,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
 
           {/* User Auth or Admin Button */}
           {isAuthenticated ? (
-            <div className="flex items-center gap-1 sm:gap-1.5">
+            <div className="flex items-center gap-1">
               <button
                 onClick={() => handleNavClick(isAdmin ? 'admin' : 'membership')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition min-h-[32px] ${
+                className={`flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold transition min-h-[28px] sm:min-h-[32px] cursor-pointer ${
                   isAdmin
-                    ? 'bg-amber-400 text-zinc-950 shadow-sm hover:bg-amber-300'
+                    ? 'bg-amber-400 text-zinc-950 shadow-xs hover:bg-amber-300'
                     : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300'
                 }`}
               >
                 {isAdmin ? <ShieldCheck className="w-3.5 h-3.5" /> : <Sparkles className="w-3.5 h-3.5 text-amber-600" />}
-                <span className="max-w-[75px] truncate">{user?.name}</span>
+                <span className="hidden sm:inline max-w-[75px] truncate">{user?.name}</span>
               </button>
               <button
                 onClick={logout}
                 title={t('logout')}
                 aria-label={t('logout')}
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-rose-100 hover:text-rose-600 active:scale-95 transition min-h-[32px]"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-zinc-700 dark:text-zinc-300 hover:bg-rose-100 hover:text-rose-600 active:scale-95 transition min-h-[28px] cursor-pointer"
               >
-                <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>
           ) : (
             <button
               onClick={() => handleNavClick('login')}
-              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 text-[11px] sm:text-xs font-bold hover:opacity-90 active:scale-95 transition shadow-sm min-h-[32px]"
+              aria-label={t('login')}
+              className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 text-[11px] sm:text-xs font-bold hover:opacity-90 active:scale-95 transition shadow-xs min-h-[28px] sm:min-h-[32px] cursor-pointer"
             >
               <User className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>{t('login')}</span>
+              <span className="hidden sm:inline">{t('login')}</span>
             </button>
           )}
 
@@ -194,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Menu"
-            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-zinc-200/80 dark:bg-zinc-800 flex items-center justify-center text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 transition"
+            className="lg:hidden w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-zinc-200/80 dark:bg-zinc-800 flex items-center justify-center text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 transition cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
@@ -203,8 +202,31 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
 
       {/* ================= MOBILE EXPANDED MENU DRAWER ================= */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-amber-200/50 dark:border-zinc-800 bg-[#FAF7F2] dark:bg-[#141312] p-4 space-y-2 animate-in slide-in-from-top duration-200 shadow-xl">
-          <div className="grid grid-cols-2 gap-2 pb-2">
+        <div className="lg:hidden border-t border-amber-200/50 dark:border-zinc-800 bg-[#FAF7F2] dark:bg-[#141312] p-3 sm:p-4 space-y-2.5 animate-in slide-in-from-top duration-200 shadow-xl">
+          {/* Prominent Language Bar inside mobile drawer */}
+          <div className="flex items-center justify-between p-2 rounded-2xl bg-amber-50/90 dark:bg-zinc-850 border border-amber-200/70 dark:border-zinc-750">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300">
+              <Globe className="w-3.5 h-3.5 text-amber-600" />
+              <span>Langue / اللغة / Language</span>
+            </div>
+            <div className="flex items-center bg-white dark:bg-zinc-900 p-0.5 rounded-full border border-zinc-200/80 dark:border-zinc-700 text-xs font-bold shadow-xs">
+              {languages.map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => setLang(l.code)}
+                  className={`px-2.5 py-1 rounded-full text-xs transition-all cursor-pointer ${
+                    lang === l.code
+                      ? 'bg-[#18181B] text-white dark:bg-white dark:text-zinc-950 shadow-xs'
+                      : 'text-zinc-600 dark:text-zinc-400'
+                  }`}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 pb-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = currentPage === link.id;
@@ -212,7 +234,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                 <button
                   key={link.id}
                   onClick={() => handleNavClick(link.id)}
-                  className={`flex items-center gap-2 p-3 rounded-2xl text-xs font-bold transition text-left min-h-[44px] ${
+                  className={`flex items-center gap-2 p-2.5 rounded-2xl text-xs font-bold transition text-left min-h-[40px] cursor-pointer ${
                     isActive
                       ? 'bg-[#18181B] text-white dark:bg-white dark:text-zinc-950 shadow-sm'
                       : 'bg-white dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border border-zinc-200/70 dark:border-zinc-700'
@@ -228,7 +250,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           {/* Admin link inside mobile menu */}
           <button
             onClick={() => handleNavClick('admin')}
-            className="w-full py-2.5 px-4 rounded-2xl bg-amber-100 dark:bg-zinc-800 text-amber-950 dark:text-amber-200 text-xs font-bold flex items-center justify-center gap-2 border border-amber-300/80 dark:border-zinc-700 min-h-[44px]"
+            className="w-full py-2 px-3 rounded-2xl bg-amber-100 dark:bg-zinc-800 text-amber-950 dark:text-amber-200 text-xs font-bold flex items-center justify-center gap-2 border border-amber-300/80 dark:border-zinc-700 min-h-[38px] cursor-pointer"
           >
             <ShieldCheck className="w-4 h-4 text-amber-600" />
             <span>Accéder au Panneau d'Administration RND</span>

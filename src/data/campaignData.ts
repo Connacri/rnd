@@ -1,4 +1,4 @@
-import { ProgramPillar, CandidateInfo, CampaignStat, CampaignEvent, NewsArticle } from '../types';
+import { ProgramPillar, CandidateInfo, CampaignStat, CampaignEvent, NewsArticle, CampaignPoster } from '../types';
 
 export const candidateData: CandidateInfo = {
   name: "Zenasni Nabil",
@@ -559,3 +559,123 @@ export const defaultCampaignSettings: import('../types').CampaignSettings = {
   officeAddress: "Bureau Communal RND, Boulevard de la Corniche, Aïn El Turck, Oran",
   sloganText: "Ensemble pour un Aïn El Turck moderne, prospère et solidaire"
 };
+
+export const officialCampaignPosters: CampaignPoster[] = [
+  {
+    id: "poster-nouvelle-dynamique",
+    title: {
+      fr: "J-10 : Lancement de la Campagne",
+      ar: "العد التنازلي (J-10): انطلاق الحملة الرسمية",
+      en: "D-10: Official Campaign Launch"
+    },
+    subtitle: {
+      fr: "Ensemble pour une nouvelle dynamique • Aïn El Turck 2026",
+      ar: "معاً من أجل ديناميكية جديدة • عين الترك 2026",
+      en: "Together for a new dynamic • Ain El Turck 2026"
+    },
+    tag: {
+      fr: "J-10 Lancement",
+      ar: "انطلاق الحملة",
+      en: "Campaign Launch"
+    },
+    src: "assets/images/poster_nouvelle_dynamique.jpg",
+    dateOrTheme: {
+      fr: "Dimanche 18 Octobre • 18h00 - 21h00",
+      ar: "الأحد 18 أكتوبر • 18:00 - 21:00",
+      en: "Sunday Oct 18 • 18:00 - 21:00"
+    },
+    location: {
+      fr: "Salle Omnisports Communale, Aïn El Turck",
+      ar: "القاعة متعددة الرياضات، عين الترك",
+      en: "Ain El Turck Sports Complex"
+    }
+  },
+  {
+    id: "poster-rencontre-citoyenne",
+    title: {
+      fr: "Grande Rencontre Citoyenne & Débat",
+      ar: "لقاء شعبي تشاركي حاشد مع المواطنين",
+      en: "Major Citizen Town Hall & Debate"
+    },
+    subtitle: {
+      fr: "Une nouvelle dynamique pour Aïn El Turck • Proximité & Innovation",
+      ar: "ديناميكية جديدة لعين الترك • القرب والابتكار والتنمية المحلية",
+      en: "A new dynamic for Ain El Turck • Proximity & Innovation"
+    },
+    tag: {
+      fr: "Rencontre Citoyenne",
+      ar: "لقاء شعبي",
+      en: "Citizen Meetup"
+    },
+    src: "assets/images/poster_rencontre_citoyenne.jpg",
+    dateOrTheme: {
+      fr: "Le 15 Décembre à 18h00",
+      ar: "15 ديسمبر على الساعة 18:00",
+      en: "December 15 at 18:00"
+    },
+    location: {
+      fr: "Salle APC, Aïn El Turck",
+      ar: "قاعة المجلس الشعبي البلدي APC، عين الترك",
+      en: "Ain El Turck Town Hall (Salle APC)"
+    }
+  },
+  {
+    id: "poster-commune-forte",
+    title: {
+      fr: "Commune Forte et Moderne",
+      ar: "بلدية قوية وعصرية لجميع السكان",
+      en: "Strong and Modern Communality"
+    },
+    subtitle: {
+      fr: "Agir aujourd'hui, construire demain • Économie, Transports, Cadre de vie",
+      ar: "نعمل اليوم لنبني الغد • التنمية الاقتصادية والنقل وجودة الحياة",
+      en: "Act today, build tomorrow • Economy, Transit & Quality of Life"
+    },
+    tag: {
+      fr: "Vision 2026",
+      ar: "رؤية 2026",
+      en: "Vision 2026"
+    },
+    src: "assets/images/poster_commune_forte.jpg",
+    dateOrTheme: {
+      fr: "5 Piliers d'Avenir",
+      ar: "5 محاور استراتيجية",
+      en: "5 Strategic Pillars"
+    },
+    location: {
+      fr: "Aïn El Turck mérite le meilleur",
+      ar: "عين الترك تستحق الأفضل دائماً",
+      en: "Ain El Turck deserves the best"
+    }
+  },
+  {
+    id: "poster-agissons-ensemble",
+    title: {
+      fr: "Agissons Ensemble pour Aïn El Tûrck",
+      ar: "معاً نعمل من أجل عين الترك",
+      en: "Let's Act Together for Ain El Turck"
+    },
+    subtitle: {
+      fr: "Notre commune, notre avenir ! Rejoignez le mouvement citoyen",
+      ar: "بلديتنا، مستقبلنا ! انضموا إلى المبادرة التشاركية",
+      en: "Our town, our future! Join the citizen movement"
+    },
+    tag: {
+      fr: "Mouvement Citoyen",
+      ar: "مبادرة تشاركية",
+      en: "Citizen Movement"
+    },
+    src: "assets/images/poster_agissons_ensemble.jpg",
+    dateOrTheme: {
+      fr: "Adhérez • Participez • Agissons",
+      ar: "انخرطوا • شاركوا • لنعمل معاً",
+      en: "Join • Participate • Act"
+    },
+    location: {
+      fr: "Élections Communales 2026",
+      ar: "انتخابات المجالس البلدية 2026",
+      en: "Communal Elections 2026"
+    }
+  }
+];
+

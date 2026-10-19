@@ -1,11 +1,33 @@
 import React, { useState } from 'react';
-import { ArrowRight, ChevronRight, CheckCircle2, ShieldCheck, HeartHandshake, Lightbulb, Scale, Sprout, Sparkles, Star, X, Building2, MapPin, Users, Award } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronRight,
+  ChevronLeft,
+  CheckCircle2,
+  ShieldCheck,
+  HeartHandshake,
+  Lightbulb,
+  Scale,
+  Sprout,
+  Sparkles,
+  Star,
+  X,
+  Building2,
+  MapPin,
+  Users,
+  Award,
+  Maximize2,
+  Download,
+  Image as ImageIcon,
+  Smartphone,
+  ExternalLink,
+} from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useCampaign } from '../context/CampaignContext';
-import { campaignStats } from '../data/campaignData';
+import { campaignStats, officialCampaignPosters } from '../data/campaignData';
 import { AudioPlayer } from '../components/AudioPlayer';
 import { ShareButton } from '../components/ShareButton';
-import { ProgramPillar } from '../types';
+import { ProgramPillar, CampaignPoster } from '../types';
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
@@ -15,6 +37,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { lang, t, isRtl } = useLanguage();
   const { candidate, pillars, news, councilCandidates } = useCampaign();
   const [selectedPillar, setSelectedPillar] = useState<ProgramPillar | null>(null);
+  const [activePreviewTab, setActivePreviewTab] = useState<'posters' | 'screens'>('posters');
+  const [selectedPoster, setSelectedPoster] = useState<CampaignPoster | null>(null);
+  const [selectedScreenshot, setSelectedScreenshot] = useState<{ src: string; title: string } | null>(null);
+
+  const handlePrevPoster = () => {
+    if (!selectedPoster) return;
+    const idx = officialCampaignPosters.findIndex((p) => p.id === selectedPoster.id);
+    const prevIdx = (idx - 1 + officialCampaignPosters.length) % officialCampaignPosters.length;
+    setSelectedPoster(officialCampaignPosters[prevIdx]);
+  };
+
+  const handleNextPoster = () => {
+    if (!selectedPoster) return;
+    const idx = officialCampaignPosters.findIndex((p) => p.id === selectedPoster.id);
+    const nextIdx = (idx + 1) % officialCampaignPosters.length;
+    setSelectedPoster(officialCampaignPosters[nextIdx]);
+  };
 
   const values = [
     {
@@ -407,39 +446,153 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </section>
       )}
 
-      {/* ================= SCREENSHOTS PREVIEW SECTION ================= */}
+      {/* ================= OFFICIAL CAMPAIGN & APP PREVIEW SECTION ================= */}
       <section className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4">
-        <div className="text-center mb-4 sm:mb-6">
-          <h2 className="text-lg sm:text-2xl font-black text-zinc-900 dark:text-white">
-            Aperçu de l'application
+        <div className="text-center mb-5 sm:mb-7">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-300 text-[11px] font-bold mb-2">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>{t('appPreview')}</span>
+          </div>
+          <h2 className="text-xl sm:text-3xl font-black text-zinc-900 dark:text-white">
+            {t('appPreview')}
           </h2>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-            Découvrez les écrans officiels de la campagne
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-lg mx-auto">
+            {t('appPreviewSubtitle')}
           </p>
+
+          {/* Toggle Tabs: Affiches Officielles vs Écrans de l'App */}
+          <div className="mt-4 inline-flex items-center p-1 rounded-full bg-zinc-200/80 dark:bg-zinc-800/80 border border-amber-200/40 dark:border-zinc-700 shadow-inner">
+            <button
+              onClick={() => setActivePreviewTab('posters')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all min-h-[38px] ${
+                activePreviewTab === 'posters'
+                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+              }`}
+            >
+              <ImageIcon className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <span>{t('officialPostersTab')} (4)</span>
+            </button>
+            <button
+              onClick={() => setActivePreviewTab('screens')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all min-h-[38px] ${
+                activePreviewTab === 'screens'
+                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+              }`}
+            >
+              <Smartphone className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+              <span>{t('appScreenshotsTab')} (4)</span>
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-          {screenshots.map((s, idx) => (
-            <div
-              key={idx}
-              className="p-2 sm:p-2.5 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/70 dark:border-zinc-800 shadow-sm overflow-hidden text-center"
-            >
-              <div className="rounded-2xl overflow-hidden bg-zinc-950 aspect-[9/16] relative">
-                <img
-                  src={s.src}
-                  alt={s.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
+        {/* TAB 1: 4 OFFICIAL CAMPAIGN POSTERS (nab 1 to 4) */}
+        {activePreviewTab === 'posters' && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-5">
+            {officialCampaignPosters.map((poster) => (
+              <div
+                key={poster.id}
+                onClick={() => setSelectedPoster(poster)}
+                className="group cursor-pointer rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-200 flex flex-col overflow-hidden"
+              >
+                {/* Poster Image Container (3:4 ratio for campaign posters) */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-zinc-950">
+                  <img
+                    src={poster.src}
+                    alt={poster.title[lang] || poster.title.fr}
+                    className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
+                    }}
+                  />
+
+                  {/* Gradient Overlay & Floating Badge */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 opacity-90 group-hover:opacity-100 transition-opacity" />
+
+                  {/* Tag Pill */}
+                  <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                    <span className="px-2.5 py-0.5 rounded-full bg-white/90 dark:bg-zinc-900/90 text-[10px] font-black text-zinc-900 dark:text-zinc-100 shadow-md backdrop-blur-xs">
+                      {poster.tag[lang] || poster.tag.fr}
+                    </span>
+                    <div className="w-7 h-7 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Maximize2 className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+
+                  {/* Bottom details on poster */}
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white pointer-events-none">
+                    {poster.dateOrTheme && (
+                      <p className="text-[10px] font-bold text-amber-300 leading-tight truncate">
+                        {poster.dateOrTheme[lang] || poster.dateOrTheme.fr}
+                      </p>
+                    )}
+                    <p className="text-[11px] font-black leading-tight truncate drop-shadow-sm">
+                      {poster.title[lang] || poster.title.fr}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Caption Card below poster */}
+                <div className="p-3 bg-white dark:bg-zinc-900 flex-1 flex flex-col justify-between border-t border-zinc-100 dark:border-zinc-800">
+                  <div>
+                    <h3 className="text-xs font-bold text-zinc-900 dark:text-white line-clamp-1">
+                      {poster.title[lang] || poster.title.fr}
+                    </h3>
+                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 line-clamp-1 mt-0.5">
+                      {poster.location?.[lang] || poster.location?.fr || poster.subtitle[lang] || poster.subtitle.fr}
+                    </p>
+                  </div>
+                  <div className="mt-2 pt-2 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-[10px] font-bold text-rose-600 dark:text-rose-400">
+                    <span className="flex items-center gap-1">
+                      <Maximize2 className="w-3 h-3" />
+                      <span>{t('viewPoster')}</span>
+                    </span>
+                    <a
+                      href={poster.src}
+                      download={`rnd-affiche-${poster.id}.jpg`}
+                      onClick={(e) => e.stopPropagation()}
+                      title={t('downloadPoster')}
+                      className="p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
               </div>
-              <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 mt-2 mb-1">
-                {s.title}
-              </p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {/* TAB 2: MOBILE APPLICATION SCREENSHOTS */}
+        {activePreviewTab === 'screens' && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            {screenshots.map((s, idx) => (
+              <div
+                key={idx}
+                onClick={() => setSelectedScreenshot(s)}
+                className="group cursor-pointer p-2 sm:p-2.5 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/70 dark:border-zinc-800 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all overflow-hidden text-center"
+              >
+                <div className="rounded-2xl overflow-hidden bg-zinc-950 aspect-[9/16] relative">
+                  <img
+                    src={s.src}
+                    alt={s.title}
+                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Maximize2 className="w-6 h-6 text-white drop-shadow-md" />
+                  </div>
+                </div>
+                <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 mt-2 mb-1">
+                  {s.title}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ================= RND BUREAU COMMUNAL SECTION ================= */}
@@ -512,6 +665,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           ))}
         </div>
 
+        {/* Direct Link to Mobile-Responsive Security Policy */}
+        <div className="mt-4 flex items-center justify-center gap-4 text-xs font-semibold">
+          <a
+            href="security-policy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-100/70 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300/60 hover:bg-emerald-200/70 transition"
+          >
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>{t('securityPolicy')}</span>
+            <ExternalLink className="w-3 h-3 opacity-70" />
+          </a>
+        </div>
+
         <p className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-5">
           {t('rights')}
         </p>
@@ -519,6 +686,139 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           {t('developerCredit')}
         </p>
       </footer>
+
+      {/* ================= LIGHTBOX POSTER MODAL ================= */}
+      {selectedPoster && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setSelectedPoster(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-zinc-950/85 backdrop-blur-md animate-in fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-2xl rounded-[32px] bg-[#FAF7F2] dark:bg-[#181715] border border-amber-200/80 dark:border-zinc-800 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
+          >
+            {/* Modal Top Bar */}
+            <div className="p-4 sm:p-5 pb-3 flex items-center justify-between border-b border-zinc-200/70 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 text-[10px] font-black uppercase">
+                  {selectedPoster.tag[lang] || selectedPoster.tag.fr}
+                </span>
+                <h3 className="text-sm sm:text-base font-black text-zinc-900 dark:text-white truncate">
+                  {selectedPoster.title[lang] || selectedPoster.title.fr}
+                </h3>
+              </div>
+
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <a
+                  href={selectedPoster.src}
+                  download={`rnd-affiche-${selectedPoster.id}.jpg`}
+                  className="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center hover:bg-amber-100 hover:text-amber-900 transition"
+                  title={t('downloadPoster')}
+                >
+                  <Download className="w-4 h-4" />
+                </a>
+                <button
+                  onClick={() => setSelectedPoster(null)}
+                  className="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center hover:bg-rose-100 hover:text-rose-600 transition"
+                  aria-label="Fermer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Poster High-Res Preview with Prev/Next Navigation */}
+            <div className="relative flex-1 bg-zinc-950 flex items-center justify-center overflow-hidden min-h-[340px] max-h-[65vh]">
+              <img
+                src={selectedPoster.src}
+                alt={selectedPoster.title[lang] || selectedPoster.title.fr}
+                className="w-auto h-full max-h-[65vh] object-contain mx-auto select-none"
+              />
+
+              {/* Prev Button */}
+              <button
+                onClick={handlePrevPoster}
+                aria-label="Affiche précédente"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/85 text-white flex items-center justify-center backdrop-blur-xs transition active:scale-95 shadow-lg"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+
+              {/* Next Button */}
+              <button
+                onClick={handleNextPoster}
+                aria-label="Affiche suivante"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/85 text-white flex items-center justify-center backdrop-blur-xs transition active:scale-95 shadow-lg"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Modal Bottom Information and Actions */}
+            <div className="p-4 sm:p-5 bg-white dark:bg-zinc-900 border-t border-zinc-200/70 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-center sm:text-left min-w-0">
+                <p className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  {selectedPoster.subtitle[lang] || selectedPoster.subtitle.fr}
+                </p>
+                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  📍 {selectedPoster.location?.[lang] || selectedPoster.location?.fr} {selectedPoster.dateOrTheme ? `• ${selectedPoster.dateOrTheme[lang] || selectedPoster.dateOrTheme.fr}` : ''}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto">
+                <ShareButton
+                  variant="subtle"
+                  size="sm"
+                  title={`${selectedPoster.title[lang] || selectedPoster.title.fr} — Campagne RND Aïn El Turck`}
+                  text={`Affiche officielle : ${selectedPoster.subtitle[lang] || selectedPoster.subtitle.fr}`}
+                  label={t('sharePoster')}
+                />
+                <a
+                  href={selectedPoster.src}
+                  download={`rnd-affiche-${selectedPoster.id}.jpg`}
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 text-xs font-bold shadow-sm hover:opacity-90 transition min-h-[36px]"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>{t('downloadPoster')}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= LIGHTBOX SCREENSHOT MODAL ================= */}
+      {selectedScreenshot && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setSelectedScreenshot(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-md animate-in fade-in"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-sm w-full rounded-3xl bg-zinc-900 border border-zinc-800 p-2 overflow-hidden shadow-2xl flex flex-col items-center"
+          >
+            <button
+              onClick={() => setSelectedScreenshot(null)}
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/90 transition"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="rounded-2xl overflow-hidden aspect-[9/16] w-full bg-black">
+              <img
+                src={selectedScreenshot.src}
+                alt={selectedScreenshot.title}
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <p className="text-xs font-bold text-white py-2">{selectedScreenshot.title}</p>
+          </div>
+        </div>
+      )}
+
 
       {/* ================= RESPONSIVE PILLAR MODAL DIALOG ================= */}
       {selectedPillar && (

@@ -95,3 +95,14 @@ export interface CampaignSettings {
   officeAddress?: string;
   sloganText?: string;
 }
+
+export interface CampaignPoster {
+  id: string;
+  title: LocalizedString;
+  subtitle: LocalizedString;
+  tag: LocalizedString;
+  src: string;
+  dateOrTheme?: LocalizedString;
+  location?: LocalizedString;
+}
+

@@ -1,31 +1,657 @@
 <!doctype html>
-<html lang="fr"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#167447">
-<title>Politique de sécurité — Nos Candidats</title>
-<meta name="description" content="Politique de sécurité et signalement responsable des vulnérabilités du site Nos Candidats.">
-<style>
-:root{--g:#167447;--ink:#18231d;--muted:#59665e;--line:#e1e9e3;--bg:#f4f7f4}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}
-header{background:linear-gradient(135deg,#12613b,#238657);color:white;padding:42px 20px}.wrap{width:min(820px,calc(100% - 32px));margin:auto}
-.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.82rem}h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15;margin:.5rem 0}
-main{padding:28px 0 48px}.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,34px);box-shadow:0 8px 26px #163c2510}
-h2{font-size:1.25rem;line-height:1.35;margin:1.7rem 0 .55rem}h2:first-child{margin-top:0}p,ul{margin:.55rem 0 1rem}li{margin:.35rem 0}a{color:var(--g);text-underline-offset:3px}.notice{border-left:4px solid var(--g);background:#f0f8f2;padding:14px 16px;border-radius:0 10px 10px 0}
-footer{padding-bottom:28px;color:var(--muted);font-size:.9rem}.back{color:white}
-</style></head><body>
-<header><div class="wrap"><div class="eyebrow">RND · Aïn El Turck, Oran</div><h1>Politique de sécurité</h1>
-<p>Bonnes pratiques pour une utilisation sûre du site et signalement responsable des problèmes de sécurité.</p>
-<a class="back" href="/rnd/">← Retour au site</a></div></header>
-<main class="wrap"><article class="panel">
-<p><strong>Dernière mise à jour :</strong> 12 octobre 2026</p>
-<p>Cette page décrit les bonnes pratiques de sécurité applicables au site Nos Candidats. Elle ne remplace pas la politique de confidentialité.</p>
-<h2>1. Protection des utilisateurs</h2><p>Nous cherchons à limiter les risques d’accès non autorisé, de modification ou de divulgation d’informations. L’utilisation d’Internet comporte des risques et aucune mesure ne peut garantir une sécurité absolue.</p>
-<h2>2. Bonnes pratiques recommandées</h2><ul><li>Utilisez un navigateur à jour et installez les mises à jour de sécurité de votre appareil.</li><li>Ne partagez pas vos mots de passe ni vos codes de vérification.</li><li>Vérifiez l’adresse du site avant de transmettre des informations et méfiez-vous des liens inattendus.</li><li>Si vous pensez qu’un compte a été compromis, sécurisez-le depuis les paramètres du service concerné.</li></ul>
-<h2>3. Signalement responsable d’une vulnérabilité</h2><p>Si vous découvrez une faille liée à ce site, signalez-la en ouvrant un signalement dans le dépôt GitHub du projet ou en utilisant les coordonnées de contact publiées sur le site principal.</p><p>Indiquez si possible l’adresse concernée, une description du problème, son impact potentiel et les étapes minimales pour le reproduire. N’envoyez pas de mots de passe ou de données personnelles appartenant à autrui.</p>
-<div class="notice"><strong>Respectez la vie privée.</strong> Ne consultez, ne modifiez, ne téléchargez et ne supprimez pas les données d’autres personnes. Évitez les tests interrompant le service, l’ingénierie sociale, les attaques par déni de service et toute action dépassant ce qui est nécessaire pour décrire le problème.</div>
-<h2>4. Traitement des signalements</h2><p>Les signalements sont examinés selon les informations disponibles et les priorités de sécurité. Des précisions peuvent être demandées. Un signalement ne garantit ni délai de réponse, ni correction, ni récompense.</p>
-<h2>5. Services tiers</h2><p>Le site peut utiliser des services tiers ou proposer des liens externes. Ces services ont leurs propres pratiques de sécurité et de confidentialité.</p>
-<h2>6. Modifications</h2><p>Cette politique peut être mise à jour en fonction de l’évolution du site. La date en haut de page indique la dernière révision.</p>
-<h2>7. Contact</h2><p>Pour signaler un problème, ouvrez un signalement dans le dépôt <a href="https://github.com/Connacri/rnd">GitHub Connacri/rnd</a> ou consultez le <a href="/rnd/">site principal</a>.</p>
-</article></main><footer class="wrap">© Nos Candidats · Informations générales de sécurité.</footer>
-</body></html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#167447">
+  <title>Politique de sécurité — Nos Candidats | RND Aïn El Turck</title>
+  <meta name="description" content="Politique de sécurité, bonnes pratiques et signalement responsable des vulnérabilités de la plateforme Nos Candidats (RND Aïn El Turck).">
+  
+  <!-- Open Graph & Social Cards -->
+  <meta property="og:title" content="Politique de sécurité — Nos Candidats">
+  <meta property="og:description" content="Bonnes pratiques de sécurité et signalement responsable des vulnérabilités.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="../assets/images/nabil-zenasni-profile2.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Noto+Sans+Arabic:wght@400;600;700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #167447;
+      --primary-dark: #0f5131;
+      --primary-light: #e8f5ed;
+      --accent: #d97706;
+      --ink: #18231d;
+      --ink-muted: #4e5e54;
+      --surface: #ffffff;
+      --bg: #f5f8f5;
+      --border: #dbe5de;
+      --radius: 16px;
+      --font-base: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      --font-ar: 'Noto Sans Arabic', 'Cairo', sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #22c55e;
+        --primary-dark: #16a34a;
+        --primary-light: #132e1d;
+        --accent: #f59e0b;
+        --ink: #f0fdf4;
+        --ink-muted: #a7b7ac;
+        --surface: #141c16;
+        --bg: #0c120e;
+        --border: #233427;
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-base);
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+      max-width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    [dir="rtl"] {
+      font-family: var(--font-ar);
+    }
+
+    /* Container Wrap - Mobile First */
+    .container {
+      width: 100%;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: clamp(16px, 4vw, 28px);
+      padding-right: clamp(16px, 4vw, 28px);
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #105934 0%, #167447 50%, #1f8d57 100%);
+      color: #ffffff;
+      padding-top: max(24px, env(safe-area-inset-top, 24px));
+      padding-bottom: clamp(28px, 6vw, 44px);
+      box-shadow: 0 4px 20px rgba(16, 89, 52, 0.15);
+    }
+
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: clamp(16px, 3vw, 24px);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      transition: all 0.2s ease;
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+
+    .back-btn:hover, .back-btn:active {
+      background: rgba(255, 255, 255, 0.26);
+      transform: translateY(-1px);
+    }
+
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      min-height: 36px;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: #ffffff;
+      color: #105934;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 12px;
+      font-weight: 800;
+      color: #d1fae5;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(1.75rem, 5vw + 0.5rem, 2.75rem);
+      line-height: 1.2;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .header-desc {
+      font-size: clamp(14px, 2.2vw, 17px);
+      line-height: 1.55;
+      color: #e6f4ea;
+      max-width: 620px;
+      overflow-wrap: break-word;
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      padding-top: clamp(20px, 4vw, 36px);
+      padding-bottom: clamp(32px, 6vw, 56px);
+    }
+
+    .card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: clamp(18px, 4vw, 32px);
+      box-shadow: 0 4px 20px rgba(16, 89, 52, 0.05);
+      margin-bottom: 24px;
+    }
+
+    .badge-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      background: var(--bg);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 3vw, 1.45rem);
+      font-weight: 800;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-top: 28px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-wrap: break-word;
+    }
+
+    .card > h2:first-of-type {
+      margin-top: 10px;
+    }
+
+    .section-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: var(--ink);
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    ul {
+      margin-bottom: 18px;
+      padding-inline-start: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      color: var(--ink);
+      overflow-wrap: break-word;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      word-break: break-all;
+      transition: color 0.15s ease;
+    }
+
+    a:hover {
+      color: var(--primary-dark);
+    }
+
+    .notice {
+      background: var(--primary-light);
+      border-inline-start: 4px solid var(--primary);
+      padding: 16px clamp(14px, 3vw, 20px);
+      border-radius: 0 12px 12px 0;
+      margin: 20px 0;
+      color: var(--ink);
+      overflow-wrap: break-word;
+    }
+
+    [dir="rtl"] .notice {
+      border-radius: 12px 0 0 12px;
+    }
+
+    .notice strong {
+      color: var(--primary-dark);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    /* Actions and Contact Box */
+    .contact-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px clamp(14px, 3vw, 20px);
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .contact-box {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #ffffff !important;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      min-height: 44px;
+      transition: transform 0.15s ease, background 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .btn-action:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      padding-bottom: 24px;
+      color: var(--ink-muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .tricolor-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .tricolor-ribbon span {
+      width: 24px;
+      height: 4px;
+      border-radius: 9999px;
+    }
+
+    .lang-section {
+      display: none;
+    }
+
+    .lang-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container">
+      <nav class="top-nav" aria-label="Navigation principale">
+        <a id="backBtn" class="back-btn" href="../">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+          <span id="backLabel">Retour au site</span>
+        </a>
+
+        <!-- Bilingual switcher: FR / AR / EN -->
+        <div class="lang-switcher" role="group" aria-label="Choisir la langue">
+          <button class="lang-btn active" onclick="switchLang('fr')" id="btn-fr">FR</button>
+          <button class="lang-btn" onclick="switchLang('ar')" id="btn-ar">العربية</button>
+          <button class="lang-btn" onclick="switchLang('en')" id="btn-en">EN</button>
+        </div>
+      </nav>
+
+      <div class="eyebrow">
+        <span>RND</span>
+        <span>•</span>
+        <span>Aïn El Turck, Oran</span>
+      </div>
+
+      <h1 id="pageTitle">Politique de sécurité</h1>
+      <p class="header-desc" id="pageDesc">
+        Bonnes pratiques pour une utilisation sûre de la plateforme officielle et signalement responsable des vulnérabilités.
+      </p>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="container">
+      <article class="card">
+        
+        <!-- FRENCH VERSION -->
+        <div id="content-fr" class="lang-section active">
+          <div class="badge-meta">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Dernière mise à jour : 19 octobre 2026</span>
+          </div>
+
+          <p>Cette page décrit les engagements et bonnes pratiques de sécurité applicables à l'application et au site <strong>Nos Candidats</strong> (RND Aïn El Turck). Elle vise à garantir la confidentialité et la fiabilité des échanges entre les citoyens et la campagne municipale.</p>
+
+          <h2><span class="section-icon">🛡️</span> 1. Protection des utilisateurs & Données</h2>
+          <p>Nous appliquons les principes stricts de sécurité informatique et de minimisation des données :</p>
+          <ul>
+            <li>Chiffrement systématique de toutes les communications par protocole HTTPS (TLS 1.3).</li>
+            <li>Aucun mot de passe ni identifiant sensible n'est stocké en clair.</li>
+            <li>Limitation stricte des accès administratifs aux seules personnes mandatées du bureau communal.</li>
+            <li>Surveillance continue pour prévenir les accès non autorisés ou tentatives de déni de service.</li>
+          </ul>
+
+          <h2><span class="section-icon">🔒</span> 2. Bonnes pratiques recommandées</h2>
+          <ul>
+            <li>Utilisez un navigateur web récent et appliquez les mises à jour de sécurité de votre téléphone ou ordinateur.</li>
+            <li>Ne transmettez jamais vos mots de passe, clés d'accès ou codes SMS de vérification.</li>
+            <li>Vérifiez toujours que l'adresse web correspond bien au nom de domaine officiel de la campagne avant toute saisie d'information.</li>
+            <li>Si vous soupçonnez une activité anormale, déconnectez-vous et contactez immédiatement notre permanence.</li>
+          </ul>
+
+          <h2><span class="section-icon">⚠️</span> 3. Signalement responsable d'une vulnérabilité</h2>
+          <p>Si vous êtes un chercheur en sécurité ou un utilisateur ayant identifié une vulnérabilité potentielle, nous vous invitons à la signaler de manière responsable et éthique :</p>
+          <ul>
+            <li>Décrivez avec précision la faille observée (URL, type de vulnérabilité, impact potentiel).</li>
+            <li>Fournissez les étapes minimales permettant de reproduire le problème, sans exploiter la faille au-delà du test initial.</li>
+            <li>Ne consultez, ne modifiez et ne détruisez aucune donnée appartenant à des citoyens ou adhérents.</li>
+            <li>Accordez à notre équipe technique un délai raisonnable pour analyser et corriger le problème avant toute divulgation publique.</li>
+          </ul>
+
+          <div class="notice">
+            <strong>Respect strict de la vie privée et de la légalité</strong>
+            Sont formellement proscrits : les tests par déni de service (DoS/DDoS), le phishing, l'ingénierie sociale ou l'altération physique ou logicielle des systèmes.
+          </div>
+
+          <h2><span class="section-icon">📬</span> 4. Canaux de contact de sécurité</h2>
+          <p>Pour tout signalement ou question relative à la sécurité :</p>
+
+          <div class="contact-box">
+            <div>
+              <p style="margin: 0; font-weight: 700;">Dépôt de signalement sécurisé</p>
+              <p style="margin: 0; font-size: 13px; color: var(--ink-muted);">Suivi direct par les ingénieurs du projet</p>
+            </div>
+            <a class="btn-action" href="https://github.com/Connacri/rnd/issues" target="_blank" rel="noopener noreferrer">
+              <span>Signaler sur GitHub</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- ARABIC VERSION -->
+        <div id="content-ar" class="lang-section" dir="rtl">
+          <div class="badge-meta">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>آخر تحديث: 19 أكتوبر 2026</span>
+          </div>
+
+          <p>توضح هذه الصفحة التزامات وإرشادات الأمان المعمول بها على منصة وتطبيق <strong>Nos Candidats</strong> (التجمع الوطني الديمقراطي RND - عين الترك، وهران)، لضمان سرية وحماية بيانات المواطنين.</p>
+
+          <h2><span class="section-icon">🛡️</span> 1. حماية المستخدمين وسرية البيانات</h2>
+          <p>نطبق أعلى معايير أمن المعلومات لحماية المنصة والمشاركين:</p>
+          <ul>
+            <li>تشفير شامل لجميع الاتصالات عبر بروتوكول HTTPS الآمن (TLS 1.3).</li>
+            <li>عدم تخزين أي كلمات مرور أو معلومات حساسة دون تشفير متقدم.</li>
+            <li>حصر الصلاحيات الإدارية فقط على أعضاء المكتب البلدي المخولين رسمياً.</li>
+            <li>مراقبة وقائية مستمرة للتصدي لأي محاولات اختراق أو حجب الخدمة.</li>
+          </ul>
+
+          <h2><span class="section-icon">🔒</span> 2. الممارسات الموصى بها للمواطن</h2>
+          <ul>
+            <li>استخدم متصفحاً حديثاً وتأكد من تثبيت تحديثات الأمان على هاتفك أو حاسوبك.</li>
+            <li>لا تشارك أبداً كلمات المرور أو رموز التحقق مع أي شخص آخر.</li>
+            <li>تأكد دائماً من صحة رابط الموقع الرسمي قبل إدخال أي معلومات شخصية.</li>
+            <li>عند ملاحظة أي نشاط غير معتاد، قم بتسجيل الخروج وتواصل فوراً مع فريق المداومة.</li>
+          </ul>
+
+          <h2><span class="section-icon">⚠️</span> 3. الإبلاغ المسؤول عن الثغرات الأمنية</h2>
+          <p>نرحب بالتعاون مع الباحثين في أمن المعلومات للإبلاغ عن أي ثغرة محتملة بأسلوب مسؤول وأخلاقي:</p>
+          <ul>
+            <li>قدم وصفاً دقيقاً للثغرة (الرابط، نوع الخلل، الأثر المحتمل).</li>
+            <li>وضح الخطوات الدقيقة لإعادة إنتاج المشكلة دون استغلال الثغرة بما يتجاوز الفحص الأولي.</li>
+            <li>يحظر تماماً الاطلاع على بيانات المواطنين أو تعديلها أو حذفها.</li>
+            <li>امنح فريقنا التقني وقتاً كافياً لمعالجة المشكلة قبل أي إعلان عام.</li>
+          </ul>
+
+          <div class="notice">
+            <strong>احترام الخصوصية والقوانين المعمول بها</strong>
+            يمنع منعاً باتاً: هجمات حجب الخدمة (DoS/DDoS)، التصيد الاحتيالي، أو إلحاق أي ضرر مادي أو برمجي بالأنظمة.
+          </div>
+
+          <h2><span class="section-icon">📬</span> 4. قنوات التواصل للإبلاغ الأمني</h2>
+          <p>لأي إبلاغ أو استفسار أمني مباشر:</p>
+
+          <div class="contact-box">
+            <div>
+              <p style="margin: 0; font-weight: 700;">منصة البلاغات التقنية المباشرة</p>
+              <p style="margin: 0; font-size: 13px; color: var(--ink-muted);">متابعة مباشرة من قبل المهندسين المسؤولين</p>
+            </div>
+            <a class="btn-action" href="https://github.com/Connacri/rnd/issues" target="_blank" rel="noopener noreferrer">
+              <span>إرسال تقرير عبر GitHub</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- ENGLISH VERSION -->
+        <div id="content-en" class="lang-section">
+          <div class="badge-meta">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Last updated: October 19, 2026</span>
+          </div>
+
+          <p>This page describes the security practices and responsible vulnerability disclosure policy for the <strong>Nos Candidats</strong> platform (RND Ain El Turck).</p>
+
+          <h2><span class="section-icon">🛡️</span> 1. User Safety & Data Protection</h2>
+          <ul>
+            <li>Enforced end-to-end encryption across all web traffic using HTTPS (TLS 1.3).</li>
+            <li>No plaintext password or confidential credentials are ever stored.</li>
+            <li>Administrative privileges are strictly restricted to authorized communal bureau staff.</li>
+            <li>Continuous defense mechanisms against automated abuse and denial of service.</li>
+          </ul>
+
+          <h2><span class="section-icon">🔒</span> 2. Recommended Citizen Practices</h2>
+          <ul>
+            <li>Keep your browser and operating system up to date with the latest security patches.</li>
+            <li>Never disclose your passwords, verification codes, or private credentials.</li>
+            <li>Verify the official URL before providing any feedback or contact information.</li>
+            <li>Report suspicious activities promptly to our administrative team.</li>
+          </ul>
+
+          <h2><span class="section-icon">⚠️</span> 3. Responsible Vulnerability Disclosure</h2>
+          <ul>
+            <li>Provide reproduction steps and a clear explanation of the observed issue.</li>
+            <li>Never access, alter, download, or delete data belonging to other users.</li>
+            <li>Allow a reasonable timeframe for mitigation prior to any public disclosure.</li>
+          </ul>
+
+          <div class="contact-box">
+            <div>
+              <p style="margin: 0; font-weight: 700;">Issue Tracker</p>
+              <p style="margin: 0; font-size: 13px; color: var(--ink-muted);">Monitored directly by project engineers</p>
+            </div>
+            <a class="btn-action" href="https://github.com/Connacri/rnd/issues" target="_blank" rel="noopener noreferrer">
+              <span>Report via GitHub</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="tricolor-ribbon">
+        <span style="background: #0047AB;"></span>
+        <span style="background: #00A651;"></span>
+        <span style="background: #C8102E;"></span>
+      </div>
+      <p style="font-weight: 700; margin-bottom: 4px;">© 2026 Nos Candidats — RND Aïn El Turck</p>
+      <p style="font-size: 12px; color: var(--ink-muted);">Plateforme officielle de campagne électorale communale 2026.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Intelligent back button navigation
+    (function initBackNavigation() {
+      const btn = document.getElementById('backBtn');
+      if (!btn) return;
+      
+      // Determine the best target:
+      const path = window.location.pathname;
+      if (path.includes('/rnd/')) {
+        btn.href = '/rnd/';
+      } else if (path.includes('/security-policy')) {
+        btn.href = path.replace(/\/security-policy\/?.*$/, '') || '/';
+      } else {
+        btn.href = '../';
+      }
+
+      btn.addEventListener('click', function(e) {
+        if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
+          e.preventDefault();
+          window.history.back();
+        }
+      });
+    })();
+
+    // Language switcher logic
+    function switchLang(lang) {
+      document.querySelectorAll('.lang-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+      
+      const targetContent = document.getElementById('content-' + lang);
+      const targetBtn = document.getElementById('btn-' + lang);
+      
+      if (targetContent) targetContent.classList.add('active');
+      if (targetBtn) targetBtn.classList.add('active');
+
+      const titleEl = document.getElementById('pageTitle');
+      const descEl = document.getElementById('pageDesc');
+      const backLabel = document.getElementById('backLabel');
+
+      if (lang === 'ar') {
+        document.documentElement.lang = 'ar';
+        document.documentElement.dir = 'rtl';
+        if (titleEl) titleEl.textContent = 'سياسة الأمان وحماية البيانات';
+        if (descEl) descEl.textContent = 'أفضل الممارسات لضمان أمان المنصة الرسمية والإبلاغ الأخلاقي والمسؤول عن الثغرات.';
+        if (backLabel) backLabel.textContent = 'العودة للموقع';
+      } else if (lang === 'en') {
+        document.documentElement.lang = 'en';
+        document.documentElement.dir = 'ltr';
+        if (titleEl) titleEl.textContent = 'Security Policy';
+        if (descEl) descEl.textContent = 'Best practices for safe usage and responsible vulnerability disclosure.';
+        if (backLabel) backLabel.textContent = 'Back to website';
+      } else {
+        document.documentElement.lang = 'fr';
+        document.documentElement.dir = 'ltr';
+        if (titleEl) titleEl.textContent = 'Politique de sécurité';
+        if (descEl) descEl.textContent = 'Bonnes pratiques pour une utilisation sûre de la plateforme officielle et signalement responsable des vulnérabilités.';
+        if (backLabel) backLabel.textContent = 'Retour au site';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -130,7 +130,15 @@ export const translations: Record<Language, Record<string, string>> = {
     shareDescription: "Partagez avec vos proches pour soutenir le mouvement à Aïn El Turck !",
     copyLink: "Copier le lien",
     copied: "Lien copié !",
-    officialPlatform: "Plateforme Officielle"
+    officialPlatform: "Plateforme Officielle",
+    appPreview: "Aperçu de la Campagne",
+    appPreviewSubtitle: "Découvrez les affiches officielles, les visuels de rassemblement et les écrans de l'application",
+    officialPostersTab: "Affiches Officielles",
+    appScreenshotsTab: "Écrans de l'App",
+    viewPoster: "Agrandir l'affiche",
+    downloadPoster: "Télécharger",
+    sharePoster: "Partager l'affiche",
+    securityPolicy: "Politique de sécurité"
   },
   ar: {
     appName: "Nos Candidats",
@@ -261,7 +269,15 @@ export const translations: Record<Language, Record<string, string>> = {
     shareDescription: "شارك مع أصدقائك لدعم حركتنا في عين الترك!",
     copyLink: "نسخ الرابط",
     copied: "تم نسخ الرابط !",
-    officialPlatform: "المنصة الرسمية"
+    officialPlatform: "المنصة الرسمية",
+    appPreview: "معاينة الحملة الرسمية",
+    appPreviewSubtitle: "استكشف الملصقات الرسمية، فعاليات اللقاءات وشاشات التطبيق التفاعلي",
+    officialPostersTab: "الملصقات الرسمية",
+    appScreenshotsTab: "شاشات التطبيق",
+    viewPoster: "تكبير الملصق",
+    downloadPoster: "تحميل الملصق",
+    sharePoster: "مشاركة الملصق",
+    securityPolicy: "سياسة الأمان"
   },
   en: {
     appName: "Nos Candidats",
@@ -392,6 +408,14 @@ export const translations: Record<Language, Record<string, string>> = {
     shareDescription: "Share with friends to support the movement in Ain El Turck!",
     copyLink: "Copy Link",
     copied: "Link copied!",
-    officialPlatform: "Official Platform"
+    officialPlatform: "Official Platform",
+    appPreview: "Campaign Preview",
+    appPreviewSubtitle: "Explore official campaign posters, rally announcements, and app screens",
+    officialPostersTab: "Official Posters",
+    appScreenshotsTab: "App Screens",
+    viewPoster: "Zoom Poster",
+    downloadPoster: "Download",
+    sharePoster: "Share Poster",
+    securityPolicy: "Security Policy"
   }
 };

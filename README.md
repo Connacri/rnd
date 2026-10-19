@@ -11,9 +11,10 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 
 [![CI](https://github.com/Connacri/rnd/actions/workflows/ci.yml/badge.svg)](https://github.com/Connacri/rnd/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Connacri/rnd?sort=semver&label=version)](https://github.com/Connacri/rnd/releases)
-[![Flutter](https://img.shields.io/badge/Flutter-3.44.0-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-%3E%3D3.0-0175C2?logo=dart&logoColor=white)](https://dart.dev)
-[![Android](https://img.shields.io/badge/Android-23%2B-3DDC84?logo=android&logoColor=white)](https://developer.android.com)
+[![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-6.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Capacitor](https://img.shields.io/badge/Capacitor-Android-119EFF?logo=capacitor&logoColor=white)](https://capacitorjs.com)
+[![Android](https://img.shields.io/badge/Android-24%2B-3DDC84?logo=android&logoColor=white)](https://developer.android.com)
 [![Licence](https://img.shields.io/badge/licence-propri%C3%A9taire-red)](#licence)
 
 [🌐 Application web](https://connacri.github.io/rnd/) ·
@@ -50,18 +51,15 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 
 ## Présentation
 
-**Nos Candidats** est l'application de campagne mobile et web du candidat
+**Nos Candidats** est l'application de campagne officielle mobile et web du candidat
 **Nabil Zenasni** pour les élections communales de 2026 à Aïn El Turck (Oran,
 Algérie).
 
-L'application mobile est écrite en **Flutter** et publiée sur **Android**
-(APK/AAB). Le site web (**GitHub Pages**) est l'application **React 19 + Vite**
-du dépôt (`index.html` + `src/`), compilée par la CI puis publiée dans
-`dist/`.
-
-Le contenu (programme, actualités, événements, chiffres clés) est éditable sans
-redéploiement depuis une base **Supabase** ; l'authentification et les
-notifications push s'appuient sur **Firebase**.
+L'ensemble du projet est unifié en **React 19 + Vite 6 + Tailwind CSS 4**.
+L'application Android (APK/AAB) embarque directement le build de l'application web
+via **Capacitor Android**, garantissant une fidélité visuelle et fonctionnelle
+rigoureusement identique à 100% entre le site en ligne ([connacri.github.io/rnd](https://connacri.github.io/rnd/))
+et l'application Android.
 
 ## Captures d'écran
 
@@ -78,89 +76,64 @@ notifications push s'appuient sur **Firebase**.
 
 | Module | Description |
 | --- | --- |
-| **Accueil** | Présentation du candidat, message audio, chiffres clés du RND, dernières actualités |
-| **Candidat** | Biographie, vision et valeurs (éditables depuis Supabase) |
-| **Programme** | Piliers thématiques et points détaillés (éditables depuis Supabase) |
-| **Adhésion** | Formulaire d'adhésion au mouvement, validation des champs |
-| **Événements** | Calendrier des événements de campagne (éditable depuis Supabase) |
-| **Authentification** | Email / mot de passe + Google Sign-In (Firebase Auth), mot de passe oublié |
-| **Notifications** | Actualités poussées via FCM (topic `news`) + notifications locales |
-| **Langues** | Français, Arabe (RTL) et Anglais |
-| **Hors ligne** | Repli automatique sur les données statiques si Supabase est injoignable |
-| **Design** | Identité visuelle alignée sur le site web (thème clair crème/ambre, ruban tricolore, navigation en pilules, bascule FR/AR/EN) |
+| **Accueil** | Présentation du candidat, message audio officiel (FR/AR), chiffres clés du RND, actualités et valeurs |
+| **Candidat** | Biographie, vision, engagements et parcours de Zenasni Nabil |
+| **Programme** | Piliers thématiques complets et actions détaillées avec filtres par commission |
+| **Conseil Communal** | Présentation de la liste des candidats au conseil communal d'Aïn El Turck |
+| **Adhésion** | Formulaire d'adhésion au mouvement avec validation complète des champs |
+| **Événements / Agenda** | Calendrier des rassemblements, réunions citoyennes et dates clés de campagne |
+| **Portail Admin** | Gestion dynamique du candidat, piliers, actualités, candidats et consultation des adhésions |
+| **Authentification** | Connexion Email / mot de passe + Google Sign-In, mot de passe oublié |
+| **Langues** | Français, Arabe (sens RTL complet avec typographie Cairo & Noto Sans Arabic) et Anglais |
+| **Audio Player** | Lecteur audio tricolore avec message audio officiel en français et arabe |
+| **Design** | Identité Purrweb raffinée (crème/ambre, ruban tricolore, navigation flottante en pilule) |
 
 ## Stack technique
 
 | Domaine | Technologie |
 | --- | --- |
-| Framework | **Flutter 3.44** / Dart |
-| Gestion d'état | `provider` |
-| Authentification | **Firebase Auth** (email, Google) |
-| Notifications | **Firebase Cloud Messaging** + `flutter_local_notifications` |
-| Contenu | **Supabase** (PostgreSQL + RLS) |
-| Traductions | `flutter_localizations` + ARB (`fr`, `en`, `ar`) |
-| Audio | `audioplayers` |
-| Typographie | `google_fonts` |
-| Icônes / splash | `flutter_launcher_icons`, `flutter_native_splash` |
-| Site web (Pages) | **React 19** + **Vite 6** + **Tailwind CSS 4** (`tsc` en typecheck) |
+| Framework Web & UI | **React 19** + **TypeScript** |
+| Bundler & Dev Server | **Vite 6** (`server.allowedHosts: true`, port 3000) |
+| Styles & Composants | **Tailwind CSS 4** + Lucide React |
+| Runtime Android | **Capacitor Android 8** (`com.rnd.dz`) |
+| Internationalisation | Contexte React i18n (`fr`, `ar` RTL, `en`) |
+| Audio | Audio HTML5 haute fidélité (`assets/audio/`) |
 | CI/CD | **GitHub Actions** (APK + AAB signés, site GitHub Pages, Releases) |
 
 ## Architecture du projet
 
 ```text
 rnd/
-├── index.html                      # Point d'entree du site React (Vite)
-├── src/                            # Site web React 19 (pages, composants, i18n)
-├── public/                         # Assets du site (favicons, images, audio, PWA)
-├── package.json                    # Dependances et scripts du site (vite build)
-├── vite.config.ts                  # Config Vite (BASE_PATH pour GitHub Pages)
-├── android/                        # Projet Android natif (Gradle / Kotlin)
-├── ios/                            # Projet iOS (Runner Xcode)
-├── assets/
-│   ├── audio/                      # Messages audio (fr.mp3, ar.mp3)
-│   ├── icons/                      # Icône et splash sources + générés
-│   └── images/                     # Visuels et captures d'écran
-├── lib/
-│   ├── app/                        # MaterialApp, routes, coquille, thème
-│   │   ├── app.dart
-│   │   ├── app_shell.dart          # En-tête + ruban + navigation (identité du site)
-│   │   ├── routes.dart
-│   │   └── theme.dart              # Palette claire partagée avec le site (crème/ambre)
-│   ├── core/
-│   │   ├── constants/              # Constantes applicatives et Supabase
-│   │   ├── providers/              # Providers transverses (langue)
-│   │   ├── services/               # Notifications, contenus, traductions
-│   │   └── utils/                  # Helpers (textes localisés, validateurs)
-│   ├── features/                   # Modules fonctionnels autonomes
-│   │   ├── auth/                   # Connexion, inscription, modèle utilisateur
-│   │   ├── candidate/             # Page candidat
-│   │   ├── content/                # Chargement des contenus Supabase
-│   │   ├── events/                 # Événements
-│   │   ├── home/                   # Page d'accueil
-│   │   ├── membership/             # Adhésion
-│   │   └── program/                # Programme
-│   ├── l10n/                       # Traductions générées + sources ARB
-│   ├── widgets/                    # Composants partagés
-│   └── main.dart                   # Point d'entrée (Firebase, FCM, providers)
-├── test/                           # Tests
-├── tool/                           # Scripts utilitaires (assets, fiche Play, notifications)
-├── store/play/listings.json        # Fiche Play (nom + descriptions fr/en/ar)
-├── store/play/icon-512.png         # Icône de la fiche Play (512x512, générée)
-├── store/play/feature-graphic-*.png # Bannière de la fiche Play (1024x500, générée)
-├── store/play/screenshots/<lang>/   # Captures de la fiche Play (1080x1920, générées)
-├── web/                            # Coquille web (index.html, manifest PWA)
-└── .github/workflows/ci.yml        # Intégration continue
+├── index.html                      # Point d'entrée web (Vite)
+├── src/                            # Application React 19
+│   ├── components/                 # Composants UI (Navbar, BottomNav, AudioPlayer, GoogleModal)
+│   ├── context/                    # AuthContext, CampaignContext
+│   ├── data/                       # Données de campagne (candidat, piliers, actualités, stats)
+│   ├── i18n/                       # Traductions complètes (fr, ar, en) + RTL
+│   ├── pages/                      # Pages de l'application (Home, Candidate, Program, Council, Membership, Events, Admin, Auth)
+│   ├── types/                      # Modèles TypeScript
+│   ├── App.tsx                     # Orchestration des routes et navigation
+│   └── main.tsx                    # Point de montage React 19
+├── public/                         # Assets statiques web (audio, favicons, icônes, manifest)
+├── assets/                         # Visuels officiels et bannières
+├── android/                        # Projet Android Capacitor natif (Gradle, applicationId: com.rnd.dz)
+│   └── app/build.gradle            # Signature release CI et configuration du bundle
+├── capacitor.config.ts             # Configuration Capacitor (appId: com.rnd.dz, webDir: dist)
+├── package.json                    # Dépendances React 19, Vite, Capacitor
+├── vite.config.ts                  # Configuration Vite avec support GitHub Pages
+└── .github/workflows/ci.yml        # Pipeline CI/CD automatisé (Web + Android signé)
 ```
 
-Chaque module de `lib/features/` est autonome (`models/`, `providers/`,
-`screens/`, `services/`) afin de rester testable et isolé.
+
+L'application est architecturée autour d'un ensemble modulaire de composants et de contextes autonomes (`AuthContext`, `CampaignContext`, `LanguageContext`), facilitant les tests et la maintenance.
 
 ## Prérequis
 
-- [Flutter](https://flutter.dev) **3.44.0** (version utilisée en CI)
-- Android SDK / JDK 17+ (pour les builds Android)
-- Un projet **Firebase** (Auth, FCM) — `google-services.json` non committé
-- Un projet **Supabase** (contenu éditable)
+- [Node.js](https://nodejs.org) **20+** ou **22** (Node.js 22 utilisé en CI)
+- [npm](https://www.npmjs.com) 10+
+- JDK 17+ / Android SDK (pour la compilation du projet Android en CI)
+- Un projet **Firebase** (Auth, FCM)
+- Un projet **Supabase** (données de campagne)
 
 ## Démarrage rapide
 
@@ -170,68 +143,34 @@ git clone https://github.com/Connacri/rnd.git
 cd rnd
 
 # 2. Installer les dépendances
-flutter pub get
+npm install
 
-# 3. Créer le fichier de secrets local (jamais committé)
-cp .env.example .env
-#    renseigner SUPABASE_URL et SUPABASE_ANON_KEY
+# 3. Lancer l'application en développement (port 3000)
+npm run dev
 
-# 4. Lancer l'application (mode debug)
-flutter run --dart-define-from-file=.env
+# 4. Synchroniser l'application Android avec le build web
+npm run cap:build
 ```
-
-Le fichier `.env` n'est **jamais** committé (ni les clés de signature). Toutes
-les valeurs sensibles de la CI vivent dans les *GitHub Secrets*.
 
 ### Vérifications locales
 
 ```bash
-dart format --output=none --set-exit-if-changed lib tool
-flutter analyze --no-fatal-infos
-flutter test
+npm run lint         # Typecheck TypeScript strict
+npm run build        # Build de production Vite
 ```
 
 ## Internationalisation
 
-Les traductions sont dans `lib/l10n/` (`app_fr.arb`, `app_en.arb`,
-`app_ar.arb`) et sont générées par `flutter gen-l10n` :
+L'application supporte nativement trois langues via le contexte réactif `LanguageContext` :
+- **Français (`fr`)** : langue par défaut
+- **Arabe (`ar`)** : prise en charge complète du sens de lecture RTL (droite à gauche) et typographies adaptées (*Noto Sans Arabic*, *Cairo*)
+- **Anglais (`en`)**
 
-```bash
-flutter gen-l10n
-```
+La bascule s'effectue instantanément depuis la barre de navigation supérieure ou le sélecteur mobile.
 
-Le français est la langue de référence et sert de repli
-(`fr` → `en` → `ar`). L'arabe active automatiquement le sens de lecture RTL.
+## Données de campagne
 
-## Contenu éditable (Supabase)
-
-Les tables suivantes sont en **lecture publique** (RLS `SELECT`) et sont
-éditables directement depuis le dashboard Supabase :
-
-| Table | Description |
-| --- | --- |
-| `programs` | Piliers du programme (titre, sous-titre, tag) |
-| `program_items` | Points détaillés sous chaque pilier |
-| `events` | Événements de campagne |
-| `candidates` | Candidat / équipe |
-| `news` | Actualités (source des notifications FCM) |
-| `home_stats` | Chiffres de la page d'accueil |
-
-Les champs textuels localisés utilisent le format JSONB
-`{"fr": "...", "en": "...", "ar": "..."}`. Si la langue demandée est absente,
-l'application applique un repli sur `fr`.
-
-Si les tables sont vides ou injoignables, l'application utilise les données
-statiques embarquées (`lib/core/services/program_data.dart`) et affiche un état
-d'erreur avec possibilité de réessayer.
-
-## Notifications (FCM)
-
-- L'application s'abonne au topic `news` au démarrage.
-- Les actualités publiées dans Supabase peuvent être poussées :
-  - depuis la console Firebase → *Cloud Messaging* → topic `news` ;
-  - via le script `dart run tool/notify_news.dart`.
-- Le champ `push_sent_at` de la table `news` marque les notifications envoyées.
+Les informations de campagne (candidat, programme, événements, actualités, conseil communal) sont gérées localement avec réactivité temps réel et persistance dans le `CampaignContext`, avec synchronisation Supabase / Firebase. Un portail d'administration complet est intégré pour la gestion continue.
 
 ## Android
 

@@ -1,0 +1,9 @@
+{
+	"appId": "com.rnd.dz",
+	"appName": "Nos Candidats",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https",
+		"cleartext": true
+	}
+}

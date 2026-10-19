@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Nos Candidats</string>
+    <string name="title_activity_main">Nos Candidats</string>
+    <string name="package_name">com.rnd.dz</string>
+    <string name="custom_url_scheme">com.rnd.dz</string>
+</resources>

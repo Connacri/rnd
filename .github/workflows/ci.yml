@@ -10,9 +10,6 @@ on:
 permissions:
   contents: write
 
-env:
-  FLUTTER_VERSION: "3.44.0"
-
 # Une seule execution a la fois par branche : deux pushs rapproches ne doivent
 # pas calculer la meme version et entrer en collision sur le tag git.
 concurrency:
@@ -67,33 +64,29 @@ jobs:
           echo "Version calculee : $CANDIDATE"
 
   ##############################################################################
-  # Qualite : format + analyse statique + tests (bloque les builds si echec)
+  # Qualite : typecheck + lint + build web (bloque les builds si echec)
   ##############################################################################
   quality:
-    name: Qualite (format, analyse, tests)
+    name: Qualite (typecheck, lint, build)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: flutter pub get
+        run: npm ci
 
-      - name: Check formatting
-        run: dart format --output=none --set-exit-if-changed lib tool
+      - name: Check TypeScript typecheck
+        run: npm run lint
 
-      - name: Analyze
-        run: flutter analyze --no-fatal-infos
-
-      - name: Test
-        run: flutter test
+      - name: Build web application
+        run: npm run build
 
   ##############################################################################
   # Android : APK + AAB signes avec le keystore issu des secrets GitHub.
@@ -134,12 +127,11 @@ jobs:
           distribution: zulu
           java-version: "21"
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
+          node-version: 22
+          cache: npm
 
       - name: Setup Gradle cache
         uses: actions/cache@v4
@@ -151,7 +143,13 @@ jobs:
           restore-keys: gradle-${{ runner.os }}-
 
       - name: Install dependencies
-        run: flutter pub get
+        run: npm ci
+
+      - name: Build web application
+        run: npm run build
+
+      - name: Sync Capacitor Android
+        run: npx cap sync android
 
       - name: Decode Firebase Android config
         env:
@@ -190,42 +188,26 @@ jobs:
           } > android/key.properties
           echo "key.properties cree (signature release)."
 
-      # Les cles Supabase sont injectees via un fichier dart-define temporaire
-      # (supprime apres build) plutot qu'en ligne de commande, pour eviter
-      # qu'elles n'apparaissent dans les logs de processus.
-      - name: Create dart-define file
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      - name: Build signed APK & AAB
         run: |
-          cat > /tmp/ci_env.json <<EOF
-          {
-            "SUPABASE_URL": "${SUPABASE_URL}",
-            "SUPABASE_ANON_KEY": "${SUPABASE_ANON_KEY}"
-          }
-          EOF
-
-      - name: Build APK (universal)
-        run: |
-          flutter build apk --release \
-            --build-name=${{ needs.version.outputs.version }} \
-            --build-number=${{ needs.version.outputs.version_code }} \
-            --dart-define-from-file=/tmp/ci_env.json
-
-      - name: Build App Bundle (AAB)
-        run: |
-          flutter build appbundle --release \
-            --build-name=${{ needs.version.outputs.version }} \
-            --build-number=${{ needs.version.outputs.version_code }} \
-            --dart-define-from-file=/tmp/ci_env.json
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease -PversionName=${{ needs.version.outputs.version }} -PversionCode=${{ needs.version.outputs.version_code }}
+          ./gradlew bundleRelease -PversionName=${{ needs.version.outputs.version }} -PversionCode=${{ needs.version.outputs.version_code }}
 
       - name: Clean up secrets files
         if: always()
         run: |
-          rm -f /tmp/ci_env.json
           rm -f android/app/upload-keystore.jks
           rm -f android/key.properties
           rm -f android/app/google-services.json
+
+      - name: Prepare build outputs
+        run: |
+          mkdir -p build/app/outputs/flutter-apk build/app/outputs/apk/release build/app/outputs/bundle/release
+          cp android/app/build/outputs/apk/release/app-release.apk build/app/outputs/flutter-apk/app-release.apk
+          cp android/app/build/outputs/apk/release/app-release.apk build/app/outputs/apk/release/app-release.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/app-release.aab
 
       - name: Verify APK signature, package name and version
         env:
@@ -316,68 +298,6 @@ jobs:
           path: release/SHA256SUMS-android.txt
           retention-days: 30
 
-  ##############################################################################
-  # Fiche Google Play : nom de l'application, descriptions et icone.
-  #
-  # Aligne la fiche du Play Store sur store/play/ (listings.json + icon-512.png).
-  # Desactive par defaut, comme publish-play : activer via la variable de
-  # depot PLAY_UPLOAD_ENABLED=true. Le job est independant de la publication
-  # de l'AAB : une erreur de fiche ne bloque jamais une release.
-  ##############################################################################
-  play-listing:
-    name: Google Play (fiche)
-    needs: [version]
-    if: ${{ vars.PLAY_UPLOAD_ENABLED == 'true' }}
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Verify required secret
-        env:
-          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-        run: |
-          if [ -z "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
-            echo "::error::Secret PLAY_SERVICE_ACCOUNT_JSON manquant."
-            exit 1
-          fi
-          echo "Compte de service Google Play present."
-
-      - name: Show target listing
-        env:
-          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
-        run: dart run tool/play_listing.dart apply --dry-run
-
-      - name: Apply store listing
-        env:
-          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
-        run: dart run tool/play_listing.dart apply
-
-      - name: Apply store icon
-        env:
-          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
-        run: dart run tool/play_listing.dart icon
-
-      - name: Apply store visuals (banniere + captures)
-        env:
-          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          PLAY_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME }}
-        run: dart run tool/play_listing.dart graphics
 
   ##############################################################################
   # Google Play : envoi de l'AAB signe sur le canal "production".
@@ -572,7 +492,7 @@ jobs:
             ## Nos Candidats v${{ needs.version.outputs.version }}
 
             Application de campagne municipale (Nabil Zenasni — Ain El Turck),
-            developpee avec Flutter.
+            developpee avec React 19 + Vite (web et Android via Capacitor).
 
             ### Telechargements
 

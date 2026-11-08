@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, CheckCircle2, ImagePlus, Loader2, ShieldCheck, LockKeyhole } from 'lucide-react';
+import { CheckCircle2, ImagePlus, Loader2, LockKeyhole } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { supabase } from '../lib/supabaseClient';
 
@@ -9,7 +9,7 @@ const copy = {
  ar:{title:'فضاء خاص بالمترشحين',intro:'أدخل رمز PIN المكوّن من 10 أرقام الذي سلّمه لك المسؤول شخصياً.',verify:'التحقق من الدخول',name:'الاسم واللقب',profession:'المهنة',education:'المستوى الدراسي',diplomas:'الشهادات والتكوينات',experience:'الخبرة المهنية والجمعوية',skills:'الكفاءات والمهارات',motivation:'الدوافع والالتزام من أجل عين الترك',photo:'صورة شخصية (JPG أو PNG أو WebP — 5 ميغابايت كحد أقصى)',submit:'إرسال الملف',submitting:'جارٍ الإرسال…',required:'يرجى ملء الاسم والمهنة والمستوى الدراسي والكفاءات واختيار صورة.',photoError:'يجب أن تكون الصورة JPG أو PNG أو WebP وألا يتجاوز حجمها 5 ميغابايت.',success:'تم إرسال ملفكم. لن يظهر إلا بعد موافقة المسؤول.',failure:'تعذر إرسال الملف. تحقق من الاتصال ثم أعد المحاولة.',back:'رجوع',pin:'رمز PIN الذي سلّمه المسؤول',invalid:'رمز PIN غير صحيح أو تم توقيف الدخول مؤقتاً. اتصل بالمسؤول.',privacy:'رمز PIN شخصي ويتم التحقق منه على الخادم ولا يُنشر أبداً.'},
  en:{title:'Candidates’ secure area',intro:'Enter the 10-digit PIN personally issued to you by the administrator.',verify:'Verify access',name:'Full name',profession:'Profession',education:'Education level',diplomas:'Diplomas and training',experience:'Professional and community experience',skills:'Skills and expertise',motivation:'Motivation and commitment to Ain El Turck',photo:'Profile photo (JPG, PNG or WebP — max 5 MB)',submit:'Submit profile',submitting:'Submitting…',required:'Complete your name, profession, education, skills and choose a photo.',photoError:'Photo must be JPG, PNG or WebP and no larger than 5 MB.',success:'Your profile has been submitted. It will appear only after administrator approval.',failure:'Could not submit the profile. Check your connection and try again.',back:'Back',pin:'PIN issued by the administrator',invalid:'Invalid PIN or access temporarily locked. Contact the administrator.',privacy:'Your PIN is personal, verified server-side and never published.'}
 };
-export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = ({onNavigate}) => {
+export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = () => {
  const {lang,isRtl}=useLanguage(); const t=copy[lang as keyof typeof copy]||copy.fr;
  const [pin,setPin]=useState(''),[candidateId,setCandidateId]=useState(''),[authorized,setAuthorized]=useState(false);
  const [form,setForm]=useState({name:'',profession:'',education:'',diplomas:'',experience:'',skills:'',motivation:''});

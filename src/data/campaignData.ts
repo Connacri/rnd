@@ -72,33 +72,33 @@ export const programPillars: ProgramPillar[] = [
     accentColor: "#0284c7", // Sky blue
     bgLight: "bg-sky-50 dark:bg-sky-950/30",
     title: {
-      fr: "Développement économique, commerce et emploi",
+      fr: "Développement économique, commerce et création d'emplois et d'activités",
       ar: "التنمية الاقتصادية والتجارة و خلق جو العمل و الأعمال.",
-      en: "Economic Development, Commerce and Employment"
+      en: "Economic development, commerce, and the creation of jobs and business opportunities"
     },
     subtitle: {
-      fr: "Notre priorité est de transformer Aïn El Turck en une commune créatrice de richesse.",
+      fr: "Notre priorité est de faire d’Aïn El Turck une commune qui crée de la richesse et des emplois, et une destination touristique particulièrement attractive.",
       ar: "أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة  و وفرص العمل. و الاعمال و جعلها مدينة سياحية جذابة بإمتياز",
-      en: "Our priority is to transform Ain El Turck into a wealth-generating communality."
+      en: "Our priority is to transform Ain El Turck into a municipality that generates wealth and jobs, and to make it an exceptionally attractive tourist destination."
     },
     tag: {
-      fr: "Économie & Emploi",
+      fr: "Économie, commerce et emploi",
       ar: "التنمية الاقتصادية",
-      en: "Economic Development"
+      en: "Economy, commerce and employment"
     },
     items: {
       fr: [
-        "L'ouverture d'une deuxième route reliant les deux extrémités de la commune afin de désengorger la circulation.",
-        "La réalisation des raccordements nécessaires sur cette route déjà existante.",
-        "La création d'un nouveau corridor économique favorisant l'implantation de commerces et de nouveaux locaux commerciaux.",
-        "La valorisation des terrains, habitations et résidences situés le long de cette nouvelle voie.",
-        "La création d'emplois directs et indirects pour les jeunes de la région.",
-        "La création d'un marché quotidien à Trouville (à l'étude).",
-        "La création d'un marché hebdomadaire de véhicules à l'entrée ou à la sortie de la commune.",
-        "L'installation de kiosques commerciaux harmonisés selon une architecture de style californien moderne.",
-        "La création d'une base de données recensant tous les commerces, artisans, professions libérales et services.",
-        "L'organisation de rencontres régulières entre entreprises, commerçants, investisseurs et clubs sportifs/culturels.",
-        "Encourager les entreprises titulaires de marchés publics à contribuer à deux problématiques d'intérêt communal."
+        "Ouverture d’une deuxième voie reliant les différents secteurs de la commune afin de réduire les embouteillages permanents et de créer une nouvelle dynamique commerciale le long de cette voie.",
+        "Réalisation des raccordements et des voies d’accès nécessaires sur cette route déjà existante.",
+        "Création d’un nouveau corridor économique favorisant l’installation de nouveaux magasins et commerces.",
+        "Valorisation des terrains, des habitations et des résidences situés le long de cette voie stratégique.",
+        "Création d’un environnement favorable aux activités et aux emplois directs et indirects pour les jeunes d’Aïn El Turck.",
+        "Création d’un marché quotidien dans le quartier de Trouville afin de faciliter l’approvisionnement de tous les jours.",
+        "Création d’un marché hebdomadaire organisé pour les véhicules à la sortie de la ville.",
+        "Installation de kiosques commerciaux uniformes et harmonisés, conçus selon une architecture moderne et esthétique.",
+        "Création d’une base de données numérique répertoriant tous les commerces, artisans, professions libérales et associations afin de faciliter les échanges et la communication.",
+        "Organisation de rencontres périodiques entre entreprises, commerçants, investisseurs et clubs afin de soutenir le sponsoring et les projets partenariaux.",
+        "Incitation des entreprises titulaires de marchés publics à contribuer à la résolution d’au moins deux problèmes auxquels la ville est confrontée."
       ],
       ar: [
         "فتح طريق ثانٍ يربط البلدية لتخفيف الازدحام المروري الدائم و خلق جو تجاري جديد في الطريق الجديد",
@@ -114,17 +114,17 @@ export const programPillars: ProgramPillar[] = [
         "حث المؤسسات الحاصلة على صفقات عمومية على المساهمة في حل على الأقل معضلتين موجودتين في المدينة."
       ],
       en: [
-        "Opening a second road connecting the two ends of the communality to ease traffic flow.",
-        "Carrying out the necessary connections on this already existing road.",
-        "Creating a new economic corridor promoting the establishment of businesses and new commercial premises.",
-        "Enhancing the value of land, homes and residences located along this new road.",
-        "Creating direct and indirect jobs for local youth.",
-        "Creating a daily market in Trouville (under study).",
-        "Creating a weekly vehicle market at the entrance or exit of the communality.",
-        "Installing harmonized commercial kiosks according to modern architecture.",
-        "Creating a comprehensive database listing all businesses, craftsmen, and services.",
-        "Organizing regular meetings between businesses, traders, and investors for sponsorships and partnerships.",
-        "Encouraging public contract holders to contribute to solving communal challenges through corporate social responsibility."
+        "Open a second road connecting the municipality’s different areas to ease persistent traffic congestion and create new commercial activity along the new route.",
+        "Carry out the utility connections and access roads required for this road, which already exists.",
+        "Create a new economic corridor that encourages the establishment of new shops and businesses.",
+        "Increase the value of land, homes and residential properties along this vital road.",
+        "Create an environment that generates direct and indirect business and employment opportunities for the young people of Ain El Turck.",
+        "Establish a daily market in the Trouville district to make everyday shopping and supplies easier.",
+        "Establish an organized weekly vehicle market at the exit of the city.",
+        "Install standardized, coordinated commercial kiosks with attractive, modern architectural design.",
+        "Create a digital database listing all shops, tradespeople, independent professionals and associations to facilitate transactions and communication.",
+        "Hold regular meetings between businesses, traders, investors and clubs to support sponsorships and collaborative projects.",
+        "Encourage companies awarded public contracts to help resolve at least two of the problems facing the city."
       ]
     }
   },
@@ -135,29 +135,29 @@ export const programPillars: ProgramPillar[] = [
     accentColor: "#e11d48", // Rose / Coral
     bgLight: "bg-rose-50 dark:bg-rose-950/30",
     title: {
-      fr: "Mobilité, circulation et transports",
+      fr: "Circulation, mobilité et transports",
       ar: "التنقل والسير والمواصلات",
-      en: "Mobility, Traffic and Transport"
+      en: "Traffic, mobility and transport"
     },
     subtitle: {
-      fr: "La mobilité fluide est indispensable au bien-être et au développement économique.",
+      fr: "Une mobilité fluide et rapide est indispensable à une vie digne et à un véritable développement économique.",
       ar: "التنقل السلس والسريع ضروري لحياة كريمة وتنمية اقتصادية حقيقية.",
-      en: "Seamless mobility is essential for economic and social development."
+      en: "Smooth and efficient mobility is essential to a dignified quality of life and genuine economic development."
     },
     tag: {
-      fr: "Mobilité Urbaine",
+      fr: "Circulation et transports",
       ar: "حركة المرور",
-      en: "Mobility & Transit"
+      en: "Traffic and transport"
     },
     items: {
       fr: [
-        "L'ouverture de la deuxième route afin de fluidifier durablement la circulation.",
-        "La création de nouvelles lignes de transport en commun régulières et modernes.",
-        "La création de nouvelles lignes de taxis desservant les quartiers éloignés.",
-        "Une meilleure desserte des quartiers pour éviter les longues marches jusqu'à la route nationale.",
-        "Une gestion optimisée des flux routiers pendant la forte saison estivale.",
-        "Bâtir 6 ponts pour la déviation depuis la route vers les Andalouses pour un accès fluide.",
-        "Création de stations de transport près de Trouville, Bouisseville, Bensmir, Cap Falcon et Les Dunes."
+        "Ouverture de la deuxième voie afin de faciliter la circulation et de désengorger durablement la ville.",
+        "Création de nouvelles lignes régulières de transport public assurées par des bus modernes.",
+        "Création de lignes de taxis dédiées aux quartiers résidentiels éloignés et insuffisamment desservis.",
+        "Amélioration de la desserte des quartiers afin d’éviter aux habitants de parcourir de longues distances à pied pour rejoindre la route nationale.",
+        "Gestion intelligente et professionnelle des flux de circulation pendant la saison touristique estivale.",
+        "Construction de 6 ponts pour dévier la circulation depuis la route des Andalouses, faciliter les déplacements et éviter les embouteillages.",
+        "Création de stations organisées de transport public à proximité des zones de Trouville, Bouisseville, Bensmir et Cap Falcon."
       ],
       ar: [
         "فتح الطريق الثاني من أجل تسهيل حركة المرور وفك الاختناق بشكل مستدام.",
@@ -169,13 +169,13 @@ export const programPillars: ProgramPillar[] = [
         "إنشاء محطات منظمة للنقل العمومي بالقرب من تجمعات تروفيل، بوزفيل، بن سمير، وكاب فالكون"
       ],
       en: [
-        "Opening the second road to ensure sustainable long-term traffic flow.",
-        "Creating new, modern public transit bus routes.",
-        "Creating taxi routes dedicated to serving distant neighborhoods.",
-        "Better direct neighborhood transit connections to avoid long walks to the national road.",
-        "Smart traffic management during peak summer tourist seasons.",
-        "Constructing 6 bypass bridges towards Les Andalouses for smooth traffic flow.",
-        "Establishing structured transit stations near Trouville, Bouisseville, Bensmir, Cap Falcon and Les Dunes."
+        "Open the second road to improve traffic flow and provide a sustainable solution to congestion.",
+        "Create new, regular public transport routes operated by modern buses.",
+        "Create dedicated taxi routes serving remote and underserved residential neighborhoods.",
+        "Improve service to neighborhoods so residents do not have to walk long distances to reach the national road.",
+        "Ensure smart and professional traffic-flow management during the summer tourist season.",
+        "Build 6 bridges to divert traffic from the Les Andalouses road, make access easier and prevent congestion.",
+        "Create organized public transport stops near the Trouville, Bouisseville, Bensmir and Cap Falcon areas."
       ]
     }
   },
@@ -188,29 +188,29 @@ export const programPillars: ProgramPillar[] = [
     title: {
       fr: "Tourisme, plages et attractivité",
       ar: "السياحة والشواطئ والجاذبية",
-      en: "Tourism, Beaches and Attractiveness"
+      en: "Tourism, beaches and appeal"
     },
     subtitle: {
-      fr: "Aïn El Turck doit redevenir une référence nationale parmi les stations balnéaires.",
+      fr: "Aïn El Turck doit redevenir une destination exemplaire et une référence parmi les stations balnéaires méditerranéennes haut de gamme.",
       ar: "يجب أن تعود عين الترك كوجهة نموذجية ومرجع المنتجعات المتوسطية للمنتجعات البحرية الراقية.",
-      en: "Ain El Turck must regain its status as a top seaside resort."
+      en: "Ain El Turck must once again become an exemplary destination and a benchmark for premium Mediterranean seaside resorts."
     },
     tag: {
-      fr: "Tourisme & Plages",
+      fr: "Tourisme et littoral",
       ar: "السياحة البحرية",
-      en: "Tourism & Coast"
+      en: "Tourism and coastline"
     },
     items: {
       fr: [
-        "Des accès aux plages conçus pour durer avec des moules architecturaux de style osmanien.",
-        "L'utilisation de mortiers teintés hautement résistants à l'humidité marine.",
-        "Des passerelles et accès en bois élégants inspirés du style côtier californien.",
-        "La création de brigades permanentes de propreté et de nettoyage des plages 7j/7.",
-        "La mise en place d'animations culturelles et de campagnes de sensibilisation écocitoyennes.",
-        "L'installation de panneaux modernes bilingues rappelant les règles de civisme et de sécurité.",
-        "Le développement des activités et clubs de sports nautiques pour les jeunes.",
-        "Le soutien aux associations organisant des événements sportifs et culturels maritimes.",
-        "Une plateforme numérique regroupant toutes les informations utiles aux résidents et estivants."
+        "Aménagement d’entrées de plage conçues pour durer de nombreuses années, grâce à la fabrication de moules muraux soignés dans un style architectural authentique.",
+        "Utilisation d’un mortier teinté spécial, résistant à la salinité marine et à une forte humidité.",
+        "Réalisation de passerelles et de promenades en bois élégantes, inspirées du style des fronts de mer modernes.",
+        "Création d’équipes municipales permanentes et équipées pour assurer la propreté des plages tous les jours de la semaine.",
+        "Organisation de campagnes de sensibilisation et d’activités culturelles et environnementales destinées aux familles et aux enfants.",
+        "Installation de panneaux d’information modernes rappelant les règles de propreté, de sécurité et de préservation de l’environnement marin.",
+        "Développement des activités et des sports nautiques, avec le soutien aux clubs de plongée, d’aviron, de voile et à toutes les autres disciplines sportives.",
+        "Soutien aux associations sportives et culturelles actives dans les domaines maritime et touristique.",
+        "Lancement d’un portail numérique complet regroupant toutes les informations et tous les services destinés aux citoyens, aux touristes et aux visiteurs."
       ],
       ar: [
         "مداخل شاطئ مصممة لتدوم سنوات طويلة عبر تصنيع قوالب جدارية متقنة على طراز معماري أصيل.",
@@ -224,15 +224,15 @@ export const programPillars: ProgramPillar[] = [
         "إطلاق بوابة رقمية شاملة تضم كل المعلومات والخدمات للمواطنين والسياح والزوار."
       ],
       en: [
-        "Durable beach access points built using high-standard architectural molds.",
-        "Using marine moisture-resistant tinted materials for durable coastal structures.",
-        "Elegant wooden boardwalks and footbridges inspired by coastal seaside architecture.",
-        "Dedicated full-time coastal sanitation teams operating seven days a week.",
-        "Eco-citizen awareness campaigns and lively seasonal family cultural animations.",
-        "Modern multilingual signboards promoting hygiene, environmental care and water safety.",
-        "Expanding water sports clubs and ocean youth activities.",
-        "Direct logistical support for associations organizing maritime, cultural and sports festivals.",
-        "A comprehensive digital portal providing essential local services and visitor guides."
+        "Design beach entrances to last for many years by producing carefully crafted wall molds in an authentic architectural style.",
+        "Use a specially colored mortar resistant to sea salt and high humidity.",
+        "Build elegant wooden bridges and walkways inspired by modern waterfront promenades.",
+        "Establish permanent, properly equipped municipal teams to keep beaches clean every day of the week.",
+        "Organize awareness campaigns and cultural and environmental activities for families and children.",
+        "Install modern information signs reminding visitors of cleanliness, safety and marine-environment protection rules.",
+        "Develop water-based activities and sports, supporting diving, rowing, sailing and all other sports clubs.",
+        "Support sports and cultural associations active in maritime and tourism activities.",
+        "Launch a comprehensive digital portal containing all information and services for residents, tourists and visitors."
       ]
     }
   },
@@ -243,27 +243,27 @@ export const programPillars: ProgramPillar[] = [
     accentColor: "#16a34a", // Emerald green
     bgLight: "bg-emerald-50 dark:bg-emerald-950/30",
     title: {
-      fr: "Environnement, espaces verts et cadre de vie",
+      fr: "Environnement, espaces verts et qualité de vie",
       ar: "المساحات الخضراء",
-      en: "Environment, Green Spaces and Quality of Life"
+      en: "Environment, green spaces and quality of life"
     },
     subtitle: {
-      fr: "Nous voulons une commune plus verte, plus respirable et durable pour nos enfants.",
+      fr: "Nous voulons une commune plus verte, propre et agréable, offrant à nos enfants un cadre de vie digne et durable.",
       ar: "نريد بلدية أكثر خضرة، نقية وممتعة، توفر بيئة عيش كريمة ومستدامة لأبنائنا.",
-      en: "We envision a greener, healthier and more sustainable town for our children."
+      en: "We want a greener, cleaner and more pleasant municipality that provides our children with a dignified and sustainable living environment."
     },
     tag: {
-      fr: "Cadre de Vie & Écologie",
+      fr: "Environnement et espaces verts",
       ar: "البيئة والمساحات الخضراء وجودة الحياة",
-      en: "Green Spaces"
+      en: "Environment and green spaces"
     },
     items: {
       fr: [
-        "La création d'une pépinière communale dédiée à la production locale de plantes et arbustes.",
-        "La plantation de 10 000 arbres adaptés au climat méditerranéen et à croissance rapide.",
-        "La protection stricte du patrimoine arboricole et des espaces naturels de la corniche.",
-        "L'interdiction absolue de coupes d'arbres ou dégradations non autorisées par la loi.",
-        "La fabrication locale d'aires de jeux sécurisées pour parcs municipaux afin de réduire les coûts et accélérer l'aménagement."
+        "Création d’une pépinière municipale pour produire localement des arbres et des plantes ornementales et réduire les dépenses.",
+        "Plantation de 10 000 arbres à croissance rapide, adaptés au climat méditerranéen, dans tous les quartiers de la commune.",
+        "Protection renforcée et stricte du patrimoine arboré et du couvert végétal du front de mer et des forêts.",
+        "Interdiction absolue de couper ou de dégrader des arbres sans autorisation légale, avec sanction des contrevenants.",
+        "Fabrication locale de jeux et d’équipements pour les aires de jeux pour enfants dans les ateliers municipaux, afin d’accélérer leur renouvellement et leur entretien et de réduire les coûts."
       ],
       ar: [
         "إنشاء مشتل بلدي لإنتاج الأشجار والنباتات التزيينية محلياً وتوفير النفقات.",
@@ -273,11 +273,11 @@ export const programPillars: ProgramPillar[] = [
         "تصنيع محلي لألعاب وحدائق الأطفال في ورشات البلدية لتسريع التجديد، الصيانة وتوفير التكاليف."
       ],
       en: [
-        "Establishing a municipal nursery for local plant cultivation and tree nursery.",
-        "Planting 10,000 climate-resilient fast-growing trees across municipal neighborhoods.",
-        "Strict preservation of the coastal arboreal heritage and natural reserves.",
-        "Prohibiting unauthorized tree cutting with rigorous enforcement of environmental laws.",
-        "Local fabrication of safe, high-quality playground equipment for municipal parks."
+        "Establish a municipal nursery to grow trees and ornamental plants locally and reduce expenses.",
+        "Plant 10,000 fast-growing trees adapted to the Mediterranean climate throughout all municipal neighborhoods.",
+        "Enforce strict protection of trees and vegetation along the waterfront and in forest areas.",
+        "Strictly prohibit the cutting down or damaging of trees without legal authorization and penalize offenders.",
+        "Manufacture playground equipment and children’s park facilities locally in municipal workshops to speed up renewal and maintenance and reduce costs."
       ]
     }
   },
@@ -288,31 +288,31 @@ export const programPillars: ProgramPillar[] = [
     accentColor: "#8b5cf6", // Purple / Violet
     bgLight: "bg-purple-50 dark:bg-purple-950/30",
     title: {
-      fr: "Une commune numérique et une administration moderne",
+      fr: "Numérisation de l’administration",
       ar: "رقمنة الإدارة",
-      en: "A Digital Communality and Modern Administration"
+      en: "Digitalization of the administration"
     },
     subtitle: {
-      fr: "Le citoyen doit pouvoir communiquer en toute simplicité avec ses élus et son administration.",
+      fr: "Les citoyens doivent pouvoir communiquer rapidement et en toute transparence avec leur mairie et suivre leurs droits et leurs préoccupations.",
       ar: "يجب أن يتمكن المواطن من التواصل السريع والشفاف مع بلديته ومتابعة حقوقه وانشغالاته.",
-      en: "Citizens must be empowered to communicate easily with local government."
+      en: "Residents must be able to communicate quickly and transparently with their municipality and track their rights and concerns."
     },
     tag: {
-      fr: "Numérique & Services",
+      fr: "Administration numérique",
       ar: "بلدية رقمية وإدارة حديثة ومبسطة",
-      en: "Smart Governance"
+      en: "Digital administration"
     },
     items: {
       fr: [
-        "Signalement des anomalies de voirie, éclairage et décharges avec géolocalisation photo.",
-        "Suivi en temps réel de l'avancement et du traitement des requêtes citoyennes.",
-        "Consultation transparente des délais d'intervention des équipes techniques.",
-        "Canal de contact direct avec le maire et les services du bureau communal.",
-        "Espace d'envoi d'idées participatives et de propositions pour les quartiers.",
-        "Tableau de bord public des réalisations et projets de la commune.",
-        "Renforcement des effectifs aux guichets lors des périodes de forte affluence estivale.",
-        "Création d'une cellule municipale de veille active et d'une cellule de gestion de crise.",
-        "Système de notification des incidents de coupures d'eau ou d'électricité."
+        "Application permettant de signaler immédiatement les pannes d’éclairage, les problèmes de déchets et les nids-de-poule, avec géolocalisation et photos.",
+        "Suivi en temps réel, via une application dédiée, du traitement des demandes et des réclamations des citoyens.",
+        "Publication transparente des délais et des horaires d’intervention des équipes techniques municipales sur le terrain.",
+        "Canal numérique de communication directe avec le président du conseil communal et les membres du bureau communal.",
+        "Plateforme participative permettant aux habitants d’envoyer des propositions et des initiatives pour améliorer leurs quartiers, et de faire entendre de nouvelles idées, quelle que soit l’importance de leur contribution.",
+        "Tableau de bord public et transparent présentant, en chiffres, l’avancement des réalisations et des projets de la commune.",
+        "Renforcement des effectifs aux guichets de délivrance des documents et dans les services administratifs pendant les périodes de forte affluence et les saisons.",
+        "Création d’une cellule municipale permanente de veille ainsi que d’une cellule de gestion des crises et des situations d’urgence.",
+        "Système de notifications rapides pour informer les citoyens des actualités et des interruptions d’eau ou des travaux."
       ],
       ar: [
         "تطبيق للإبلاغ الفوري عن أعطال الإنارة والنفايات والحفر مع تحديد الموقع الجغرافي والصور.",
@@ -326,15 +326,15 @@ export const programPillars: ProgramPillar[] = [
         "نظام إشعارات سريع لتنبيه المواطنين بمستجدات وانقطاعات المياه أو الأشغال."
       ],
       en: [
-        "Reporting street repairs, lighting outages and waste points with geotagged mobile photos.",
-        "Real-time citizen request status tracking and automated resolution updates.",
-        "Transparent municipal intervention response timers.",
-        "Direct communication channel between residents and the elected communal bureau.",
-        "Participatory citizen idea submission portal for local neighborhood enhancements.",
-        "Public dashboard showcasing communal project completions and budgetary milestones.",
-        "Reinforcing public service desks during peak seasons for quick, hassle-free paperwork.",
-        "Municipal monitoring cell and emergency crisis response unit.",
-        "Real-time notifications regarding municipal utilities and road work."
+        "Provide an app for immediately reporting lighting failures, waste problems and potholes, with geolocation and photos.",
+        "Allow residents to track the processing of their requests and complaints in real time through a dedicated app.",
+        "Publish transparently the deadlines and schedules for on-site interventions by municipal technical teams.",
+        "Create a direct digital communication channel with the president of the communal council and members of the municipal bureau.",
+        "Provide a participatory platform where residents can submit proposals and initiatives to improve their neighborhoods and have new ideas heard, whatever the scale of their contribution.",
+        "Provide a transparent public dashboard showing the progress of municipal achievements and projects in figures.",
+        "Reinforce staffing at document-issuing counters and administrative services during peak periods and busy seasons.",
+        "Establish a permanent municipal monitoring unit and a unit for crisis and emergency management.",
+        "Set up a rapid notification system to inform residents about updates, water outages and roadworks."
       ]
     }
   },
@@ -345,27 +345,27 @@ export const programPillars: ProgramPillar[] = [
     accentColor: "#f59e0b", // Gold / Amber
     bgLight: "bg-amber-50 dark:bg-amber-950/30",
     title: {
-      fr: "Gouvernance, transparence et participation citoyenne",
+      fr: "Participation démocratique",
       ar: "المشاركة الديمقراطية",
-      en: "Governance, Transparency and Citizen Participation"
+      en: "Democratic participation"
     },
     subtitle: {
-      fr: "La confiance renouvelée se construit par la transparence et la probité absolue.",
+      fr: "La confiance mutuelle entre les citoyens et leurs représentants se construit par la transparence, l’intégrité et un travail constant.",
       ar: "الثقة المتبادلة بين المواطن وممثليه تُبنى بالشفافية والنزاهة والعمل الدؤوب.",
-      en: "Renewed trust is built upon total transparency and genuine citizen dialogue."
+      en: "Mutual trust between residents and their representatives is built through transparency, integrity and diligent work."
     },
     tag: {
-      fr: "Transparence & Démocratie",
+      fr: "Gouvernance et transparence",
       ar: "الحوكمة والشفافية والمشاركة المواطنة",
-      en: "Transparency"
+      en: "Governance and transparency"
     },
     items: {
       fr: [
-        "Publication ouverte de l'intégralité du programme et des engagements électoraux.",
-        "Bilan annuel détaillé des réalisations, budgets et dépenses communiqué aux habitants.",
-        "Rencontres citoyennes mensuelles ouvertes à tous dans chaque quartier de la commune.",
-        "Sondages et consultations locales avant les grands aménagements urbains.",
-        "Association active des comités de quartier et des jeunes aux prises de décisions."
+        "Publication intégrale et claire de tous les éléments du programme électoral et des engagements, à la connaissance de tous sans exception.",
+        "Publication, à la fin de chaque année, d’un rapport annuel détaillé et public sur les réalisations, le budget et les recettes.",
+        "Organisation régulière de rencontres citoyennes mensuelles ouvertes dans tous les quartiers de la commune.",
+        "Organisation de consultations publiques et de sondages auprès des habitants avant le lancement des grands projets d’aménagement urbain.",
+        "Participation effective des comités de quartier, des associations actives et des jeunes aux décisions majeures de la commune."
       ],
       ar: [
         "نشر كامل بنود البرنامج الانتخابي والتعهدات بوضوح للجميع دون استثناء.",
@@ -375,11 +375,11 @@ export const programPillars: ProgramPillar[] = [
         "إشراك فعّال للجان الأحياء، الجمعيات الفاعلة، والشباب في القرارات المصيرية للبلدية."
       ],
       en: [
-        "Public availability of the entire electoral program and actionable commitments.",
-        "Detailed annual accountability report on communal projects, budgets and expenses.",
-        "Monthly open town-hall community meetings across all residential neighborhoods.",
-        "Direct local polling and surveys prior to executing major urban development plans.",
-        "Active inclusion of neighborhood committees, civic associations, and youth in local choices."
+        "Publish all parts of the electoral program and all commitments clearly and in full, making them accessible to everyone without exception.",
+        "Publish a detailed public annual report on achievements, the budget and revenues at the end of each year.",
+        "Hold regular monthly public meetings with residents in every neighborhood of the municipality.",
+        "Conduct public consultations and resident surveys before launching major urban development projects.",
+        "Ensure the active involvement of neighborhood committees, community associations and young people in the municipality’s major decisions."
       ]
     }
   }

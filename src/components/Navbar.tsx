@@ -24,7 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
     { id: 'home', label: t('navHome'), icon: Home },
     { id: 'program', label: t('navProgram'), icon: BookOpen },
     { id: 'candidate', label: t('navCandidate'), icon: User },
-    { id: 'council', label: 'Conseil Communal', icon: Users },
+    { id: 'council', label: lang === 'ar' ? 'المترشحين' : lang === 'en' ? 'Candidates' : 'Les candidats', icon: Users },
     { id: 'membership', label: 'Contact & Adhésion', icon: UserPlus },
     { id: 'events', label: t('navEvents'), icon: Calendar },
   ];
@@ -150,6 +150,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
               </button>
             ))}
           </div>
+
+          {/* Prominent candidate submission entry point */}
+          <button
+            type="button"
+            onClick={() => handleNavClick('candidate-submit')}
+            className="inline-flex items-center justify-center gap-2 min-h-10 sm:min-h-11 px-3 sm:px-4 rounded-xl bg-[#00843D] hover:bg-[#006B32] text-white text-[11px] sm:text-xs font-black shadow-md border border-green-900/10 whitespace-normal text-center leading-tight max-w-[148px] sm:max-w-none"
+            aria-label={lang === 'ar' ? 'فضاء مخصص للمترشحين' : lang === 'en' ? 'Space reserved for candidates' : 'Espace réservé aux élus'}
+          >
+            <Users className="w-4 h-4 flex-shrink-0" />
+            <span>{lang === 'ar' ? 'فضاء خاص بالمترشحين' : lang === 'en' ? 'Candidates only' : 'Espace réservé aux élus'}</span>
+          </button>
 
           {/* User Auth or Admin Button */}
           {isAuthenticated ? (

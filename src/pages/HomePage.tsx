@@ -40,7 +40,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [publishedProfiles, setPublishedProfiles] = useState<any[]>([]);
   useEffect(() => {
     let active = true;
-    void supabase.from('candidates').select('id,name,photo_url,candidate_number,profession,skills').eq('profile_status', 'approved').eq('is_published', true).order('candidate_number', { ascending: true, nullsFirst: false }).limit(3).then(({ data, error }) => { if (active && !error) setPublishedProfiles(data || []); });
+    void supabase.from('candidates').select('id,name,photo_url,candidate_number,profession,skills').eq('profile_status', 'approved').eq('is_published', true).eq('is_active', true).order('candidate_number', { ascending: true, nullsFirst: false }).limit(3).then(({ data, error }) => { if (active && !error) setPublishedProfiles(data || []); });
     return () => { active = false; };
   }, []);
   const profileText = (value: any): string => typeof value === 'string' ? value : value ? (value[lang] || value.fr || value.ar || value.en || '') : '';

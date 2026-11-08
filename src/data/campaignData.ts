@@ -78,7 +78,8 @@ export const programPillars: ProgramPillar[] = [
     },
     subtitle: {
       fr: "Notre priorité est de faire d’Aïn El Turck une commune qui crée de la richesse et des emplois, et une destination touristique particulièrement attractive.",
-      ar: "أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة  و وفرص العمل. و الاعمال. و جعلها مدينة سياحية جذابة بإمتياز",
+      ar: `أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة  و وفرص العمل. و الاعمال
+و جعلها مدينة سياحية جذابة بإمتياز`,
       en: "Our priority is to transform Ain El Turck into a municipality that generates wealth and jobs, and to make it an exceptionally attractive tourist destination."
     },
     tag: {
@@ -136,7 +137,8 @@ export const programPillars: ProgramPillar[] = [
     bgLight: "bg-rose-50 dark:bg-rose-950/30",
     title: {
       fr: "Circulation, mobilité et transports",
-      ar: "التنقل والسير والمواصلات",
+      ar: `حركة المرور
+التنقل والسير والمواصلات`,
       en: "Traffic, mobility and transport"
     },
     subtitle: {
@@ -501,7 +503,8 @@ export const campaignNews: NewsArticle[] = [
   }
 ];
 
-export const defaultCouncilCandidates: import('../types').CouncilCandidate[] = [
+export const defaultCouncilCandidates: import('../types').CouncilCandidate[] = []; /* Removed fictional demo candidates: only submitted and approved Supabase profiles are displayed. */
+/*
   {
     id: "cc1",
     name: "Dr. Amine Benali",
@@ -551,7 +554,7 @@ export const defaultCouncilCandidates: import('../types').CouncilCandidate[] = [
     phone: "+213 555 33 22 11"
   }
 ];
-
+*/
 export const defaultCampaignSettings: import('../types').CampaignSettings = {
   recipientEmail: "contact@rnd-ainturck.dz",
   secondaryEmail: "secretariat.rnd.aet@gmail.com",

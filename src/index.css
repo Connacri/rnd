@@ -3,7 +3,7 @@
 @layer base {
   :root {
     --font-sans: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    --font-arabic: 'Noto Sans Arabic', 'Cairo', 'Al Jazeera Arabic', sans-serif;
+    --font-arabic: 'Cairo', 'Noto Sans Arabic', 'Al Jazeera Arabic', sans-serif;
   }
 
   html {
@@ -19,13 +19,15 @@
     width: 100%;
   }
 
-  [dir="rtl"] {
+  [dir="rtl"],
+  [lang="ar"],
+  :lang(ar) {
     font-family: var(--font-arabic);
   }
 }
 
 .font-arabic {
-  font-family: 'Noto Sans Arabic', 'Cairo', sans-serif !important;
+  font-family: 'Cairo', 'Noto Sans Arabic', sans-serif !important;
 }
 
 @keyframes spinSlow {

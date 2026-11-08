@@ -75,7 +75,7 @@ export const CandidatePage: React.FC<CandidatePageProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white">
+        <h1 className="text-xl sm:text-4xl leading-tight break-words px-1 font-black text-zinc-900 dark:text-white">
           {candidate.name}
         </h1>
         <p className="text-xs sm:text-sm font-bold text-rose-600 dark:text-rose-400 mt-1">

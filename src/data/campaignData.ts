@@ -73,13 +73,12 @@ export const programPillars: ProgramPillar[] = [
     bgLight: "bg-sky-50 dark:bg-sky-950/30",
     title: {
       fr: "Développement économique, commerce et création d'emplois et d'activités",
-      ar: "التنمية الاقتصادية والتجارة والتوظيف والتجارة و خلق جو العمل و الأعمال.",
+      ar: "التنمية الاقتصادية والتجارة و خلق جو العمل و الأعمال.",
       en: "Economic development, commerce, and the creation of jobs and business opportunities"
     },
     subtitle: {
       fr: "Notre priorité est de faire d’Aïn El Turck une commune qui crée de la richesse et des emplois, et une destination touristique particulièrement attractive.",
-      ar: "أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة  و وفرص العمل. و الاعمال
-و جعلها مدينة سياحية جذابة بإمتياز",
+      ar: "أولويتنا هي تحويل عين الترك إلى بلدية تُنتج الثروة  و وفرص العمل. و الاعمال. و جعلها مدينة سياحية جذابة بإمتياز",
       en: "Our priority is to transform Ain El Turck into a municipality that generates wealth and jobs, and to make it an exceptionally attractive tourist destination."
     },
     tag: {
@@ -137,8 +136,7 @@ export const programPillars: ProgramPillar[] = [
     bgLight: "bg-rose-50 dark:bg-rose-950/30",
     title: {
       fr: "Circulation, mobilité et transports",
-      ar: "حركة المرور
-التنقل والسير والمواصلات",
+      ar: "التنقل والسير والمواصلات",
       en: "Traffic, mobility and transport"
     },
     subtitle: {

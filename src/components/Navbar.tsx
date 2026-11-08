@@ -35,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-md bg-[#FAF7F2]/95 dark:bg-[#141312]/95 border-b border-amber-200/60 dark:border-zinc-800/70 shadow-xs transition-colors w-full overflow-visible">
+    <header className="sticky top-0 z-40 backdrop-blur-md bg-white/95 dark:bg-[#141312]/95 border-b border-green-200/70 dark:border-zinc-800/70 shadow-xs transition-colors w-full overflow-visible">
       {/* ================= OFFICIAL ALGERIAN RND PARTY TOP RIBBON ================= */}
       <div className="bg-gradient-to-r from-[#00A651] via-[#FFFFFF] to-[#C8102E] p-[1.5px] shadow-xs">
         <div className="bg-[#18181B] text-white py-2 sm:py-1 px-3 sm:px-4 text-[10px] sm:text-[11px] font-bold flex flex-col sm:flex-row items-center sm:justify-between gap-1.5 sm:gap-2">
@@ -44,7 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
               🇩🇿 الجمهورية الجزائرية الديمقراطية الشعبية
             </span>
             <span className="hidden sm:inline text-zinc-500">•</span>
-            <span className="hidden md:inline text-amber-300 font-extrabold tracking-wide uppercase truncate">
+            <span className="hidden md:inline text-green-300 font-extrabold tracking-wide uppercase truncate">
               Rassemblement National Démocratique
             </span>
           </div>
@@ -58,7 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             {isAdmin ? (
               <button
                 onClick={() => handleNavClick('admin')}
-                className="px-2 py-0.5 rounded-full bg-amber-400 text-zinc-950 font-black text-[9px] hover:bg-amber-300 transition flex items-center gap-1 shadow-xs whitespace-nowrap cursor-pointer"
+                className="px-2 py-0.5 rounded-full bg-green-600 text-zinc-950 font-black text-[9px] hover:bg-green-700 transition flex items-center gap-1 shadow-xs whitespace-nowrap cursor-pointer"
               >
                 <ShieldCheck className="w-3 h-3" />
                 <span>Admin</span>
@@ -66,7 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             ) : (
               <button
                 onClick={() => handleNavClick('admin')}
-                className="text-[9px] text-zinc-400 hover:text-amber-300 transition flex items-center gap-1 underline underline-offset-2 whitespace-nowrap cursor-pointer"
+                className="text-[9px] text-zinc-400 hover:text-green-300 transition flex items-center gap-1 underline underline-offset-2 whitespace-nowrap cursor-pointer"
               >
                 <ShieldCheck className="w-2.5 h-2.5" />
                 <span>Bureau RND</span>
@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
               <span className="hidden md:inline font-arabic font-extrabold text-[11px] sm:text-xs text-rose-600 dark:text-rose-400 truncate">
                 التجمع الوطني الديمقراطي
               </span>
-              <span className="hidden sm:inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-[#18181B] text-amber-300 dark:bg-amber-950 dark:text-amber-300">
+              <span className="hidden sm:inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-extrabold bg-[#18181B] text-green-300 dark:bg-amber-950 dark:text-green-300">
                 2026
               </span>
             </div>
@@ -112,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         </button>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 bg-[#EFE9DF]/80 dark:bg-zinc-800/60 p-1 rounded-full shadow-inner border border-amber-200/50 dark:border-zinc-700/50">
+        <nav className="hidden lg:flex items-center gap-1 bg-green-50/80 dark:bg-zinc-800/60 p-1 rounded-full shadow-inner border border-green-200/70 dark:border-zinc-700/50">
           {navLinks.map((link) => {
             const isActive = currentPage === link.id;
             return (
@@ -134,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         {/* Right Actions: Lang Switcher & Auth */}
         <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-2 flex-shrink-0">
           {/* Language Switcher Pills (Clean, compact, guaranteed responsive on all mobile widths) */}
-          <div className="flex items-center bg-[#EFE9DF] dark:bg-zinc-800/80 p-0.5 rounded-full text-xs font-semibold shadow-inner border border-amber-200/40 dark:border-zinc-700/50">
+          <div className="flex items-center bg-green-50 dark:bg-zinc-800/80 p-0.5 rounded-full text-xs font-semibold shadow-inner border border-green-200/70 dark:border-zinc-700/50">
             {languages.map((l) => (
               <button
                 key={l.code}
@@ -158,11 +158,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                 onClick={() => handleNavClick(isAdmin ? 'admin' : 'membership')}
                 className={`flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold transition min-h-[28px] sm:min-h-[32px] cursor-pointer ${
                   isAdmin
-                    ? 'bg-amber-400 text-zinc-950 shadow-xs hover:bg-amber-300'
+                    ? 'bg-green-600 text-zinc-950 shadow-xs hover:bg-green-700'
                     : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300'
                 }`}
               >
-                {isAdmin ? <ShieldCheck className="w-3.5 h-3.5" /> : <Sparkles className="w-3.5 h-3.5 text-amber-600" />}
+                {isAdmin ? <ShieldCheck className="w-3.5 h-3.5" /> : <Sparkles className="w-3.5 h-3.5 text-green-700" />}
                 <span className="hidden sm:inline max-w-[75px] truncate">{user?.name}</span>
               </button>
               <button
@@ -198,11 +198,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
 
       {/* ================= MOBILE EXPANDED MENU DRAWER ================= */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-amber-200/50 dark:border-zinc-800 bg-[#FAF7F2] dark:bg-[#141312] p-3 sm:p-4 space-y-2.5 animate-in slide-in-from-top duration-200 shadow-xl">
+        <div className="lg:hidden border-t border-green-200/70 dark:border-zinc-800 bg-white dark:bg-[#141312] p-3 sm:p-4 space-y-2.5 animate-in slide-in-from-top duration-200 shadow-xl">
           {/* Prominent Language Bar inside mobile drawer */}
-          <div className="flex items-center justify-between p-2 rounded-2xl bg-amber-50/90 dark:bg-zinc-850 border border-amber-200/70 dark:border-zinc-750">
+          <div className="flex items-center justify-between p-2 rounded-2xl bg-green-50/90 dark:bg-zinc-850 border border-green-200/70 dark:border-zinc-750">
             <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300">
-              <Globe className="w-3.5 h-3.5 text-amber-600" />
+              <Globe className="w-3.5 h-3.5 text-green-700" />
               <span>Langue / اللغة / Language</span>
             </div>
             <div className="flex items-center bg-white dark:bg-zinc-900 p-0.5 rounded-full border border-zinc-200/80 dark:border-zinc-700 text-xs font-bold shadow-xs">
@@ -246,9 +246,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           {/* Admin link inside mobile menu */}
           <button
             onClick={() => handleNavClick('admin')}
-            className="w-full py-2 px-3 rounded-2xl bg-amber-100 dark:bg-zinc-800 text-amber-950 dark:text-amber-200 text-xs font-bold flex items-center justify-center gap-2 border border-amber-300/80 dark:border-zinc-700 min-h-[38px] cursor-pointer"
+            className="w-full py-2 px-3 rounded-2xl bg-green-100 dark:bg-zinc-800 text-amber-950 dark:text-amber-200 text-xs font-bold flex items-center justify-center gap-2 border border-green-300/80 dark:border-zinc-700 min-h-[38px] cursor-pointer"
           >
-            <ShieldCheck className="w-4 h-4 text-amber-600" />
+            <ShieldCheck className="w-4 h-4 text-green-700" />
             <span>Accéder au Panneau d'Administration RND</span>
           </button>
         </div>

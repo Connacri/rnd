@@ -83,17 +83,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           onClick={() => handleNavClick('home')}
           className="flex items-center gap-2 sm:gap-3 text-left group transition-transform active:scale-95 min-w-0 flex-shrink cursor-pointer"
         >
-          {/* Official RND Algerian Emblem */}
-          <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-white dark:bg-zinc-800 p-1 shadow-sm border border-amber-300/80 dark:border-zinc-700 flex items-center justify-center overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform">
-            <img
-              src="assets/icons/icon.png"
-              alt="Logo Nos Candidats"
-              className="w-full h-full object-contain"
-              onError={(e) => {
-                (e.target as HTMLElement).style.display = 'none';
-              }}
-            />
-          </div>
+          {/* Official RND logo supplied for the campaign */}
+          <img
+            src="/assets/images/rnd-logo-header.webp"
+            alt="RND — التجمع الوطني الديمقراطي"
+            className="h-10 sm:h-12 w-auto max-w-[132px] sm:max-w-[168px] object-contain flex-shrink-0 group-hover:scale-[1.02] transition-transform"
+            loading="eager"
+          />
 
           <div className="min-w-0 truncate">
             <div className="flex items-center gap-1 sm:gap-1.5 truncate">

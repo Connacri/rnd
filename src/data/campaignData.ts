@@ -244,7 +244,7 @@ export const programPillars: ProgramPillar[] = [
     bgLight: "bg-emerald-50 dark:bg-emerald-950/30",
     title: {
       fr: "Environnement, espaces verts et cadre de vie",
-      ar: "البيئة والمساحات الخضراء وجودة الحياة",
+      ar: "المساحات الخضراء",
       en: "Environment, Green Spaces and Quality of Life"
     },
     subtitle: {
@@ -254,7 +254,7 @@ export const programPillars: ProgramPillar[] = [
     },
     tag: {
       fr: "Cadre de Vie & Écologie",
-      ar: "المساحات الخضراء",
+      ar: "البيئة والمساحات الخضراء وجودة الحياة",
       en: "Green Spaces"
     },
     items: {
@@ -289,7 +289,7 @@ export const programPillars: ProgramPillar[] = [
     bgLight: "bg-purple-50 dark:bg-purple-950/30",
     title: {
       fr: "Une commune numérique et une administration moderne",
-      ar: "بلدية رقمية وإدارة حديثة ومبسطة",
+      ar: "رقمنة الإدارة",
       en: "A Digital Communality and Modern Administration"
     },
     subtitle: {
@@ -299,7 +299,7 @@ export const programPillars: ProgramPillar[] = [
     },
     tag: {
       fr: "Numérique & Services",
-      ar: "رقمنة الإدارة",
+      ar: "بلدية رقمية وإدارة حديثة ومبسطة",
       en: "Smart Governance"
     },
     items: {
@@ -346,7 +346,7 @@ export const programPillars: ProgramPillar[] = [
     bgLight: "bg-amber-50 dark:bg-amber-950/30",
     title: {
       fr: "Gouvernance, transparence et participation citoyenne",
-      ar: "الحوكمة والشفافية والمشاركة المواطنة",
+      ar: "المشاركة الديمقراطية",
       en: "Governance, Transparency and Citizen Participation"
     },
     subtitle: {
@@ -356,7 +356,7 @@ export const programPillars: ProgramPillar[] = [
     },
     tag: {
       fr: "Transparence & Démocratie",
-      ar: "المشاركة الديمقراطية",
+      ar: "الحوكمة والشفافية والمشاركة المواطنة",
       en: "Transparency"
     },
     items: {

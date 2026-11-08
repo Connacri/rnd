@@ -37,9 +37,9 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
  };
  const input='w-full min-h-12 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-3 text-sm text-zinc-900 dark:text-white outline-none focus:ring-2 focus:ring-green-600';
  const label='block text-xs font-bold text-zinc-700 dark:text-zinc-300 mb-1.5';
- return <main dir={isRtl?'rtl':'ltr'} className="max-w-3xl mx-auto px-4 py-6 sm:py-10 pb-28 space-y-6">
-  <button type="button" onClick={()=>onNavigate('home')} className="inline-flex items-center gap-2 min-h-11 text-sm font-bold text-green-800 dark:text-green-300"><ArrowLeft className="w-4 h-4"/>{t.back}</button>
-  <header className="rounded-3xl bg-[#073b31] text-white p-6 sm:p-8 space-y-3"><div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold"><ShieldCheck className="w-4 h-4"/>RND • Aïn El Turck</div><h1 className="text-2xl sm:text-3xl font-black">{t.title}</h1><p className="text-sm leading-relaxed text-white/80">{t.intro}</p></header>
+ return <main dir={isRtl?'rtl':'ltr'} className="min-h-dvh w-full bg-[#FAF7F2] dark:bg-[#121110] px-4 py-8 sm:py-12 flex flex-col items-center justify-start">
+  <div className="w-full max-w-2xl space-y-6">
+  <div className="text-center space-y-2"><div className="text-xs font-extrabold tracking-[0.18em] text-green-800 dark:text-green-300">RND • AÏN EL TÜRCK</div><h1 className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white">{t.title}</h1><p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{authorized ? t.name : t.intro}</p></div>
   {!authorized?<form onSubmit={verify} className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-7 space-y-5 shadow-sm">
    <div className="mx-auto size-14 rounded-2xl bg-green-50 dark:bg-green-950/40 flex items-center justify-center"><LockKeyhole className="size-7 text-green-700"/></div>
    <div><label className={label}>{t.pin} *</label><input className={input+' text-center tracking-[0.35em] text-xl font-black'} type="password" inputMode="numeric" pattern="[0-9]{10}" maxLength={10} autoComplete="one-time-code" value={pin} onChange={e=>setPin(e.target.value.replace(/\D/g,'').slice(0,10))} required /></div>
@@ -55,5 +55,6 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
    {success&&<p role="status" className="rounded-xl bg-green-50 dark:bg-green-950/40 p-3 text-sm text-green-800 dark:text-green-300 flex gap-2"><CheckCircle2 className="size-5 shrink-0"/>{success}</p>}
    <button type="submit" disabled={busy} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-green-700 px-6 py-3 text-sm font-black text-white disabled:opacity-60">{busy?<Loader2 className="size-4 animate-spin"/>:t.submit}</button>
   </form>}
+  </div>
  </main>;
 };

@@ -19,11 +19,11 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentPage, onNavigate })
   ];
 
   return (
-    <div className="lg:hidden fixed bottom-3 left-0 right-0 z-50 flex justify-center px-3 pointer-events-none pb-[env(safe-area-inset-bottom,0px)]">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 flex justify-center px-3 pt-2 pointer-events-none safe-area-bottom">
       <nav
         role="navigation"
         aria-label="Navigation mobile"
-        className="pointer-events-auto bg-[#18181B]/95 dark:bg-[#1C1A17]/95 backdrop-blur-xl text-white p-1 rounded-full shadow-2xl shadow-zinc-950/40 border border-white/15 flex items-center justify-between w-full max-w-[390px] transition-all"
+        className="pointer-events-auto bg-[#18181B]/95 dark:bg-[#18181B]/95 backdrop-blur-xl text-white p-1 rounded-full shadow-2xl shadow-zinc-950/40 border border-white/15 flex items-center justify-between w-full max-w-[390px] transition-all"
       >
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -32,9 +32,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentPage, onNavigate })
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-1.5 px-1 rounded-full text-[10px] font-semibold transition-all duration-200 min-h-[44px] ${
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-1.5 px-1 rounded-full text-[10px] font-semibold transition-all duration-200 min-h-[48px] ${
                 isActive
-                  ? 'bg-gradient-to-r from-amber-400 to-rose-400 text-zinc-950 shadow-md font-bold scale-[1.02]'
+                  ? 'bg-gradient-to-r from-green-500 to-green-700 text-white shadow-md font-bold scale-[1.02]'
                   : 'text-zinc-400 hover:text-white hover:bg-white/10 active:scale-95'
               }`}
             >

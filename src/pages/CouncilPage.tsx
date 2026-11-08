@@ -142,15 +142,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
         </div>
       )}
 
-      <section className="p-6 sm:p-8 rounded-3xl bg-[#18181B] text-white text-center shadow-xl space-y-3 max-w-2xl mx-auto">
-        <div className="w-12 h-12 rounded-2xl bg-white/10 mx-auto flex items-center justify-center"><Users className="w-6 h-6 text-green-300" /></div>
-        <h2 className="text-base sm:text-xl font-bold">{lang === 'ar' ? 'هل ترغبون في الانضمام إلى الفريق البلدي؟' : lang === 'en' ? 'Would you like to join the municipal team?' : 'Vous souhaitez rejoindre l’équipe communale ?'}</h2>
-        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-lg mx-auto">{lang === 'ar' ? 'أرسلوا ملفكم ليتمكن المكتب من دراسته.' : lang === 'en' ? 'Submit your profile so the team can review it.' : 'Soumettez votre profil pour qu’il soit étudié par le bureau communal.'}</p>
-        <button onClick={() => onNavigate('membership')} className="px-8 py-3.5 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs sm:text-sm active:scale-95 transition inline-flex items-center gap-2 min-h-11">
-          <span>{lang === 'ar' ? 'إرسال ملف الترشح' : lang === 'en' ? 'Submit my profile' : 'Soumettre mon profil'}</span>
-          <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
-        </button>
-      </section>
+
     </div>
   );
 };

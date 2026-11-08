@@ -29,7 +29,6 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 ## Table des matières
 
 - [Présentation](#présentation)
-- [Captures d'écran](#captures-décran)
 - [Affiches officielles](#affiches-officielles)
 - [Fonctionnalités](#fonctionnalités)
 - [Stack technique](#stack-technique)
@@ -61,17 +60,6 @@ L'application Android (APK/AAB) embarque directement le build de l'application w
 via **Capacitor Android**, garantissant une fidélité visuelle et fonctionnelle
 rigoureusement identique à 100% entre le site en ligne ([connacri.github.io/rnd](https://connacri.github.io/rnd/))
 et l'application Android.
-
-## Captures d'écran
-
-<div align="center">
-
-<img src="assets/images/1000011155.png" width="200" alt="Accueil"/>
-<img src="assets/images/1000011156.png" width="200" alt="Programme"/>
-<img src="assets/images/1000011157.png" width="200" alt="Adhésion"/>
-<img src="assets/images/1000011158.png" width="200" alt="Événements"/>
-
-</div>
 
 ## Affiches officielles
 
@@ -220,13 +208,7 @@ flutter test tool/play_graphics_test.dart      # bannière de la fiche Play
 flutter test tool/play_screenshots_test.dart   # captures de la fiche Play
 ```
 
-Chaque sortie a un seul producteur : `flutter_launcher_icons` gère `web/` et
-`tool/generate_assets.dart` gère `public/` ainsi que l'icône de la fiche Play
-(`store/play/icon-512.png`). L'aperçu de l'application
-(`assets/images/100001115x.png` et son reflet `public/assets/images/`, affiché en
-`aspect-[9/16]` par le site) est produit par
-`flutter test tool/play_screenshots_test.dart` : il ne peut donc pas diverger des
-captures de la fiche Play. Le fond des icônes adaptatives, des icônes web et de
+Chaque sortie a un seul producteur : `flutter_launcher_icons` gère `web/` et `tool/generate_assets.dart` gère `public/` ainsi que l'icône de la fiche Play (`store/play/icon-512.png`). Le fond des icônes adaptatives, des icônes web et de
 l'icône Play reprend le vert du logo (`#026342`) pour éviter toute couture.
 
 ### Signature release

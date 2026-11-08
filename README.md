@@ -93,7 +93,7 @@ Les titres, descriptions, thèmes et lieux sont disponibles en français, arabe 
 | **Accueil** | Présentation de la campagne, affiches officielles consultables et téléchargeables, actualités, valeurs et profils candidats publiés |
 | **Programme** | Programme électoral présenté par thèmes, avec points d'action et prise en charge des trois langues |
 | **Candidats** | Liste des profils réellement soumis et approuvés par l'administration ; les cartes ouvrent les informations du candidat |
-| **Espace réservé aux élus** | Bouton visible dans le header, page plein écran et accès par PIN personnel de 10 chiffres communiqué par l'administrateur |
+| **Espace réservé aux élus** | Bouton « Réservé aux élus » dans le header, page plein écran et accès par PIN personnel de 10 chiffres communiqué par l'administrateur |
 | **Soumission de profil** | Formulaire avec photo, nom, profession, niveau d'études, diplômes, expériences, compétences et motivation ; publication après validation administrative |
 | **Photos candidats** | Stockage Supabase dans le bucket `candidate-photos` ; formats JPG, PNG et WebP, taille maximale 5 Mo |
 | **Administration** | Authentification Supabase et gestion des candidatures soumises : validation, publication ou rejet |

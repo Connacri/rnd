@@ -101,7 +101,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
           <UserRound className="w-12 h-12 mx-auto text-zinc-400" />
           <h2 className="font-black text-zinc-900 dark:text-white">{lang === 'ar' ? 'لا توجد ملفات مترشحين منشورة حالياً' : lang === 'en' ? 'No candidate profiles published yet' : 'Aucun profil de candidat publié pour le moment'}</h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto">{lang === 'ar' ? 'ستظهر هنا الملفات الحقيقية بعد إرسالها ومراجعتها والموافقة على نشرها.' : lang === 'en' ? 'Real profiles will appear here after submission, review and approval for publication.' : 'Les vrais profils apparaîtront ici après leur soumission, leur examen et leur approbation pour publication.'}</p>
-          <button type="button" onClick={() => onNavigate('membership')} className="inline-flex items-center justify-center gap-2 min-h-11 px-5 rounded-full bg-green-700 text-white text-sm font-bold hover:bg-green-800">
+          <button type="button" onClick={() => onNavigate('candidate-submit')} className="inline-flex items-center justify-center gap-2 min-h-11 px-5 rounded-full bg-green-700 text-white text-sm font-bold hover:bg-green-800">
             {lang === 'ar' ? 'إرسال ملف الترشح' : lang === 'en' ? 'Submit a candidate profile' : 'Soumettre mon profil'} <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
           </button>
         </section>

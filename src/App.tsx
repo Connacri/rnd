@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar';
 import { BottomNav } from './components/BottomNav';
 import { HomePage } from './pages/HomePage';
 import { CandidatePage } from './pages/CandidatePage';
+import { CandidateSubmissionPage } from './pages/CandidateSubmissionPage';
 import { ProgramPage } from './pages/ProgramPage';
 import { CouncilPage } from './pages/CouncilPage';
 import { MembershipPage } from './pages/MembershipPage';
@@ -21,6 +22,7 @@ const AppContent: React.FC = () => {
     const validPages = [
       'home',
       'candidate',
+      'candidate-submit',
       'program',
       'council',
       'membership',
@@ -58,6 +60,7 @@ const AppContent: React.FC = () => {
       <main className="flex-1 w-full">
         {currentPage === 'home' && <HomePage onNavigate={navigateTo} />}
         {currentPage === 'candidate' && <CandidatePage onNavigate={navigateTo} />}
+        {currentPage === 'candidate-submit' && <CandidateSubmissionPage onNavigate={navigateTo} />}
         {currentPage === 'program' && <ProgramPage />}
         {currentPage === 'council' && <CouncilPage onNavigate={navigateTo} />}
         {currentPage === 'membership' && <MembershipPage />}

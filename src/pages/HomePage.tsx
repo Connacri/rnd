@@ -87,13 +87,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     },
   ];
 
-  const screenshots = [
-    { src: 'assets/images/1000011155.png', title: t('home') },
-    { src: 'assets/images/1000011156.png', title: t('program') },
-    { src: 'assets/images/1000011157.png', title: t('membership') },
-    { src: 'assets/images/1000011158.png', title: t('events') },
-  ];
-
   return (
     <div className="space-y-10 sm:space-y-16 pb-24 md:pb-16">
       {/* ================= HERO SECTION (Purrweb Style Profile Card) ================= */}
@@ -414,23 +407,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </section>
       )}
 
-      {/* ================= OFFICIAL CAMPAIGN & APP PREVIEW SECTION ================= */}
-      <section className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4">
+      {/* ================= OFFICIAL CAMPAIGN POSTERS ================= */}
+      <section className="max-w-xl md:max-w-5xl mx-auto px-4">
         <div className="text-center mb-5 sm:mb-7">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-300 text-[11px] font-bold mb-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-950/80 text-green-900 dark:text-green-300 text-[11px] font-bold mb-2">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>{t('appPreview')}</span>
-          </div>
+            {lang === 'ar' ? 'الحملة الانتخابية 2026' : lang === 'en' ? 'ELECTORAL CAMPAIGN 2026' : 'CAMPAGNE ÉLECTORALE 2026'}
+          </span>
           <h2 className="text-xl sm:text-3xl font-black text-zinc-900 dark:text-white">
-            {t('appPreview')}
+            {lang === 'ar' ? 'الملصقات الرسمية للحملة' : lang === 'en' ? 'Official campaign posters' : 'Affiches officielles de campagne'}
           </h2>
           <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-lg mx-auto">
-            {t('appPreviewSubtitle')}
+            {lang === 'ar' ? 'اكتشفوا رسائل حملتنا ومشاريعنا من خلال الملصقات الرسمية' : lang === 'en' ? 'Discover our campaign messages and projects through the official posters.' : 'Retrouvez les messages et les engagements de notre campagne à travers nos affiches officielles.'}
           </p>
-
-          {/* Toggle Tabs: Affiches Officielles vs Écrans de l'App */}
-        {/* TAB 1: 4 OFFICIAL CAMPAIGN POSTERS (nab 1 to 4) */}
-        {activePreviewTab === 'posters' && (
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-5">
             {officialCampaignPosters.map((poster) => (
               <div
@@ -503,9 +494,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
               </div>
             ))}
-          </div>
-        )}
-
+        </div>
 
         {/* Official logo emblem in footer */}
         <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 p-1.5 shadow-sm border border-amber-200/80 dark:border-zinc-700 mx-auto mb-3 flex items-center justify-center">

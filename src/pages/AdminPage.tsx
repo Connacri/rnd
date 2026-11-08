@@ -52,11 +52,24 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     resetToDefault,
   } = useCampaign();
 
-  const { user, isAdmin, toggleAdminRole } = useAuth();
+  const { user, isAdmin, loginAdmin } = useAuth();
   const { lang, t } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<'settings' | 'council' | 'news' | 'pillars' | 'candidate' | 'inbox'>('council');
   const [successToast, setSuccessToast] = useState<string | null>(null);
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminLoginError, setAdminLoginError] = useState<string | null>(null);
+  const [adminLoginLoading, setAdminLoginLoading] = useState(false);
+  const handleAdminLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setAdminLoginError(null);
+    setAdminLoginLoading(true);
+    const result = await loginAdmin(adminEmail, adminPassword);
+    setAdminLoginLoading(false);
+    if (!result.success) setAdminLoginError(result.error || 'Connexion refusée.');
+  };
+
 
   // Settings form state
   const [settingsForm, setSettingsForm] = useState({
@@ -192,6 +205,29 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     { label: 'Femme 2', url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80' },
     { label: 'Logo Nos Candidats', url: 'assets/icons/icon.png' },
   ];
+
+  if (!isAdmin) {
+    return (
+      <main className="min-h-[70vh] flex items-center justify-center px-4 py-10">
+        <form onSubmit={handleAdminLogin} className="w-full max-w-md rounded-[28px] bg-white dark:bg-zinc-900 border border-green-200 dark:border-zinc-700 shadow-xl p-6 sm:p-8 space-y-5">
+          <div className="mx-auto w-16 h-16 rounded-2xl bg-green-700 text-white flex items-center justify-center"><ShieldCheck className="w-9 h-9" /></div>
+          <div className="text-center space-y-1">
+            <h1 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white">Espace réservé à l'administration</h1>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">Connectez-vous avec le compte administrateur autorisé.</p>
+          </div>
+          {adminLoginError && <p role="alert" className="rounded-xl bg-rose-50 text-rose-700 border border-rose-200 p-3 text-sm">{adminLoginError}</p>}
+          <label className="block space-y-1"><span className="text-sm font-bold text-zinc-700 dark:text-zinc-200">Adresse e-mail</span>
+            <input type="email" autoComplete="username" required value={adminEmail} onChange={e => setAdminEmail(e.target.value)} className="w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-4 py-3 text-base" placeholder="admin@exemple.dz" />
+          </label>
+          <label className="block space-y-1"><span className="text-sm font-bold text-zinc-700 dark:text-zinc-200">Mot de passe</span>
+            <input type="password" autoComplete="current-password" required minLength={8} value={adminPassword} onChange={e => setAdminPassword(e.target.value)} className="w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-4 py-3 text-base" placeholder="Votre mot de passe" />
+          </label>
+          <button type="submit" disabled={adminLoginLoading} className="w-full min-h-[50px] rounded-xl bg-green-700 hover:bg-green-800 text-white font-extrabold text-base disabled:opacity-60">{adminLoginLoading ? 'Vérification Supabase…' : 'Se connecter'}</button>
+          <button type="button" onClick={() => onNavigate('home')} className="w-full py-2 text-sm font-semibold text-zinc-500 hover:text-green-700">Retour au site</button>
+        </form>
+      </main>
+    );
+  }
 
   return (
     <div className="max-w-xl md:max-w-5xl lg:max-w-6xl mx-auto px-4 py-4 sm:py-8 space-y-6 pb-28 md:pb-16">

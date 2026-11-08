@@ -41,8 +41,6 @@ interface SubmittedCandidateProfile {
 
 export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const {
-    candidate,
-    updateCandidate,
     pillars,
     updatePillar,
     addPillarAction,
@@ -65,6 +63,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
 
   const [activeTab, setActiveTab] = useState<'settings' | 'council' | 'news' | 'pillars' | 'applicants' | 'inbox'>('council');
   const [successToast, setSuccessToast] = useState<string | null>(null);
+  const [councilFormError, setCouncilFormError] = useState<string | null>(null);
   const [submittedCandidates, setSubmittedCandidates] = useState<SubmittedCandidateProfile[]>([]);
   const [candidatesLoading, setCandidatesLoading] = useState(false);
   const [candidatesError, setCandidatesError] = useState<string | null>(null);
@@ -155,10 +154,11 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
 
   const handleAddCouncilCandidate = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!councilForm.name || !councilForm.expertise) {
-      alert('Veuillez renseigner au moins le nom et l\'expertise du candidat');
+    if (!councilForm.name.trim() || !councilForm.expertise.trim()) {
+      setCouncilFormError('Veuillez renseigner le nom et l’expertise du candidat.');
       return;
     }
+    setCouncilFormError(null);
 
     addCouncilCandidate({
       name: councilForm.name.trim(),
@@ -355,6 +355,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Chaque candidat de la liste RND dispose d'un profil valorisant ses compétences professionnelles et son expertise au service de la commune.
             </p>
+            {councilFormError && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-950/30 dark:border-rose-900 p-3 text-sm text-rose-700 dark:text-rose-300">{councilFormError}</p>}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>

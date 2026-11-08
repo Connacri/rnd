@@ -34,7 +34,7 @@ export const ProgramPage: React.FC = () => {
           {t('programTitle')}
         </h1>
         <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md mx-auto">
-          6 Piliers d'action concrets pour métamorphoser et dynamiser Aïn El Turck
+          {lang === 'ar' ? '6 محاور عمل ملموسة لتطوير عين الترك وتنشيطها' : lang === 'en' ? '6 concrete action areas to transform and energize Ain El Turck' : "6 axes d’action concrets pour transformer et dynamiser Aïn El Turck"}
         </p>
       </div>
 
@@ -97,7 +97,7 @@ export const ProgramPage: React.FC = () => {
                       {pillar.tag[lang]}
                     </span>
                     <span className="text-xs font-bold text-zinc-400">
-                      Pilier #{pillar.number}
+                      {lang === 'ar' ? `المحور #${pillar.number}` : lang === 'en' ? `Pillar #${pillar.number}` : `Axe n° ${pillar.number}`}
                     </span>
                   </div>
 
@@ -143,7 +143,7 @@ export const ProgramPage: React.FC = () => {
                       style={{ borderColor: `${pillar.accentColor}40`, color: pillar.accentColor }}
                       className="px-3 py-1 rounded-full text-[11px] font-bold border"
                     >
-                      {items.length} engagements concrets
+                      {lang === 'ar' ? `${items.length} التزامات عملية` : lang === 'en' ? `${items.length} concrete commitments` : `${items.length} engagements concrets`}
                     </span>
                   </div>
                 </div>

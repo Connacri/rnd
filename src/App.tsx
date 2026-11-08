@@ -51,10 +51,12 @@ const AppContent: React.FC = () => {
 
   const isAuthPage = ['login', 'register', 'forgot-password'].includes(currentPage);
 
+  const isCandidatePortal = currentPage === 'candidate-submit';
+
   return (
     <div className="min-h-dvh bg-[#FAF7F2] text-zinc-900 dark:bg-[#121110] dark:text-zinc-100 flex flex-col antialiased selection:bg-amber-300 selection:text-zinc-950 font-sans transition-colors duration-200">
       {/* Top Official RND Algeria Navbar */}
-      <Navbar currentPage={currentPage} onNavigate={navigateTo} />
+      {!isCandidatePortal && <Navbar currentPage={currentPage} onNavigate={navigateTo} />}
 
       {/* Main Content Area */}
       <main className="flex-1 w-full">
@@ -75,7 +77,7 @@ const AppContent: React.FC = () => {
       </main>
 
       {/* Floating Bottom Navigation Pill (hidden on auth & admin pages for clean focus) */}
-      {!isAuthPage && currentPage !== 'admin' && (
+      {!isAuthPage && currentPage !== 'admin' && !isCandidatePortal && (
         <BottomNav currentPage={currentPage} onNavigate={navigateTo} />
       )}
     </div>

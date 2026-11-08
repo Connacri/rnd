@@ -82,6 +82,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     setNewCandidateName('');
     showToast('Accès candidat créé. Communiquez le PIN en privé.');
   };
+  const resetCandidatePin = async (candidateId: string, name: string) => {
+    setCandidatesError(null); setIssuedCandidatePin(null); setIssuingCandidatePin(true);
+    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'create', candidateId } });
+    setIssuingCandidatePin(false);
+    if (error || !data?.pin) { setCandidatesError(data?.error || error?.message || 'Impossible de réinitialiser le PIN.'); return; }
+    setIssuedCandidatePin({ name, pin: data.pin, candidateId });
+    showToast('Nouveau PIN créé. L’ancien code est désormais invalide.');
+  };
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [adminLoginError, setAdminLoginError] = useState<string | null>(null);
@@ -951,6 +959,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                       })}
                     </dl>
                     <div className="flex flex-wrap gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                      <button type="button" disabled={issuingCandidatePin} onClick={() => void resetCandidatePin(profile.id, profile.name)} className="min-h-11 rounded-xl border border-green-300 px-4 text-sm font-bold text-green-800 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-950/30 disabled:opacity-50">Générer / réinitialiser le PIN</button>
                       {profile.profile_status !== 'approved' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'approved')} className="flex-1 min-h-11 rounded-xl bg-green-700 px-4 text-sm font-bold text-white hover:bg-green-800 disabled:opacity-50">Approuver et publier</button>}
                       {profile.profile_status !== 'rejected' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'rejected')} className="min-h-11 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 disabled:opacity-50">Refuser</button>}
                     </div>

@@ -111,7 +111,7 @@ export const MembershipPage: React.FC = () => {
           <img src="assets/icons/icon.png" alt="Nos Candidats" className="w-4 h-4 rounded-full object-contain" />
           <span>Permanence Citoyenne & Adhésion RND</span>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white">
+        <h1 className="text-xl sm:text-4xl leading-tight break-words px-1 font-black text-zinc-900 dark:text-white">
           Contact, Adhésion & Propositions
         </h1>
         <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-lg mx-auto">

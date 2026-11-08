@@ -10,7 +10,7 @@ interface AuthContextType {
   login: (email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   loginAdmin: (email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   register: (name: string, email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
-  loginWithGoogle: () => Promise<{ success: boolean; error?: string }>;
+  loginWithGoogle: (customEmail?: string, customName?: string, asAdmin?: boolean) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   sendPasswordReset: (email: string) => Promise<{ success: boolean; message: string }>;
 }
@@ -69,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { success: true };
   };
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (_customEmail?: string, _customName?: string, _asAdmin?: boolean) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: window.location.origin + window.location.pathname },

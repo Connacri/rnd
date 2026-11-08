@@ -16,10 +16,10 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
  const [photo,setPhoto]=useState<File|null>(null),[error,setError]=useState(''),[success,setSuccess]=useState(''),[busy,setBusy]=useState(false);
  const setField=(key:keyof typeof form,value:string)=>setForm(v=>({...v,[key]:value}));
  const verify=async(e:React.FormEvent)=>{e.preventDefault();setError('');setBusy(true);
-  const {data,error}=await supabase.functions.invoke('candidate-access',{body:{action:'verify',candidateId:pinCandidateId,pin}});
+  const {data,error}=await supabase.functions.invoke('candidate-access',{body:{action:'verify',pin}});
   setBusy(false);if(error||!data?.success){setError(data?.error||t.invalid);return;}setCandidateId(data.candidateId);setAuthorized(true);
  };
- const [pinCandidateId,setPinCandidateId]=useState('');
+ 
  const submit=async(e:React.FormEvent)=>{e.preventDefault();setError('');setSuccess('');
   if(!form.name.trim()||!form.profession.trim()||!form.education.trim()||!form.skills.trim()||!photo){setError(t.required);return;}
   if(!['image/jpeg','image/png','image/webp'].includes(photo.type)||photo.size>5*1024*1024){setError(t.photoError);return;}
@@ -32,7 +32,7 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
    const localized=(v:string)=>({fr:v.trim(),ar:v.trim(),en:v.trim()});
    const {data,error:submitError}=await supabase.functions.invoke('candidate-access',{body:{action:'submit',candidateId,pin,profile:{name:form.name,profession:localized(form.profession),education_level:localized(form.education),diplomas:localized(form.diplomas),experience:localized(form.experience),skills:localized(form.skills),motivation:localized(form.motivation),photoPath:path,photoType:photo.type}}});
    if(submitError||!data?.success)throw new Error(data?.error||submitError?.message||t.failure);
-   setSuccess(t.success);setAuthorized(false);setCandidateId('');setPin('');setPinCandidateId('');setPhoto(null);setForm({name:'',profession:'',education:'',diplomas:'',experience:'',skills:'',motivation:''});
+   setSuccess(t.success);setAuthorized(false);setCandidateId('');setPin('');setPhoto(null);setForm({name:'',profession:'',education:'',diplomas:'',experience:'',skills:'',motivation:''});
   }catch(err){console.error(err);setError(t.failure);}finally{setBusy(false);}
  };
  const input='w-full min-h-12 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-3 text-sm text-zinc-900 dark:text-white outline-none focus:ring-2 focus:ring-green-600';

@@ -192,7 +192,7 @@ export const programPillars: ProgramPillar[] = [
     },
     subtitle: {
       fr: "Aïn El Turck doit redevenir une référence nationale parmi les stations balnéaires.",
-      ar: "يجب أن تعود عين الترك كوجهة نموذجية ومرجع وطني للمنتجعات البحرية الراقية.",
+      ar: "يجب أن تعود عين الترك كوجهة نموذجية ومرجع المنتجعات المتوسطية للمنتجعات البحرية الراقية.",
       en: "Ain El Turck must regain its status as a top seaside resort."
     },
     tag: {

@@ -30,7 +30,7 @@ export const ProgramPage: React.FC = () => {
           <img src="assets/icons/icon.png" alt="Nos Candidats" className="w-4 h-4 rounded-full object-cover" />
           <span>{t('elections2026')}</span>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white">
+        <h1 className="text-xl sm:text-4xl leading-tight break-words px-1 font-black text-zinc-900 dark:text-white">
           {t('programTitle')}
         </h1>
         <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md mx-auto">

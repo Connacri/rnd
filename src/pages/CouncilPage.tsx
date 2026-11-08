@@ -1,194 +1,155 @@
-import React, { useState } from 'react';
-import { Users, Award, ShieldCheck, Mail, Phone, Sparkles, Filter, ChevronRight, MessageSquare, ArrowRight } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Users, Award, ShieldCheck, Sparkles, UserRound, ArrowRight, RefreshCw } from 'lucide-react';
 import { useCampaign } from '../context/CampaignContext';
 import { useLanguage } from '../i18n/LanguageContext';
-import { CouncilCandidate } from '../types';
+import { supabase } from '../lib/supabaseClient';
 import { ShareButton } from '../components/ShareButton';
 
 interface CouncilPageProps {
   onNavigate: (page: string, params?: any) => void;
 }
 
+type LocalizedProfileValue = string | Record<string, string> | null;
+interface PublishedCandidateProfile {
+  id: string;
+  name: string;
+  photo_url: string | null;
+  candidate_number: number | null;
+  profession: LocalizedProfileValue;
+  education_level: LocalizedProfileValue;
+  diplomas: LocalizedProfileValue;
+  experience: LocalizedProfileValue;
+  skills: LocalizedProfileValue;
+  motivation: LocalizedProfileValue;
+}
+
+const profileText = (value: LocalizedProfileValue, lang: string): string => {
+  if (!value) return '';
+  if (typeof value === 'string') return value;
+  return value[lang] || value.fr || value.ar || value.en || Object.values(value).find(Boolean) || '';
+};
+
 export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
-  const { councilCandidates, candidate } = useCampaign();
+  const { candidate } = useCampaign();
   const { lang, t, isRtl } = useLanguage();
+  const [profiles, setProfiles] = useState<PublishedCandidateProfile[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
-  const [selectedCommission, setSelectedCommission] = useState<string>('all');
-  const [selectedCandidate, setSelectedCandidate] = useState<CouncilCandidate | null>(null);
+  const loadProfiles = async () => {
+    setLoading(true);
+    setLoadError('');
+    const { data, error } = await supabase
+      .from('candidates')
+      .select('id,name,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation')
+      .eq('profile_status', 'approved')
+      .eq('is_published', true)
+      .order('candidate_number', { ascending: true, nullsFirst: false })
+      .order('submitted_at', { ascending: true });
+    if (error) {
+      setLoadError(lang === 'ar' ? 'تعذر تحميل ملفات المترشحين. يرجى المحاولة مجدداً.' : lang === 'en' ? 'Candidate profiles could not be loaded. Please try again.' : 'Impossible de charger les profils des candidats. Veuillez réessayer.');
+      setProfiles([]);
+    } else {
+      setProfiles((data || []) as PublishedCandidateProfile[]);
+    }
+    setLoading(false);
+  };
 
-  const commissions = [
-    { id: 'all', label: 'Toutes les compétences' },
-    { id: 'Urbanisme', label: 'Urbanisme & Littoral' },
-    { id: 'Santé', label: 'Santé & Social' },
-    { id: 'Tourisme', label: 'Tourisme & Économie' },
-    { id: 'Numérique', label: 'Numérique & Jeunesse' },
-  ];
+  useEffect(() => {
+    void loadProfiles();
+  }, [lang]);
 
-  const filteredCandidates = selectedCommission === 'all'
-    ? councilCandidates
-    : councilCandidates.filter((c) => c.commission.toLowerCase().includes(selectedCommission.toLowerCase()));
+  const pageTitle = lang === 'ar' ? 'كفاءاتنا وفريقنا البلدي' : lang === 'en' ? 'Our Skills & Municipal Team' : 'Nos compétences et notre équipe communale';
+  const pageDescription = lang === 'ar'
+    ? 'اكتشفوا المترشحين الذين أرسلوا ملفاتهم وتمت المصادقة عليها ونشرها من طرف المكتب.'
+    : lang === 'en'
+      ? 'Meet candidates who submitted their profiles and were approved for publication.'
+      : 'Découvrez les personnes ayant réellement soumis leur profil et dont la candidature a été approuvée et publiée par le bureau.';
 
   return (
-    <div className="max-w-xl md:max-w-5xl lg:max-w-6xl mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-10 pb-24 md:pb-16">
-      {/* Header Banner */}
-      <section className="text-center relative">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-amber-200/90 dark:border-zinc-700 shadow-xs text-amber-900 dark:text-amber-300 text-xs font-bold mb-3">
-          <img src="assets/icons/icon.png" alt="Nos Candidats" className="w-4 h-4 rounded-full object-contain" />
-          <span>Élections Communales 2026 • Liste RND</span>
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="max-w-xl md:max-w-5xl lg:max-w-6xl mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-10 pb-24 md:pb-16">
+      <section className="text-center relative space-y-3">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-green-200 dark:border-zinc-700 shadow-xs text-green-800 dark:text-green-300 text-xs font-bold">
+          <ShieldCheck className="w-4 h-4" />
+          <span>{lang === 'ar' ? 'القائمة البلدية • 2026' : 'Élections Communales 2026 • Liste RND'}</span>
         </div>
-
-        <h1 className="text-xl sm:text-4xl leading-tight break-words px-1 font-black text-zinc-900 dark:text-white tracking-tight">
-          Nos Candidats au Conseil Communal
-        </h1>
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-xl mx-auto">
-          Une équipe de compétences avérées, d'experts du terrain et de citoyens dévoués pour métamorphoser et gouverner avec rigueur la commune d'Aïn El Turck.
-        </p>
-
-        {/* Tête de liste endorsement pill */}
-        <div className="mt-4 inline-flex items-center gap-2.5 p-2 pr-4 rounded-full bg-amber-50 dark:bg-zinc-800/80 border border-amber-200/70 dark:border-zinc-700 shadow-xs">
-          <img
-            src={candidate.photoUrl}
-            alt={candidate.name}
-            className="w-7 h-7 rounded-full object-cover border border-amber-300"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
-            }}
-          />
-          <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
-            Liste conduite par {candidate.name}
-          </span>
+        <h1 className="text-xl sm:text-4xl leading-tight break-words px-1 font-black text-zinc-900 dark:text-white tracking-tight">{pageTitle}</h1>
+        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">{pageDescription}</p>
+        <div className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-green-50 dark:bg-green-950/40 text-green-800 dark:text-green-300 text-xs font-bold">
+          <Users className="w-4 h-4" />
+          <span>{profiles.length} {lang === 'ar' ? 'ملف منشور' : lang === 'en' ? 'published profiles' : 'profils publiés'}</span>
         </div>
-
-        {/* Share Council list */}
-        <div className="mt-3 flex justify-center">
-          <ShareButton
-            variant="pill"
-            size="sm"
-            title="Liste des Candidats au Conseil Communal — RND Aïn El Turck 2026"
-            text={`Découvrez l'équipe d'experts et citoyens engagés conduite par ${candidate.name} pour les Élections Communales 2026.`}
-            label={t('share')}
-          />
+        <div className="flex justify-center">
+          <ShareButton variant="pill" size="sm" title={pageTitle + ' — RND Aïn El Turck'} text={pageDescription} label={t('share')} />
         </div>
       </section>
 
-      {/* Commission Filter Pills */}
-      <div className="flex items-center md:justify-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4 md:mx-0 md:flex-wrap">
-        {commissions.map((comm) => (
-          <button
-            key={comm.id}
-            onClick={() => setSelectedCommission(comm.id)}
-            className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all min-h-[38px] ${
-              selectedCommission === comm.id
-                ? 'bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 shadow-md scale-[1.02]'
-                : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-700 hover:border-zinc-400'
-            }`}
-          >
-            {comm.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Responsive Grid of Council Experts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
-        {filteredCandidates.map((cand) => (
-          <div
-            key={cand.id}
-            className="p-5 sm:p-6 rounded-[32px] bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 group"
-          >
-            <div>
-              {/* Header Profile with Avatar & Expertise */}
-              <div className="flex items-start gap-4">
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl overflow-hidden p-0.5 bg-gradient-to-tr from-amber-400 to-rose-400 flex-shrink-0 shadow-md">
-                  <img
-                    src={cand.photoUrl}
-                    alt={cand.name}
-                    className="w-full h-full object-cover rounded-[14px] sm:rounded-[22px] bg-amber-50"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
-                    }}
-                  />
-                  <div className="absolute top-1 right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white" />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-1 mb-1">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded-full">
-                      {cand.role}
-                    </span>
-                    <span className="text-xs font-bold text-zinc-400">
-                      #{cand.order}
-                    </span>
-                  </div>
-
-                  <h3 className="text-base sm:text-lg font-black text-zinc-900 dark:text-white leading-tight">
-                    {cand.name}
-                  </h3>
-
-                  <div className="mt-1 flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-300">
-                    <Award className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span>{cand.expertise}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Commission badge */}
-              <div className="mt-3">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
-                  <Sparkles className="w-3 h-3 text-amber-500" />
-                  <span>{cand.commission}</span>
-                </span>
-              </div>
-
-              {/* Bio & vision */}
-              <p className="mt-3 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                {cand.bio}
-              </p>
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between gap-2">
-              <span className="text-[11px] text-zinc-400 font-medium truncate">
-                {cand.email || 'Permanence RND Ain El Turck'}
-              </span>
-
-              <div className="flex items-center gap-1.5 flex-shrink-0">
-                <ShareButton
-                  variant="icon"
-                  size="sm"
-                  title={`${cand.name} — Candidat Conseil Communal RND Aïn El Turck`}
-                  text={`${cand.name} (${cand.expertise}), candidat(e) au Conseil Communal d'Aïn El Turck sur la liste RND.`}
-                  label={t('shareProfile')}
-                />
-                <button
-                  type="button"
-                  onClick={() => onNavigate('membership')}
-                  className="px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 dark:bg-zinc-800 text-amber-900 dark:text-amber-200 text-xs font-bold flex items-center gap-1 transition min-h-[34px] cursor-pointer"
-                >
-                  <MessageSquare className="w-3 h-3" />
-                  <span>Échanger</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* CTA Section */}
-      <section className="p-6 sm:p-8 rounded-[36px] bg-[#18181B] text-white text-center shadow-xl space-y-3 max-w-2xl mx-auto">
-        <div className="w-12 h-12 rounded-2xl bg-white/10 mx-auto flex items-center justify-center mb-1">
-          <img src="assets/icons/icon.png" alt="Nos Candidats" className="w-7 h-7 object-contain" />
+      {loadError && (
+        <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 dark:bg-rose-950/30 dark:border-rose-900 p-4 text-sm text-rose-700 dark:text-rose-300 flex flex-wrap items-center justify-between gap-3">
+          <span>{loadError}</span>
+          <button type="button" onClick={() => void loadProfiles()} className="inline-flex items-center gap-2 min-h-11 px-3 rounded-xl border border-rose-300 font-bold"><RefreshCw className="w-4 h-4" />{lang === 'ar' ? 'إعادة المحاولة' : 'Réessayer'}</button>
         </div>
-        <h2 className="text-base sm:text-xl font-bold">
-          Vous souhaitez rejoindre la liste ou apporter votre expertise ?
-        </h2>
-        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-lg mx-auto">
-          Le Bureau Communal du RND est ouvert à toutes les compétences citoyennes d'Aïn El Turck désireuses de s'investir pour l'intérêt général.
-        </p>
-        <button
-          onClick={() => onNavigate('membership')}
-          className="px-8 py-3.5 rounded-full bg-gradient-to-r from-amber-400 to-rose-400 text-zinc-950 font-bold text-xs sm:text-sm active:scale-95 transition inline-flex items-center gap-2 min-h-[44px]"
-        >
-          <span>Soumettre ma candidature citoyenne</span>
+      )}
+
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6" aria-label="Chargement des profils">
+          {[0,1,2,3].map(i => <div key={i} className="h-56 rounded-3xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />)}
+        </div>
+      ) : profiles.length === 0 ? (
+        <section className="rounded-3xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-12 text-center space-y-3">
+          <UserRound className="w-12 h-12 mx-auto text-zinc-400" />
+          <h2 className="font-black text-zinc-900 dark:text-white">{lang === 'ar' ? 'لا توجد ملفات مترشحين منشورة حالياً' : lang === 'en' ? 'No candidate profiles published yet' : 'Aucun profil de candidat publié pour le moment'}</h2>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto">{lang === 'ar' ? 'ستظهر هنا الملفات الحقيقية بعد إرسالها ومراجعتها والموافقة على نشرها.' : lang === 'en' ? 'Real profiles will appear here after submission, review and approval for publication.' : 'Les vrais profils apparaîtront ici après leur soumission, leur examen et leur approbation pour publication.'}</p>
+          <button type="button" onClick={() => onNavigate('membership')} className="inline-flex items-center justify-center gap-2 min-h-11 px-5 rounded-full bg-green-700 text-white text-sm font-bold hover:bg-green-800">
+            {lang === 'ar' ? 'إرسال ملف الترشح' : lang === 'en' ? 'Submit a candidate profile' : 'Soumettre mon profil'} <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
+          </button>
+        </section>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          {profiles.map(profile => {
+            const profession = profileText(profile.profession, lang);
+            const education = profileText(profile.education_level, lang);
+            const diplomas = profileText(profile.diplomas, lang);
+            const experience = profileText(profile.experience, lang);
+            const skills = profileText(profile.skills, lang);
+            const motivation = profileText(profile.motivation, lang);
+            return (
+              <article key={profile.id} className="min-w-0 p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm flex flex-col gap-4">
+                <div className="flex items-start gap-4 min-w-0">
+                  {profile.photo_url ? <img src={profile.photo_url} alt={profile.name} loading="lazy" className="w-20 h-20 rounded-2xl object-cover bg-zinc-100 dark:bg-zinc-800 shrink-0" /> : <div className="w-20 h-20 rounded-2xl bg-green-50 dark:bg-green-950/40 flex items-center justify-center shrink-0"><UserRound className="w-8 h-8 text-green-700 dark:text-green-300" /></div>}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-green-800 dark:text-green-300 bg-green-50 dark:bg-green-950/50 px-2 py-1 rounded-full">{lang === 'ar' ? 'مترشح مصادق عليه' : lang === 'en' ? 'Approved candidate' : 'Candidature approuvée'}</span>
+                      {profile.candidate_number != null && <span className="text-xs font-bold text-zinc-400">N° {profile.candidate_number}</span>}
+                    </div>
+                    <h2 className="text-base sm:text-lg font-black text-zinc-900 dark:text-white break-words">{profile.name}</h2>
+                    {profession && <p className="mt-1 text-sm font-bold text-green-800 dark:text-green-300">{profession}</p>}
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                  {[
+                    [lang === 'ar' ? 'المستوى الدراسي' : lang === 'en' ? 'Education' : 'Niveau d’études', education],
+                    [lang === 'ar' ? 'الشهادات' : lang === 'en' ? 'Diplomas' : 'Diplômes', diplomas],
+                    [lang === 'ar' ? 'الخبرة' : lang === 'en' ? 'Experience' : 'Expérience', experience],
+                  ].filter(([, value]) => value).map(([label, value]) => <div key={label} className="min-w-0"><p className="text-[11px] font-bold text-zinc-400">{label}</p><p className="mt-0.5 text-zinc-700 dark:text-zinc-300 break-words">{value}</p></div>)}
+                </div>
+                {skills && <div className="rounded-2xl bg-green-50/80 dark:bg-green-950/30 p-3"><p className="text-[11px] font-bold text-green-800 dark:text-green-300 flex items-center gap-1.5 mb-1"><Sparkles className="w-3.5 h-3.5" />{lang === 'ar' ? 'الكفاءات والمهارات' : lang === 'en' ? 'Skills & expertise' : 'Compétences et savoir-faire'}</p><p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-line break-words">{skills}</p></div>}
+                {motivation && <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed whitespace-pre-line break-words">{motivation}</p>}
+                <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex justify-end">
+                  <ShareButton variant="pill" size="sm" title={profile.name + ' — RND Aïn El Turck'} text={[profile.name, profession, skills].filter(Boolean).join(' • ')} label={t('shareProfile')} />
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+
+      <section className="p-6 sm:p-8 rounded-3xl bg-[#18181B] text-white text-center shadow-xl space-y-3 max-w-2xl mx-auto">
+        <div className="w-12 h-12 rounded-2xl bg-white/10 mx-auto flex items-center justify-center"><Users className="w-6 h-6 text-green-300" /></div>
+        <h2 className="text-base sm:text-xl font-bold">{lang === 'ar' ? 'هل ترغبون في الانضمام إلى الفريق البلدي؟' : lang === 'en' ? 'Would you like to join the municipal team?' : 'Vous souhaitez rejoindre l’équipe communale ?'}</h2>
+        <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-lg mx-auto">{lang === 'ar' ? 'أرسلوا ملفكم ليتمكن المكتب من دراسته.' : lang === 'en' ? 'Submit your profile so the team can review it.' : 'Soumettez votre profil pour qu’il soit étudié par le bureau communal.'}</p>
+        <button onClick={() => onNavigate('membership')} className="px-8 py-3.5 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs sm:text-sm active:scale-95 transition inline-flex items-center gap-2 min-h-11">
+          <span>{lang === 'ar' ? 'إرسال ملف الترشح' : lang === 'en' ? 'Submit my profile' : 'Soumettre mon profil'}</span>
           <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
         </button>
       </section>

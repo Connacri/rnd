@@ -147,7 +147,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
 
           {/* Candidate Name & Role */}
-          <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
+          <h1 className="text-xl sm:text-4xl leading-tight break-words px-1 font-black text-zinc-900 dark:text-white tracking-tight">
             {candidate.name}
           </h1>
           <p className="mt-1 sm:mt-1.5 text-xs sm:text-sm font-bold text-rose-600 dark:text-rose-400">

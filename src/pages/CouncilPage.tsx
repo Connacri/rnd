@@ -37,7 +37,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
           <span>Élections Communales 2026 • Liste RND</span>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
+        <h1 className="text-xl sm:text-4xl leading-tight break-words px-1 font-black text-zinc-900 dark:text-white tracking-tight">
           Nos Candidats au Conseil Communal
         </h1>
         <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-xl mx-auto">

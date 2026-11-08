@@ -7,6 +7,31 @@ export const ProgramPage: React.FC = () => {
   const { lang, t } = useLanguage();
   const { pillars } = useCampaign();
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
+  const pledge = {
+    ar: {
+      title: 'التزامنا الرسمي الصادق',
+      first: 'برنامجنا مبني على مشاريع ملموسة وقابلة للتحقيق ومالياً مسؤولة.',
+      second: 'نحن لا نعد بمشاريع غير قابلة للتحقيق أو تعتمد على تمويلات غير مؤكدة.',
+      closing: 'معاً، لنجعل عين الترك بلدية يحسن العيش فيها والاستثمار والعمل واستقبال الزوار الكرام.'
+    },
+    fr: {
+      title: 'Notre engagement officiel et sincère',
+      first: 'Notre programme repose sur des projets concrets, réalisables et financièrement responsables.',
+      second: 'Nous ne promettons pas de projets irréalisables ou dépendant de financements incertains.',
+      closing: 'Ensemble, faisons d’Aïn El Turck une commune où il fait bon vivre, investir, travailler et accueillir dignement nos visiteurs.'
+    },
+    en: {
+      title: 'Our sincere official commitment',
+      first: 'Our program is built on concrete, achievable and financially responsible projects.',
+      second: 'We do not promise projects that cannot be delivered or that depend on uncertain funding.',
+      closing: 'Together, let us make Ain El Turck a municipality where people can live, invest, work and warmly welcome visitors.'
+    }
+  }[lang] || {
+    title: 'Notre engagement officiel et sincère',
+    first: 'Notre programme repose sur des projets concrets, réalisables et financièrement responsables.',
+    second: 'Nous ne promettons pas de projets irréalisables ou dépendant de financements incertains.',
+    closing: 'Ensemble, faisons d’Aïn El Turck une commune où il fait bon vivre, investir, travailler et accueillir dignement nos visiteurs.'
+  };
   const [expandedPillar, setExpandedPillar] = useState<string | null>(pillars[0]?.id || null);
 
   const filterOptions = [
@@ -153,26 +178,14 @@ export const ProgramPage: React.FC = () => {
         })}
       </div>
 
-      {/* ================= SOLEMN ENGAGEMENT SECTION ================= */}
-      <section className="p-5 rounded-3xl bg-gradient-to-br from-amber-100/60 via-rose-100/40 to-sky-100/40 dark:from-zinc-900 dark:to-zinc-950 border border-amber-200/60 dark:border-zinc-800 shadow-sm text-center space-y-3">
-        <h2 className="text-base font-black text-zinc-900 dark:text-white">
-          {t('engagement')}
-        </h2>
-        <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-          {t('engagementText1')}
-        </p>
-        <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-          {t('engagementText2')}
-        </p>
-        <p className="text-xs font-bold text-rose-600 dark:text-rose-400 leading-relaxed italic">
-          {t('engagementText3')}
-        </p>
-
-        {/* 3 Tricolor Stripes */}
-        <div className="flex items-center justify-center gap-1.5 pt-2">
-          <span className="w-8 h-1 rounded-full bg-[#0047AB]" />
-          <span className="w-8 h-1 rounded-full bg-[#00A651]" />
-          <span className="w-8 h-1 rounded-full bg-[#C8102E]" />
+      {/* ================= OFFICIAL PROGRAM COMMITMENT ================= */}
+      <section className="rounded-3xl bg-white dark:bg-zinc-900 border border-green-200 dark:border-green-900/60 shadow-sm overflow-hidden text-center">
+        <div className="h-1.5 bg-gradient-to-r from-[#00A651] via-white to-[#C8102E]" />
+        <div className="p-5 sm:p-8 space-y-4">
+          <h2 className="text-lg sm:text-2xl font-black text-green-900 dark:text-green-300">{pledge.title}</h2>
+          <p className="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">{pledge.first}</p>
+          <p className="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">{pledge.second}</p>
+          <p className="text-sm sm:text-base leading-relaxed font-black text-green-800 dark:text-green-300">{pledge.closing}</p>
         </div>
       </section>
     </div>

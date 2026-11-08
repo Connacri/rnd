@@ -56,9 +56,16 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   });
 
-  // Load pillars
+  // Refresh once so all visitors receive the exact official programme revision.
+  const PROGRAM_CONTENT_VERSION = '2026-11-09-exact-user-text-v1';
   const [pillars, setPillars] = useState<ProgramPillar[]>(() => {
     try {
+      const savedVersion = localStorage.getItem('rnd_program_version');
+      if (savedVersion !== PROGRAM_CONTENT_VERSION) {
+        localStorage.setItem('rnd_program_version', PROGRAM_CONTENT_VERSION);
+        localStorage.setItem('rnd_pillars', JSON.stringify(initialPillars));
+        return initialPillars;
+      }
       const saved = localStorage.getItem('rnd_pillars');
       return saved ? JSON.parse(saved) : initialPillars;
     } catch {

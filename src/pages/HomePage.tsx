@@ -19,7 +19,6 @@ import {
   Maximize2,
   Download,
   Image as ImageIcon,
-  Smartphone,
   ExternalLink,
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -45,9 +44,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   }, []);
   const profileText = (value: any): string => typeof value === 'string' ? value : value ? (value[lang] || value.fr || value.ar || value.en || '') : '';
   const [selectedPillar, setSelectedPillar] = useState<ProgramPillar | null>(null);
-  const [activePreviewTab, setActivePreviewTab] = useState<'posters' | 'screens'>('posters');
   const [selectedPoster, setSelectedPoster] = useState<CampaignPoster | null>(null);
-  const [selectedScreenshot, setSelectedScreenshot] = useState<{ src: string; title: string } | null>(null);
 
   const handlePrevPoster = () => {
     if (!selectedPoster) return;
@@ -432,32 +429,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </p>
 
           {/* Toggle Tabs: Affiches Officielles vs Écrans de l'App */}
-          <div className="mt-4 inline-flex items-center p-1 rounded-full bg-zinc-200/80 dark:bg-zinc-800/80 border border-amber-200/40 dark:border-zinc-700 shadow-inner">
-            <button
-              onClick={() => setActivePreviewTab('posters')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all min-h-[38px] ${
-                activePreviewTab === 'posters'
-                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              }`}
-            >
-              <ImageIcon className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-              <span>{t('officialPostersTab')} (4)</span>
-            </button>
-            <button
-              onClick={() => setActivePreviewTab('screens')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all min-h-[38px] ${
-                activePreviewTab === 'screens'
-                  ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              }`}
-            >
-              <Smartphone className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-              <span>{t('appScreenshotsTab')} (4)</span>
-            </button>
-          </div>
-        </div>
-
         {/* TAB 1: 4 OFFICIAL CAMPAIGN POSTERS (nab 1 to 4) */}
         {activePreviewTab === 'posters' && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-5">
@@ -535,73 +506,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
         )}
 
-        {/* TAB 2: MOBILE APPLICATION SCREENSHOTS */}
-        {activePreviewTab === 'screens' && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {screenshots.map((s, idx) => (
-              <div
-                key={idx}
-                onClick={() => setSelectedScreenshot(s)}
-                className="group cursor-pointer p-2 sm:p-2.5 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/70 dark:border-zinc-800 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all overflow-hidden text-center"
-              >
-                <div className="rounded-2xl overflow-hidden bg-zinc-950 aspect-[9/16] relative">
-                  <img
-                    src={s.src}
-                    alt={s.title}
-                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <Maximize2 className="w-6 h-6 text-white drop-shadow-md" />
-                  </div>
-                </div>
-                <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200 mt-2 mb-1">
-                  {s.title}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
 
-      {/* ================= RND BUREAU COMMUNAL SECTION ================= */}
-      <section className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4">
-        <div className="p-5 sm:p-7 rounded-[32px] bg-gradient-to-br from-white via-amber-50/40 to-rose-50/30 dark:from-zinc-900 dark:to-zinc-950 border border-amber-200/80 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row items-center gap-6">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-white dark:bg-zinc-800 p-2 shadow-md border border-amber-200/80 dark:border-zinc-700 flex items-center justify-center flex-shrink-0">
-            <img
-              src="assets/icons/icon.png"
-              alt="Logo officiel Nos Candidats"
-              className="w-full h-full object-contain"
-            />
-          </div>
-
-          <div className="flex-1 text-center md:text-left space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 text-[10px] sm:text-xs font-bold">
-              <Building2 className="w-3.5 h-3.5" />
-              <span>{t('partyShort')} — Bureau Communal</span>
-            </div>
-            <h2 className="text-base sm:text-xl font-black text-zinc-900 dark:text-white">
-              Rassemblement National Démocratique • Aïn El Turck
-            </h2>
-            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-2xl">
-              Sous l'impulsion de Zenasni Nabil, le Bureau Communal du RND œuvre quotidiennement pour l'essor économique, touristique et social d'Aïn El Turck et de ses habitants.
-            </p>
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-1 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-              <span className="flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-rose-500" />
-                <span>Aïn El Turck, Wilaya d'Oran</span>
-              </span>
-              <span>•</span>
-              <span className="font-semibold text-zinc-700 dark:text-zinc-300">Élections Locales 2026</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ================= FOOTER ================= */}
-      <footer className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4 pt-8 border-t border-amber-200/50 dark:border-zinc-800 text-center">
         {/* Official logo emblem in footer */}
         <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 p-1.5 shadow-sm border border-amber-200/80 dark:border-zinc-700 mx-auto mb-3 flex items-center justify-center">
           <img
@@ -759,37 +664,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
         </div>
       )}
-
-      {/* ================= LIGHTBOX SCREENSHOT MODAL ================= */}
-      {selectedScreenshot && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setSelectedScreenshot(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/85 backdrop-blur-md animate-in fade-in"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative max-w-sm w-full rounded-3xl bg-zinc-900 border border-zinc-800 p-2 overflow-hidden shadow-2xl flex flex-col items-center"
-          >
-            <button
-              onClick={() => setSelectedScreenshot(null)}
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/90 transition"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <div className="rounded-2xl overflow-hidden aspect-[9/16] w-full bg-black">
-              <img
-                src={selectedScreenshot.src}
-                alt={selectedScreenshot.title}
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <p className="text-xs font-bold text-white py-2">{selectedScreenshot.title}</p>
-          </div>
-        </div>
-      )}
-
 
       {/* ================= RESPONSIVE PILLAR MODAL DIALOG ================= */}
       {selectedPillar && (

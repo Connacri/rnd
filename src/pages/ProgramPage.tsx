@@ -48,7 +48,7 @@ export const ProgramPage: React.FC = () => {
   };
 
   return (
-    <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 pb-24 md:pb-16">
+    <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4 py-5 sm:py-10 space-y-6 sm:space-y-8 pb-24 md:pb-16">
       {/* Page Title */}
       <div className="text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-amber-200/80 dark:border-zinc-700 shadow-xs text-amber-800 dark:text-amber-300 text-xs font-bold mb-3">
@@ -64,9 +64,9 @@ export const ProgramPage: React.FC = () => {
       </div>
 
       {/* Slogan Banner Card */}
-      <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-amber-100/70 via-rose-100/60 to-sky-100/60 dark:from-zinc-900 dark:to-zinc-950 border border-amber-200/60 dark:border-zinc-800 shadow-sm flex items-center gap-3 sm:gap-4 max-w-2xl mx-auto">
+      <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-green-50 via-white to-slate-50 dark:from-[#0b1f35] dark:via-[#102c35] dark:to-[#0b1f35] border border-green-200/70 dark:border-zinc-800 shadow-sm flex items-center gap-3 sm:gap-4 max-w-2xl mx-auto">
         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white dark:bg-zinc-800 flex items-center justify-center text-xl shadow-xs flex-shrink-0">
-          <Gem className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500" />
+          <Gem className="w-5 h-5 sm:w-6 sm:h-6 text-green-700" />
         </div>
         <p className="text-xs sm:text-sm font-bold text-zinc-800 dark:text-zinc-200 leading-snug italic">
           {t('slogan')}
@@ -81,7 +81,7 @@ export const ProgramPage: React.FC = () => {
             onClick={() => setSelectedFilter(opt.id)}
             className={`whitespace-nowrap px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-semibold transition-all min-h-[36px] flex items-center justify-center ${
               selectedFilter === opt.id
-                ? 'bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 shadow-md scale-[1.02] font-bold'
+                ? 'bg-[#0B1F35] dark:bg-green-600 text-white shadow-md scale-[1.02] font-bold'
                 : 'bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200/70 dark:border-zinc-700 hover:border-zinc-400'
             }`}
           >
@@ -99,7 +99,7 @@ export const ProgramPage: React.FC = () => {
           return (
             <div
               key={pillar.id}
-              className="rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm overflow-hidden transition-all duration-200"
+              className="rounded-3xl bg-white dark:bg-zinc-900 border border-green-100 dark:border-zinc-800 shadow-sm overflow-hidden transition-all duration-200"
             >
               {/* Header Tap Area */}
               <button
@@ -126,7 +126,7 @@ export const ProgramPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 mt-0.5 leading-snug">
+                  <h2 className="text-base sm:text-lg font-black text-zinc-900 dark:text-zinc-100 mt-1 leading-relaxed">
                     {pillar.title[lang]}
                   </h2>
 
@@ -153,7 +153,7 @@ export const ProgramPage: React.FC = () => {
 
                   <ul className="space-y-2.5">
                     {items.map((item, index) => (
-                      <li key={index} className="flex items-start gap-2.5 text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                      <li key={index} className="flex items-start gap-2.5 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">
                         <CheckCircle
                           style={{ color: pillar.accentColor }}
                           className="w-3.5 h-3.5 mt-0.5 flex-shrink-0"

@@ -1,3 +1,12 @@
+/* Cairo variable TTF — self-host-ready font face (served from the Cairo font mirror) */
+@font-face {
+  font-family: 'Cairo';
+  src: url('https://static.oeh.ac.at/fonts/ofl/cairo/Cairo%5Bslnt%2Cwght%5D.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 200 1000;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 
 @layer base {

@@ -23,7 +23,7 @@ export const ProgramPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 pb-24 md:pb-16">
+    <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4 py-4 sm:py-8 space-y-6 sm:space-y-8 pb-24 md:pb-16">
       {/* Page Title */}
       <div className="text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-zinc-800 border border-amber-200/80 dark:border-zinc-700 shadow-xs text-amber-800 dark:text-amber-300 text-xs font-bold mb-3">
@@ -79,7 +79,7 @@ export const ProgramPage: React.FC = () => {
               {/* Header Tap Area */}
               <button
                 onClick={() => toggleExpand(pillar.id)}
-                className="w-full text-left p-4 sm:p-5 flex items-start gap-3.5 min-h-[64px]"
+                className={`w-full p-4 sm:p-5 flex items-start gap-3.5 min-h-[64px] ${lang === 'ar' ? 'text-right' : 'text-left'}`}
               >
                 <div
                   style={{ backgroundColor: `${pillar.accentColor}18`, color: pillar.accentColor }}

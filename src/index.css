@@ -16,16 +16,16 @@
   }
 
   html {
-    scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
-    overflow-x: hidden;
+    min-width: 320px;
   }
 
   body {
     font-family: var(--font-sans);
     background-color: #FFFFFF;
-    overflow-x: hidden;
     width: 100%;
+    min-width: 320px;
+    min-height: 100dvh;
   }
 
   [dir="rtl"],
@@ -85,4 +85,59 @@
   .dark\:text-amber-200:is(.dark *) { color: #86EFAC !important; }
   .dark\:text-amber-300:is(.dark *) { color: #86EFAC !important; }
   .dark\:border-amber-300\/80:is(.dark *) { border-color: #166534 !important; }
+}
+
+
+/* Shared UI foundations — applied across pages, forms, dialogs and navigation */
+@layer base {
+  :where(button, a, input, select, textarea, summary, [role="button"]) {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :where(button, a, input, select, textarea, summary, [role="button"]):focus-visible {
+    outline: 2px solid #15803D;
+    outline-offset: 3px;
+  }
+
+  :where(input, select, textarea) {
+    max-width: 100%;
+    min-width: 0;
+    scroll-margin-block: 6rem;
+  }
+
+  :where(input, select, textarea)::placeholder {
+    color: #71717a;
+    opacity: 1;
+  }
+
+  :where(button, [role="button"]) {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  img, video, svg {
+    max-width: 100%;
+  }
+
+  [dir="rtl"] {
+    text-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Fixed mobile navigation must remain above the device gesture area. */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }

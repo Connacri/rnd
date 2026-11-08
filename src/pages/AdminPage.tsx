@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ShieldCheck,
   Mail,
   Users,
   Newspaper,
   BookOpen,
-  User,
+  UserRoundSearch,
   Inbox,
   Plus,
   Trash2,
@@ -26,9 +26,17 @@ import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { CouncilCandidate } from '../types';
+import { supabase } from '../lib/supabaseClient';
 
 interface AdminPageProps {
   onNavigate: (page: string) => void;
+}
+
+interface SubmittedCandidateProfile {
+  id: string; name: string; photo_url: string | null; candidate_number: number | null;
+  profession: Record<string, string>; education_level: Record<string, string>; diplomas: Record<string, string>;
+  experience: Record<string, string>; skills: Record<string, string>; motivation: Record<string, string>;
+  profile_status: 'draft' | 'pending' | 'approved' | 'rejected'; is_published: boolean; submitted_at: string | null;
 }
 
 export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
@@ -55,8 +63,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const { user, isAdmin, loginAdmin } = useAuth();
   const { lang, t } = useLanguage();
 
-  const [activeTab, setActiveTab] = useState<'settings' | 'council' | 'news' | 'pillars' | 'candidate' | 'inbox'>('council');
+  const [activeTab, setActiveTab] = useState<'settings' | 'council' | 'news' | 'pillars' | 'applicants' | 'inbox'>('council');
   const [successToast, setSuccessToast] = useState<string | null>(null);
+  const [submittedCandidates, setSubmittedCandidates] = useState<SubmittedCandidateProfile[]>([]);
+  const [candidatesLoading, setCandidatesLoading] = useState(false);
+  const [candidatesError, setCandidatesError] = useState<string | null>(null);
+  const [candidateActionId, setCandidateActionId] = useState<string | null>(null);
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [adminLoginError, setAdminLoginError] = useState<string | null>(null);
@@ -70,6 +82,32 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     if (!result.success) setAdminLoginError(result.error || 'Connexion refusée.');
   };
 
+  useEffect(() => {
+    if (!isAdmin || activeTab !== 'applicants') return;
+    let cancelled = false;
+    const load = async () => {
+      setCandidatesLoading(true); setCandidatesError(null);
+      const { data, error } = await supabase.from('candidates')
+        .select('id,name,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation,profile_status,is_published,submitted_at')
+        .not('submitted_at', 'is', null).order('submitted_at', { ascending: false });
+      if (cancelled) return;
+      if (error) setCandidatesError('Impossible de charger les profils soumis. Vérifiez les droits Supabase.');
+      else setSubmittedCandidates((data || []) as SubmittedCandidateProfile[]);
+      setCandidatesLoading(false);
+    };
+    void load();
+    return () => { cancelled = true; };
+  }, [activeTab, isAdmin]);
+
+  const reviewCandidate = async (id: string, status: 'approved' | 'rejected') => {
+    setCandidateActionId(id);
+    const { error } = await supabase.from('candidates').update({ profile_status: status, is_published: status === 'approved' }).eq('id', id);
+    setCandidateActionId(null);
+    if (error) { setCandidatesError('La mise à jour du profil a échoué. Réessayez.'); return; }
+    setSubmittedCandidates(items => items.map(item => item.id === id ? { ...item, profile_status: status, is_published: status === 'approved' } : item));
+    showToast(status === 'approved' ? 'Profil approuvé et publié.' : 'Profil refusé.');
+  };
+
 
   // Settings form state
   const [settingsForm, setSettingsForm] = useState({
@@ -78,14 +116,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     contactPhone: settings.contactPhone || '',
     officeAddress: settings.officeAddress || '',
     sloganText: settings.sloganText || '',
-  });
-
-  // Candidate editor state
-  const [candidateForm, setCandidateForm] = useState({
-    name: candidate.name,
-    photoUrl: candidate.photoUrl,
-    roleFr: candidate.role.fr,
-    biographyFr: candidate.biography.fr,
   });
 
   // Council candidate form state
@@ -121,17 +151,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     e.preventDefault();
     updateSettings(settingsForm);
     showToast('Paramètres et emails de réception enregistrés avec succès !');
-  };
-
-  const handleSaveCandidate = (e: React.FormEvent) => {
-    e.preventDefault();
-    updateCandidate({
-      name: candidateForm.name,
-      photoUrl: candidateForm.photoUrl,
-      role: { ...candidate.role, fr: candidateForm.roleFr },
-      biography: { ...candidate.biography, fr: candidateForm.biographyFr },
-    });
-    showToast('Profil du candidat tête de liste mis à jour !');
   };
 
   const handleAddCouncilCandidate = (e: React.FormEvent) => {
@@ -286,7 +305,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
           { id: 'settings', label: 'Emails de Réception & Contact', icon: Mail },
           { id: 'news', label: 'Actualités & Communiqués', icon: Newspaper, count: news.length },
           { id: 'pillars', label: 'Programme & Piliers', icon: BookOpen },
-          { id: 'candidate', label: 'Tête de Liste (Zenasni)', icon: User },
+          { id: 'applicants', label: 'المترشحين', icon: UserRoundSearch, count: submittedCandidates.length },
           { id: 'inbox', label: 'Boîte de Réception', icon: Inbox, count: submissions.length },
         ].map((tab) => {
           const Icon = tab.icon;
@@ -855,89 +874,62 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
         </div>
       )}
 
-      {/* ================= TAB 5: CANDIDAT TETE DE LISTE ================= */}
-      {activeTab === 'candidate' && (
-        <form
-          onSubmit={handleSaveCandidate}
-          className="p-5 sm:p-7 rounded-[32px] bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm space-y-4"
-        >
-          <div className="flex items-center gap-2 pb-2 border-b border-zinc-100 dark:border-zinc-800">
-            <User className="w-5 h-5 text-amber-500" />
-            <h2 className="text-base sm:text-lg font-black text-zinc-900 dark:text-white">
-              Édition du Candidat Tête de Liste
-            </h2>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-zinc-800 dark:text-zinc-200 mb-1">
-                Nom complet
-              </label>
-              <input
-                type="text"
-                required
-                value={candidateForm.name}
-                onChange={(e) => setCandidateForm({ ...candidateForm, name: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white min-h-[42px]"
-              />
+      {/* Profils de candidature réellement soumis */}
+      {activeTab === 'applicants' && (
+        <section className="space-y-4" aria-labelledby="submitted-candidates-title">
+          <div className="rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 flex items-center gap-3">
+            <UserRoundSearch className="w-6 h-6 text-green-700" />
+            <div className="min-w-0">
+              <h2 id="submitted-candidates-title" className="text-lg font-black text-zinc-900 dark:text-white">المترشحين</h2>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">Profils effectivement envoyés depuis le formulaire de candidature.</p>
             </div>
-
-            <div>
-              <label className="block text-xs font-bold text-zinc-800 dark:text-zinc-200 mb-1">
-                Rôle politique & communal
-              </label>
-              <input
-                type="text"
-                required
-                value={candidateForm.roleFr}
-                onChange={(e) => setCandidateForm({ ...candidateForm, roleFr: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white min-h-[42px]"
-              />
+            <span className="ms-auto rounded-full bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200 px-3 py-1 text-sm font-bold tabular-nums">{submittedCandidates.length}</span>
+          </div>
+          {candidatesError && <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 dark:bg-rose-950/30 dark:border-rose-900 p-4 text-sm text-rose-700 dark:text-rose-300">{candidatesError}</p>}
+          {candidatesLoading ? (
+            <div className="grid gap-3 sm:grid-cols-2" aria-label="Chargement des candidatures">{[0,1,2,3].map(item => <div key={item} className="h-40 rounded-3xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />)}</div>
+          ) : submittedCandidates.length === 0 ? (
+            <div className="rounded-3xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-12 text-center space-y-2">
+              <UserRoundSearch className="w-10 h-10 mx-auto text-zinc-400" />
+              <h3 className="font-bold text-zinc-800 dark:text-zinc-100">Aucun profil soumis pour le moment</h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">Seuls les profils dont l’envoi a été confirmé apparaîtront ici. Les brouillons et les simples comptes utilisateurs sont exclus.</p>
+              <button type="button" onClick={() => setActiveTab('council')} className="mt-2 inline-flex min-h-11 items-center justify-center rounded-xl border border-zinc-300 dark:border-zinc-700 px-4 text-sm font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800">Retour au tableau de bord</button>
             </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-zinc-800 dark:text-zinc-200 mb-1">
-              URL de la Photo de profil
-            </label>
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
-                value={candidateForm.photoUrl}
-                onChange={(e) => setCandidateForm({ ...candidateForm, photoUrl: e.target.value })}
-                className="flex-1 px-3.5 py-2.5 rounded-2xl text-xs bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
-              />
-              <img
-                src={candidateForm.photoUrl}
-                alt="Aperçu"
-                className="w-11 h-11 rounded-full object-cover border border-amber-300 flex-shrink-0"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
-                }}
-              />
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {submittedCandidates.map(profile => {
+                const details: [string, Record<string,string>][] = [
+                  ['Profession', profile.profession], ['Niveau d’études', profile.education_level],
+                  ['Diplômes', profile.diplomas], ['Expérience', profile.experience],
+                  ['Compétences', profile.skills], ['Motivation', profile.motivation]
+                ];
+                return (
+                  <article key={profile.id} className="min-w-0 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-5 shadow-sm space-y-4">
+                    <div className="flex items-center gap-3 min-w-0">
+                      {profile.photo_url ? <img src={profile.photo_url} alt="" className="size-14 rounded-2xl object-cover bg-zinc-100" /> : <div className="size-14 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center"><UserRoundSearch className="size-6 text-zinc-400" /></div>}
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-bold text-zinc-900 dark:text-white break-words">{profile.name}</h3>
+                        <p className="text-xs text-zinc-500">N° {profile.candidate_number ?? '—'} · {profile.submitted_at ? new Date(profile.submitted_at).toLocaleString() : 'Date inconnue'}</p>
+                      </div>
+                      <span className={'shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ' + (profile.profile_status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200' : profile.profile_status === 'rejected' ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-200' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200')}>{profile.profile_status === 'approved' ? 'Approuvé' : profile.profile_status === 'rejected' ? 'Refusé' : 'À examiner'}</span>
+                    </div>
+                    <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                      {details.map(([label, value]) => {
+                        const detail = value && typeof value === 'object' ? (value[lang] || value.fr || Object.values(value).find(Boolean)) : '';
+                        return detail ? <div key={label} className="min-w-0"><dt className="text-xs font-semibold text-zinc-500">{label}</dt><dd className="mt-0.5 text-zinc-800 dark:text-zinc-200 break-words">{detail}</dd></div> : null;
+                      })}
+                    </dl>
+                    <div className="flex flex-wrap gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                      {profile.profile_status !== 'approved' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'approved')} className="flex-1 min-h-11 rounded-xl bg-green-700 px-4 text-sm font-bold text-white hover:bg-green-800 disabled:opacity-50">Approuver et publier</button>}
+                      {profile.profile_status !== 'rejected' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'rejected')} className="min-h-11 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 disabled:opacity-50">Refuser</button>}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-zinc-800 dark:text-zinc-200 mb-1">
-              Biographie & Message officiel
-            </label>
-            <textarea
-              rows={4}
-              value={candidateForm.biographyFr}
-              onChange={(e) => setCandidateForm({ ...candidateForm, biographyFr: e.target.value })}
-              className="w-full px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3.5 rounded-full bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:opacity-90 active:scale-95 transition min-h-[48px]"
-          >
-            <Save className="w-4 h-4" />
-            <span>Enregistrer les informations de la tête de liste</span>
-          </button>
-        </form>
+          )}
+        </section>
       )}
 
       {/* ================= TAB 6: BOITE DE RECEPTION ================= */}

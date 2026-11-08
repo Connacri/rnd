@@ -23,7 +23,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   const navLinks = [
     { id: 'home', label: t('navHome'), icon: Home },
     { id: 'program', label: t('navProgram'), icon: BookOpen },
-    { id: 'candidate', label: t('navCandidate'), icon: User },
     { id: 'council', label: lang === 'ar' ? 'المترشحين' : lang === 'en' ? 'Candidates' : 'Les candidats', icon: Users },
     { id: 'membership', label: 'Contact & Adhésion', icon: UserPlus },
     { id: 'events', label: t('navEvents'), icon: Calendar },
@@ -132,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         </nav>
 
         {/* Right Actions: Lang Switcher & Auth */}
-        <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-2 flex-shrink-0">
+        <div className="w-full sm:w-auto flex flex-wrap items-center justify-between sm:justify-end gap-2 flex-shrink-0">
           {/* Language Switcher Pills (Clean, compact, guaranteed responsive on all mobile widths) */}
           <div className="flex items-center bg-green-50 dark:bg-zinc-800/80 p-0.5 rounded-full text-xs font-semibold shadow-inner border border-green-200/70 dark:border-zinc-700/50">
             {languages.map((l) => (

@@ -85,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         >
           {/* Official RND logo supplied for the campaign */}
           <img
-            src="/assets/images/rnd-logo-header.webp"
+            src={`${import.meta.env.BASE_URL}assets/images/rnd-logo-header.webp`}
             alt="RND — التجمع الوطني الديمقراطي"
             className="h-10 sm:h-12 w-auto max-w-[132px] sm:max-w-[168px] object-contain flex-shrink-0 group-hover:scale-[1.02] transition-transform"
             loading="eager"

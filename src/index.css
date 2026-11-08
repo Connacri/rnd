@@ -23,7 +23,7 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #FAF7F2;
+    background-color: #FFFFFF;
     overflow-x: hidden;
     width: 100%;
   }
@@ -61,4 +61,28 @@
 .no-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+
+/* RND identity palette: green, white and red (logo-aligned) */
+@layer utilities {
+  .bg-amber-50 { background-color: #F0FDF4 !important; }
+  .bg-amber-100 { background-color: #DCFCE7 !important; }
+  .bg-amber-200 { background-color: #BBF7D0 !important; }
+  .bg-amber-300 { background-color: #86EFAC !important; }
+  .bg-amber-400 { background-color: #16A34A !important; }
+  .bg-amber-500, .bg-amber-600 { background-color: #15803D !important; }
+  .bg-amber-700, .bg-amber-800, .bg-amber-900, .bg-amber-950 { background-color: #14532D !important; }
+  .text-amber-300, .text-amber-400, .text-amber-500, .text-amber-600 { color: #15803D !important; }
+  .text-amber-700, .text-amber-800, .text-amber-900, .text-amber-950 { color: #14532D !important; }
+  .border-amber-200, .border-amber-300, .border-amber-400 { border-color: #86EFAC !important; }
+  .border-amber-500, .border-amber-600 { border-color: #16A34A !important; }
+  .ring-amber-300, .ring-amber-400, .ring-amber-500 { --tw-ring-color: #16A34A !important; }
+  .selection\:bg-amber-300::selection { background-color: #16A34A !important; }
+  .selection\:text-zinc-950::selection { color: #FFFFFF !important; }
+  .hover\:bg-amber-300:hover, .hover\:bg-amber-400:hover { background-color: #15803D !important; color: #FFFFFF !important; }
+  .dark\:bg-amber-950\/30:is(.dark *) { background-color: rgb(20 83 45 / 0.3) !important; }
+  .dark\:text-amber-200:is(.dark *) { color: #86EFAC !important; }
+  .dark\:text-amber-300:is(.dark *) { color: #86EFAC !important; }
+  .dark\:border-amber-300\/80:is(.dark *) { border-color: #166534 !important; }
 }

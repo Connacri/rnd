@@ -40,7 +40,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [publishedProfiles, setPublishedProfiles] = useState<any[]>([]);
   useEffect(() => {
     let active = true;
-    void supabase.from('candidates').select('id,name,photo_url,candidate_number,profession,skills').eq('profile_status', 'approved').eq('is_published', true).eq('is_active', true).order('candidate_number', { ascending: true, nullsFirst: false }).limit(3).then(({ data, error }) => { if (active && !error) setPublishedProfiles(data || []); });
+    void supabase.from('candidates').select('id,name,photo_url,candidate_number,profession,skills').eq('profile_status', 'approved').eq('is_published', true).eq('is_active', true).order('candidate_number', { ascending: true, nullsFirst: false }).limit(50).then(({ data, error }) => { if (active && !error) setPublishedProfiles(data || []); });
     return () => { active = false; };
   }, []);
   const profileText = (value: any): string => typeof value === 'string' ? value : value ? (value[lang] || value.fr || value.ar || value.en || '') : '';
@@ -314,7 +314,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <section className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between mb-4 sm:mb-6 gap-3">
             <div className="min-w-0">
-              <span className="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-green-700 dark:text-green-400">{lang === 'ar' ? 'الكفاءات والفريق البلدي' : 'Compétences & Équipe municipale'}</span>
+              <span className="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-green-700 dark:text-green-400">{lang === 'ar' ? 'المترشحين' : lang === 'en' ? 'Candidates' : 'Les candidats'}</span>
               <h2 className="text-lg sm:text-2xl font-black text-zinc-900 dark:text-white">{lang === 'ar' ? 'المترشحون المعتمدون' : lang === 'en' ? 'Approved candidates' : 'Les profils de nos candidats'}</h2>
             </div>
             <button onClick={() => onNavigate('council')} className="flex items-center gap-1 text-xs sm:text-sm font-bold text-green-700 dark:text-green-400 hover:underline min-h-11 shrink-0">
@@ -324,7 +324,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4">
             {publishedProfiles.map(profile => (
-              <button key={profile.id} type="button" onClick={() => onNavigate('council')} className="text-start group p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all min-w-0">
+              <button key={profile.id} type="button" onClick={() => onNavigate('council')} aria-label={lang === 'ar' ? `عرض ملف ${profile.name}` : lang === 'en' ? `View ${profile.name}'s profile` : `Voir le profil de ${profile.name}`} className="text-start group p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all min-w-0">
                 <div className="flex items-center gap-3 mb-3">
                   {profile.photo_url ? <img src={profile.photo_url} alt="" loading="lazy" className="w-12 h-12 rounded-2xl object-cover border border-green-200 flex-shrink-0" /> : <div className="w-12 h-12 rounded-2xl bg-green-50 dark:bg-green-950/40 flex items-center justify-center text-green-700 font-bold shrink-0">{profile.name.slice(0,1)}</div>}
                   <div className="min-w-0">

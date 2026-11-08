@@ -422,7 +422,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-5">
             {officialCampaignPosters.map((poster) => (
               <div
                 key={poster.id}
@@ -495,7 +494,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </div>
             ))}
         </div>
+      </section>
 
+      <footer className="max-w-xl md:max-w-5xl mx-auto px-4 text-center">
         {/* Official logo emblem in footer */}
         <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 p-1.5 shadow-sm border border-amber-200/80 dark:border-zinc-700 mx-auto mb-3 flex items-center justify-center">
           <img

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ArrowRight,
   ChevronRight,
@@ -28,6 +28,7 @@ import { campaignStats, officialCampaignPosters } from '../data/campaignData';
 import { AudioPlayer } from '../components/AudioPlayer';
 import { ShareButton } from '../components/ShareButton';
 import { ProgramPillar, CampaignPoster } from '../types';
+import { supabase } from '../lib/supabaseClient';
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
@@ -35,7 +36,14 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { lang, t, isRtl } = useLanguage();
-  const { candidate, pillars, news, councilCandidates } = useCampaign();
+  const { candidate, pillars, news } = useCampaign();
+  const [publishedProfiles, setPublishedProfiles] = useState<any[]>([]);
+  useEffect(() => {
+    let active = true;
+    void supabase.from('candidates').select('id,name,photo_url,candidate_number,profession,skills').eq('profile_status', 'approved').eq('is_published', true).order('candidate_number', { ascending: true, nullsFirst: false }).limit(3).then(({ data, error }) => { if (active && !error) setPublishedProfiles(data || []); });
+    return () => { active = false; };
+  }, []);
+  const profileText = (value: any): string => typeof value === 'string' ? value : value ? (value[lang] || value.fr || value.ar || value.en || '') : '';
   const [selectedPillar, setSelectedPillar] = useState<ProgramPillar | null>(null);
   const [activePreviewTab, setActivePreviewTab] = useState<'posters' | 'screens'>('posters');
   const [selectedPoster, setSelectedPoster] = useState<CampaignPoster | null>(null);
@@ -301,69 +309,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </button>
       </section>
 
-      {/* ================= CANDIDATS DU CONSEIL COMMUNAL (EXPERTS) PREVIEW ================= */}
-      {councilCandidates.length > 0 && (
+      {/* Real submitted and approved candidate profiles */}
+      {publishedProfiles.length > 0 && (
         <section className="max-w-xl md:max-w-4xl lg:max-w-5xl mx-auto px-4">
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <div>
-              <span className="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-rose-600 dark:text-rose-400">
-                Compétences & Équipe municipale
-              </span>
-              <h2 className="text-lg sm:text-2xl font-black text-zinc-900 dark:text-white">
-                Nos Candidats Experts au Conseil
-              </h2>
+          <div className="flex items-center justify-between mb-4 sm:mb-6 gap-3">
+            <div className="min-w-0">
+              <span className="text-[10px] sm:text-xs font-bold tracking-wider uppercase text-green-700 dark:text-green-400">{lang === 'ar' ? 'الكفاءات والفريق البلدي' : 'Compétences & Équipe municipale'}</span>
+              <h2 className="text-lg sm:text-2xl font-black text-zinc-900 dark:text-white">{lang === 'ar' ? 'المترشحون المعتمدون' : lang === 'en' ? 'Approved candidates' : 'Les profils de nos candidats'}</h2>
             </div>
-            <button
-              onClick={() => onNavigate('council')}
-              className="flex items-center gap-1 text-xs sm:text-sm font-bold text-rose-600 dark:text-rose-400 hover:underline min-h-[36px]"
-            >
-              <span>Voir toute la liste ({councilCandidates.length})</span>
-              <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
+            <button onClick={() => onNavigate('council')} className="flex items-center gap-1 text-xs sm:text-sm font-bold text-green-700 dark:text-green-400 hover:underline min-h-11 shrink-0">
+              <span>{lang === 'ar' ? 'عرض الكل' : lang === 'en' ? 'View all' : 'Voir toute la liste'} ({publishedProfiles.length})</span>
+              <ChevronRight className={'w-3.5 h-3.5 ' + (isRtl ? 'rotate-180' : '')} />
             </button>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4">
-            {councilCandidates.slice(0, 3).map((cand) => (
-              <div
-                key={cand.id}
-                onClick={() => onNavigate('council')}
-                className="group cursor-pointer p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <img
-                      src={cand.photoUrl}
-                      alt={cand.name}
-                      className="w-12 h-12 rounded-2xl object-cover border border-amber-300/80 flex-shrink-0"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'assets/icons/icon.png';
-                      }}
-                    />
-                    <div className="min-w-0">
-                      <span className="text-[10px] font-bold text-rose-600 dark:text-rose-400 block truncate">
-                        {cand.role}
-                      </span>
-                      <h3 className="text-sm font-black text-zinc-900 dark:text-white truncate">
-                        {cand.name}
-                      </h3>
-                    </div>
+            {publishedProfiles.map(profile => (
+              <button key={profile.id} type="button" onClick={() => onNavigate('council')} className="text-start group p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all min-w-0">
+                <div className="flex items-center gap-3 mb-3">
+                  {profile.photo_url ? <img src={profile.photo_url} alt="" loading="lazy" className="w-12 h-12 rounded-2xl object-cover border border-green-200 flex-shrink-0" /> : <div className="w-12 h-12 rounded-2xl bg-green-50 dark:bg-green-950/40 flex items-center justify-center text-green-700 font-bold shrink-0">{profile.name.slice(0,1)}</div>}
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-bold text-green-700 dark:text-green-400 block truncate">{profileText(profile.profession) || 'Candidat'}</span>
+                    <h3 className="text-sm font-black text-zinc-900 dark:text-white truncate">{profile.name}</h3>
                   </div>
-
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 mb-1.5">
-                    <Award className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">{cand.expertise}</span>
-                  </div>
-
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">
-                    {cand.bio}
-                  </p>
                 </div>
-
-                <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 font-semibold">
-                  <span className="truncate max-w-[170px]">{cand.commission}</span>
-                  <ChevronRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
-                </div>
-              </div>
+                {profileText(profile.skills) && <p className="text-[11px] text-zinc-500 dark:text-zinc-400 line-clamp-3 leading-relaxed">{profileText(profile.skills)}</p>}
+                {profile.candidate_number != null && <span className="mt-3 inline-block text-[10px] font-bold text-zinc-400">N° {profile.candidate_number}</span>}
+              </button>
             ))}
           </div>
         </section>

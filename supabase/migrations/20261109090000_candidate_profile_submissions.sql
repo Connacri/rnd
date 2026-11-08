@@ -1,3 +1,11 @@
+-- Public candidate photo bucket. Public reads are intentional for approved campaign portraits.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('candidate-photos', 'candidate-photos', true, 5242880, array['image/jpeg','image/png','image/webp'])
+on conflict (id) do update set
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
+
 -- Public candidate profile submissions with moderation-only publication.
 -- PIN hashes and lockout metadata are never readable through the public Data API.
 

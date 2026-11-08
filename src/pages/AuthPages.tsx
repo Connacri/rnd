@@ -55,10 +55,7 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
     }
   };
 
-  const handleAdminQuickLogin = () => {
-    loginAsAdmin();
-    onNavigate('admin');
-  };
+
 
   return (
     <div className="max-w-md mx-auto px-4 py-6 sm:py-8 pb-24 space-y-6">

@@ -68,6 +68,20 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const [candidatesLoading, setCandidatesLoading] = useState(false);
   const [candidatesError, setCandidatesError] = useState<string | null>(null);
   const [candidateActionId, setCandidateActionId] = useState<string | null>(null);
+  const [newCandidateName, setNewCandidateName] = useState('');
+  const [issuedCandidatePin, setIssuedCandidatePin] = useState<{ name: string; pin: string; candidateId: string } | null>(null);
+  const [issuingCandidatePin, setIssuingCandidatePin] = useState(false);
+  const issueCandidatePin = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!newCandidateName.trim()) return;
+    setIssuingCandidatePin(true); setCandidatesError(null); setIssuedCandidatePin(null);
+    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'create', name: newCandidateName.trim() } });
+    setIssuingCandidatePin(false);
+    if (error || !data?.pin || !data?.candidateId) { setCandidatesError(data?.error || error?.message || 'Impossible de créer cet accès.'); return; }
+    setIssuedCandidatePin({ name: newCandidateName.trim(), pin: data.pin, candidateId: data.candidateId });
+    setNewCandidateName('');
+    showToast('Accès candidat créé. Communiquez le PIN en privé.');
+  };
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [adminLoginError, setAdminLoginError] = useState<string | null>(null);
@@ -887,6 +901,21 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
             </div>
             <span className="ms-auto rounded-full bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200 px-3 py-1 text-sm font-bold tabular-nums">{submittedCandidates.length}</span>
           </div>
+          <form onSubmit={issueCandidatePin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
+            <div>
+              <h3 className="font-black text-zinc-900 dark:text-white">Créer un accès candidat — réservé à l’administrateur</h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">Vous seul pouvez générer le code PIN de 10 chiffres et le communiquer personnellement au candidat.</p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input value={newCandidateName} onChange={e => setNewCandidateName(e.target.value)} required maxLength={120} placeholder="Nom et prénom du candidat" className="min-h-12 flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm" />
+              <button type="submit" disabled={issuingCandidatePin} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Génération…' : 'Générer le PIN'}</button>
+            </div>
+            {issuedCandidatePin && <div className="rounded-2xl border border-green-300 dark:border-green-800 bg-white dark:bg-zinc-900 p-4 space-y-2">
+              <p className="text-sm font-bold text-green-800 dark:text-green-300">PIN créé pour {issuedCandidatePin.name}. Copiez-le maintenant : il ne sera pas réaffiché.</p>
+              <div className="flex flex-wrap items-center gap-3"><code className="text-2xl font-black tracking-[0.25em] tabular-nums">{issuedCandidatePin.pin}</code><button type="button" onClick={() => { void navigator.clipboard?.writeText(issuedCandidatePin.pin); }} className="min-h-10 rounded-lg border border-zinc-300 dark:border-zinc-700 px-3 text-sm font-bold">Copier</button></div>
+              <p className="text-xs text-zinc-500">Identifiant interne : {issuedCandidatePin.candidateId}</p>
+            </div>}
+          </form>
           {candidatesError && <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 dark:bg-rose-950/30 dark:border-rose-900 p-4 text-sm text-rose-700 dark:text-rose-300">{candidatesError}</p>}
           {candidatesLoading ? (
             <div className="grid gap-3 sm:grid-cols-2" aria-label="Chargement des candidatures">{[0,1,2,3].map(item => <div key={item} className="h-40 rounded-3xl bg-zinc-100 dark:bg-zinc-800 animate-pulse" />)}</div>

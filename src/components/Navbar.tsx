@@ -35,12 +35,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-md bg-[#FAF7F2]/95 dark:bg-[#141312]/95 border-b border-amber-200/60 dark:border-zinc-800/70 shadow-xs transition-colors w-full overflow-hidden">
+    <header className="sticky top-0 z-40 backdrop-blur-md bg-[#FAF7F2]/95 dark:bg-[#141312]/95 border-b border-amber-200/60 dark:border-zinc-800/70 shadow-xs transition-colors w-full overflow-visible">
       {/* ================= OFFICIAL ALGERIAN RND PARTY TOP RIBBON ================= */}
       <div className="bg-gradient-to-r from-[#00A651] via-[#FFFFFF] to-[#C8102E] p-[1.5px] shadow-xs">
-        <div className="bg-[#18181B] text-white py-1 px-2.5 sm:px-4 text-[10px] sm:text-[11px] font-bold flex items-center justify-between gap-2 overflow-hidden">
-          <div className="flex items-center gap-1.5 sm:gap-2 truncate min-w-0">
-            <span className="font-arabic text-emerald-400 truncate flex-shrink">
+        <div className="bg-[#18181B] text-white py-2 sm:py-1 px-3 sm:px-4 text-[10px] sm:text-[11px] font-bold flex flex-col sm:flex-row items-center sm:justify-between gap-1.5 sm:gap-2">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-1.5 sm:gap-2 gap-y-0.5 min-w-0 text-center sm:text-left">
+            <span className="font-arabic text-emerald-400 whitespace-normal">
               🇩🇿 الجمهورية الجزائرية الديمقراطية الشعبية
             </span>
             <span className="hidden sm:inline text-zinc-500">•</span>
@@ -77,23 +77,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
       </div>
 
       {/* ================= MAIN PARTY HEADER BAR ================= */}
-      <div className="max-w-6xl mx-auto px-2.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-4 w-full">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 py-3 sm:py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 w-full">
         {/* Official logo & title */}
         <button
           onClick={() => handleNavClick('home')}
-          className="flex items-center gap-2 sm:gap-3 text-left group transition-transform active:scale-95 min-w-0 flex-shrink cursor-pointer"
+          className="w-full sm:w-auto flex items-center gap-2 sm:gap-3 text-left group transition-transform active:scale-95 min-w-0 cursor-pointer"
         >
           {/* Official RND logo supplied for the campaign */}
           <img
             src={`${import.meta.env.BASE_URL}assets/images/rnd-logo-header.webp`}
             alt="RND — التجمع الوطني الديمقراطي"
-            className="h-10 sm:h-12 w-auto max-w-[132px] sm:max-w-[168px] object-contain flex-shrink-0 group-hover:scale-[1.02] transition-transform"
+            className="h-11 sm:h-12 w-auto max-w-[112px] sm:max-w-[168px] object-contain flex-shrink-0 group-hover:scale-[1.02] transition-transform"
             loading="eager"
           />
 
-          <div className="min-w-0 truncate">
-            <div className="flex items-center gap-1 sm:gap-1.5 truncate">
-              <span className="font-black text-xs sm:text-sm tracking-tight text-zinc-950 dark:text-zinc-50 font-sans truncate">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-1 sm:gap-x-1.5 gap-y-0.5">
+              <span className="font-black text-sm sm:text-sm leading-tight tracking-tight text-zinc-950 dark:text-zinc-50 font-sans whitespace-normal">
                 Nos Candidats
               </span>
               <span className="hidden md:inline font-arabic font-extrabold text-[11px] sm:text-xs text-rose-600 dark:text-rose-400 truncate">
@@ -103,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
                 2026
               </span>
             </div>
-            <div className="flex items-center gap-1 text-[9px] sm:text-[11px] text-zinc-500 dark:text-zinc-400 font-semibold leading-none mt-0.5 truncate">
+            <div className="flex items-center gap-1 text-[10px] sm:text-[11px] text-zinc-500 dark:text-zinc-400 font-semibold leading-tight mt-1 flex-wrap">
               <span className="text-zinc-700 dark:text-zinc-300">Aïn El Turck</span>
               <span>•</span>
               <span className="truncate">Zenasni Nabil</span>
@@ -132,7 +132,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
         </nav>
 
         {/* Right Actions: Lang Switcher & Auth */}
-        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+        <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-2 flex-shrink-0">
           {/* Language Switcher Pills (Clean, compact, guaranteed responsive on all mobile widths) */}
           <div className="flex items-center bg-[#EFE9DF] dark:bg-zinc-800/80 p-0.5 rounded-full text-xs font-semibold shadow-inner border border-amber-200/40 dark:border-zinc-700/50">
             {languages.map((l) => (
@@ -189,7 +189,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Menu"
-            className="lg:hidden w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-zinc-200/80 dark:bg-zinc-800 flex items-center justify-center text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 transition cursor-pointer"
+            className="lg:hidden w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-zinc-200/80 dark:bg-zinc-800 flex items-center justify-center text-zinc-800 dark:text-zinc-200 hover:bg-zinc-300 transition cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
@@ -222,7 +222,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 pb-1">
+          <div className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-2 pb-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = currentPage === link.id;

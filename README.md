@@ -30,6 +30,7 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 
 - [Présentation](#présentation)
 - [Captures d'écran](#captures-décran)
+- [Affiches officielles](#affiches-officielles)
 - [Fonctionnalités](#fonctionnalités)
 - [Stack technique](#stack-technique)
 - [Architecture du projet](#architecture-du-projet)
@@ -72,33 +73,45 @@ et l'application Android.
 
 </div>
 
+## Affiches officielles
+
+La page d'accueil présente une galerie des **quatre affiches de campagne fournies**. Chaque affiche s'ouvre en grand format dans une visionneuse avec navigation précédente/suivante, partage et téléchargement de l'image originale.
+
+Les fichiers sont conservés dans `assets/images/` et référencés dans `src/data/campaignData.ts` :
+
+- `poster_agissons_ensemble.jpg` — Agissons ensemble pour Aïn El Turck ;
+- `poster_nouvelle_dynamique.jpg` — J-10 / lancement de campagne ;
+- `poster_rencontre_citoyenne.jpg` — rencontre citoyenne ;
+- `poster_commune_forte.jpg` — une commune forte et moderne.
+
+Les titres, descriptions, thèmes et lieux sont disponibles en français, arabe et anglais. Les affiches sont affichées telles que fournies : le site ne remplace pas leur contenu graphique par des maquettes ou des posters générés.
+
 ## Fonctionnalités
 
 | Module | Description |
 | --- | --- |
-| **Accueil** | Présentation du candidat, message audio officiel (FR/AR), chiffres clés du RND, actualités et valeurs |
-| **Candidat** | Biographie, vision, engagements et parcours de Zenasni Nabil |
-| **Programme** | Piliers thématiques complets et actions détaillées avec filtres par commission |
-| **Conseil Communal** | Présentation de la liste des candidats au conseil communal d'Aïn El Turck |
-| **Adhésion** | Formulaire d'adhésion au mouvement avec validation complète des champs |
-| **Événements / Agenda** | Calendrier des rassemblements, réunions citoyennes et dates clés de campagne |
-| **Portail Admin** | Gestion dynamique du candidat, piliers, actualités, candidats et consultation des adhésions |
-| **Authentification** | Connexion Email / mot de passe + Google Sign-In, mot de passe oublié |
-| **Langues** | Français, Arabe (sens RTL complet avec typographie Cairo & Noto Sans Arabic) et Anglais |
-| **Audio Player** | Lecteur audio tricolore avec message audio officiel en français et arabe |
-| **Design** | Identité Purrweb raffinée (crème/ambre, ruban tricolore, navigation flottante en pilule) |
+| **Accueil** | Présentation de la campagne, affiches officielles consultables et téléchargeables, actualités, valeurs et profils candidats publiés |
+| **Programme** | Programme électoral présenté par thèmes, avec points d'action et prise en charge des trois langues |
+| **Candidats** | Liste des profils réellement soumis et approuvés par l'administration ; les cartes ouvrent les informations du candidat |
+| **Espace réservé aux élus** | Bouton visible dans le header, page plein écran et accès par PIN personnel de 10 chiffres communiqué par l'administrateur |
+| **Soumission de profil** | Formulaire avec photo, nom, profession, niveau d'études, diplômes, expériences, compétences et motivation ; publication après validation administrative |
+| **Photos candidats** | Stockage Supabase dans le bucket `candidate-photos` ; formats JPG, PNG et WebP, taille maximale 5 Mo |
+| **Administration** | Authentification Supabase et gestion des candidatures soumises : validation, publication ou rejet |
+| **Adhésion** | Formulaire d'adhésion au mouvement, distinct du formulaire de profil candidat |
+| **Langues** | Français, arabe RTL (police Cairo) et anglais |
+| **Responsive / accessibilité** | Navigation, formulaires et dialogues adaptés aux écrans mobiles et aux grands écrans |
 
 ## Stack technique
 
 | Domaine | Technologie |
 | --- | --- |
 | Framework Web & UI | **React 19** + **TypeScript** |
-| Bundler & Dev Server | **Vite 6** (`server.allowedHosts: true`, port 3000) |
+| Bundler & Dev Server | **Vite 6** (port 3000) |
 | Styles & Composants | **Tailwind CSS 4** + Lucide React |
+| Backend et données | **Supabase** (`@supabase/supabase-js`), PostgreSQL, Storage et Edge Functions |
 | Runtime Android | **Capacitor Android 8** (`com.rnd.dz`) |
-| Internationalisation | Contexte React i18n (`fr`, `ar` RTL, `en`) |
-| Audio | Audio HTML5 haute fidélité (`assets/audio/`) |
-| CI/CD | **GitHub Actions** (APK + AAB signés, site GitHub Pages, Releases) |
+| Internationalisation | Français (`fr`), arabe RTL (`ar`, police Cairo) et anglais (`en`) |
+| CI/CD | **GitHub Actions** : vérification TypeScript, build web, GitHub Pages et jobs Android/Play selon les conditions du workflow |
 
 ## Architecture du projet
 
@@ -155,9 +168,11 @@ npm run cap:build
 ### Vérifications locales
 
 ```bash
-npm run lint         # Typecheck TypeScript strict
-npm run build        # Build de production Vite
+npm run lint         # Typecheck TypeScript (tsc -b)
+npm run build        # Typecheck puis build de production Vite
 ```
+
+Le site utilise la racine `src/` comme application React/Vite. Les commandes Flutter mentionnées dans les anciennes sections Android ne sont pas les commandes de build du site web.
 
 ## Internationalisation
 
@@ -251,9 +266,10 @@ $ANDROID_HOME/build-tools/<version>/aapt2 dump badging app-release.apk | head -5
 
 ## Builds
 
-**Aucune build de production n'est produite localement.** Les APK/AAB release
-signés sont générés par GitHub Actions ; le site web React est compilé par la
-CI puis publié sur GitHub Pages.
+Le site web React/Vite est compilé par GitHub Actions puis publié sur GitHub Pages.
+Les APK/AAB Android sont des artefacts distincts, construits uniquement par le job Android du workflow lorsque sa condition de pause l'autorise.
+
+**Pause Android temporaire :** le workflow suspend la génération APK/AAB le 9 novembre 2026 (heure d'Algérie, UTC+1), tout en laissant les jobs de validation et de déploiement web fonctionner. Cette pause est pilotée par la condition `if` du job `build-android` dans `.github/workflows/ci.yml`.
 
 En local, uniquement le développement et la validation :
 
@@ -289,9 +305,9 @@ git push
    ├─ version         → calcule la prochaine vX.Y.Z (tags git) et le
    │                    versionCode Android (MAJEUR*1e6 + MINEUR*1e3 + PATCH)
    │
-   ├─ quality         → flutter pub get · dart format · flutter analyze · flutter test
+   ├─ quality         → npm run lint · npm run build (TypeScript + Vite)
    │
-   ├─ build-android   → APK + AAB signés (keystore depuis les secrets)
+   ├─ build-android   → APK + AAB signés si la fenêtre de pause est terminée
    │                    vérification signature + package + versionName/versionCode
    ├─ publish-play    → envoi de l'AAB sur Google Play (canal production)
    │                    actif seulement si PLAY_UPLOAD_ENABLED=true

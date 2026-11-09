@@ -4,7 +4,8 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { collection, doc, getDocs, query, serverTimestamp, where, writeBatch } from 'firebase/firestore';
 import { firestore } from '../lib/firebase';
-import { supabase } from '../lib/supabase';
+import { firebaseStorage } from '../lib/firebase';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 interface CandidateSubmissionPageProps { onNavigate: (page: string) => void; }
 const copy = {
@@ -106,15 +107,13 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
   try {
    const ext = photo.type==='image/jpeg'?'jpg':photo.type==='image/png'?'png':'webp';
    const path = `submissions/${candidateId}/${crypto.randomUUID()}.${ext}`;
-   const { data: uploaded, error: uploadError } = await supabase.storage.from('candidate-photos').upload(path, photo, {
-    contentType: photo.type, cacheControl: '3600', upsert: false,
-   });
-   if (uploadError) throw uploadError;
-   const { data: publicData } = supabase.storage.from('candidate-photos').getPublicUrl(uploaded.path);
+   const photoRef = ref(firebaseStorage, `candidate-photos/${path}`);
+   const uploaded = await uploadBytes(photoRef, photo, { contentType: photo.type, cacheControl: 'public,max-age=3600' });
+   const photoUrl = await getDownloadURL(uploaded.ref);
    const localized = (value:string) => ({fr:value.trim(),ar:value.trim(),en:value.trim()});
    const batch = writeBatch(firestore);
    batch.update(doc(firestore, 'candidates', candidateId), {
-    name:form.name.trim(), photo_url:publicData.publicUrl,
+    name:form.name.trim(), photo_url:photoUrl,
     profession:localized(form.profession), education_level:localized(form.education),
     diplomas:localized(form.diplomas), experience:localized(form.experience),
     skills:localized(form.skills), motivation:localized(form.motivation),

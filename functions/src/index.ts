@@ -7,6 +7,22 @@ import { createHash, pbkdf2Sync, randomBytes, randomUUID, timingSafeEqual } from
 initializeApp({ storageBucket: 'rnd-aet.firebasestorage.app' });
 const db = getFirestore();
 const ITERATIONS = 310000;
+
+const publicCandidateFields = (data: Record<string, any>) => ({
+  name: data.name || '',
+  photo_url: data.photo_url || null,
+  candidate_number: data.candidate_number ?? null,
+  profession: data.profession || {},
+  education_level: data.education_level || {},
+  diplomas: data.diplomas || {},
+  experience: data.experience || {},
+  skills: data.skills || {},
+  motivation: data.motivation || {},
+  submitted_at: data.submitted_at || null,
+  is_active: data.is_active !== false,
+  is_office_profile: false,
+});
+
 const isAdmin = (request: CallableRequest<any>) =>
   request.auth?.token.admin === true || request.auth?.token.role === 'admin';
 const requireAdmin = (request: CallableRequest<any>) => {
@@ -122,3 +138,28 @@ export const submitCandidateProfile = onCall({ region: 'europe-west1', enforceAp
   return { success: true };
 });
 
+
+export const reviewCandidateProfile = onCall({ region: 'europe-west1', enforceAppCheck: false }, async request => {
+  requireAdmin(request);
+  const id = cleanText(request.data?.candidateId, 128);
+  const status = request.data?.status;
+  if (!id || !['approved', 'rejected'].includes(status)) {
+    throw new HttpsError('invalid-argument', 'Profil ou décision de modération invalide.');
+  }
+  const candidateRef = db.collection('candidates').doc(id);
+  const candidate = await candidateRef.get();
+  if (!candidate.exists) throw new HttpsError('not-found', 'Profil candidat introuvable.');
+  const published = status === 'approved';
+  await candidateRef.update({
+    profile_status: status,
+    is_published: published,
+    updated_at: FieldValue.serverTimestamp(),
+  });
+  const publicRef = db.collection('publishedCandidates').doc(id);
+  if (published) {
+    await publicRef.set(publicCandidateFields({ ...candidate.data(), profile_status: status, is_published: true }));
+  } else {
+    await publicRef.delete();
+  }
+  return { success: true, status, is_published: published };
+});

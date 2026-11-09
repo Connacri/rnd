@@ -27,7 +27,8 @@ import { campaignStats, officialCampaignPosters } from '../data/campaignData';
 import { AudioPlayer } from '../components/AudioPlayer';
 import { ShareButton } from '../components/ShareButton';
 import { ProgramPillar, CampaignPoster } from '../types';
-import { supabase } from '../lib/supabaseClient';
+import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
+import { firestore } from '../lib/firebase';
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
@@ -39,8 +40,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [publishedProfiles, setPublishedProfiles] = useState<any[]>([]);
   useEffect(() => {
     let active = true;
-    void supabase.from('candidates').select('id,name,photo_url,candidate_number,profession,skills').eq('profile_status', 'approved').eq('is_published', true).eq('is_active', true)
-      .eq('is_office_profile', false).order('candidate_number', { ascending: true, nullsFirst: false }).limit(50).then(({ data, error }) => { if (active && !error) setPublishedProfiles(data || []); });
+    void getDocs(query(collection(firestore, 'candidates'), where('profile_status', '==', 'approved'), where('is_published', '==', true), where('is_active', '==', true), where('is_office_profile', '==', false), orderBy('candidate_number', 'asc'), limit(50)))
+      .then(snapshot => { if (active) setPublishedProfiles(snapshot.docs.map(item => ({ id: item.id, ...item.data() }))); })
+      .catch(error => console.error('Firebase candidate profiles could not be loaded:', error));
     return () => { active = false; };
   }, []);
   const profileText = (value: any): string => typeof value === 'string' ? value : value ? (value[lang] || value.fr || value.ar || value.en || '') : '';

@@ -93,7 +93,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const saveSharedPin = async (event: React.FormEvent) => {
     event.preventDefault();
     setCandidatesError(null);
-    if (!/^\\d{10}$/.test(sharedPin)) { setCandidatesError('Le PIN commun doit contenir exactement 10 chiffres.'); return; }
+    if (!/^\d{10}$/.test(sharedPin)) { setCandidatesError('Le PIN commun doit contenir exactement 10 chiffres.'); return; }
     setIssuingCandidatePin(true);
     try {
       const setPin = httpsCallable<{pin:string},{success:boolean}>(firebaseFunctions, 'setSharedCandidatePin');
@@ -139,7 +139,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
 
   const saveCandidateGoogleEmail = async (id: string, value: string) => {
     const email = value.trim().toLowerCase();
-    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) { setCandidatesError('Adresse e-mail Google invalide.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setCandidatesError('Adresse e-mail Google invalide.'); return; }
     setCandidateActionId(id);
     try {
       await updateDoc(doc(firestore, 'candidates', id), { google_email: email, updated_at: serverTimestamp() });

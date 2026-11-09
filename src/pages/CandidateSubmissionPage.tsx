@@ -2,7 +2,9 @@ import React, { useRef, useState } from 'react';
 import { CheckCircle2, ImagePlus, Loader2, LockKeyhole, LogIn, LogOut } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useAuth } from '../context/AuthContext';
-import { supabase } from '../lib/supabaseClient';
+import { httpsCallable } from 'firebase/functions';
+import { ref, uploadBytes } from 'firebase/storage';
+import { firebaseFunctions, firebaseStorage } from '../lib/firebase';
 
 interface CandidateSubmissionPageProps { onNavigate: (page: string) => void; }
 const copy = {
@@ -82,10 +84,13 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
  };
  const verify = async (event:React.FormEvent) => {
   event.preventDefault(); setError(''); setBusy(true);
-  const { data, error:invokeError } = await supabase.functions.invoke('candidate-access',{body:{action:'verify',pin}});
-  setBusy(false);
-  if (invokeError || !data?.success) { setError(data?.error || t.invalid); return; }
-  setCandidateId(data.candidateId); setAuthorized(true);
+  try {
+   const verifyPin = httpsCallable<{pin:string},{success:boolean;candidateId:string}> (firebaseFunctions, 'verifyCandidatePin');
+   const {data} = await verifyPin({pin});
+   setCandidateId(data.candidateId); setAuthorized(true);
+  } catch (err) {
+   setError(err instanceof Error ? err.message : t.invalid);
+  } finally { setBusy(false); }
  };
  const submit = async (event:React.FormEvent) => {
   event.preventDefault(); setError(''); setSuccess('');
@@ -94,18 +99,15 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
   setBusy(true);
   try {
    const ext = photo.type==='image/jpeg'?'jpg':photo.type==='image/png'?'png':'webp';
-   const path = `submissions/${candidateId}/${crypto.randomUUID()}.${ext}`;
-   const {error:uploadError} = await supabase.storage.from('candidate-photos').upload(path,photo,{contentType:photo.type,cacheControl:'3600',upsert:false});
-   if (uploadError) throw uploadError;
+   const path = `candidate-submissions/${user?.id}/${crypto.randomUUID()}.${ext}`;
+   await uploadBytes(ref(firebaseStorage, path), photo, { contentType: photo.type });
    const localized = (value:string) => ({fr:value.trim(),ar:value.trim(),en:value.trim()});
-   const {data,error:submitError} = await supabase.functions.invoke('candidate-access',{body:{
-    action:'submit',pin,profile:{
+   const submitProfile = httpsCallable(firebaseFunctions, 'submitCandidateProfile');
+   await submitProfile({ candidateId, pin, profile:{
      name:form.name,profession:localized(form.profession),education_level:localized(form.education),
      diplomas:localized(form.diplomas),experience:localized(form.experience),skills:localized(form.skills),
-     motivation:localized(form.motivation),photoPath:path,photoType:photo.type
-    }
+     motivation:localized(form.motivation),photoPath:path
    }});
-   if (submitError || !data?.success) throw new Error(data?.error || submitError?.message || t.failure);
    setSuccess(t.success); setAuthorized(false); setCandidateId(''); setDigits(Array(10).fill('')); setPhoto(null);
    setForm({name:'',profession:'',education:'',diplomas:'',experience:'',skills:'',motivation:''});
   } catch (err) { console.error(err); setError(err instanceof Error ? err.message : t.failure); }

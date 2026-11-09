@@ -581,7 +581,7 @@ export const officialCampaignPosters: CampaignPoster[] = [
       ar: "انطلاق الحملة",
       en: "Campaign Launch"
     },
-    src: "assets/images/poster_nouvelle_dynamique.jpg",
+    src: "assets/images/1000011155.png",
     dateOrTheme: {
       fr: "Dimanche 18 Octobre • 18h00 - 21h00",
       ar: "الأحد 18 أكتوبر • 18:00 - 21:00",
@@ -610,7 +610,7 @@ export const officialCampaignPosters: CampaignPoster[] = [
       ar: "لقاء شعبي",
       en: "Citizen Meetup"
     },
-    src: "assets/images/poster_rencontre_citoyenne.jpg",
+    src: "assets/images/1000011156.png",
     dateOrTheme: {
       fr: "Le 15 Décembre à 18h00",
       ar: "15 ديسمبر على الساعة 18:00",
@@ -639,7 +639,7 @@ export const officialCampaignPosters: CampaignPoster[] = [
       ar: "رؤية 2026",
       en: "Vision 2026"
     },
-    src: "assets/images/poster_commune_forte.jpg",
+    src: "assets/images/1000011157.png",
     dateOrTheme: {
       fr: "5 Piliers d'Avenir",
       ar: "5 محاور استراتيجية",
@@ -668,7 +668,7 @@ export const officialCampaignPosters: CampaignPoster[] = [
       ar: "مبادرة تشاركية",
       en: "Citizen Movement"
     },
-    src: "assets/images/poster_agissons_ensemble.jpg",
+    src: "assets/images/1000011158.png",
     dateOrTheme: {
       fr: "Adhérez • Participez • Agissons",
       ar: "انخرطوا • شاركوا • لنعمل معاً",

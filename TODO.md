@@ -31,8 +31,6 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
       `ctx.tool.hook("execute.after", …)`. Le plugin recharge à chaud et
       s'affiche `status: active` (outil `tools.render_validate_blueprint`
       disponible).
-- [x] **Supabase** : migrations alignées sur les versions réellement appliquées
-      à distance → check CI « Supabase Preview » vert.
 - [x] **Secret / variable GitHub** : `PLAY_SERVICE_ACCOUNT_JSON` (secret),
       `ANDROID_PACKAGE_NAME=com.rnd.dz`, `FIREBASE_PROJECT_ID=rnd-aet`,
       `PLAY_UPLOAD_ENABLED=false`.

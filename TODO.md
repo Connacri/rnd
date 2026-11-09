@@ -1,5 +1,18 @@
 # TODO — Nos Candidats
 
+## Migration Firebase-only (09/11/2026)
+
+- [x] Authentification web basculée vers Firebase Authentication.
+- [x] Profils candidats, modération et PIN basculés vers Cloud Firestore / Cloud Functions.
+- [x] Téléversement des photos candidat basculé vers Firebase Storage.
+- [x] Règles Firestore/Storage et indexes ajoutés.
+- [ ] Déployer les règles, indexes et fonctions Firebase sur `rnd-aet`.
+- [ ] Activer/valider Email/Password et Google dans Firebase Authentication et autoriser `connacri.github.io`.
+- [ ] Attribuer le custom claim `admin` au compte administrateur via `scripts/set-admin-claim.mjs`.
+- [ ] Exporter les anciennes lignes candidates Supabase et les importer dans Firestore avant de fermer l'ancien projet.
+- [ ] Vérifier le build CI et les tests sur le site publié.
+
+
 Suivi du travail restant. Dernière mise à jour : 15/10/2026.
 
 ## Fait

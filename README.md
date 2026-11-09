@@ -36,7 +36,7 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 - [Prérequis](#prérequis)
 - [Démarrage rapide](#démarrage-rapide)
 - [Internationalisation](#internationalisation)
-- [Contenu éditable (Supabase)](#contenu-éditable-supabase)
+- [Contenu éditable (Firebase)](#contenu-éditable-Firebase)
 - [Notifications (FCM)](#notifications-fcm)
 - [Android](#android)
 - [Builds](#builds)
@@ -83,8 +83,8 @@ Les titres, descriptions, thèmes et lieux sont disponibles en français, arabe 
 | **Candidats** | Liste des profils réellement soumis et approuvés par l'administration ; les cartes ouvrent les informations du candidat |
 | **Espace réservé aux élus** | Bouton « Réservé aux élus » dans le header, page plein écran et accès par PIN personnel de 10 chiffres communiqué par l'administrateur |
 | **Soumission de profil** | Formulaire avec photo, nom, profession, niveau d'études, diplômes, expériences, compétences et motivation ; publication après validation administrative |
-| **Photos candidats** | Stockage Supabase dans le bucket `candidate-photos` ; formats JPG, PNG et WebP, taille maximale 5 Mo |
-| **Administration** | Authentification Supabase et gestion des candidatures soumises : validation, publication ou rejet |
+| **Photos candidats** | Stockage Firebase dans le bucket `candidate-photos` ; formats JPG, PNG et WebP, taille maximale 5 Mo |
+| **Administration** | Authentification Firebase et gestion des candidatures soumises : validation, publication ou rejet |
 | **Adhésion** | Formulaire d'adhésion au mouvement, distinct du formulaire de profil candidat |
 | **Langues** | Français, arabe RTL (police Cairo) et anglais |
 | **Responsive / accessibilité** | Navigation, formulaires et dialogues adaptés aux écrans mobiles et aux grands écrans |
@@ -96,7 +96,7 @@ Les titres, descriptions, thèmes et lieux sont disponibles en français, arabe 
 | Framework Web & UI | **React 19** + **TypeScript** |
 | Bundler & Dev Server | **Vite 6** (port 3000) |
 | Styles & Composants | **Tailwind CSS 4** + Lucide React |
-| Backend et données | **Supabase** (`@supabase/supabase-js`), PostgreSQL, Storage et Edge Functions |
+| Backend et données | **Firebase** (`@Firebase/Firebase-js`), PostgreSQL, Storage et Edge Functions |
 | Runtime Android | **Capacitor Android 8** (`com.rnd.dz`) |
 | Internationalisation | Français (`fr`), arabe RTL (`ar`, police Cairo) et anglais (`en`) |
 | CI/CD | **GitHub Actions** : vérification TypeScript, build web, GitHub Pages et jobs Android/Play selon les conditions du workflow |
@@ -134,7 +134,7 @@ L'application est architecturée autour d'un ensemble modulaire de composants et
 - [npm](https://www.npmjs.com) 10+
 - JDK 17+ / Android SDK (pour la compilation du projet Android en CI)
 - Un projet **Firebase** (Auth, FCM)
-- Un projet **Supabase** (données de campagne)
+- Firebase (Auth, Firestore, Storage, Functions)
 
 ## Démarrage rapide
 
@@ -173,7 +173,7 @@ La bascule s'effectue instantanément depuis la barre de navigation supérieure 
 
 ## Données de campagne
 
-Les informations de campagne (candidat, programme, événements, actualités, conseil communal) sont gérées localement avec réactivité temps réel et persistance dans le `CampaignContext`, avec synchronisation Supabase / Firebase. Un portail d'administration complet est intégré pour la gestion continue.
+Les profils candidats, leurs photos, la modération et les paramètres d'accès sont gérés par Firebase Authentication, Cloud Firestore, Firebase Storage et Cloud Functions. Le contenu statique du programme et de la campagne reste dans `src/data/campaignData.ts` et `CampaignContext`.
 
 ## Android
 
@@ -317,8 +317,8 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | `ANDROID_KEY_ALIAS` | Alias de la clé de signature |
 | `ANDROID_KEY_PASSWORD` | Mot de passe de la clé |
 | `GOOGLE_SERVICES_JSON_BASE64` | `google-services.json` (base64) |
-| `SUPABASE_URL` | URL du projet Supabase |
-| `SUPABASE_ANON_KEY` | Clé publique (anon) Supabase |
+| `SUPABASE_URL` | URL du projet Firebase |
+| `SUPABASE_ANON_KEY` | Clé publique (anon) Firebase |
 | `PLAY_SERVICE_ACCOUNT_JSON` | Clé du compte de service Google Play (JSON) |
 
 ### Variables GitHub
@@ -327,7 +327,7 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | --- | --- | --- |
 | `ANDROID_PACKAGE_NAME` | `com.rnd.dz` | Contrôle de l'`applicationId` en CI |
 | `FIREBASE_PROJECT_ID` | `rnd-aet` | Projet Firebase lié |
-| `SUPABASE_PROJECT_REF` | `liveclvibiqcpekanfbp` | Référence du projet Supabase |
+
 | `PLAY_UPLOAD_ENABLED` | `true` / `false` | Active l'envoi Play et l'alignement de la fiche |
 
 ### Régénérer les secrets base64
@@ -456,13 +456,13 @@ Identifiants : `PLAY_SERVICE_ACCOUNT_JSON` (JSON en ligne, utilisé par la CI) o
 > (paramètre `changesNotSentForReview=true`) : il reste à les envoyer en revue
 > depuis la Play Console. Les descriptions ne sont pas soumises à cette limite.
 
-## Outils MCP
+## Configuration Firebase\n\nLe projet utilise `rnd-aet`. Déployer les règles et fonctions avec `firebase deploy --only firestore:rules,firestore:indexes,storage,functions`. Le premier compte administrateur doit être créé dans Firebase Authentication puis recevoir les custom claims via `GOOGLE_APPLICATION_CREDENTIALS=/chemin/service-account.json node scripts/set-admin-claim.mjs admin@example.com`. Ne jamais placer de clé de compte de service dans le dépôt.\n\nLes anciennes données Supabase ne sont pas copiées automatiquement : exporter les profils candidats existants puis les importer dans la collection Firestore `candidates` avant de supprimer l'ancien projet.\n\n## Outils MCP
 
 Le dépôt déclare ses serveurs MCP dans `opencode.json` (racine) :
 
 | Serveur | Transport | Usage |
 | --- | --- | --- |
-| `supabase` | distant (`mcp.supabase.com`) | Base, migrations, branches, edge functions |
+| `Firebase` | distant (`mcp.Firebase.com`) | Base, migrations, branches, edge functions |
 | `firebase` | local (`firebase-tools mcp`) | Projet, applications, SHA, Firestore |
 | `google-play` | local (`google-play-mcp`) | Fiche, canaux, AAB, vitals |
 | `render` | distant (`mcp.render.com`) | Services, Blueprints, déploiements |

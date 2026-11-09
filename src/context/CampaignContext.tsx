@@ -3,6 +3,7 @@ import { addDoc, collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc
 import type { CandidateInfo, ProgramPillar, NewsArticle, CouncilCandidate, CampaignSettings, MembershipSubmission } from '../types';
 import { candidateData as initialCandidate, programPillars as initialPillars, campaignNews as initialNews, defaultCouncilCandidates, defaultCampaignSettings } from '../data/campaignData';
 import { firestore } from '../lib/firebase';
+import { useAuth } from './AuthContext';
 
 interface CampaignContextType {
   candidate: CandidateInfo; updateCandidate: (data: Partial<CandidateInfo>) => void;
@@ -18,6 +19,7 @@ interface CampaignContextType {
 const CampaignContext = createContext<CampaignContextType | undefined>(undefined);
 
 export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAdmin } = useAuth();
   const [candidate, setCandidate] = useState<CandidateInfo>(initialCandidate);
   const [pillars, setPillars] = useState<ProgramPillar[]>(initialPillars);
   const [news, setNews] = useState<NewsArticle[]>(initialNews);
@@ -32,10 +34,14 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       onSnapshot(collection(firestore, 'programPillars'), snap => { if (!snap.empty) setPillars(snap.docs.map(d => ({ ...d.data(), id: d.id }) as ProgramPillar).sort((a,b) => a.number.localeCompare(b.number))); }),
       onSnapshot(collection(firestore, 'campaignNews'), snap => setNews(snap.docs.map(d => ({ ...d.data(), id: d.id }) as NewsArticle).sort((a,b) => b.date.localeCompare(a.date)))),
       onSnapshot(collection(firestore, 'councilCandidates'), snap => { if (!snap.empty) setCouncilCandidates(snap.docs.map(d => ({ ...d.data(), id: d.id }) as CouncilCandidate).sort((a,b) => a.order-b.order)); }),
-      onSnapshot(collection(firestore, 'membershipSubmissions'), snap => setSubmissions(snap.docs.map(d => { const v=d.data(); return { ...v, id:d.id, submittedAt:v.submittedAt?.toDate ? v.submittedAt.toDate().toISOString() : v.submittedAt } as MembershipSubmission; }).sort((a,b) => b.submittedAt.localeCompare(a.submittedAt))))
     ];
+    if (isAdmin) {
+      unsubscribers.push(onSnapshot(collection(firestore, 'membershipSubmissions'), snap => setSubmissions(snap.docs.map(d => { const v=d.data(); return { ...v, id:d.id, submittedAt:v.submittedAt?.toDate ? v.submittedAt.toDate().toISOString() : v.submittedAt } as MembershipSubmission; }).sort((a,b) => b.submittedAt.localeCompare(a.submittedAt)))));
+    } else {
+      setSubmissions([]);
+    }
     return () => unsubscribers.forEach(unsubscribe => unsubscribe());
-  }, []);
+  }, [isAdmin]);
 
   const updateCandidate = (data: Partial<CandidateInfo>) => {
     setCandidate(prev => { const next={...prev,...data}; void setDoc(doc(firestore,'siteContent','candidate'),next,{merge:true}); return next; });

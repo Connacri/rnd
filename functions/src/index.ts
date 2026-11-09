@@ -5,7 +5,7 @@ import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
 import { createHash, pbkdf2Sync, randomBytes, timingSafeEqual } from 'node:crypto';
 
-initializeApp();
+initializeApp({ storageBucket: 'rnd-aet.firebasestorage.app' });
 const db = getFirestore();
 const ITERATIONS = 310000;
 const isAdmin = (request: { auth?: { token: Record<string, unknown> } | null }) =>

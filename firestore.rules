@@ -1,18 +1,21 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAdmin() {
-      return request.auth != null && (request.auth.token.admin == true || request.auth.token.role == 'admin');
+    function signedIn() { return request.auth != null; }
+    function isAdmin() { return signedIn() && (request.auth.token.admin == true || request.auth.token.role == 'admin'); }
+    match /siteContent/{document} { allow read: if true; allow write: if isAdmin(); }
+    match /programPillars/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /campaignNews/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /councilCandidates/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /membershipSubmissions/{id} {
+      allow create: if request.resource.data.keys().hasAll(['fullName','email','phone','submittedAt'])
+        && request.resource.data.fullName is string && request.resource.data.fullName.size() <= 120
+        && request.resource.data.email is string && request.resource.data.email.size() <= 254
+        && request.resource.data.phone is string && request.resource.data.phone.size() <= 40;
+      allow read, update, delete: if isAdmin();
     }
-    // Candidate records contain private Google addresses and moderation metadata.
-    match /candidates/{candidateId} {
-      allow read, create, update, delete: if isAdmin();
-    }
-    // This collection is a strict public projection; never store private fields here.
-    match /publishedCandidates/{candidateId} {
-      allow read: if true;
-      allow create, update, delete: if false;
-    }
+    match /candidates/{candidateId} { allow read, create, update, delete: if isAdmin(); }
+    match /publishedCandidates/{candidateId} { allow read: if true; allow create, update, delete: if false; }
     match /candidateAccess/{document=**} { allow read, write: if false; }
     match /candidatePinAttempts/{document=**} { allow read, write: if false; }
     match /{document=**} { allow read, write: if false; }

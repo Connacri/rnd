@@ -472,7 +472,24 @@ Identifiants : `PLAY_SERVICE_ACCOUNT_JSON` (JSON en ligne, utilisé par la CI) o
 > (paramètre `changesNotSentForReview=true`) : il reste à les envoyer en revue
 > depuis la Play Console. Les descriptions ne sont pas soumises à cette limite.
 
-## Configuration Firebase\n\nLe projet utilise `rnd-aet`. Déployer les règles, indexes et fonctions avec `firebase deploy --only firestore:rules,firestore:indexes,storage,functions`. Le premier compte administrateur doit être créé dans Firebase Authentication puis recevoir les custom claims via `cd functions && GOOGLE_APPLICATION_CREDENTIALS=/chemin/service-account.json node scripts/set-admin-claim.mjs admin@example.com`. Ne jamais placer de clé de compte de service dans le dépôt.\n\nLes anciennes données de profils ne sont pas copiées automatiquement. Pour conserver les candidatures existantes, exporter la table `candidates` en JSON depuis l'ancienne base, placer le fichier `supabase-candidates.json` dans `functions/`, puis lancer `cd functions && GOOGLE_APPLICATION_CREDENTIALS=/chemin/service-account.json node scripts/import-candidates.mjs supabase-candidates.json`. Le script importe les profils et tente également de transférer les photos vers Firebase Storage. Vérifier les profils importés avant de fermer l'ancien service.\n\n## Outils MCP
+## Configuration Firebase
+
+Le site utilise exclusivement **Firebase** pour l'authentification, les données et les fichiers :
+- Firebase Authentication : e-mail/mot de passe et Google Sign-In ;
+- Cloud Firestore : profils, candidatures, contenus du site et programme ;
+- Firebase Storage : photos des candidats ;
+- Cloud Functions : opérations privilégiées côté serveur.
+
+Projet Firebase : `rnd-aet`. Les règles et index sont versionnés dans `firestore.rules`, `storage.rules` et `firestore.indexes.json`. Les fonctions sont dans `functions/`. Déploiement après authentification avec un compte autorisé :
+
+```bash
+firebase use rnd-aet
+firebase deploy --only firestore:rules,firestore:indexes,storage,functions
+```
+
+Créer le compte administrateur dans Firebase Authentication, puis attribuer le custom claim avec `scripts/set-admin-claim.mjs`. Les identifiants de compte de service restent hors du dépôt et ne doivent jamais être commités. Les photos de profil sont envoyées directement dans Firebase Storage ; aucune configuration ni clé Supabase n'est requise.
+
+## Outils MCP
 
 Le dépôt déclare ses serveurs MCP dans `opencode.json` (racine) :
 

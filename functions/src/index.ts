@@ -1,4 +1,4 @@
-import { onCall, HttpsError } from 'firebase-functions/v2/https';
+import { onCall, HttpsError, type CallableRequest } from 'firebase-functions/v2/https';
 import { initializeApp } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
@@ -7,12 +7,12 @@ import { createHash, pbkdf2Sync, randomBytes, randomUUID, timingSafeEqual } from
 initializeApp({ storageBucket: 'rnd-aet.firebasestorage.app' });
 const db = getFirestore();
 const ITERATIONS = 310000;
-const isAdmin = (request: { auth?: { token: Record<string, unknown> } | null }) =>
+const isAdmin = (request: CallableRequest<unknown>) =>
   request.auth?.token.admin === true || request.auth?.token.role === 'admin';
-const requireAdmin = (request: Parameters<typeof isAdmin>[0]) => {
+const requireAdmin = (request: CallableRequest<unknown>) => {
   if (!request.auth || !isAdmin(request)) throw new HttpsError('permission-denied', 'Accès administrateur requis.');
 };
-const requireGoogleUser = (request: { auth?: { uid: string; token: Record<string, unknown> } | null }) => {
+const requireGoogleUser = (request: CallableRequest<unknown>) => {
   const token = request.auth?.token;
   if (!request.auth || (token?.firebase as { sign_in_provider?: string } | undefined)?.sign_in_provider !== 'google.com'
       || typeof token.email !== 'string' || token.email_verified !== true) {

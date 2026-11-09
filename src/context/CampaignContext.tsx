@@ -32,7 +32,7 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       onSnapshot(doc(firestore, 'siteContent', 'candidate'), snap => { if (snap.exists()) setCandidate(snap.data() as CandidateInfo); }),
       onSnapshot(doc(firestore, 'siteContent', 'settings'), snap => { if (snap.exists()) setSettings({ ...defaultCampaignSettings, ...snap.data() } as CampaignSettings); }),
       onSnapshot(collection(firestore, 'programPillars'), snap => { if (!snap.empty) setPillars(snap.docs.map(d => ({ ...d.data(), id: d.id }) as ProgramPillar).sort((a,b) => a.number.localeCompare(b.number))); }),
-      onSnapshot(collection(firestore, 'campaignNews'), snap => setNews(snap.docs.map(d => ({ ...d.data(), id: d.id }) as NewsArticle).sort((a,b) => b.date.localeCompare(a.date)))),
+      onSnapshot(collection(firestore, 'campaignNews'), snap => setNews(snap.empty ? initialNews : snap.docs.map(d => ({ ...d.data(), id: d.id }) as NewsArticle).sort((a,b) => b.date.localeCompare(a.date)))),
       onSnapshot(collection(firestore, 'councilCandidates'), snap => { if (!snap.empty) setCouncilCandidates(snap.docs.map(d => ({ ...d.data(), id: d.id }) as CouncilCandidate).sort((a,b) => a.order-b.order)); }),
     ];
     if (isAdmin) {
@@ -63,7 +63,8 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const deleteCouncilCandidate = (id: string) => { setCouncilCandidates(prev=>prev.filter(c=>c.id!==id)); void deleteDoc(doc(firestore,'councilCandidates',id)); };
   const updateSettings = (data: Partial<CampaignSettings>) => { setSettings(prev=>{ const next={...prev,...data}; void setDoc(doc(firestore,'siteContent','settings'),next,{merge:true}); return next; }); };
   const addSubmission = async (sub: Omit<MembershipSubmission,'id'|'submittedAt'>) => {
-    await addDoc(collection(firestore,'membershipSubmissions'),{...sub,submittedAt:serverTimestamp()});
+    const clean = Object.fromEntries(Object.entries(sub).filter(([, value]) => value !== undefined && value !== null));
+    await addDoc(collection(firestore,'membershipSubmissions'),{...clean,submittedAt:serverTimestamp()});
   };
   const deleteSubmission = (id: string) => { setSubmissions(prev=>prev.filter(s=>s.id!==id)); void deleteDoc(doc(firestore,'membershipSubmissions',id)); };
   const resetToDefault = () => {

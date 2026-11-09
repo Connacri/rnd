@@ -106,7 +106,7 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
   setBusy(true);
   try {
    const ext = photo.type==='image/jpeg'?'jpg':photo.type==='image/png'?'png':'webp';
-   const path = `submissions/${candidateId}/${crypto.randomUUID()}.${ext}`;
+   const path = `submissions/${user.id}/${crypto.randomUUID()}.${ext}`;
    const photoRef = ref(firebaseStorage, `candidate-photos/${path}`);
    const uploaded = await uploadBytes(photoRef, photo, { contentType: photo.type, cacheControl: 'public,max-age=3600' });
    const photoUrl = await getDownloadURL(uploaded.ref);

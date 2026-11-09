@@ -27,7 +27,7 @@ import { campaignStats, officialCampaignPosters } from '../data/campaignData';
 import { AudioPlayer } from '../components/AudioPlayer';
 import { ShareButton } from '../components/ShareButton';
 import { ProgramPillar, CampaignPoster } from '../types';
-import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { firestore } from '../lib/firebase';
 
 interface HomePageProps {

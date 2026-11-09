@@ -1,286 +1,75 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import {
-  CandidateInfo,
-  ProgramPillar,
-  NewsArticle,
-  CouncilCandidate,
-  CampaignSettings,
-  MembershipSubmission
-} from '../types';
-import {
-  candidateData as initialCandidate,
-  programPillars as initialPillars,
-  campaignNews as initialNews,
-  defaultCouncilCandidates,
-  defaultCampaignSettings
-} from '../data/campaignData';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { addDoc, collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import type { CandidateInfo, ProgramPillar, NewsArticle, CouncilCandidate, CampaignSettings, MembershipSubmission } from '../types';
+import { candidateData as initialCandidate, programPillars as initialPillars, campaignNews as initialNews, defaultCouncilCandidates, defaultCampaignSettings } from '../data/campaignData';
+import { firestore } from '../lib/firebase';
 
 interface CampaignContextType {
-  candidate: CandidateInfo;
-  updateCandidate: (data: Partial<CandidateInfo>) => void;
-
-  pillars: ProgramPillar[];
-  updatePillar: (id: string, updated: Partial<ProgramPillar>) => void;
-  addPillarAction: (pillarId: string, actionText: string) => void;
-  deletePillarAction: (pillarId: string, actionIndex: number) => void;
-
-  news: NewsArticle[];
-  addNews: (article: Omit<NewsArticle, 'id'>) => void;
-  deleteNews: (id: string) => void;
-
-  councilCandidates: CouncilCandidate[];
-  addCouncilCandidate: (cand: Omit<CouncilCandidate, 'id'>) => void;
-  updateCouncilCandidate: (id: string, cand: Partial<CouncilCandidate>) => void;
-  deleteCouncilCandidate: (id: string) => void;
-
-  settings: CampaignSettings;
-  updateSettings: (newSettings: Partial<CampaignSettings>) => void;
-
-  submissions: MembershipSubmission[];
-  addSubmission: (sub: Omit<MembershipSubmission, 'id' | 'submittedAt'>) => void;
-  deleteSubmission: (id: string) => void;
-
-  resetToDefault: () => void;
+  candidate: CandidateInfo; updateCandidate: (data: Partial<CandidateInfo>) => void;
+  pillars: ProgramPillar[]; updatePillar: (id: string, updated: Partial<ProgramPillar>) => void;
+  addPillarAction: (pillarId: string, actionText: string) => void; deletePillarAction: (pillarId: string, actionIndex: number) => void;
+  news: NewsArticle[]; addNews: (article: Omit<NewsArticle, 'id'>) => void; deleteNews: (id: string) => void;
+  councilCandidates: CouncilCandidate[]; addCouncilCandidate: (cand: Omit<CouncilCandidate, 'id'>) => void;
+  updateCouncilCandidate: (id: string, cand: Partial<CouncilCandidate>) => void; deleteCouncilCandidate: (id: string) => void;
+  settings: CampaignSettings; updateSettings: (newSettings: Partial<CampaignSettings>) => void;
+  submissions: MembershipSubmission[]; addSubmission: (sub: Omit<MembershipSubmission, 'id' | 'submittedAt'>) => void;
+  deleteSubmission: (id: string) => void; resetToDefault: () => void;
 }
-
 const CampaignContext = createContext<CampaignContextType | undefined>(undefined);
 
 export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Load candidate
-  const [candidate, setCandidate] = useState<CandidateInfo>(() => {
-    try {
-      const saved = localStorage.getItem('rnd_candidate');
-      return saved ? JSON.parse(saved) : initialCandidate;
-    } catch {
-      return initialCandidate;
-    }
-  });
+  const [candidate, setCandidate] = useState<CandidateInfo>(initialCandidate);
+  const [pillars, setPillars] = useState<ProgramPillar[]>(initialPillars);
+  const [news, setNews] = useState<NewsArticle[]>(initialNews);
+  const [councilCandidates, setCouncilCandidates] = useState<CouncilCandidate[]>(defaultCouncilCandidates);
+  const [settings, setSettings] = useState<CampaignSettings>(defaultCampaignSettings);
+  const [submissions, setSubmissions] = useState<MembershipSubmission[]>([]);
 
-  // Refresh once so all visitors receive the exact official programme revision.
-  const PROGRAM_CONTENT_VERSION = '2026-11-09-exact-user-text-v1';
-  const [pillars, setPillars] = useState<ProgramPillar[]>(() => {
-    try {
-      const savedVersion = localStorage.getItem('rnd_program_version');
-      if (savedVersion !== PROGRAM_CONTENT_VERSION) {
-        localStorage.setItem('rnd_program_version', PROGRAM_CONTENT_VERSION);
-        localStorage.setItem('rnd_pillars', JSON.stringify(initialPillars));
-        return initialPillars;
-      }
-      const saved = localStorage.getItem('rnd_pillars');
-      return saved ? JSON.parse(saved) : initialPillars;
-    } catch {
-      return initialPillars;
-    }
-  });
-
-  // Load news
-  const [news, setNews] = useState<NewsArticle[]>(() => {
-    try {
-      const saved = localStorage.getItem('rnd_news');
-      return saved ? JSON.parse(saved) : initialNews;
-    } catch {
-      return initialNews;
-    }
-  });
-
-  // Load council candidates
-  const [councilCandidates, setCouncilCandidates] = useState<CouncilCandidate[]>(() => {
-    try {
-      const saved = localStorage.getItem('rnd_council_candidates');
-      return saved ? JSON.parse(saved) : defaultCouncilCandidates;
-    } catch {
-      return defaultCouncilCandidates;
-    }
-  });
-
-  // Load settings
-  const [settings, setSettings] = useState<CampaignSettings>(() => {
-    try {
-      const saved = localStorage.getItem('rnd_settings');
-      return saved ? JSON.parse(saved) : defaultCampaignSettings;
-    } catch {
-      return defaultCampaignSettings;
-    }
-  });
-
-  // Load submissions
-  const [submissions, setSubmissions] = useState<MembershipSubmission[]>(() => {
-    try {
-      const saved = localStorage.getItem('rnd_submissions');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  // Sync candidate
   useEffect(() => {
-    localStorage.setItem('rnd_candidate', JSON.stringify(candidate));
-  }, [candidate]);
-
-  // Sync pillars
-  useEffect(() => {
-    localStorage.setItem('rnd_pillars', JSON.stringify(pillars));
-  }, [pillars]);
-
-  // Sync news
-  useEffect(() => {
-    localStorage.setItem('rnd_news', JSON.stringify(news));
-  }, [news]);
-
-  // Sync council candidates
-  useEffect(() => {
-    localStorage.setItem('rnd_council_candidates', JSON.stringify(councilCandidates));
-  }, [councilCandidates]);
-
-  // Sync settings
-  useEffect(() => {
-    localStorage.setItem('rnd_settings', JSON.stringify(settings));
-  }, [settings]);
-
-  // Sync submissions
-  useEffect(() => {
-    localStorage.setItem('rnd_submissions', JSON.stringify(submissions));
-  }, [submissions]);
+    const unsubscribers = [
+      onSnapshot(doc(firestore, 'siteContent', 'candidate'), snap => { if (snap.exists()) setCandidate(snap.data() as CandidateInfo); }),
+      onSnapshot(doc(firestore, 'siteContent', 'settings'), snap => { if (snap.exists()) setSettings({ ...defaultCampaignSettings, ...snap.data() } as CampaignSettings); }),
+      onSnapshot(collection(firestore, 'programPillars'), snap => { if (!snap.empty) setPillars(snap.docs.map(d => ({ ...d.data(), id: d.id }) as ProgramPillar).sort((a,b) => a.number.localeCompare(b.number))); }),
+      onSnapshot(collection(firestore, 'campaignNews'), snap => setNews(snap.docs.map(d => ({ ...d.data(), id: d.id }) as NewsArticle).sort((a,b) => b.date.localeCompare(a.date)))),
+      onSnapshot(collection(firestore, 'councilCandidates'), snap => { if (!snap.empty) setCouncilCandidates(snap.docs.map(d => ({ ...d.data(), id: d.id }) as CouncilCandidate).sort((a,b) => a.order-b.order)); }),
+      onSnapshot(collection(firestore, 'membershipSubmissions'), snap => setSubmissions(snap.docs.map(d => { const v=d.data(); return { ...v, id:d.id, submittedAt:v.submittedAt?.toDate ? v.submittedAt.toDate().toISOString() : v.submittedAt } as MembershipSubmission; }).sort((a,b) => b.submittedAt.localeCompare(a.submittedAt))))
+    ];
+    return () => unsubscribers.forEach(unsubscribe => unsubscribe());
+  }, []);
 
   const updateCandidate = (data: Partial<CandidateInfo>) => {
-    setCandidate((prev) => ({ ...prev, ...data }));
+    setCandidate(prev => { const next={...prev,...data}; void setDoc(doc(firestore,'siteContent','candidate'),next,{merge:true}); return next; });
   };
-
   const updatePillar = (id: string, updated: Partial<ProgramPillar>) => {
-    setPillars((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...updated } : p))
-    );
+    setPillars(prev => { const next=prev.map(p=>p.id===id?{...p,...updated}:p); const item=next.find(p=>p.id===id); if(item) void setDoc(doc(firestore,'programPillars',id),item); return next; });
   };
-
   const addPillarAction = (pillarId: string, actionText: string) => {
     if (!actionText.trim()) return;
-    setPillars((prev) =>
-      prev.map((p) => {
-        if (p.id !== pillarId) return p;
-        return {
-          ...p,
-          items: {
-            ...p.items,
-            fr: [...p.items.fr, actionText.trim()],
-            ar: [...(p.items.ar || p.items.fr), actionText.trim()],
-            en: [...(p.items.en || p.items.fr), actionText.trim()],
-          },
-        };
-      })
-    );
+    setPillars(prev => { const next=prev.map(p=>p.id!==pillarId?p:{...p,items:{fr:[...p.items.fr,actionText.trim()],ar:[...(p.items.ar||p.items.fr),actionText.trim()],en:[...(p.items.en||p.items.fr),actionText.trim()]}}); const item=next.find(p=>p.id===pillarId); if(item) void setDoc(doc(firestore,'programPillars',pillarId),item); return next; });
   };
-
   const deletePillarAction = (pillarId: string, actionIndex: number) => {
-    setPillars((prev) =>
-      prev.map((p) => {
-        if (p.id !== pillarId) return p;
-        return {
-          ...p,
-          items: {
-            ...p.items,
-            fr: p.items.fr.filter((_, idx) => idx !== actionIndex),
-            ar: (p.items.ar || []).filter((_, idx) => idx !== actionIndex),
-            en: (p.items.en || []).filter((_, idx) => idx !== actionIndex),
-          },
-        };
-      })
-    );
+    setPillars(prev => { const next=prev.map(p=>p.id!==pillarId?p:{...p,items:{fr:p.items.fr.filter((_,i)=>i!==actionIndex),ar:(p.items.ar||[]).filter((_,i)=>i!==actionIndex),en:(p.items.en||[]).filter((_,i)=>i!==actionIndex)}}); const item=next.find(p=>p.id===pillarId); if(item) void setDoc(doc(firestore,'programPillars',pillarId),item); return next; });
   };
-
-  const addNews = (article: Omit<NewsArticle, 'id'>) => {
-    const newItem: NewsArticle = {
-      ...article,
-      id: 'news_' + Date.now().toString(36),
-    };
-    setNews((prev) => [newItem, ...prev]);
+  const addNews = (article: Omit<NewsArticle,'id'>) => { const id=crypto.randomUUID(); const item={...article,id}; setNews(prev=>[item,...prev]); void setDoc(doc(firestore,'campaignNews',id),item); };
+  const deleteNews = (id: string) => { setNews(prev=>prev.filter(n=>n.id!==id)); void deleteDoc(doc(firestore,'campaignNews',id)); };
+  const addCouncilCandidate = (cand: Omit<CouncilCandidate,'id'>) => { const id=crypto.randomUUID(); const item={...cand,id}; setCouncilCandidates(prev=>[...prev,item]); void setDoc(doc(firestore,'councilCandidates',id),item); };
+  const updateCouncilCandidate = (id: string, cand: Partial<CouncilCandidate>) => { setCouncilCandidates(prev=>{ const next=prev.map(c=>c.id===id?{...c,...cand}:c); const item=next.find(c=>c.id===id); if(item) void updateDoc(doc(firestore,'councilCandidates',id),cand); return next; }); };
+  const deleteCouncilCandidate = (id: string) => { setCouncilCandidates(prev=>prev.filter(c=>c.id!==id)); void deleteDoc(doc(firestore,'councilCandidates',id)); };
+  const updateSettings = (data: Partial<CampaignSettings>) => { setSettings(prev=>{ const next={...prev,...data}; void setDoc(doc(firestore,'siteContent','settings'),next,{merge:true}); return next; }); };
+  const addSubmission = (sub: Omit<MembershipSubmission,'id'|'submittedAt'>) => {
+    const submittedAt=new Date().toISOString(); const optimistic={...sub,id:crypto.randomUUID(),submittedAt}; setSubmissions(prev=>[optimistic,...prev]);
+    void addDoc(collection(firestore,'membershipSubmissions'),{...sub,submittedAt:serverTimestamp()}).catch(error=>{ console.error('Firestore membership submission failed',error); setSubmissions(prev=>prev.filter(item=>item.id!==optimistic.id)); });
   };
-
-  const deleteNews = (id: string) => {
-    setNews((prev) => prev.filter((n) => n.id !== id));
-  };
-
-  const addCouncilCandidate = (cand: Omit<CouncilCandidate, 'id'>) => {
-    const newCand: CouncilCandidate = {
-      ...cand,
-      id: 'cc_' + Date.now().toString(36),
-    };
-    setCouncilCandidates((prev) => [...prev, newCand]);
-  };
-
-  const updateCouncilCandidate = (id: string, cand: Partial<CouncilCandidate>) => {
-    setCouncilCandidates((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, ...cand } : c))
-    );
-  };
-
-  const deleteCouncilCandidate = (id: string) => {
-    setCouncilCandidates((prev) => prev.filter((c) => c.id !== id));
-  };
-
-  const updateSettings = (newSettings: Partial<CampaignSettings>) => {
-    setSettings((prev) => ({ ...prev, ...newSettings }));
-  };
-
-  const addSubmission = (sub: Omit<MembershipSubmission, 'id' | 'submittedAt'>) => {
-    const newSub: MembershipSubmission = {
-      ...sub,
-      id: 'sub_' + Date.now().toString(36),
-      submittedAt: new Date().toISOString(),
-    };
-    setSubmissions((prev) => [newSub, ...prev]);
-  };
-
-  const deleteSubmission = (id: string) => {
-    setSubmissions((prev) => prev.filter((s) => s.id !== id));
-  };
-
+  const deleteSubmission = (id: string) => { setSubmissions(prev=>prev.filter(s=>s.id!==id)); void deleteDoc(doc(firestore,'membershipSubmissions',id)); };
   const resetToDefault = () => {
-    setCandidate(initialCandidate);
-    setPillars(initialPillars);
-    setNews(initialNews);
-    setCouncilCandidates(defaultCouncilCandidates);
-    setSettings(defaultCampaignSettings);
-    localStorage.removeItem('rnd_candidate');
-    localStorage.removeItem('rnd_pillars');
-    localStorage.removeItem('rnd_news');
-    localStorage.removeItem('rnd_council_candidates');
-    localStorage.removeItem('rnd_settings');
+    setCandidate(initialCandidate); setPillars(initialPillars); setNews(initialNews); setCouncilCandidates(defaultCouncilCandidates); setSettings(defaultCampaignSettings);
+    void setDoc(doc(firestore,'siteContent','candidate'),initialCandidate);
+    void setDoc(doc(firestore,'siteContent','settings'),defaultCampaignSettings);
+    initialPillars.forEach(item=>void setDoc(doc(firestore,'programPillars',item.id),item));
+    initialNews.forEach(item=>void setDoc(doc(firestore,'campaignNews',item.id),item));
+    defaultCouncilCandidates.forEach(item=>void setDoc(doc(firestore,'councilCandidates',item.id),item));
   };
 
-  return (
-    <CampaignContext.Provider
-      value={{
-        candidate,
-        updateCandidate,
-        pillars,
-        updatePillar,
-        addPillarAction,
-        deletePillarAction,
-        news,
-        addNews,
-        deleteNews,
-        councilCandidates,
-        addCouncilCandidate,
-        updateCouncilCandidate,
-        deleteCouncilCandidate,
-        settings,
-        updateSettings,
-        submissions,
-        addSubmission,
-        deleteSubmission,
-        resetToDefault,
-      }}
-    >
-      {children}
-    </CampaignContext.Provider>
-  );
+  return <CampaignContext.Provider value={{candidate,updateCandidate,pillars,updatePillar,addPillarAction,deletePillarAction,news,addNews,deleteNews,councilCandidates,addCouncilCandidate,updateCouncilCandidate,deleteCouncilCandidate,settings,updateSettings,submissions,addSubmission,deleteSubmission,resetToDefault}}>{children}</CampaignContext.Provider>;
 };
-
-export const useCampaign = () => {
-  const context = useContext(CampaignContext);
-  if (!context) {
-    throw new Error('useCampaign must be used within a CampaignProvider');
-  }
-  return context;
-};
+export const useCampaign = () => { const context=useContext(CampaignContext); if(!context) throw new Error('useCampaign must be used within a CampaignProvider'); return context; };

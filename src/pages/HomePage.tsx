@@ -40,7 +40,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [publishedProfiles, setPublishedProfiles] = useState<any[]>([]);
   useEffect(() => {
     let active = true;
-    void getDocs(query(collection(firestore, 'candidates'), where('profile_status', '==', 'approved'), where('is_published', '==', true), where('is_active', '==', true), where('is_office_profile', '==', false), orderBy('candidate_number', 'asc'), limit(50)))
+    void getDocs(query(collection(firestore, 'publishedCandidates'), orderBy('candidate_number', 'asc'), limit(50)))
       .then(snapshot => { if (active) setPublishedProfiles(snapshot.docs.map(item => ({ id: item.id, ...item.data() }))); })
       .catch(error => console.error('Firebase candidate profiles could not be loaded:', error));
     return () => { active = false; };

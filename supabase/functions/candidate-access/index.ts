@@ -1,5 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createRemoteJWKSet, jwtVerify } from "https://deno.land/x/jose@v5.9.6/index.ts";
+
+const firebaseProjectId = "rnd-aet";
+const firebaseJwks = createRemoteJWKSet(new URL("https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"));
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -51,21 +55,53 @@ Deno.serve(async req => {
   if (!token) return json({ error: "Authentification requise." }, 401);
   const auth = createClient(url, anonKey, { global: { headers: { Authorization: `Bearer ${token}` } } });
   const { data: authData, error: authError } = await auth.auth.getUser(token);
-  const user = authData?.user;
-  if (authError || !user) return json({ error: "Session Google invalide. Reconnectez-vous." }, 401);
 
-  const isAdmin = user.app_metadata?.role === "admin";
-  const isGoogle = user.app_metadata?.provider === "google" ||
-    (user.identities || []).some(identity => identity.provider === "google");
-  const email = normalizeEmail(user.email);
-  // Candidate access must use a verified Google identity. Admin-only actions
-  // deliberately accept the configured admin account's own auth provider.
-  if (!isAdmin && (!isGoogle || !email || !user.email_confirmed_at)) {
+  let identity: {
+    email?: string;
+    emailVerified: boolean;
+    isGoogle: boolean;
+    isAdmin: boolean;
+  } | null = null;
+
+  if (!authError && authData?.user) {
+    const supabaseUser = authData.user;
+    identity = {
+      email: supabaseUser.email,
+      emailVerified: !!supabaseUser.email_confirmed_at,
+      isGoogle: supabaseUser.app_metadata?.provider === "google" ||
+        (supabaseUser.identities || []).some(item => item.provider === "google"),
+      isAdmin: supabaseUser.app_metadata?.role === "admin",
+    };
+  } else {
+    try {
+      const { payload } = await jwtVerify(token, firebaseJwks, {
+        issuer: `https://securetoken.google.com/${firebaseProjectId}`,
+        audience: firebaseProjectId,
+      });
+      const firebaseClaim = payload.firebase as { sign_in_provider?: string } | undefined;
+      identity = {
+        email: typeof payload.email === "string" ? payload.email : undefined,
+        emailVerified: payload.email_verified === true,
+        isGoogle: firebaseClaim?.sign_in_provider === "google.com",
+        isAdmin: payload.role === "admin",
+      };
+    } catch {
+      return json({ error: "Session Google/Firebase invalide. Reconnectez-vous." }, 401);
+    }
+  }
+
+  if (!identity) return json({ error: "Session invalide. Reconnectez-vous." }, 401);
+  const isAdmin = identity.isAdmin;
+  const isGoogle = identity.isGoogle;
+  const email = normalizeEmail(identity.email);
+  // Candidate access requires a verified Google identity. Admin-only actions
+  // may also use the existing Supabase admin account.
+  if (!isAdmin && (!isGoogle || !email || !identity.emailVerified)) {
     return json({ error: "Connectez-vous avec un compte Google dont l'adresse e-mail est vérifiée." }, 403);
   }
 
   if ((body.action === "verify" || body.action === "submit") &&
-      (!isGoogle || !email || !user.email_confirmed_at)) {
+      (!isGoogle || !email || !identity.emailVerified)) {
     return json({ error: "Connectez-vous avec un compte Google dont l'adresse e-mail est vérifiée." }, 403);
   }
 

@@ -15,8 +15,8 @@ const requireAdmin = (request: Parameters<typeof isAdmin>[0]) => {
 };
 const requireGoogleUser = (request: { auth?: { uid: string; token: Record<string, unknown> } | null }) => {
   const token = request.auth?.token;
-  if (!request.auth || token?.firebase && (token.firebase as { sign_in_provider?: string }).sign_in_provider !== 'google.com'
-      || !token?.email || token.email_verified !== true) {
+  if (!request.auth || (token?.firebase as { sign_in_provider?: string } | undefined)?.sign_in_provider !== 'google.com'
+      || typeof token.email !== 'string' || token.email_verified !== true) {
     throw new HttpsError('permission-denied', 'Connectez-vous avec un compte Google dont l’adresse e-mail est vérifiée.');
   }
   return { uid: request.auth.uid, email: String(token.email).trim().toLowerCase() };
@@ -120,11 +120,3 @@ export const submitCandidateProfile = onCall({ region: 'europe-west1', enforceAp
   return { success: true };
 });
 
-export const setAdminClaim = onCall({ region: 'europe-west1' }, async request => {
-  requireAdmin(request);
-  const uid = cleanText(request.data?.uid, 128);
-  if (!uid) throw new HttpsError('invalid-argument', 'UID requis.');
-  const user = await getAuth().getUser(uid);
-  await getAuth().setCustomUserClaims(uid, { ...(user.customClaims || {}), admin: true, role: 'admin' });
-  return { success: true };
-});

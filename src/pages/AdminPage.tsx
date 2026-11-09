@@ -26,9 +26,10 @@ import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { CouncilCandidate } from '../types';
-import { collection, doc, getDocs, orderBy, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { firebaseFunctions, firestore } from '../lib/firebase';
+import { candidateData, programPillars, campaignNews, defaultCouncilCandidates, defaultCampaignSettings } from '../data/campaignData';
 
 interface AdminPageProps {
   onNavigate: (page: string) => void;
@@ -189,6 +190,33 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   };
 
 
+  // Seed the initial public campaign content once, so Firestore becomes the canonical source.
+  useEffect(() => {
+    if (!isAdmin) return;
+    let cancelled = false;
+    const seedDefaults = async () => {
+      try {
+        const [candidateSnap, settingsSnap, pillarsSnap, newsSnap, councilSnap] = await Promise.all([
+          getDocs(query(collection(firestore, 'siteContent'))),
+          getDocs(query(collection(firestore, 'siteContent'))),
+          getDocs(collection(firestore, 'programPillars')),
+          getDocs(collection(firestore, 'campaignNews')),
+          getDocs(collection(firestore, 'councilCandidates')),
+        ]);
+        if (cancelled) return;
+        if (!candidateSnap.docs.some(item => item.id === 'candidate')) await setDoc(doc(firestore, 'siteContent', 'candidate'), candidateData);
+        if (!settingsSnap.docs.some(item => item.id === 'settings')) await setDoc(doc(firestore, 'siteContent', 'settings'), defaultCampaignSettings);
+        if (pillarsSnap.empty) await Promise.all(programPillars.map(item => setDoc(doc(firestore, 'programPillars', item.id), item)));
+        if (newsSnap.empty) await Promise.all(campaignNews.map(item => setDoc(doc(firestore, 'campaignNews', item.id), item)));
+        if (councilSnap.empty) await Promise.all(defaultCouncilCandidates.map(item => setDoc(doc(firestore, 'councilCandidates', item.id), item)));
+      } catch (error) {
+        if (!cancelled) setCandidatesError(error instanceof Error ? error.message : 'Impossible d’initialiser les données Firestore.');
+      }
+    };
+    void seedDefaults();
+    return () => { cancelled = true; };
+  }, [isAdmin]);
+
   // Settings form state
   const [settingsForm, setSettingsForm] = useState({
     recipientEmail: settings.recipientEmail || '',
@@ -197,6 +225,16 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     officeAddress: settings.officeAddress || '',
     sloganText: settings.sloganText || '',
   });
+
+  useEffect(() => {
+    setSettingsForm({
+      recipientEmail: settings.recipientEmail || '',
+      secondaryEmail: settings.secondaryEmail || '',
+      contactPhone: settings.contactPhone || '',
+      officeAddress: settings.officeAddress || '',
+      sloganText: settings.sloganText || '',
+    });
+  }, [settings]);
 
   // Council candidate form state
   const [councilForm, setCouncilForm] = useState({

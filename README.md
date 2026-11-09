@@ -30,6 +30,7 @@ communal du **RND** (Rassemblement National Démocratique) à Aïn El Turck.
 
 - [Présentation](#présentation)
 - [Affiches officielles](#affiches-officielles)
+- [Programme municipal par domaines](#programme-municipal-par-domaines)
 - [Fonctionnalités](#fonctionnalités)
 - [Stack technique](#stack-technique)
 - [Architecture du projet](#architecture-du-projet)
@@ -79,7 +80,7 @@ Les titres, descriptions, thèmes et lieux sont disponibles en français, arabe 
 | Module | Description |
 | --- | --- |
 | **Accueil** | Présentation de la campagne, affiches officielles consultables et téléchargeables, actualités, valeurs et profils candidats publiés |
-| **Programme** | Programme électoral présenté par thèmes, avec points d'action et prise en charge des trois langues |
+| **Programme** | Programme municipal structuré en 8 domaines thématiques, avec engagements détaillés en français, arabe et anglais |
 | **Candidats** | Liste des profils réellement soumis et approuvés par l'administration ; les cartes ouvrent les informations du candidat |
 | **Espace réservé aux élus** | Bouton « Réservé aux élus » dans le header, page plein écran et accès par PIN personnel de 10 chiffres communiqué par l'administrateur |
 | **Soumission de profil** | Formulaire avec photo, nom, profession, niveau d'études, diplômes, expériences, compétences et motivation ; publication après validation administrative |
@@ -88,6 +89,23 @@ Les titres, descriptions, thèmes et lieux sont disponibles en français, arabe 
 | **Adhésion** | Formulaire d'adhésion au mouvement, distinct du formulaire de profil candidat |
 | **Langues** | Français, arabe RTL (police Cairo) et anglais |
 | **Responsive / accessibilité** | Navigation, formulaires et dialogues adaptés aux écrans mobiles et aux grands écrans |
+
+## Programme municipal par domaines
+
+Le programme d'Aïn El Turck est organisé par **domaines d'action publique**, afin que les habitants retrouvent plus facilement les engagements qui les concernent.
+
+| N° | Domaine | Périmètre |
+| --- | --- | --- |
+| 01 | **Économie locale, commerce et emploi** | Activités économiques, investissement, marchés, commerces, kiosques, entrepreneuriat et création d'emplois |
+| 02 | **Routes, circulation et transports** | Deuxième voie, voirie, ponts, circulation, transports collectifs, taxis et dessertes des quartiers |
+| 03 | **Tourisme, plages, littoral et culture** | Aménagement des plages, propreté du littoral, sports nautiques, équipements touristiques, festivals et théâtre de Trouville |
+| 04 | **Environnement, propreté et espaces verts** | Plantation et protection des arbres, pépinière municipale, espaces verts, propreté et gestion environnementale |
+| 05 | **Éducation, jeunesse et sport** | Équipements scolaires, activités de jeunesse, sport, formation et orientation professionnelles |
+| 06 | **Santé, solidarité et services de proximité** | Accès aux soins, accompagnement des personnes vulnérables et initiatives de solidarité |
+| 07 | **Administration moderne et services numériques** | Signalement des problèmes, suivi des demandes, communication numérique, notifications et transparence des interventions |
+| 08 | **Gouvernance, transparence et participation citoyenne** | Publication des engagements et des bilans, rencontres de quartier, consultations publiques et participation aux décisions |
+
+Les engagements du programme sont classés dans le domaine correspondant. Les contenus français, arabes et anglais sont gérés ensemble dans `src/data/campaignData.ts`.
 
 ## Stack technique
 

@@ -89,7 +89,7 @@ Deno.serve(async req => {
     }
     const { data, error } = await db.from("candidates").insert({
       name, google_email: candidateEmail, profile_status: "draft", is_published: false,
-      is_active: true, pin_failed_attempts: 0, sort_order: 0
+      is_active: true, is_office_profile: false, pin_failed_attempts: 0, sort_order: 0
     }).select("id").single();
     if (error || !data) return json({ error: "Impossible de créer le profil. Vérifiez que cette adresse Google n'est pas déjà associée." }, 400);
     return json({ candidateId: data.id });
@@ -120,7 +120,7 @@ Deno.serve(async req => {
 
     const { data: candidate, error: candidateError } = await db.from("candidates")
       .select("id,name,google_email")
-      .ilike("google_email", email)
+      .ilike("google_email", email)\n      .eq("is_office_profile", false)
       .maybeSingle();
     if (candidateError || !candidate) {
       return json({ error: "Aucun profil candidat n'est associé à cette adresse Google. Contactez l'administrateur." }, 404);

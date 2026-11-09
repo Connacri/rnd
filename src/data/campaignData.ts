@@ -1,12 +1,12 @@
 import { ProgramPillar, CandidateInfo, CampaignStat, CampaignEvent, NewsArticle, CampaignPoster } from '../types';
 
 export const candidateData: CandidateInfo = {
-  name: "Zenasni Nabil",
+  name: "Bureau Communal du RND — Aïn El Turck",
   photoUrl: "assets/images/nabil-zenasni-profile2.jpg",
   role: {
-    fr: "Secrétaire du Bureau Communal",
-    ar: "أمين المكتب البلدي",
-    en: "Communal Bureau Secretary"
+    fr: "Secrétaire du bureau : Zenasni Nabil",
+    ar: "أمين المكتب: زناسني نبيل",
+    en: "Bureau Secretary: Zenasni Nabil"
   },
   party: {
     fr: "Rassemblement National Démocratique (RND)",
@@ -19,9 +19,9 @@ export const candidateData: CandidateInfo = {
     en: "Ain El Turck, Oran Province, Algeria"
   },
   biography: {
-    fr: "Une Algérie forte, prospère et unie. Le RND œuvre pour une gouvernance transparente, une économie dynamique et une transformation numérique au service de tous les citoyens, dans chaque commune du pays. En tant que Secrétaire du Bureau Communal à Aïn El Turck, je m'engage à porter les voix de nos concitoyens pour redonner à notre joyau côtier toute sa splendeur et son rayonnement.",
-    ar: "جزائر قوية ومزدهرة وموحدة. يعمل التجمع الوطني الديمقراطي من أجل حوكمة شفافة واقتصاد ديناميكي وتحول رقمي في خدمة جميع المواطنين، في كل بلدية من بلديات الوطن. وبصفتي أميناً للمكتب البلدي بعين الترك، أتعهد بحمل صوت ساكنتنا وإعادة البريق والازدهار لهذه الجوهرة الساحلية.",
-    en: "A strong, prosperous and united Algeria. The RND works for transparent governance, a dynamic economy and digital transformation serving all citizens in every municipality. As Secretary of the Communal Bureau in Ain El Turck, I commit to championing our residents' voices to restore our coastal gem to its full splendor."
+    fr: "Une Algérie forte, prospère et unie. Le RND œuvre pour une gouvernance transparente, une économie dynamique et une transformation numérique au service de tous les citoyens, dans chaque commune du pays. Le Bureau Communal du RND à Aïn El Turck, avec son secrétaire Zenasni Nabil, œuvre à porter les préoccupations des citoyens et à défendre un développement local transparent, dynamique et durable.",
+    ar: "جزائر قوية ومزدهرة وموحدة. يعمل التجمع الوطني الديمقراطي من أجل حوكمة شفافة واقتصاد ديناميكي وتحول رقمي في خدمة جميع المواطنين، في كل بلدية من بلديات الوطن. يعمل المكتب البلدي للتجمع الوطني الديمقراطي بعين الترك، بأمينه زناسني نبيل، على نقل انشغالات المواطنين والدفاع عن تنمية محلية شفافة وديناميكية ومستدامة.",
+    en: "A strong, prosperous and united Algeria. The RND works for transparent governance, a dynamic economy and digital transformation serving all citizens in every municipality. The RND Communal Bureau in Ain El Turck, led by its secretary Zenasni Nabil, works to represent residents' concerns and promote transparent, dynamic and sustainable local development."
   }
 };
 

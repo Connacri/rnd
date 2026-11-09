@@ -44,7 +44,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
       .select('id,name,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation')
       .eq('profile_status', 'approved')
       .eq('is_published', true)
-      .eq('is_active', true)
+      .eq('is_active', true)\n      .eq('is_office_profile', false)
       .order('candidate_number', { ascending: true, nullsFirst: false })
       .order('submitted_at', { ascending: true });
     if (error) {

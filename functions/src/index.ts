@@ -83,6 +83,13 @@ export const setSharedCandidatePin = onCall({ region: 'europe-west1', enforceApp
   return { success: true };
 });
 
+export const getSharedCandidatePinStatus = onCall({ region: 'europe-west1', enforceAppCheck: false }, async request => {
+  requireAdmin(request);
+  const snapshot = await db.doc('candidateAccess/shared').get();
+  const updatedAt = snapshot.get('updatedAt')?.toDate?.();
+  return { configured: snapshot.exists && typeof snapshot.get('pinHash') === 'string', updatedAt: updatedAt?.toISOString() || null };
+});
+
 export const createCandidateProfile = onCall({ region: 'europe-west1', enforceAppCheck: false }, async request => {
   requireAdmin(request);
   const name = cleanText(request.data?.name, 120);

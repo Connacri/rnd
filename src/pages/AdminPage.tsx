@@ -113,7 +113,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
       setCandidatesLoading(true); setCandidatesError(null);
       const { data, error } = await supabase.from('candidates')
         .select('id,name,google_email,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation,profile_status,is_published,submitted_at')
-        .not('submitted_at', 'is', null).order('submitted_at', { ascending: false });
+        .order('created_at', { ascending: false });
       if (cancelled) return;
       if (error) setCandidatesError('Impossible de charger les profils soumis. Vérifiez les droits Supabase.');
       else setSubmittedCandidates((data || []) as SubmittedCandidateProfile[]);
@@ -923,6 +923,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
             </div>
             <span className="ms-auto rounded-full bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200 px-3 py-1 text-sm font-bold tabular-nums">{submittedCandidates.length}</span>
           </div>
+          <form onSubmit={saveSharedPin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
+            <h3 className="font-black text-zinc-900 dark:text-white">PIN commun des candidats</h3>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">Définissez le même code à 10 chiffres pour tous les candidats. Le code est conservé uniquement sous forme de hash côté serveur.</p>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input value={sharedPin} onChange={e=>setSharedPin(e.target.value.replace(/\\D/g,'').slice(0,10))} inputMode="numeric" pattern="[0-9]{10}" maxLength={10} required placeholder="10 chiffres" className="min-h-12 flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm tracking-widest" />
+              <button type="submit" disabled={issuingCandidatePin || sharedPin.length!==10} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Enregistrement…' : 'Enregistrer le PIN commun'}</button>
+            </div>
+          </form>
           <form onSubmit={saveSharedPin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
             <h3 className="font-black text-zinc-900 dark:text-white">PIN commun des candidats</h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">Définissez le même code à 10 chiffres pour tous les candidats. Le code est conservé uniquement sous forme de hash côté serveur.</p>

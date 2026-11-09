@@ -3,10 +3,11 @@
 ## Migration Firebase-only (09/11/2026)
 
 - [x] Authentification web basculée vers Firebase Authentication.
-- [x] Profils candidats, modération et PIN basculés vers Cloud Firestore / Cloud Functions.
+- [x] Profils candidats, modération et paramètres d'accès gérés par Firebase Authentication et Cloud Firestore.
 - [x] Téléversement des photos candidat basculé vers Firebase Storage.
 - [x] Règles Firestore/Storage et indexes ajoutés.
-- [ ] Déployer les règles Firestore/Storage, les index et les Cloud Functions sur `rnd-aet` avec un compte Firebase autorisé.
+- [ ] Déployer les règles Firestore/Storage et les index sur `rnd-aet` avec un compte Firebase autorisé.
+- [ ] Ouvrir le site avec le compte administrateur pour créer dans Firestore les 8 documents `programPillars/domain-*` manquants ; vérifier ensuite les 8 domaines et leurs engagements FR/AR/EN.
 - [ ] Vérifier Email/Password et Google Sign-In dans Firebase Authentication et autoriser `connacri.github.io`.
 - [ ] Attribuer le custom claim `admin` au compte administrateur via `scripts/set-admin-claim.mjs`.
 - [ ] Vérifier les données candidates déjà présentes dans Firestore et confirmer leur intégrité.

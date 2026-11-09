@@ -10,7 +10,7 @@ interface AuthPageProps {
 
 export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
   const { t, isRtl } = useLanguage();
-  const { login, register, sendPasswordReset } = useAuth();
+  const { login, register, loginWithGoogle, sendPasswordReset } = useAuth();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,6 +18,15 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setLoading(true);
+    const result = await loginWithGoogle();
+    setLoading(false);
+    if (!result.success) setError(result.error || 'Connexion Google impossible.');
+    else onNavigate('home');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -183,6 +192,18 @@ export const AuthPages: React.FC<AuthPageProps> = ({ view, onNavigate }) => {
         </button>
 
       </form>
+
+      {view !== 'forgot-password' && (
+        <button
+          type="button"
+          onClick={() => void handleGoogleSignIn()}
+          disabled={loading}
+          className="w-full min-h-[48px] rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-3 shadow-sm disabled:opacity-50"
+        >
+          <span className="text-lg font-black">G</span>
+          Continuer avec Google
+        </button>
+      )}
 
       {/* Switch links */}
       <div className="text-center text-xs">

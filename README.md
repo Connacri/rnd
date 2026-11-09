@@ -114,7 +114,7 @@ Les engagements du programme sont classés dans le domaine correspondant. Les co
 | Framework Web & UI | **React 19** + **TypeScript** |
 | Bundler & Dev Server | **Vite 6** (port 3000) |
 | Styles & Composants | **Tailwind CSS 4** + Lucide React |
-| Backend et données | **Firebase** (`@Firebase/Firebase-js`), PostgreSQL, Storage et Edge Functions |
+| Backend et données | **Firebase Authentication**, **Cloud Firestore** et **Firebase Storage** |
 | Runtime Android | **Capacitor Android 8** (`com.rnd.dz`) |
 | Internationalisation | Français (`fr`), arabe RTL (`ar`, police Cairo) et anglais (`en`) |
 | CI/CD | **GitHub Actions** : vérification TypeScript, build web, GitHub Pages et jobs Android/Play selon les conditions du workflow |
@@ -152,7 +152,7 @@ L'application est architecturée autour d'un ensemble modulaire de composants et
 - [npm](https://www.npmjs.com) 10+
 - JDK 17+ / Android SDK (pour la compilation du projet Android en CI)
 - Un projet **Firebase** (Auth, FCM)
-- Firebase (Auth, Firestore, Storage, Functions)
+- Un projet **Firebase** (Authentication, Cloud Firestore et Storage)
 
 ## Démarrage rapide
 
@@ -191,7 +191,7 @@ La bascule s'effectue instantanément depuis la barre de navigation supérieure 
 
 ## Données de campagne
 
-Les profils candidats, leurs photos, la modération et les paramètres d'accès sont gérés par Firebase Authentication, Cloud Firestore, Firebase Storage et Cloud Functions. Le contenu statique du programme et de la campagne reste dans `src/data/campaignData.ts` et `CampaignContext`.
+Les profils candidats, leurs photos, la modération et les paramètres d'accès utilisent Firebase Authentication, Cloud Firestore et Firebase Storage. Les huit domaines et leurs engagements trilingues sont définis dans `src/data/campaignData.ts`, affichés par `ProgramPage` et synchronisés dans `programPillars` de Firestore.
 
 ## Android
 
@@ -478,13 +478,13 @@ Le site utilise exclusivement **Firebase** pour l'authentification, les données
 - Firebase Authentication : e-mail/mot de passe et Google Sign-In ;
 - Cloud Firestore : profils, candidatures, contenus du site et programme ;
 - Firebase Storage : photos des candidats ;
-- Cloud Functions : opérations privilégiées côté serveur.
+- Les opérations d’administration sont protégées par les règles Firestore et les rôles Firebase Authentication.
 
-Projet Firebase : `rnd-aet`. Les règles et index sont versionnés dans `firestore.rules`, `storage.rules` et `firestore.indexes.json`. Les fonctions sont dans `functions/`. Déploiement après authentification avec un compte autorisé :
+Projet Firebase : `rnd-aet`. Les règles et index Firestore sont versionnés dans `firestore.rules` et `firestore.indexes.json`. Déployer après authentification avec un compte Firebase autorisé :
 
 ```bash
 firebase use rnd-aet
-firebase deploy --only firestore:rules,firestore:indexes,storage,functions
+firebase deploy --only firestore:rules,firestore:indexes,storage
 ```
 
 Créer le compte administrateur dans Firebase Authentication, puis attribuer le custom claim avec `scripts/set-admin-claim.mjs`. Les identifiants de compte de service restent hors du dépôt et ne doivent jamais être commités. Les photos de profil sont envoyées directement dans Firebase Storage ; aucune configuration ni clé Supabase n'est requise.

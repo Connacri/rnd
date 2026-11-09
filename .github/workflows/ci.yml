@@ -87,6 +87,14 @@ jobs:
       - name: Build web application
         run: npm run build
 
+      - name: Install Firebase Functions dependencies
+        run: npm install
+        working-directory: functions
+
+      - name: Typecheck Firebase Cloud Functions
+        run: npm run build
+        working-directory: functions
+
   ##############################################################################
   # Android : APK + AAB signes avec le keystore issu des secrets GitHub.
   # Aucun repli sur la cle de debug : si les secrets manquent, le job echoue.

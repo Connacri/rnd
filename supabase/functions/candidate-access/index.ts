@@ -58,7 +58,14 @@ Deno.serve(async req => {
   const isGoogle = user.app_metadata?.provider === "google" ||
     (user.identities || []).some(identity => identity.provider === "google");
   const email = normalizeEmail(user.email);
-  if (!isGoogle || !email || !user.email_confirmed_at) {
+  // Candidate access must use a verified Google identity. Admin-only actions
+  // deliberately accept the configured admin account's own auth provider.
+  if (!isAdmin && (!isGoogle || !email || !user.email_confirmed_at)) {
+    return json({ error: "Connectez-vous avec un compte Google dont l'adresse e-mail est vérifiée." }, 403);
+  }
+
+  if ((body.action === "verify" || body.action === "submit") &&
+      (!isGoogle || !email || !user.email_confirmed_at)) {
     return json({ error: "Connectez-vous avec un compte Google dont l'adresse e-mail est vérifiée." }, 403);
   }
 

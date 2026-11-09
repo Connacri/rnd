@@ -7,12 +7,12 @@ import { createHash, pbkdf2Sync, randomBytes, randomUUID, timingSafeEqual } from
 initializeApp({ storageBucket: 'rnd-aet.firebasestorage.app' });
 const db = getFirestore();
 const ITERATIONS = 310000;
-const isAdmin = (request: CallableRequest<unknown>) =>
+const isAdmin = (request: CallableRequest<any>) =>
   request.auth?.token.admin === true || request.auth?.token.role === 'admin';
-const requireAdmin = (request: CallableRequest<unknown>) => {
+const requireAdmin = (request: CallableRequest<any>) => {
   if (!request.auth || !isAdmin(request)) throw new HttpsError('permission-denied', 'Accès administrateur requis.');
 };
-const requireGoogleUser = (request: CallableRequest<unknown>) => {
+const requireGoogleUser = (request: CallableRequest<any>) => {
   const token = request.auth?.token;
   if (!request.auth || (token?.firebase as { sign_in_provider?: string } | undefined)?.sign_in_provider !== 'google.com'
       || typeof token.email !== 'string' || token.email_verified !== true) {

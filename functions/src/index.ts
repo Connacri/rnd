@@ -135,9 +135,9 @@ export const submitCandidateProfile = onCall({ region: 'europe-west1', enforceAp
     submitted_at: new Date().toISOString(),
     updated_at: FieldValue.serverTimestamp(),
   });
+  await db.collection('publishedCandidates').doc(candidate.id).delete();
   return { success: true };
 });
-
 
 export const reviewCandidateProfile = onCall({ region: 'europe-west1', enforceAppCheck: false }, async request => {
   requireAdmin(request);
@@ -147,19 +147,22 @@ export const reviewCandidateProfile = onCall({ region: 'europe-west1', enforceAp
     throw new HttpsError('invalid-argument', 'Profil ou décision de modération invalide.');
   }
   const candidateRef = db.collection('candidates').doc(id);
-  const candidate = await candidateRef.get();
-  if (!candidate.exists) throw new HttpsError('not-found', 'Profil candidat introuvable.');
-  const published = status === 'approved';
-  await candidateRef.update({
-    profile_status: status,
-    is_published: published,
-    updated_at: FieldValue.serverTimestamp(),
-  });
   const publicRef = db.collection('publishedCandidates').doc(id);
-  if (published) {
-    await publicRef.set(publicCandidateFields({ ...candidate.data(), profile_status: status, is_published: true }));
-  } else {
-    await publicRef.delete();
-  }
-  return { success: true, status, is_published: published };
+  await db.runTransaction(async transaction => {
+    const candidate = await transaction.get(candidateRef);
+    if (!candidate.exists) throw new HttpsError('not-found', 'Profil candidat introuvable.');
+    const data = candidate.data() || {};
+    const published = status === 'approved';
+    if (published && (data.is_office_profile === true || data.is_active === false)) {
+      throw new HttpsError('failed-precondition', 'Ce profil ne peut pas être publié.');
+    }
+    transaction.update(candidateRef, {
+      profile_status: status,
+      is_published: published,
+      updated_at: FieldValue.serverTimestamp(),
+    });
+    if (published) transaction.set(publicRef, publicCandidateFields(data));
+    else transaction.delete(publicRef);
+  });
+  return { success: true, status, is_published: status === 'approved' };
 });

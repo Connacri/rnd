@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, CheckCircle, Sparkles, Gem } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useCampaign } from '../context/CampaignContext';
-import { municipalProgramDetails, municipalProgramIntro } from '../data/municipalProgramDetails';
 
 export const ProgramPage: React.FC = () => {
   const { lang, t } = useLanguage();
@@ -178,63 +177,6 @@ export const ProgramPage: React.FC = () => {
           );
         })}
       </div>
-
-      {/* ================= MUNICIPAL PROGRAM DETAILS FROM THE OFFICIAL POSTERS ================= */}
-      <section className="space-y-4 sm:space-y-5">
-        <div className="text-center space-y-2">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-400">
-            {municipalProgramIntro[lang].subtitle}
-          </p>
-          <h2 className="text-xl sm:text-3xl font-black text-zinc-900 dark:text-white">
-            {municipalProgramIntro[lang].title}
-          </h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto">
-            {lang === 'ar'
-              ? 'برنامج بلدي متكامل يجمع بين البنية التحتية والاقتصاد والبيئة والسياحة والتعليم والصحة.'
-              : lang === 'en'
-                ? 'A comprehensive municipal plan covering infrastructure, the local economy, the environment, tourism, education and health.'
-                : 'Un programme municipal complet qui associe infrastructures, économie locale, environnement, tourisme, éducation et santé.'}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {municipalProgramDetails.map((axis, index) => (
-            <article key={axis.id} className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-5 shadow-sm">
-              <div className="flex items-start gap-3">
-                <div
-                  className="size-12 shrink-0 rounded-2xl flex items-center justify-center text-2xl"
-                  style={{ color: axis.color, backgroundColor: `${axis.color}18` }}
-                  aria-hidden="true"
-                >
-                  {axis.icon}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="text-[10px] font-black tracking-widest text-zinc-400">
-                    {lang === 'ar' ? `المجال 0${index + 1}` : lang === 'en' ? `AREA 0${index + 1}` : `AXE 0${index + 1}`}
-                  </div>
-                  <h3 className="text-base sm:text-lg font-black mt-1" style={{ color: axis.color }}>
-                    {axis.title[lang]}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-                    {axis.summary[lang]}
-                  </p>
-                </div>
-              </div>
-              <ul className="mt-4 space-y-3 border-t border-zinc-100 dark:border-zinc-800 pt-4">
-                {axis.items.map((item, itemIndex) => (
-                  <li key={itemIndex} className="flex items-start gap-2.5 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                    <CheckCircle className="size-4 mt-0.5 shrink-0" style={{ color: axis.color }} />
-                    <span>{item[lang]}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
-        <p className="text-center text-sm sm:text-base font-black text-emerald-800 dark:text-emerald-300">
-          {municipalProgramIntro[lang].closing}
-        </p>
-      </section>
 
       {/* ================= OFFICIAL PROGRAM COMMITMENT ================= */}
       <section className="rounded-3xl bg-white dark:bg-zinc-900 border border-green-200 dark:border-green-900/60 shadow-sm overflow-hidden text-center">

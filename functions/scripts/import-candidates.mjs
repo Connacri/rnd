@@ -39,7 +39,7 @@ for (const row of rows) {
   }
   const clean = { ...row };
   for (const key of ['candidate_pin_hash', 'pin_failed_attempts', 'pin_locked_until', 'created_at', 'updated_at']) delete clean[key];
-  await db.collection('candidates').doc(id).set({
+  const candidateData = {
     ...clean,
     photo_url: photoUrl,
     google_email: String(row.google_email || '').trim().toLowerCase() || null,
@@ -50,7 +50,24 @@ for (const row of rows) {
     profile_status: row.profile_status || 'draft',
     created_at: row.created_at ? new Date(row.created_at) : FieldValue.serverTimestamp(),
     updated_at: FieldValue.serverTimestamp(),
-  }, { merge: true });
+  };
+  await db.collection('candidates').doc(id).set(candidateData, { merge: true });
+  if (candidateData.profile_status === 'approved' && candidateData.is_published && candidateData.is_active && !candidateData.is_office_profile) {
+    await db.collection('publishedCandidates').doc(id).set({
+      name: candidateData.name || '',
+      photo_url: photoUrl,
+      candidate_number: candidateData.candidate_number,
+      profession: candidateData.profession || {},
+      education_level: candidateData.education_level || {},
+      diplomas: candidateData.diplomas || {},
+      experience: candidateData.experience || {},
+      skills: candidateData.skills || {},
+      motivation: candidateData.motivation || {},
+      submitted_at: candidateData.submitted_at || null,
+      is_active: true,
+      is_office_profile: false,
+    });
+  }
   imported += 1;
 }
 console.log(`Imported ${imported} candidate profiles into Firestore.`);

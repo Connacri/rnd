@@ -480,7 +480,7 @@ Le site utilise exclusivement **Firebase** pour l'authentification, les données
 - Firebase Storage : photos des candidats ;
 - Les opérations d’administration sont protégées par les règles Firestore et les rôles Firebase Authentication.
 
-Projet Firebase : `rnd-aet`. Les règles et index Firestore sont versionnés dans `firestore.rules` et `firestore.indexes.json`. Déployer après authentification avec un compte Firebase autorisé :
+Projet Firebase : `rnd-aet`. Les règles Firestore et Storage sont versionnées dans `firestore.rules`, `firestore.indexes.json` et `storage.rules`. Les photos sont rangées dans un dossier propre à l'utilisateur authentifié. Déployer après authentification avec un compte Firebase autorisé :
 
 ```bash
 firebase use rnd-aet

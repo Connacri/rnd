@@ -18,6 +18,27 @@ interface CampaignContextType {
 }
 const CampaignContext = createContext<CampaignContextType | undefined>(undefined);
 
+// Keep the committed programme as the baseline while preserving any additional
+// content already maintained in Firestore by the campaign administrators.
+const mergePillarWithDefaults = (defaults: ProgramPillar, remote: ProgramPillar): ProgramPillar => {
+  const mergeItems = (language: 'fr' | 'ar' | 'en') => {
+    const baseline = defaults.items?.[language] || defaults.items?.fr || [];
+    const stored = remote.items?.[language] || [];
+    return [...new Set([...baseline, ...stored])];
+  };
+
+  return {
+    ...defaults,
+    ...remote,
+    id: defaults.id,
+    items: {
+      fr: mergeItems('fr'),
+      ar: mergeItems('ar'),
+      en: mergeItems('en'),
+    },
+  };
+};
+
 export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAdmin } = useAuth();
   const [candidate, setCandidate] = useState<CandidateInfo>(initialCandidate);
@@ -31,7 +52,15 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const unsubscribers = [
       onSnapshot(doc(firestore, 'siteContent', 'candidate'), snap => { if (snap.exists()) setCandidate(snap.data() as CandidateInfo); }),
       onSnapshot(doc(firestore, 'siteContent', 'settings'), snap => { if (snap.exists()) setSettings({ ...defaultCampaignSettings, ...snap.data() } as CampaignSettings); }),
-      onSnapshot(collection(firestore, 'programPillars'), snap => { if (!snap.empty) setPillars(snap.docs.map(d => ({ ...d.data(), id: d.id }) as ProgramPillar).sort((a,b) => a.number.localeCompare(b.number))); }),
+      onSnapshot(collection(firestore, 'programPillars'), snap => {
+        const storedPillars = new Map(snap.docs.map(d => [d.id, { ...d.data(), id: d.id } as ProgramPillar]));
+        const mergedPillars = initialPillars.map(defaultPillar => {
+          const stored = storedPillars.get(defaultPillar.id);
+          return stored ? mergePillarWithDefaults(defaultPillar, stored) : defaultPillar;
+        });
+        const additionalPillars = [...storedPillars.values()].filter(stored => !initialPillars.some(item => item.id === stored.id));
+        setPillars([...mergedPillars, ...additionalPillars].sort((a,b) => a.number.localeCompare(b.number)));
+      }),
       onSnapshot(collection(firestore, 'campaignNews'), snap => setNews(snap.empty ? initialNews : snap.docs.map(d => ({ ...d.data(), id: d.id }) as NewsArticle).sort((a,b) => b.date.localeCompare(a.date)))),
       onSnapshot(collection(firestore, 'councilCandidates'), snap => { if (!snap.empty) setCouncilCandidates(snap.docs.map(d => ({ ...d.data(), id: d.id }) as CouncilCandidate).sort((a,b) => a.order-b.order)); }),
     ];

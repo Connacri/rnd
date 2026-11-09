@@ -18,7 +18,7 @@ permissions:
 # pas calculer la meme version et entrer en collision sur le tag git.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   ##############################################################################
@@ -68,30 +68,6 @@ jobs:
           echo "Version calculee : $CANDIDATE"
 
   ##############################################################################
-  # Qualite : typecheck + lint + build web (bloque les builds si echec)
-  ##############################################################################
-  quality:
-    name: Qualite (typecheck, lint, build)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Check TypeScript typecheck
-        run: npm run lint
-
-      - name: Build web application
-        run: npm run build
-
-  ##############################################################################
   # Android : APK + AAB signes avec le keystore issu des secrets GitHub.
   # Aucun repli sur la cle de debug : si les secrets manquent, le job echoue.
   ##############################################################################
@@ -100,7 +76,7 @@ jobs:
     # Pause temporaire : aucun APK/AAB le 9 novembre 2026 (heure UTC).
     # Algerie (UTC+1) : pause du 09/11 00:00 au 10/11 00:00 heure locale.
     if: ${{ github.run_started_at < '2026-11-08T23:00:00Z' || github.run_started_at >= '2026-11-09T23:00:00Z' }}
-    needs: [version, quality]
+    needs: [version, build-site]
     runs-on: ubuntu-latest
     timeout-minutes: 40
 
@@ -371,12 +347,10 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
 
-      - name: Typecheck
-        run: npm run lint
-
-      - name: Build
+      # npm run build lance deja tsc -b avant Vite : pas de typecheck redondant.
+      - name: Build et vérification TypeScript
         run: npm run build
         env:
           BASE_PATH: /rnd/

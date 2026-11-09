@@ -127,7 +127,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
       setCandidatesLoading(true); setCandidatesError(null);
       try {
         const snapshot = await getDocs(query(collection(firestore, 'candidates'), where('is_office_profile', '==', false), orderBy('created_at', 'desc')));
-        if (!cancelled) setSubmittedCandidates(snapshot.docs.map(item => ({ id: item.id, ...item.data() })) as SubmittedCandidateProfile[]);
+        if (!cancelled) setSubmittedCandidates(snapshot.docs.map(item => { const data = item.data(); return { id: item.id, ...data, submitted_at: data.submitted_at?.toDate ? data.submitted_at.toDate().toISOString() : data.submitted_at || null }; }) as SubmittedCandidateProfile[]);
       } catch (error) {
         if (!cancelled) setCandidatesError(error instanceof Error ? error.message : 'Impossible de charger les profils soumis. Vérifiez les droits Firebase.');
       }

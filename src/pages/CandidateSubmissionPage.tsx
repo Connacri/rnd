@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CheckCircle2, ImagePlus, Loader2, LogIn, LogOut } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useAuth } from '../context/AuthContext';
-import { collection, doc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, query, serverTimestamp, where, writeBatch } from 'firebase/firestore';
 import { firestore } from '../lib/firebase';
 import { supabase } from '../lib/supabase';
 
@@ -112,7 +112,8 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
    if (uploadError) throw uploadError;
    const { data: publicData } = supabase.storage.from('candidate-photos').getPublicUrl(uploaded.path);
    const localized = (value:string) => ({fr:value.trim(),ar:value.trim(),en:value.trim()});
-   await updateDoc(doc(firestore, 'candidates', candidateId), {
+   const batch = writeBatch(firestore);
+   batch.update(doc(firestore, 'candidates', candidateId), {
     name:form.name.trim(), photo_url:publicData.publicUrl,
     profession:localized(form.profession), education_level:localized(form.education),
     diplomas:localized(form.diplomas), experience:localized(form.experience),
@@ -120,6 +121,8 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
     profile_status:'pending', is_published:false, is_active:true,
     submitted_at:serverTimestamp(), updated_at:serverTimestamp(),
    });
+   batch.delete(doc(firestore, 'publishedCandidates', candidateId));
+   await batch.commit();
    setSuccess(t.success); setPhoto(null);
   } catch (err) { console.error(err); setError(err instanceof Error ? err.message : t.failure); }
   finally { setBusy(false); }

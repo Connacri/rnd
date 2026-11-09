@@ -1,9 +1,8 @@
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { initializeApp } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
-import { createHash, pbkdf2Sync, randomBytes, timingSafeEqual } from 'node:crypto';
+import { createHash, pbkdf2Sync, randomBytes, randomUUID, timingSafeEqual } from 'node:crypto';
 
 initializeApp({ storageBucket: 'rnd-aet.firebasestorage.app' });
 const db = getFirestore();
@@ -101,7 +100,9 @@ export const submitCandidateProfile = onCall({ region: 'europe-west1', enforceAp
       || Number(metadata.size || 0) > 5 * 1024 * 1024) {
     throw new HttpsError('invalid-argument', 'Photo invalide ou trop volumineuse.');
   }
-  const [downloadUrl] = await file.getSignedUrl({ action: 'read', expires: '2500-01-01' });
+  const downloadToken = randomUUID();
+  await file.setMetadata({ metadata: { firebaseStorageDownloadTokens: downloadToken } });
+  const downloadUrl = `https://firebasestorage.googleapis.com/v0/b/${getStorage().bucket().name}/o/${encodeURIComponent(photoPath)}?alt=media&token=${downloadToken}`;
   await candidate.ref.update({
     name: cleanText(profile.name, 120),
     photo_url: downloadUrl,

@@ -58,7 +58,8 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           const stored = storedPillars.get(defaultPillar.id);
           return stored ? mergePillarWithDefaults(defaultPillar, stored) : defaultPillar;
         });
-        const additionalPillars = [...storedPillars.values()].filter(stored => !initialPillars.some(item => item.id === stored.id));
+        const legacyPillarIds = new Set(["p1", "p2", "p3", "p4", "p5", "p6"]);
+        const additionalPillars = [...storedPillars.values()].filter(stored => !initialPillars.some(item => item.id === stored.id) && !legacyPillarIds.has(stored.id));
         setPillars([...mergedPillars, ...additionalPillars].sort((a,b) => a.number.localeCompare(b.number)));
       }),
       onSnapshot(collection(firestore, 'campaignNews'), snap => setNews(snap.empty ? initialNews : snap.docs.map(d => ({ ...d.data(), id: d.id }) as NewsArticle).sort((a,b) => b.date.localeCompare(a.date)))),

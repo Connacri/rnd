@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { User } from '@supabase/supabase-js';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
+import type { User as FirebaseUser } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import { firebaseAuth, googleProvider } from '../lib/firebase';
 import { supabase } from '../lib/supabaseClient';
 import { AppUser } from '../types';
 
@@ -15,7 +18,8 @@ interface AuthContextType {
   sendPasswordReset: (email: string) => Promise<{ success: boolean; message: string }>;
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-const toAppUser = (authUser: User): AppUser => ({
+
+const toSupabaseAppUser = (authUser: SupabaseUser): AppUser => ({
   id: authUser.id,
   name: String(authUser.user_metadata?.full_name || authUser.user_metadata?.name || authUser.email?.split('@')[0] || 'Utilisateur'),
   email: authUser.email || '',
@@ -23,25 +27,77 @@ const toAppUser = (authUser: User): AppUser => ({
   role: authUser.app_metadata?.role === 'admin' ? 'admin' : 'user',
 });
 
+const toFirebaseAppUser = async (authUser: FirebaseUser): Promise<AppUser> => {
+  const token = await authUser.getIdTokenResult();
+  return {
+    id: authUser.uid,
+    name: authUser.displayName || authUser.email?.split('@')[0] || 'Utilisateur',
+    email: authUser.email || '',
+    avatarUrl: authUser.photoURL || 'assets/icons/icon.png',
+    role: token.claims.role === 'admin' ? 'admin' : 'user',
+  };
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AppUser | null>(null);
+
   useEffect(() => {
     let active = true;
-    const loadVerifiedUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (active) setUser(!error && data.user ? toAppUser(data.user) : null);
+    let unsubscribeFirebase: (() => void) | undefined;
+    let unsubscribeSupabase: (() => void) | undefined;
+
+    const loadSupabaseUser = async () => {
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        if (active && !error && data.user) setUser(toSupabaseAppUser(data.user));
+      } catch (error) {
+        console.warn('Supabase session check failed:', error);
+      }
     };
-    void loadVerifiedUser();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (active) setUser(session?.user ? toAppUser(session.user) : null);
-    });
-    return () => { active = false; subscription.unsubscribe(); };
+
+    try {
+      unsubscribeFirebase = onAuthStateChanged(firebaseAuth, async (firebaseUser) => {
+        if (!active) return;
+        if (firebaseUser) {
+          try {
+            setUser(await toFirebaseAppUser(firebaseUser));
+          } catch (error) {
+            console.warn('Firebase user token could not be read:', error);
+            if (active) setUser(null);
+          }
+        } else {
+          await loadSupabaseUser();
+        }
+      }, (error) => {
+        console.error('Firebase auth state listener failed:', error);
+        void loadSupabaseUser();
+      });
+    } catch (error) {
+      console.error('Firebase auth initialization failed:', error);
+      void loadSupabaseUser();
+    }
+
+    try {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (!active || firebaseAuth.currentUser) return;
+        setUser(session?.user ? toSupabaseAppUser(session.user) : null);
+      });
+      unsubscribeSupabase = () => subscription.unsubscribe();
+    } catch (error) {
+      console.error('Supabase auth listener failed:', error);
+    }
+
+    return () => {
+      active = false;
+      unsubscribeFirebase?.();
+      unsubscribeSupabase?.();
+    };
   }, []);
 
   const login = async (email: string, pass: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password: pass });
     if (error || !data.user) return { success: false, error: error?.message || 'Identifiants invalides.' };
-    setUser(toAppUser(data.user));
+    setUser(toSupabaseAppUser(data.user));
     return { success: true };
   };
 
@@ -54,7 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
       return { success: false, error: 'Ce compte ne possède pas les droits administrateur.' };
     }
-    setUser(toAppUser(data.user));
+    setUser(toSupabaseAppUser(data.user));
     return { success: true };
   };
 
@@ -65,20 +121,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       options: { data: { full_name: name.trim() } },
     });
     if (error) return { success: false, error: error.message };
-    if (data.user && data.session) setUser(toAppUser(data.user));
+    if (data.user && data.session) setUser(toSupabaseAppUser(data.user));
     return { success: true };
   };
 
   const loginWithGoogle = async () => {
-    const redirectTo = window.location.origin + window.location.pathname + (window.location.hash || '#/');
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo, queryParams: { prompt: 'select_account' } },
-    });
-    return error ? { success: false, error: error.message } : { success: true };
+    try {
+      const result = await signInWithPopup(firebaseAuth, googleProvider);
+      const firebaseUser = result.user;
+      if (!firebaseUser.email || !firebaseUser.emailVerified) {
+        await signOut(firebaseAuth);
+        return { success: false, error: 'Le compte Google doit disposer d’une adresse e-mail vérifiée.' };
+      }
+      setUser(await toFirebaseAppUser(firebaseUser));
+      return { success: true };
+    } catch (error) {
+      const code = error instanceof Error && 'code' in error ? String((error as { code?: string }).code) : '';
+      const message = error instanceof Error ? error.message : 'Connexion Google impossible.';
+      if (code === 'auth/popup-blocked' || code === 'auth/popup-closed-by-user') {
+        return { success: false, error: 'La fenêtre Google a été bloquée ou fermée. Autorisez les fenêtres pop-up puis réessayez.' };
+      }
+      return { success: false, error: message };
+    }
   };
 
-  const logout = async () => { await supabase.auth.signOut(); setUser(null); };
+  const logout = async () => {
+    await Promise.allSettled([signOut(firebaseAuth), supabase.auth.signOut()]);
+    setUser(null);
+  };
+
   const sendPasswordReset = async (email: string) => {
     if (!email || !email.includes('@')) return { success: false, message: 'Veuillez saisir une adresse email valide.' };
     const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {

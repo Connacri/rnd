@@ -26,7 +26,9 @@ import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { CouncilCandidate } from '../types';
-import { supabase } from '../lib/supabaseClient';
+import { collection, doc, getDocs, orderBy, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
+import { firebaseFunctions, firestore } from '../lib/firebase';
 
 interface AdminPageProps {
   onNavigate: (page: string) => void;
@@ -76,9 +78,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     event.preventDefault();
     if (!newCandidateName.trim() || !newCandidateEmail.trim()) return;
     setIssuingCandidatePin(true); setCandidatesError(null);
-    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'create', name: newCandidateName.trim(), email: newCandidateEmail.trim() } });
+    try {
+      const createProfile = httpsCallable<{name:string;email:string},{candidateId:string}>(firebaseFunctions, 'createCandidateProfile');
+      await createProfile({ name: newCandidateName.trim(), email: newCandidateEmail.trim() });
+    } catch (error) {
+      setIssuingCandidatePin(false);
+      setCandidatesError(error instanceof Error ? error.message : 'Impossible de créer ce profil.');
+      return;
+    }
     setIssuingCandidatePin(false);
-    if (error || !data?.candidateId) { setCandidatesError(data?.error || error?.message || 'Impossible de créer ce profil.'); return; }
     setNewCandidateName(''); setNewCandidateEmail('');
     showToast('Profil candidat créé et associé à son compte Google.');
   };
@@ -87,9 +95,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     setCandidatesError(null);
     if (!/^\\d{10}$/.test(sharedPin)) { setCandidatesError('Le PIN commun doit contenir exactement 10 chiffres.'); return; }
     setIssuingCandidatePin(true);
-    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'set-shared-pin', pin: sharedPin } });
+    try {
+      const setPin = httpsCallable<{pin:string},{success:boolean}>(firebaseFunctions, 'setSharedCandidatePin');
+      await setPin({ pin: sharedPin });
+    } catch (error) {
+      setIssuingCandidatePin(false);
+      setCandidatesError(error instanceof Error ? error.message : 'Impossible d’enregistrer le PIN commun.');
+      return;
+    }
     setIssuingCandidatePin(false);
-    if (error || !data?.success) { setCandidatesError(data?.error || error?.message || 'Impossible d’enregistrer le PIN commun.'); return; }
     setSharedPin('');
     showToast('PIN commun enregistré. Il est stocké sous forme de hash sécurisé.');
   };
@@ -111,14 +125,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     let cancelled = false;
     const load = async () => {
       setCandidatesLoading(true); setCandidatesError(null);
-      const { data, error } = await supabase.from('candidates')
-        .select('id,name,google_email,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation,profile_status,is_published,submitted_at')
-        .eq('is_office_profile', false)
-        .order('created_at', { ascending: false });
-      if (cancelled) return;
-      if (error) setCandidatesError('Impossible de charger les profils soumis. Vérifiez les droits Supabase.');
-      else setSubmittedCandidates((data || []) as SubmittedCandidateProfile[]);
-      setCandidatesLoading(false);
+      try {
+        const snapshot = await getDocs(query(collection(firestore, 'candidates'), where('is_office_profile', '==', false), orderBy('created_at', 'desc')));
+        if (!cancelled) setSubmittedCandidates(snapshot.docs.map(item => ({ id: item.id, ...item.data() })) as SubmittedCandidateProfile[]);
+      } catch (error) {
+        if (!cancelled) setCandidatesError(error instanceof Error ? error.message : 'Impossible de charger les profils soumis. Vérifiez les droits Firebase.');
+      }
+      if (!cancelled) setCandidatesLoading(false);
     };
     void load();
     return () => { cancelled = true; };
@@ -128,18 +141,28 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     const email = value.trim().toLowerCase();
     if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) { setCandidatesError('Adresse e-mail Google invalide.'); return; }
     setCandidateActionId(id);
-    const { error } = await supabase.from('candidates').update({ google_email: email }).eq('id', id);
+    try {
+      await updateDoc(doc(firestore, 'candidates', id), { google_email: email, updated_at: serverTimestamp() });
+    } catch (error) {
+      setCandidateActionId(null);
+      setCandidatesError(error instanceof Error ? error.message : 'Impossible d’associer cette adresse Google.');
+      return;
+    }
     setCandidateActionId(null);
-    if (error) { setCandidatesError('Impossible d’associer cette adresse Google. Vérifiez qu’elle n’est pas déjà utilisée.'); return; }
     setSubmittedCandidates(items => items.map(item => item.id === id ? { ...item, google_email: email } : item));
     showToast('Compte Google associé au profil candidat.');
   };
 
   const reviewCandidate = async (id: string, status: 'approved' | 'rejected') => {
     setCandidateActionId(id);
-    const { error } = await supabase.from('candidates').update({ profile_status: status, is_published: status === 'approved' }).eq('id', id);
+    try {
+      await updateDoc(doc(firestore, 'candidates', id), { profile_status: status, is_published: status === 'approved', updated_at: serverTimestamp() });
+    } catch (error) {
+      setCandidateActionId(null);
+      setCandidatesError(error instanceof Error ? error.message : 'La mise à jour du profil a échoué. Réessayez.');
+      return;
+    }
     setCandidateActionId(null);
-    if (error) { setCandidatesError('La mise à jour du profil a échoué. Réessayez.'); return; }
     setSubmittedCandidates(items => items.map(item => item.id === id ? { ...item, profile_status: status, is_published: status === 'approved' } : item));
     showToast(status === 'approved' ? 'Profil approuvé et publié.' : 'Profil refusé.');
   };
@@ -278,7 +301,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
           <label className="block space-y-1"><span className="text-sm font-bold text-zinc-700 dark:text-zinc-200">Mot de passe</span>
             <input type="password" autoComplete="current-password" required minLength={8} value={adminPassword} onChange={e => setAdminPassword(e.target.value)} className="w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-4 py-3 text-base" placeholder="Votre mot de passe" />
           </label>
-          <button type="submit" disabled={adminLoginLoading} className="w-full min-h-[50px] rounded-xl bg-green-700 hover:bg-green-800 text-white font-extrabold text-base disabled:opacity-60">{adminLoginLoading ? 'Vérification Supabase…' : 'Se connecter'}</button>
+          <button type="submit" disabled={adminLoginLoading} className="w-full min-h-[50px] rounded-xl bg-green-700 hover:bg-green-800 text-white font-extrabold text-base disabled:opacity-60">{adminLoginLoading ? 'Vérification Firebase…' : 'Se connecter'}</button>
           <button type="button" onClick={() => onNavigate('home')} className="w-full py-2 text-sm font-semibold text-zinc-500 hover:text-green-700">Retour au site</button>
         </form>
       </main>

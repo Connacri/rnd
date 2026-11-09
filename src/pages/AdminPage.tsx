@@ -156,7 +156,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const reviewCandidate = async (id: string, status: 'approved' | 'rejected') => {
     setCandidateActionId(id);
     try {
-      await updateDoc(doc(firestore, 'candidates', id), { profile_status: status, is_published: status === 'approved', updated_at: serverTimestamp() });
+      const review = httpsCallable<{candidateId:string;status:'approved'|'rejected'},{success:boolean;status:string;is_published:boolean}>(firebaseFunctions, 'reviewCandidateProfile');
+      await review({ candidateId: id, status });
     } catch (error) {
       setCandidateActionId(null);
       setCandidatesError(error instanceof Error ? error.message : 'La mise à jour du profil a échoué. Réessayez.');

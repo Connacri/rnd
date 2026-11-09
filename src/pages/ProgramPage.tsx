@@ -59,7 +59,7 @@ export const ProgramPage: React.FC = () => {
           {t('programTitle')}
         </h1>
         <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md mx-auto">
-          {lang === 'ar' ? '6 محاور عمل ملموسة لتطوير عين الترك وتنشيطها' : lang === 'en' ? '6 concrete action areas to transform and energize Ain El Turck' : "6 axes d’action concrets pour transformer et dynamiser Aïn El Turck"}
+          {lang === 'ar' ? '8 مجالات عمل ملموسة لتطوير عين الترك وتنشيطها' : lang === 'en' ? '8 concrete action areas to transform and energize Ain El Turck' : "8 domaines d’action concrets pour transformer et dynamiser Aïn El Turck"}
         </p>
       </div>
 
@@ -122,7 +122,7 @@ export const ProgramPage: React.FC = () => {
                       {pillar.tag[lang]}
                     </span>
                     <span className="text-xs font-bold text-zinc-400">
-                      {lang === 'ar' ? `المحور #${pillar.number}` : lang === 'en' ? `Pillar #${pillar.number}` : `Axe n° ${pillar.number}`}
+                      {lang === 'ar' ? `المجال #${pillar.number}` : lang === 'en' ? `Domain #${pillar.number}` : `Domaine n° ${pillar.number}`}
                     </span>
                   </div>
 

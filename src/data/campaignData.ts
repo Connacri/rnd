@@ -64,7 +64,7 @@ export const campaignStats: CampaignStat[] = [
   }
 ];
 
-export const programPillars: ProgramPillar[] = [
+const legacyProgramPillars: ProgramPillar[] = [
   {
     id: "p1",
     number: "01",
@@ -421,6 +421,68 @@ export const programPillars: ProgramPillar[] = [
       ]
     }
   }
+
+];
+
+// Reorganized by subject area. Every commitment is sourced from the previous
+// six-pillar programme so that the French, Arabic and English versions stay aligned.
+const pickItems = (pillarIndex: number, indexes: number[], language: 'fr' | 'ar' | 'en') =>
+  indexes.map(index => legacyProgramPillars[pillarIndex].items[language][index]);
+
+const makeDomain = (
+  id: string, number: string, icon: string, accentColor: string, bgLight: string,
+  title: ProgramPillar['title'], subtitle: ProgramPillar['subtitle'], tag: ProgramPillar['tag'],
+  selections: { fr: [number, number[]][]; ar: [number, number[]][]; en: [number, number[]][] }
+): ProgramPillar => ({
+  id, number, icon, accentColor, bgLight, title, subtitle, tag,
+  items: {
+    fr: selections.fr.flatMap(([pillar, indexes]) => pickItems(pillar, indexes, 'fr')),
+    ar: selections.ar.flatMap(([pillar, indexes]) => pickItems(pillar, indexes, 'ar')),
+    en: selections.en.flatMap(([pillar, indexes]) => pickItems(pillar, indexes, 'en')),
+  },
+});
+
+export const programPillars: ProgramPillar[] = [
+  makeDomain("domain-economy", "01", "💼", "#0284c7", "bg-sky-50 dark:bg-sky-950/30",
+    { fr: "Économie locale, commerce et emploi", ar: "الاقتصاد المحلي والتجارة والتشغيل", en: "Local economy, commerce and jobs" },
+    { fr: "Développer les activités, soutenir les commerçants et créer des opportunités durables pour les habitants.", ar: "تنمية الأنشطة الاقتصادية ودعم التجار وخلق فرص عمل مستدامة لسكان البلدية.", en: "Develop local activity, support businesses and create lasting opportunities for residents." },
+    { fr: "Économie et emploi", ar: "الاقتصاد والتشغيل", en: "Economy and jobs" },
+    { fr: [[0,[2,3,4,5,6,7,8,9,10,11,12]]], ar: [[0,[2,3,4,5,6,7,8,9,10,11,12]]], en: [[0,[2,3,4,5,6,7,8,9,10,11,12]]] }),
+  makeDomain("domain-mobility", "02", "🚗", "#e11d48", "bg-rose-50 dark:bg-rose-950/30",
+    { fr: "Routes, circulation et transports", ar: "الطرق وحركة المرور والنقل", en: "Roads, traffic and transport" },
+    { fr: "Améliorer les déplacements, désengorger les axes routiers et mieux relier tous les quartiers.", ar: "تحسين التنقل وفك الاختناق المروري وربط مختلف الأحياء بشكل أفضل.", en: "Improve mobility, reduce congestion and connect every neighborhood more effectively." },
+    { fr: "Mobilité et infrastructures", ar: "التنقل والبنية التحتية", en: "Mobility and infrastructure" },
+    { fr: [[0,[0,1]],[1,[1,2,3,4,5,6,7]]], ar: [[0,[0,1]],[1,[1,2,3,4,5,6,7]]], en: [[0,[0,1]],[1,[1,2,3,4,5,6,7]]] }),
+  makeDomain("domain-tourism", "03", "🏖️", "#d97706", "bg-amber-50 dark:bg-amber-950/30",
+    { fr: "Tourisme, plages, littoral et culture", ar: "السياحة والشواطئ والساحل والثقافة", en: "Tourism, beaches, coastline and culture" },
+    { fr: "Faire d’Aïn El Turck une destination accueillante toute l’année, avec des plages aménagées, des loisirs et une vie culturelle active.", ar: "جعل عين الترك وجهة سياحية مرحّبة طوال السنة، بشواطئ مهيأة ومرافق ترفيهية وحياة ثقافية نشطة.", en: "Make Ain El Turck a welcoming year-round destination with better beaches, recreation and a lively cultural scene." },
+    { fr: "Tourisme et littoral", ar: "السياحة والساحل", en: "Tourism and coastline" },
+    { fr: [[2,[0,1,2,3,4,5,6,7,8,9,10,11]],[3,[6]]], ar: [[2,[0,1,2,3,4,5,6,7,8,9,10,11]],[3,[6]]], en: [[2,[0,1,2,3,4,5,6,7,8,9,10,11]],[3,[6]]] }),
+  makeDomain("domain-environment", "04", "🌳", "#16a34a", "bg-emerald-50 dark:bg-emerald-950/30",
+    { fr: "Environnement, propreté et espaces verts", ar: "البيئة والنظافة والمساحات الخضراء", en: "Environment, cleanliness and green spaces" },
+    { fr: "Protéger le patrimoine naturel, développer les espaces verts et améliorer durablement le cadre de vie.", ar: "حماية الثروة الطبيعية وتوسيع المساحات الخضراء وتحسين الإطار المعيشي بشكل مستدام.", en: "Protect natural assets, expand green spaces and sustainably improve the living environment." },
+    { fr: "Environnement et cadre de vie", ar: "البيئة والإطار المعيشي", en: "Environment and quality of life" },
+    { fr: [[3,[0,1,2,3,4,5]]], ar: [[3,[0,1,2,3,4,5]]], en: [[3,[0,1,2,3,4,5]]] }),
+  makeDomain("domain-youth", "05", "🎓", "#0d9488", "bg-teal-50 dark:bg-teal-950/30",
+    { fr: "Éducation, jeunesse et sport", ar: "التعليم والشباب والرياضة", en: "Education, youth and sport" },
+    { fr: "Améliorer les équipements scolaires et ouvrir davantage de possibilités de formation, d’orientation et d’activités pour les jeunes.", ar: "تحسين تجهيزات المؤسسات التربوية وتوسيع فرص التكوين والتوجيه والأنشطة الموجهة للشباب.", en: "Improve school facilities and expand training, career guidance and activities for young people." },
+    { fr: "Jeunesse et éducation", ar: "الشباب والتعليم", en: "Youth and education" },
+    { fr: [[3,[7,8]]], ar: [[3,[7,8]]], en: [[3,[7,8]]] }),
+  makeDomain("domain-social", "06", "🤝", "#0891b2", "bg-cyan-50 dark:bg-cyan-950/30",
+    { fr: "Santé, solidarité et services de proximité", ar: "الصحة والتضامن والخدمات الجوارية", en: "Health, solidarity and local services" },
+    { fr: "Renforcer l’accès aux services essentiels et accompagner les personnes et les familles qui en ont le plus besoin.", ar: "تعزيز الوصول إلى الخدمات الأساسية ومرافقة الأشخاص والعائلات الأكثر احتياجاً.", en: "Improve access to essential services and support people and families who need it most." },
+    { fr: "Solidarité et services publics", ar: "التضامن والخدمات العمومية", en: "Solidarity and public services" },
+    { fr: [[1,[8]],[3,[9]],[4,[6]]], ar: [[1,[8]],[3,[9]],[4,[6]]], en: [[1,[8]],[3,[9]],[4,[6]]] }),
+  makeDomain("domain-digital", "07", "📱", "#8b5cf6", "bg-purple-50 dark:bg-purple-950/30",
+    { fr: "Administration moderne et services numériques", ar: "إدارة عصرية وخدمات رقمية", en: "Modern administration and digital services" },
+    { fr: "Simplifier les démarches, faciliter le signalement des problèmes et permettre le suivi transparent des demandes et interventions.", ar: "تبسيط الإجراءات وتسهيل التبليغ عن المشاكل وتمكين المواطنين من متابعة الطلبات والتدخلات بشفافية.", en: "Simplify procedures, make it easier to report problems and provide transparent tracking of requests and interventions." },
+    { fr: "Services numériques", ar: "الخدمات الرقمية", en: "Digital services" },
+    { fr: [[4,[0,1,2,3,4,5,8]]], ar: [[4,[0,1,2,3,4,5,8]]], en: [[4,[0,1,2,3,4,5,8]]] }),
+  makeDomain("domain-governance", "08", "⚖️", "#f59e0b", "bg-amber-50 dark:bg-amber-950/30",
+    { fr: "Gouvernance, transparence et participation citoyenne", ar: "الحوكمة والشفافية والمشاركة المواطنة", en: "Governance, transparency and citizen participation" },
+    { fr: "Associer les habitants aux décisions et rendre compte publiquement des engagements, des budgets et des réalisations.", ar: "إشراك السكان في القرارات وتقديم حصيلة علنية وشفافة للتعهدات والميزانيات والإنجازات.", en: "Involve residents in decisions and publicly report on commitments, budgets and achievements." },
+    { fr: "Participation et transparence", ar: "المشاركة والشفافية", en: "Participation and transparency" },
+    { fr: [[4,[7]],[5,[0,1,2,3,4]]], ar: [[4,[7]],[5,[0,1,2,3,4]]], en: [[4,[7]],[5,[0,1,2,3,4]]] }),
 ];
 
 export const campaignEvents: CampaignEvent[] = [

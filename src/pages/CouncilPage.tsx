@@ -42,11 +42,7 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
     setLoadError('');
     try {
       const snapshot = await getDocs(query(
-        collection(firestore, 'candidates'),
-        where('profile_status', '==', 'approved'),
-        where('is_published', '==', true),
-        where('is_active', '==', true),
-        where('is_office_profile', '==', false),
+        collection(firestore, 'publishedCandidates'),
         orderBy('candidate_number', 'asc'),
         orderBy('submitted_at', 'asc'),
       ));

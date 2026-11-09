@@ -155,10 +155,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage }) => {
             type="button"
             onClick={() => handleNavClick('candidate-submit')}
             className="inline-flex items-center justify-center gap-2 min-h-10 sm:min-h-11 px-3 sm:px-4 rounded-xl bg-[#00843D] hover:bg-[#006B32] text-white text-[11px] sm:text-xs font-black shadow-md border border-green-900/10 whitespace-normal text-center leading-tight max-w-none"
-            aria-label={lang === 'ar' ? 'خاص بالمنتخبين' : lang === 'en' ? 'Elected officials only' : 'Réservé aux élus'}
+            aria-label={lang === 'ar' ? 'خاص بالمترشحين' : lang === 'en' ? 'Candidates only' : 'Réservé aux candidats'}
           >
             <Users className="w-4 h-4 flex-shrink-0" />
-            <span>{lang === 'ar' ? 'خاص بالمنتخبين' : lang === 'en' ? 'Elected officials only' : 'Réservé aux élus'}</span>
+            <span>{lang === 'ar' ? 'خاص بالمترشحين' : lang === 'en' ? 'Candidates only' : 'Réservé aux candidats'}</span>
           </button>
 
           {/* User Auth or Admin Button */}

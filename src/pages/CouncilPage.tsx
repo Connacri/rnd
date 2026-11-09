@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Users, Award, ShieldCheck, Sparkles, UserRound, ArrowRight, RefreshCw } from 'lucide-react';
 import { useCampaign } from '../context/CampaignContext';
 import { useLanguage } from '../i18n/LanguageContext';
-import { supabase } from '../lib/supabaseClient';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { firestore } from '../lib/firebase';
 import { ShareButton } from '../components/ShareButton';
 
 interface CouncilPageProps {
@@ -39,20 +40,17 @@ export const CouncilPage: React.FC<CouncilPageProps> = ({ onNavigate }) => {
   const loadProfiles = async () => {
     setLoading(true);
     setLoadError('');
-    const { data, error } = await supabase
-      .from('candidates')
-      .select('id,name,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation')
-      .eq('profile_status', 'approved')
-      .eq('is_published', true)
-      .eq('is_active', true)
-      .eq('is_office_profile', false)
-      .order('candidate_number', { ascending: true, nullsFirst: false })
-      .order('submitted_at', { ascending: true });
-    if (error) {
+    try {
+      const snapshot = await getDocs(query(
+        collection(firestore, 'publishedCandidates'),
+        orderBy('candidate_number', 'asc'),
+        orderBy('submitted_at', 'asc'),
+      ));
+      setProfiles(snapshot.docs.map(item => ({ id: item.id, ...item.data() })) as PublishedCandidateProfile[]);
+    } catch (error) {
+      console.error('Firebase candidate profiles could not be loaded:', error);
       setLoadError(lang === 'ar' ? 'تعذر تحميل ملفات المترشحين. يرجى المحاولة مجدداً.' : lang === 'en' ? 'Candidate profiles could not be loaded. Please try again.' : 'Impossible de charger les profils des candidats. Veuillez réessayer.');
       setProfiles([]);
-    } else {
-      setProfiles((data || []) as PublishedCandidateProfile[]);
     }
     setLoading(false);
   };

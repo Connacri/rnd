@@ -26,7 +26,10 @@ import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { CouncilCandidate } from '../types';
-import { supabase } from '../lib/supabaseClient';
+import { collection, doc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
+import { firebaseFunctions, firestore } from '../lib/firebase';
+import { candidateData, programPillars, campaignNews, defaultCouncilCandidates, defaultCampaignSettings } from '../data/campaignData';
 
 interface AdminPageProps {
   onNavigate: (page: string) => void;
@@ -71,27 +74,59 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const [newCandidateName, setNewCandidateName] = useState('');
   const [newCandidateEmail, setNewCandidateEmail] = useState('');
   const [sharedPin, setSharedPin] = useState('');
+  const [pinConfigured, setPinConfigured] = useState(false);
+  const [pinUpdatedAt, setPinUpdatedAt] = useState<string | null>(null);
   const [issuingCandidatePin, setIssuingCandidatePin] = useState(false);
+
+  useEffect(() => {
+    if (!isAdmin || activeTab !== 'applicants') return;
+    let cancelled = false;
+    const loadPinStatus = async () => {
+      try {
+        const getStatus = httpsCallable< Record<string, never>, { configured: boolean; updatedAt: string | null }>(firebaseFunctions, 'getSharedCandidatePinStatus');
+        const result = await getStatus({});
+        if (!cancelled) { setPinConfigured(result.data.configured); setPinUpdatedAt(result.data.updatedAt); }
+      } catch (error) {
+        if (!cancelled) setCandidatesError(error instanceof Error ? error.message : 'Impossible de lire la configuration du PIN dans Firestore.');
+      }
+    };
+    void loadPinStatus();
+    return () => { cancelled = true; };
+  }, [activeTab, isAdmin]);
   const issueCandidatePin = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!newCandidateName.trim() || !newCandidateEmail.trim()) return;
     setIssuingCandidatePin(true); setCandidatesError(null);
-    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'create', name: newCandidateName.trim(), email: newCandidateEmail.trim() } });
+    try {
+      const createProfile = httpsCallable<{name:string;email:string},{candidateId:string}>(firebaseFunctions, 'createCandidateProfile');
+      await createProfile({ name: newCandidateName.trim(), email: newCandidateEmail.trim() });
+    } catch (error) {
+      setIssuingCandidatePin(false);
+      setCandidatesError(error instanceof Error ? error.message : 'Impossible de créer ce profil.');
+      return;
+    }
     setIssuingCandidatePin(false);
-    if (error || !data?.candidateId) { setCandidatesError(data?.error || error?.message || 'Impossible de créer ce profil.'); return; }
     setNewCandidateName(''); setNewCandidateEmail('');
     showToast('Profil candidat créé et associé à son compte Google.');
   };
   const saveSharedPin = async (event: React.FormEvent) => {
     event.preventDefault();
     setCandidatesError(null);
-    if (!/^\\d{10}$/.test(sharedPin)) { setCandidatesError('Le PIN commun doit contenir exactement 10 chiffres.'); return; }
+    if (!/^\d{10}$/.test(sharedPin)) { setCandidatesError('Le PIN commun doit contenir exactement 10 chiffres.'); return; }
     setIssuingCandidatePin(true);
-    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'set-shared-pin', pin: sharedPin } });
+    try {
+      const setPin = httpsCallable<{pin:string},{success:boolean}>(firebaseFunctions, 'setSharedCandidatePin');
+      await setPin({ pin: sharedPin });
+    } catch (error) {
+      setIssuingCandidatePin(false);
+      setCandidatesError(error instanceof Error ? error.message : 'Impossible d’enregistrer le PIN commun.');
+      return;
+    }
     setIssuingCandidatePin(false);
-    if (error || !data?.success) { setCandidatesError(data?.error || error?.message || 'Impossible d’enregistrer le PIN commun.'); return; }
     setSharedPin('');
-    showToast('PIN commun enregistré. Il est stocké sous forme de hash sécurisé.');
+    setPinConfigured(true);
+    setPinUpdatedAt(new Date().toISOString());
+    showToast('PIN commun enregistré dans Firestore sous forme de hash sécurisé.');
   };
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
@@ -111,14 +146,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     let cancelled = false;
     const load = async () => {
       setCandidatesLoading(true); setCandidatesError(null);
-      const { data, error } = await supabase.from('candidates')
-        .select('id,name,google_email,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation,profile_status,is_published,submitted_at')
-        .eq('is_office_profile', false)
-        .order('created_at', { ascending: false });
-      if (cancelled) return;
-      if (error) setCandidatesError('Impossible de charger les profils soumis. Vérifiez les droits Supabase.');
-      else setSubmittedCandidates((data || []) as SubmittedCandidateProfile[]);
-      setCandidatesLoading(false);
+      try {
+        const snapshot = await getDocs(query(collection(firestore, 'candidates'), where('is_office_profile', '==', false), orderBy('created_at', 'desc')));
+        if (!cancelled) setSubmittedCandidates(snapshot.docs.map(item => { const data = item.data(); return { id: item.id, ...data, submitted_at: data.submitted_at?.toDate ? data.submitted_at.toDate().toISOString() : data.submitted_at || null }; }) as SubmittedCandidateProfile[]);
+      } catch (error) {
+        if (!cancelled) setCandidatesError(error instanceof Error ? error.message : 'Impossible de charger les profils soumis. Vérifiez les droits Firebase.');
+      }
+      if (!cancelled) setCandidatesLoading(false);
     };
     void load();
     return () => { cancelled = true; };
@@ -126,24 +160,62 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
 
   const saveCandidateGoogleEmail = async (id: string, value: string) => {
     const email = value.trim().toLowerCase();
-    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) { setCandidatesError('Adresse e-mail Google invalide.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setCandidatesError('Adresse e-mail Google invalide.'); return; }
     setCandidateActionId(id);
-    const { error } = await supabase.from('candidates').update({ google_email: email }).eq('id', id);
+    try {
+      await updateDoc(doc(firestore, 'candidates', id), { google_email: email, updated_at: serverTimestamp() });
+    } catch (error) {
+      setCandidateActionId(null);
+      setCandidatesError(error instanceof Error ? error.message : 'Impossible d’associer cette adresse Google.');
+      return;
+    }
     setCandidateActionId(null);
-    if (error) { setCandidatesError('Impossible d’associer cette adresse Google. Vérifiez qu’elle n’est pas déjà utilisée.'); return; }
     setSubmittedCandidates(items => items.map(item => item.id === id ? { ...item, google_email: email } : item));
     showToast('Compte Google associé au profil candidat.');
   };
 
   const reviewCandidate = async (id: string, status: 'approved' | 'rejected') => {
     setCandidateActionId(id);
-    const { error } = await supabase.from('candidates').update({ profile_status: status, is_published: status === 'approved' }).eq('id', id);
+    try {
+      const review = httpsCallable<{candidateId:string;status:'approved'|'rejected'},{success:boolean;status:string;is_published:boolean}>(firebaseFunctions, 'reviewCandidateProfile');
+      await review({ candidateId: id, status });
+    } catch (error) {
+      setCandidateActionId(null);
+      setCandidatesError(error instanceof Error ? error.message : 'La mise à jour du profil a échoué. Réessayez.');
+      return;
+    }
     setCandidateActionId(null);
-    if (error) { setCandidatesError('La mise à jour du profil a échoué. Réessayez.'); return; }
     setSubmittedCandidates(items => items.map(item => item.id === id ? { ...item, profile_status: status, is_published: status === 'approved' } : item));
     showToast(status === 'approved' ? 'Profil approuvé et publié.' : 'Profil refusé.');
   };
 
+
+  // Seed the initial public campaign content once, so Firestore becomes the canonical source.
+  useEffect(() => {
+    if (!isAdmin) return;
+    let cancelled = false;
+    const seedDefaults = async () => {
+      try {
+        const [candidateSnap, settingsSnap, pillarsSnap, newsSnap, councilSnap] = await Promise.all([
+          getDocs(query(collection(firestore, 'siteContent'))),
+          getDocs(query(collection(firestore, 'siteContent'))),
+          getDocs(collection(firestore, 'programPillars')),
+          getDocs(collection(firestore, 'campaignNews')),
+          getDocs(collection(firestore, 'councilCandidates')),
+        ]);
+        if (cancelled) return;
+        if (!candidateSnap.docs.some(item => item.id === 'candidate')) await setDoc(doc(firestore, 'siteContent', 'candidate'), candidateData);
+        if (!settingsSnap.docs.some(item => item.id === 'settings')) await setDoc(doc(firestore, 'siteContent', 'settings'), defaultCampaignSettings);
+        if (pillarsSnap.empty) await Promise.all(programPillars.map(item => setDoc(doc(firestore, 'programPillars', item.id), item)));
+        if (newsSnap.empty) await Promise.all(campaignNews.map(item => setDoc(doc(firestore, 'campaignNews', item.id), item)));
+        if (councilSnap.empty) await Promise.all(defaultCouncilCandidates.map(item => setDoc(doc(firestore, 'councilCandidates', item.id), item)));
+      } catch (error) {
+        if (!cancelled) setCandidatesError(error instanceof Error ? error.message : 'Impossible d’initialiser les données Firestore.');
+      }
+    };
+    void seedDefaults();
+    return () => { cancelled = true; };
+  }, [isAdmin]);
 
   // Settings form state
   const [settingsForm, setSettingsForm] = useState({
@@ -153,6 +225,16 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     officeAddress: settings.officeAddress || '',
     sloganText: settings.sloganText || '',
   });
+
+  useEffect(() => {
+    setSettingsForm({
+      recipientEmail: settings.recipientEmail || '',
+      secondaryEmail: settings.secondaryEmail || '',
+      contactPhone: settings.contactPhone || '',
+      officeAddress: settings.officeAddress || '',
+      sloganText: settings.sloganText || '',
+    });
+  }, [settings]);
 
   // Council candidate form state
   const [councilForm, setCouncilForm] = useState({
@@ -278,7 +360,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
           <label className="block space-y-1"><span className="text-sm font-bold text-zinc-700 dark:text-zinc-200">Mot de passe</span>
             <input type="password" autoComplete="current-password" required minLength={8} value={adminPassword} onChange={e => setAdminPassword(e.target.value)} className="w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-4 py-3 text-base" placeholder="Votre mot de passe" />
           </label>
-          <button type="submit" disabled={adminLoginLoading} className="w-full min-h-[50px] rounded-xl bg-green-700 hover:bg-green-800 text-white font-extrabold text-base disabled:opacity-60">{adminLoginLoading ? 'Vérification Supabase…' : 'Se connecter'}</button>
+          <button type="submit" disabled={adminLoginLoading} className="w-full min-h-[50px] rounded-xl bg-green-700 hover:bg-green-800 text-white font-extrabold text-base disabled:opacity-60">{adminLoginLoading ? 'Vérification Firebase…' : 'Se connecter'}</button>
           <button type="button" onClick={() => onNavigate('home')} className="w-full py-2 text-sm font-semibold text-zinc-500 hover:text-green-700">Retour au site</button>
         </form>
       </main>
@@ -926,20 +1008,19 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
           </div>
           <form onSubmit={saveSharedPin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
             <h3 className="font-black text-zinc-900 dark:text-white">PIN commun des candidats</h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Définissez le même code à 10 chiffres pour tous les candidats. Le code est conservé uniquement sous forme de hash côté serveur.</p>
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className={pinConfigured ? 'rounded-full bg-emerald-100 px-3 py-1 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200' : 'rounded-full bg-amber-100 px-3 py-1 text-amber-800 dark:bg-amber-950 dark:text-amber-200'}>
+                {pinConfigured ? 'PIN configuré dans Firestore' : 'Aucun PIN configuré'}
+              </span>
+              {pinUpdatedAt && <span className="text-xs text-zinc-500">Dernière modification : {new Date(pinUpdatedAt).toLocaleString()}</span>}
+            </div>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">Le serveur lit le hash depuis Firestore et vérifie le PIN sans jamais exposer le code en clair au navigateur. Saisissez un nouveau PIN à 10 chiffres pour le remplacer.</p>
             <div className="flex flex-col sm:flex-row gap-2">
               <input value={sharedPin} onChange={e=>setSharedPin(e.target.value.replace(/\\D/g,'').slice(0,10))} inputMode="numeric" pattern="[0-9]{10}" maxLength={10} required placeholder="10 chiffres" className="min-h-12 flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm tracking-widest" />
               <button type="submit" disabled={issuingCandidatePin || sharedPin.length!==10} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Enregistrement…' : 'Enregistrer le PIN commun'}</button>
             </div>
           </form>
-          <form onSubmit={saveSharedPin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
-            <h3 className="font-black text-zinc-900 dark:text-white">PIN commun des candidats</h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Définissez le même code à 10 chiffres pour tous les candidats. Le code est conservé uniquement sous forme de hash côté serveur.</p>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input value={sharedPin} onChange={e=>setSharedPin(e.target.value.replace(/\\D/g,'').slice(0,10))} inputMode="numeric" pattern="[0-9]{10}" maxLength={10} required placeholder="10 chiffres" className="min-h-12 flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm tracking-widest" />
-              <button type="submit" disabled={issuingCandidatePin || sharedPin.length!==10} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Enregistrement…' : 'Enregistrer le PIN commun'}</button>
-            </div>
-          </form>
+          
           <form onSubmit={issueCandidatePin} className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 space-y-3">
             <h3 className="font-black text-zinc-900 dark:text-white">Créer un profil candidat</h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">Associez chaque profil à l’adresse e-mail exacte de son compte Google.</p>

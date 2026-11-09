@@ -64,7 +64,7 @@ export const MembershipPage: React.FC = () => {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 600));
+
 
     const submissionData = {
       fullName: formData.fullName.trim(),
@@ -83,7 +83,14 @@ export const MembershipPage: React.FC = () => {
       suggestion: formData.suggestion.trim() || undefined,
     };
 
-    addSubmission(submissionData);
+    try {
+      await addSubmission(submissionData);
+    } catch (error) {
+      console.error('Membership submission could not be saved to Firestore:', error);
+      setIsSubmitting(false);
+      setErrors({ form: 'Impossible d’enregistrer votre demande. Vérifiez votre connexion puis réessayez.' });
+      return;
+    }
 
     const refId = 'RND-' + Date.now().toString(36).toUpperCase();
     setLastSubmittedId(refId);
@@ -168,6 +175,7 @@ export const MembershipPage: React.FC = () => {
       </div>
 
       {/* Form Card */}
+      {errors.form && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{errors.form}</p>}
       <form
         onSubmit={handleSubmit}
         className="p-5 sm:p-8 rounded-[36px] bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-sm space-y-4 sm:space-y-5"

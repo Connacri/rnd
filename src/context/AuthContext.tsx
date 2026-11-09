@@ -1,10 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { User as SupabaseUser } from '@supabase/supabase-js';
 import type { User as FirebaseUser } from 'firebase/auth';
-import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile,
+} from 'firebase/auth';
 import { firebaseAuth, googleProvider } from '../lib/firebase';
-import { supabase } from '../lib/supabaseClient';
-import { AppUser } from '../types';
+import type { AppUser } from '../types';
 
 interface AuthContextType {
   user: AppUser | null;
@@ -19,23 +25,34 @@ interface AuthContextType {
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const toSupabaseAppUser = (authUser: SupabaseUser): AppUser => ({
-  id: authUser.id,
-  name: String(authUser.user_metadata?.full_name || authUser.user_metadata?.name || authUser.email?.split('@')[0] || 'Utilisateur'),
-  email: authUser.email || '',
-  avatarUrl: String(authUser.user_metadata?.avatar_url || 'assets/icons/icon.png'),
-  role: authUser.app_metadata?.role === 'admin' ? 'admin' : 'user',
-});
-
-const toFirebaseAppUser = async (authUser: FirebaseUser): Promise<AppUser> => {
+const toAppUser = async (authUser: FirebaseUser): Promise<AppUser> => {
   const token = await authUser.getIdTokenResult();
   return {
     id: authUser.uid,
     name: authUser.displayName || authUser.email?.split('@')[0] || 'Utilisateur',
     email: authUser.email || '',
     avatarUrl: authUser.photoURL || 'assets/icons/icon.png',
-    role: token.claims.role === 'admin' ? 'admin' : 'user',
+    role: token.claims.admin === true || token.claims.role === 'admin' ? 'admin' : 'user',
   };
+};
+
+const authError = (error: unknown): string => {
+  const code = error && typeof error === 'object' && 'code' in error ? String((error as { code: string }).code) : '';
+  const messages: Record<string, string> = {
+    'auth/invalid-credential': 'Adresse e-mail ou mot de passe incorrect.',
+    'auth/user-not-found': 'Aucun compte ne correspond à cette adresse.',
+    'auth/wrong-password': 'Adresse e-mail ou mot de passe incorrect.',
+    'auth/email-already-in-use': 'Cette adresse e-mail est déjà utilisée.',
+    'auth/weak-password': 'Le mot de passe doit contenir au moins 8 caractères.',
+    'auth/invalid-email': 'Adresse e-mail invalide.',
+    'auth/popup-blocked': 'La fenêtre Google a été bloquée. Autorisez les fenêtres pop-up puis réessayez.',
+    'auth/popup-closed-by-user': 'La fenêtre Google a été fermée avant la fin de la connexion.',
+    'auth/unauthorized-domain': 'Ce domaine doit être autorisé dans Firebase Authentication.',
+    'auth/operation-not-allowed': 'Cette méthode de connexion n’est pas activée dans Firebase Authentication.',
+    'auth/network-request-failed': 'Connexion réseau impossible. Vérifiez votre connexion.',
+    'auth/too-many-requests': 'Trop de tentatives. Réessayez plus tard.',
+  };
+  return messages[code] || (error instanceof Error ? error.message : 'Une erreur est survenue.');
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -43,125 +60,87 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     let active = true;
-    let unsubscribeFirebase: (() => void) | undefined;
-    let unsubscribeSupabase: (() => void) | undefined;
-
-    const loadSupabaseUser = async () => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, async (firebaseUser) => {
+      if (!active) return;
+      if (!firebaseUser) { setUser(null); return; }
       try {
-        const { data, error } = await supabase.auth.getUser();
-        if (active && !error && data.user) setUser(toSupabaseAppUser(data.user));
+        const appUser = await toAppUser(firebaseUser);
+        if (active) setUser(appUser);
       } catch (error) {
-        console.warn('Supabase session check failed:', error);
+        console.error('Firebase session could not be loaded:', error);
+        if (active) setUser(null);
       }
-    };
-
-    try {
-      unsubscribeFirebase = onAuthStateChanged(firebaseAuth, async (firebaseUser) => {
-        if (!active) return;
-        if (firebaseUser) {
-          try {
-            setUser(await toFirebaseAppUser(firebaseUser));
-          } catch (error) {
-            console.warn('Firebase user token could not be read:', error);
-            if (active) setUser(null);
-          }
-        } else {
-          await loadSupabaseUser();
-        }
-      }, (error) => {
-        console.error('Firebase auth state listener failed:', error);
-        void loadSupabaseUser();
-      });
-    } catch (error) {
-      console.error('Firebase auth initialization failed:', error);
-      void loadSupabaseUser();
-    }
-
-    try {
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-        if (!active || firebaseAuth.currentUser) return;
-        setUser(session?.user ? toSupabaseAppUser(session.user) : null);
-      });
-      unsubscribeSupabase = () => subscription.unsubscribe();
-    } catch (error) {
-      console.error('Supabase auth listener failed:', error);
-    }
-
-    return () => {
-      active = false;
-      unsubscribeFirebase?.();
-      unsubscribeSupabase?.();
-    };
+    }, (error) => {
+      console.error('Firebase authentication listener failed:', error);
+      if (active) setUser(null);
+    });
+    return () => { active = false; unsubscribe(); };
   }, []);
 
   const login = async (email: string, pass: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password: pass });
-    if (error || !data.user) return { success: false, error: error?.message || 'Identifiants invalides.' };
-    setUser(toSupabaseAppUser(data.user));
-    return { success: true };
+    try {
+      const result = await signInWithEmailAndPassword(firebaseAuth, email.trim().toLowerCase(), pass);
+      setUser(await toAppUser(result.user));
+      return { success: true };
+    } catch (error) { return { success: false, error: authError(error) }; }
   };
 
   const loginAdmin = async (email: string, pass: string) => {
-    const result = await login(email, pass);
-    if (!result.success) return result;
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user || data.user.app_metadata?.role !== 'admin') {
-      await supabase.auth.signOut();
-      setUser(null);
-      return { success: false, error: 'Ce compte ne possède pas les droits administrateur.' };
-    }
-    setUser(toSupabaseAppUser(data.user));
-    return { success: true };
+    try {
+      const result = await signInWithEmailAndPassword(firebaseAuth, email.trim().toLowerCase(), pass);
+      const appUser = await toAppUser(result.user);
+      if (appUser.role !== 'admin') {
+        await signOut(firebaseAuth);
+        setUser(null);
+        return { success: false, error: 'Ce compte ne possède pas les droits administrateur Firebase.' };
+      }
+      setUser(appUser);
+      return { success: true };
+    } catch (error) { return { success: false, error: authError(error) }; }
   };
 
   const register = async (name: string, email: string, pass: string) => {
     if (pass.length < 8) return { success: false, error: 'Le mot de passe doit contenir au moins 8 caractères.' };
-    const { data, error } = await supabase.auth.signUp({
-      email: email.trim().toLowerCase(), password: pass,
-      options: { data: { full_name: name.trim() } },
-    });
-    if (error) return { success: false, error: error.message };
-    if (data.user && data.session) setUser(toSupabaseAppUser(data.user));
-    return { success: true };
+    try {
+      const result = await createUserWithEmailAndPassword(firebaseAuth, email.trim().toLowerCase(), pass);
+      if (name.trim()) await updateProfile(result.user, { displayName: name.trim() });
+      await result.user.reload();
+      setUser(await toAppUser(firebaseAuth.currentUser || result.user));
+      return { success: true };
+    } catch (error) { return { success: false, error: authError(error) }; }
   };
 
   const loginWithGoogle = async () => {
     try {
       const result = await signInWithPopup(firebaseAuth, googleProvider);
-      const firebaseUser = result.user;
-      if (!firebaseUser.email || !firebaseUser.emailVerified) {
+      if (!result.user.email || !result.user.emailVerified) {
         await signOut(firebaseAuth);
         return { success: false, error: 'Le compte Google doit disposer d’une adresse e-mail vérifiée.' };
       }
-      setUser(await toFirebaseAppUser(firebaseUser));
+      setUser(await toAppUser(result.user));
       return { success: true };
-    } catch (error) {
-      const code = error instanceof Error && 'code' in error ? String((error as { code?: string }).code) : '';
-      const message = error instanceof Error ? error.message : 'Connexion Google impossible.';
-      if (code === 'auth/popup-blocked' || code === 'auth/popup-closed-by-user') {
-        return { success: false, error: 'La fenêtre Google a été bloquée ou fermée. Autorisez les fenêtres pop-up puis réessayez.' };
-      }
-      return { success: false, error: message };
-    }
+    } catch (error) { return { success: false, error: authError(error) }; }
   };
 
   const logout = async () => {
-    await Promise.allSettled([signOut(firebaseAuth), supabase.auth.signOut()]);
+    await signOut(firebaseAuth);
     setUser(null);
   };
 
   const sendPasswordReset = async (email: string) => {
-    if (!email || !email.includes('@')) return { success: false, message: 'Veuillez saisir une adresse email valide.' };
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-      redirectTo: window.location.origin + window.location.pathname + '#/forgot-password',
-    });
-    return error
-      ? { success: false, message: error.message }
-      : { success: true, message: 'Si ce compte existe, un lien de réinitialisation sera envoyé par email.' };
+    if (!email || !email.includes('@')) return { success: false, message: 'Veuillez saisir une adresse e-mail valide.' };
+    try {
+      await sendPasswordResetEmail(firebaseAuth, email.trim().toLowerCase(), {
+        url: window.location.origin + window.location.pathname,
+        handleCodeInApp: false,
+      });
+      return { success: true, message: 'Si ce compte existe, un lien de réinitialisation sera envoyé par e-mail.' };
+    } catch (error) { return { success: false, message: authError(error) }; }
   };
 
   return <AuthContext.Provider value={{ user, isAuthenticated: !!user, isAdmin: user?.role === 'admin', login, loginAdmin, register, loginWithGoogle, logout, sendPasswordReset }}>{children}</AuthContext.Provider>;
 };
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error('useAuth must be used within an AuthProvider');

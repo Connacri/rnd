@@ -5,6 +5,10 @@ on:
     branches:
       - main
       - master
+  pull_request:
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
 permissions:
@@ -86,6 +90,14 @@ jobs:
 
       - name: Build web application
         run: npm run build
+
+      - name: Install Firebase Functions dependencies
+        run: npm install
+        working-directory: functions
+
+      - name: Typecheck Firebase Cloud Functions
+        run: npm run build
+        working-directory: functions
 
   ##############################################################################
   # Android : APK + AAB signes avec le keystore issu des secrets GitHub.

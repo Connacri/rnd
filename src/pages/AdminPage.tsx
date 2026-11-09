@@ -73,7 +73,25 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const [newCandidateName, setNewCandidateName] = useState('');
   const [newCandidateEmail, setNewCandidateEmail] = useState('');
   const [sharedPin, setSharedPin] = useState('');
+  const [pinConfigured, setPinConfigured] = useState(false);
+  const [pinUpdatedAt, setPinUpdatedAt] = useState<string | null>(null);
   const [issuingCandidatePin, setIssuingCandidatePin] = useState(false);
+
+  useEffect(() => {
+    if (!isAdmin || activeTab !== 'applicants') return;
+    let cancelled = false;
+    const loadPinStatus = async () => {
+      try {
+        const getStatus = httpsCallable< Record<string, never>, { configured: boolean; updatedAt: string | null }>(firebaseFunctions, 'getSharedCandidatePinStatus');
+        const result = await getStatus({});
+        if (!cancelled) { setPinConfigured(result.data.configured); setPinUpdatedAt(result.data.updatedAt); }
+      } catch (error) {
+        if (!cancelled) setCandidatesError(error instanceof Error ? error.message : 'Impossible de lire la configuration du PIN dans Firestore.');
+      }
+    };
+    void loadPinStatus();
+    return () => { cancelled = true; };
+  }, [activeTab, isAdmin]);
   const issueCandidatePin = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!newCandidateName.trim() || !newCandidateEmail.trim()) return;
@@ -105,7 +123,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     }
     setIssuingCandidatePin(false);
     setSharedPin('');
-    showToast('PIN commun enregistré. Il est stocké sous forme de hash sécurisé.');
+    setPinConfigured(true);
+    setPinUpdatedAt(new Date().toISOString());
+    showToast('PIN commun enregistré dans Firestore sous forme de hash sécurisé.');
   };
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
@@ -950,7 +970,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
           </div>
           <form onSubmit={saveSharedPin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
             <h3 className="font-black text-zinc-900 dark:text-white">PIN commun des candidats</h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Définissez le même code à 10 chiffres pour tous les candidats. Le code est conservé uniquement sous forme de hash côté serveur.</p>
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className={pinConfigured ? 'rounded-full bg-emerald-100 px-3 py-1 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200' : 'rounded-full bg-amber-100 px-3 py-1 text-amber-800 dark:bg-amber-950 dark:text-amber-200'}>
+                {pinConfigured ? 'PIN configuré dans Firestore' : 'Aucun PIN configuré'}
+              </span>
+              {pinUpdatedAt && <span className="text-xs text-zinc-500">Dernière modification : {new Date(pinUpdatedAt).toLocaleString()}</span>}
+            </div>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">Le serveur lit le hash depuis Firestore et vérifie le PIN sans jamais exposer le code en clair au navigateur. Saisissez un nouveau PIN à 10 chiffres pour le remplacer.</p>
             <div className="flex flex-col sm:flex-row gap-2">
               <input value={sharedPin} onChange={e=>setSharedPin(e.target.value.replace(/\\D/g,'').slice(0,10))} inputMode="numeric" pattern="[0-9]{10}" maxLength={10} required placeholder="10 chiffres" className="min-h-12 flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm tracking-widest" />
               <button type="submit" disabled={issuingCandidatePin || sharedPin.length!==10} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Enregistrement…' : 'Enregistrer le PIN commun'}</button>

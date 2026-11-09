@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Users, Award, ShieldCheck, Sparkles, UserRound, ArrowRight, RefreshCw } from 'lucide-react';
 import { useCampaign } from '../context/CampaignContext';
 import { useLanguage } from '../i18n/LanguageContext';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { firestore } from '../lib/firebase';
 import { ShareButton } from '../components/ShareButton';
 

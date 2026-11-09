@@ -12,7 +12,7 @@ interface CampaignContextType {
   councilCandidates: CouncilCandidate[]; addCouncilCandidate: (cand: Omit<CouncilCandidate, 'id'>) => void;
   updateCouncilCandidate: (id: string, cand: Partial<CouncilCandidate>) => void; deleteCouncilCandidate: (id: string) => void;
   settings: CampaignSettings; updateSettings: (newSettings: Partial<CampaignSettings>) => void;
-  submissions: MembershipSubmission[]; addSubmission: (sub: Omit<MembershipSubmission, 'id' | 'submittedAt'>) => void;
+  submissions: MembershipSubmission[]; addSubmission: (sub: Omit<MembershipSubmission, 'id' | 'submittedAt'>) => Promise<void>;
   deleteSubmission: (id: string) => void; resetToDefault: () => void;
 }
 const CampaignContext = createContext<CampaignContextType | undefined>(undefined);
@@ -56,9 +56,8 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const updateCouncilCandidate = (id: string, cand: Partial<CouncilCandidate>) => { setCouncilCandidates(prev=>{ const next=prev.map(c=>c.id===id?{...c,...cand}:c); const item=next.find(c=>c.id===id); if(item) void updateDoc(doc(firestore,'councilCandidates',id),cand); return next; }); };
   const deleteCouncilCandidate = (id: string) => { setCouncilCandidates(prev=>prev.filter(c=>c.id!==id)); void deleteDoc(doc(firestore,'councilCandidates',id)); };
   const updateSettings = (data: Partial<CampaignSettings>) => { setSettings(prev=>{ const next={...prev,...data}; void setDoc(doc(firestore,'siteContent','settings'),next,{merge:true}); return next; }); };
-  const addSubmission = (sub: Omit<MembershipSubmission,'id'|'submittedAt'>) => {
-    const submittedAt=new Date().toISOString(); const optimistic={...sub,id:crypto.randomUUID(),submittedAt}; setSubmissions(prev=>[optimistic,...prev]);
-    void addDoc(collection(firestore,'membershipSubmissions'),{...sub,submittedAt:serverTimestamp()}).catch(error=>{ console.error('Firestore membership submission failed',error); setSubmissions(prev=>prev.filter(item=>item.id!==optimistic.id)); });
+  const addSubmission = async (sub: Omit<MembershipSubmission,'id'|'submittedAt'>) => {
+    await addDoc(collection(firestore,'membershipSubmissions'),{...sub,submittedAt:serverTimestamp()});
   };
   const deleteSubmission = (id: string) => { setSubmissions(prev=>prev.filter(s=>s.id!==id)); void deleteDoc(doc(firestore,'membershipSubmissions',id)); };
   const resetToDefault = () => {

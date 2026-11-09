@@ -99,7 +99,9 @@ export const programPillars: ProgramPillar[] = [
         "Installation de kiosques commerciaux uniformes et harmonisés, conçus selon une architecture moderne et esthétique.",
         "Création d’une base de données numérique répertoriant tous les commerces, artisans, professions libérales et associations afin de faciliter les échanges et la communication.",
         "Organisation de rencontres périodiques entre entreprises, commerçants, investisseurs et clubs afin de soutenir le sponsoring et les projets partenariaux.",
-        "Incitation des entreprises titulaires de marchés publics à contribuer à la résolution d’au moins deux problèmes auxquels la ville est confrontée."
+        "Incitation des entreprises titulaires de marchés publics à contribuer à la résolution d’au moins deux problèmes auxquels la ville est confrontée.",
+        "Accompagner les projets économiques locaux, encourager l’investissement et le commerce, et favoriser la création de nouvelles activités et de nouveaux emplois.",
+        "Relancer, après étude de faisabilité et dans le respect des exigences environnementales, l’activité de pisciculture marine en bassins."
       ],
       ar: [
         "فتح طريق ثانٍ يربط البلدية لتخفيف الازدحام المروري الدائم و خلق جو تجاري جديد في الطريق الجديد",
@@ -112,7 +114,9 @@ export const programPillars: ProgramPillar[] = [
         "تركيب أكشاك تجارية موحدة ومتناسقة وفق هندسة معمارية عصرية جمالية.",
         "إنشاء قاعدة بيانات رقمية تسرد جميع المتاجر والحرفيين والمهن الحرة والجمعيات لتسهيل التعاملات. و التواصل",
         "تنظيم لقاءات دورية بين المؤسسات والتجار والمستثمرين والأندية لدعم الرعاية والمشاريع التشاركية.",
-        "حث المؤسسات الحاصلة على صفقات عمومية على المساهمة في حل على الأقل معضلتين موجودتين في المدينة."
+        "حث المؤسسات الحاصلة على صفقات عمومية على المساهمة في حل على الأقل معضلتين موجودتين في المدينة.",
+        "دعم المشاريع المحلية وتشجيع الاستثمار والتجارة وخلق أنشطة اقتصادية وفرص عمل جديدة.",
+        "إعادة بعث نشاط تربية الأسماك البحرية في الأحواض بعد دراسة الجدوى واحترام المتطلبات البيئية."
       ],
       en: [
         "Open a second road connecting the municipality’s different areas to ease persistent traffic congestion and create new commercial activity along the new route.",
@@ -159,7 +163,11 @@ export const programPillars: ProgramPillar[] = [
         "Amélioration de la desserte des quartiers afin d’éviter aux habitants de parcourir de longues distances à pied pour rejoindre la route nationale.",
         "Gestion intelligente et professionnelle des flux de circulation pendant la saison touristique estivale.",
         "Construction de 6 ponts pour dévier la circulation depuis la route des Andalouses, faciliter les déplacements et éviter les embouteillages.",
-        "Création de stations organisées de transport public à proximité des zones de Trouville, Bouisseville, Bensmir et Cap Falcon."
+        "Création de stations organisées de transport public à proximité des zones de Trouville, Bouisseville, Bensmir et Cap Falcon.",
+        "Support local economic projects, encourage investment and trade, and foster new activities and employment.",
+        "Revive marine fish farming in basins following feasibility studies and in compliance with environmental requirements.",
+        "Développer et rénover les routes et les trottoirs dans les différents quartiers.",
+        "Améliorer le réseau d’assainissement et la qualité des services publics de proximité."
       ],
       ar: [
         "فتح الطريق الثاني من أجل تسهيل حركة المرور وفك الاختناق بشكل مستدام.",
@@ -168,7 +176,9 @@ export const programPillars: ProgramPillar[] = [
         "خدمة الأحياء بصورة أفضل حتى لا يضطر المواطن لقطع مسافات طويلة مشياً نحو الطريق الوطني.",
         "إدارة ذكية واحترافية لتدفقات حركة المرور خلال موسم الاصطياف السياحي.",
         "بناء 6 جسور لتحويل السير من طريق الأندلس وتمكين الوصول السهل وتفادي الاختناقات المرورية.",
-        "إنشاء محطات منظمة للنقل العمومي بالقرب من تجمعات تروفيل، بوزفيل، بن سمير، وكاب فالكون"
+        "إنشاء محطات منظمة للنقل العمومي بالقرب من تجمعات تروفيل، بوزفيل، بن سمير، وكاب فالكون",
+        "تطوير الطرق والأرصفة وتجديدها عبر مختلف أحياء البلدية.",
+        "تحسين شبكة الصرف الصحي والارتقاء بجودة الخدمات العمومية الجوارية."
       ],
       en: [
         "Open the second road to improve traffic flow and provide a sustainable solution to congestion.",
@@ -212,7 +222,12 @@ export const programPillars: ProgramPillar[] = [
         "Installation de panneaux d’information modernes rappelant les règles de propreté, de sécurité et de préservation de l’environnement marin.",
         "Développement des activités et des sports nautiques, avec le soutien aux clubs de plongée, d’aviron, de voile et à toutes les autres disciplines sportives.",
         "Soutien aux associations sportives et culturelles actives dans les domaines maritime et touristique.",
-        "Lancement d’un portail numérique complet regroupant toutes les informations et tous les services destinés aux citoyens, aux touristes et aux visiteurs."
+        "Lancement d’un portail numérique complet regroupant toutes les informations et tous les services destinés aux citoyens, aux touristes et aux visiteurs.",
+        "Upgrade and renovate roads and sidewalks across the municipality’s neighborhoods.",
+        "Improve the sanitation network and the quality of local public services.",
+        "Poursuivre le développement du secteur touristique et l’aménagement des plages et des équipements de loisirs.",
+        "Dynamiser les festivals et les manifestations culturelles pour faire vivre la commune toute l’année.",
+        "Remettre en service et aménager le théâtre en plein air de Trouville."
       ],
       ar: [
         "مداخل شاطئ مصممة لتدوم سنوات طويلة عبر تصنيع قوالب جدارية متقنة على طراز معماري أصيل.",
@@ -223,7 +238,10 @@ export const programPillars: ProgramPillar[] = [
         "تركيب لوحات إرشادية عصرية تذكر بقواعد النظافة والأمان والحفاظ على البيئة البحرية.",
         "تطوير الأنشطة والرياضات البحرية ودعم نوادي الغوص والتجديف. و الرياضات الشراعية و كل الرياضات الاخرى.",
         "دعم الجمعيات الرياضية والثقافية التي تنشط في المجال البحري والسياحي.",
-        "إطلاق بوابة رقمية شاملة تضم كل المعلومات والخدمات للمواطنين والسياح والزوار."
+        "إطلاق بوابة رقمية شاملة تضم كل المعلومات والخدمات للمواطنين والسياح والزوار.",
+        "مواصلة تطوير القطاع السياحي وتهيئة الشواطئ والمرافق الترفيهية.",
+        "تنشيط المهرجانات والتظاهرات الثقافية لإحياء البلدية على مدار السنة.",
+        "إعادة فتح وتهيئة مسرح الهواء الطلق بتروفيل."
       ],
       en: [
         "Design beach entrances to last for many years by producing carefully crafted wall molds in an authentic architectural style.",
@@ -265,14 +283,27 @@ export const programPillars: ProgramPillar[] = [
         "Plantation de 10 000 arbres à croissance rapide, adaptés au climat méditerranéen, dans tous les quartiers de la commune.",
         "Protection renforcée et stricte du patrimoine arboré et du couvert végétal du front de mer et des forêts.",
         "Interdiction absolue de couper ou de dégrader des arbres sans autorisation légale, avec sanction des contrevenants.",
-        "Fabrication locale de jeux et d’équipements pour les aires de jeux pour enfants dans les ateliers municipaux, afin d’accélérer leur renouvellement et leur entretien et de réduire les coûts."
+        "Fabrication locale de jeux et d’équipements pour les aires de jeux pour enfants dans les ateliers municipaux, afin d’accélérer leur renouvellement et leur entretien et de réduire les coûts.",
+        "Continue developing tourism and improving beaches and recreational facilities.",
+        "Promote festivals and cultural events that bring the municipality to life throughout the year.",
+        "Restore and refurbish the Trouville open-air theatre.",
+        "Renforcer la protection de l’environnement et des espaces verts, et améliorer durablement la propreté et la gestion environnementale.",
+        "Réhabiliter le point de mouillage de la zone sablonneuse, après les études et autorisations nécessaires.",
+        "Améliorer les infrastructures et les équipements des établissements scolaires.",
+        "Soutenir les activités destinées aux jeunes et les activités sportives, et développer la formation et l’orientation professionnelles.",
+        "Renforcer l’accès aux services de santé, accompagner les personnes vulnérables et soutenir les initiatives de solidarité sociale."
       ],
       ar: [
         "إنشاء مشتل بلدي لإنتاج الأشجار والنباتات التزيينية محلياً وتوفير النفقات.",
         "غرس 10,000 شجرة سريعة النمو ومتكيفة مع المناخ المتوسطي عبر كافة أحياء البلدية.",
         "حماية مشددة وصارمة للثروة الشجرية والغطاء النباتي للواجهة البحرية والغابات.",
         "منع قاطع لقطع أو إتلاف الأشجار بدون تراخيص قانونية معاقبة المخالفين.",
-        "تصنيع محلي لألعاب وحدائق الأطفال في ورشات البلدية لتسريع التجديد، الصيانة وتوفير التكاليف."
+        "تصنيع محلي لألعاب وحدائق الأطفال في ورشات البلدية لتسريع التجديد، الصيانة وتوفير التكاليف.",
+        "تعزيز حماية البيئة والمساحات الخضراء وتحسين النظافة والتسيير البيئي بشكل مستدام.",
+        "إعادة تأهيل نقطة الرسو بمنطقة الرمال بعد استكمال الدراسات والتراخيص اللازمة.",
+        "تحسين البنية التحتية والتجهيزات بالمؤسسات التربوية.",
+        "دعم الأنشطة الشبابية والرياضية وتطوير التكوين والتوجيه المهني.",
+        "تعزيز الوصول إلى الخدمات الصحية ومرافقة الفئات الهشة ودعم مبادرات التضامن الاجتماعي."
       ],
       en: [
         "Establish a municipal nursery to grow trees and ornamental plants locally and reduce expenses.",
@@ -314,7 +345,12 @@ export const programPillars: ProgramPillar[] = [
         "Tableau de bord public et transparent présentant, en chiffres, l’avancement des réalisations et des projets de la commune.",
         "Renforcement des effectifs aux guichets de délivrance des documents et dans les services administratifs pendant les périodes de forte affluence et les saisons.",
         "Création d’une cellule municipale permanente de veille ainsi que d’une cellule de gestion des crises et des situations d’urgence.",
-        "Système de notifications rapides pour informer les citoyens des actualités et des interruptions d’eau ou des travaux."
+        "Système de notifications rapides pour informer les citoyens des actualités et des interruptions d’eau ou des travaux.",
+        "Strengthen environmental and green-space protection while improving cleanliness and environmental management sustainably.",
+        "Rehabilitate the anchorage point in the sandy area, subject to the required studies and permits.",
+        "Improve infrastructure and facilities in schools.",
+        "Support youth and sports activities and expand vocational training and career guidance.",
+        "Improve access to healthcare, assist vulnerable people and support social-solidarity initiatives."
       ],
       ar: [
         "تطبيق للإبلاغ الفوري عن أعطال الإنارة والنفايات والحفر مع تحديد الموقع الجغرافي والصور.",

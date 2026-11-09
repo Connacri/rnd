@@ -13,12 +13,13 @@ const requireAdmin = (request: CallableRequest<any>) => {
   if (!request.auth || !isAdmin(request)) throw new HttpsError('permission-denied', 'Accès administrateur requis.');
 };
 const requireGoogleUser = (request: CallableRequest<any>) => {
-  const token = request.auth?.token;
-  if (!request.auth || (token?.firebase as { sign_in_provider?: string } | undefined)?.sign_in_provider !== 'google.com'
+  if (!request.auth) throw new HttpsError('unauthenticated', 'Connectez-vous avec votre compte Google.');
+  const token = request.auth.token;
+  if ((token.firebase as { sign_in_provider?: string } | undefined)?.sign_in_provider !== 'google.com'
       || typeof token.email !== 'string' || token.email_verified !== true) {
     throw new HttpsError('permission-denied', 'Connectez-vous avec un compte Google dont l’adresse e-mail est vérifiée.');
   }
-  return { uid: request.auth.uid, email: String(token.email).trim().toLowerCase() };
+  return { uid: request.auth.uid, email: token.email.trim().toLowerCase() };
 };
 const hashPin = (pin: string) => {
   const salt = randomBytes(16);

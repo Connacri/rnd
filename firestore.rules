@@ -4,14 +4,14 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && (request.auth.token.admin == true || request.auth.token.role == 'admin');
     }
+    // Candidate records contain private Google addresses and moderation metadata.
     match /candidates/{candidateId} {
-      allow read: if isAdmin() || (
-        resource.data.profile_status == 'approved' &&
-        resource.data.is_published == true &&
-        resource.data.is_active == true &&
-        resource.data.is_office_profile == false
-      );
-      allow create, update, delete: if isAdmin();
+      allow read, create, update, delete: if isAdmin();
+    }
+    // This collection is a strict public projection; never store private fields here.
+    match /publishedCandidates/{candidateId} {
+      allow read: if true;
+      allow create, update, delete: if false;
     }
     match /candidateAccess/{document=**} { allow read, write: if false; }
     match /candidatePinAttempts/{document=**} { allow read, write: if false; }

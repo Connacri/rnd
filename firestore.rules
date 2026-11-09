@@ -14,8 +14,35 @@ service cloud.firestore {
         && request.resource.data.phone is string && request.resource.data.phone.size() <= 40;
       allow read, update, delete: if isAdmin();
     }
-    match /candidates/{candidateId} { allow read, create, update, delete: if isAdmin(); }
-    match /publishedCandidates/{candidateId} { allow read: if true; allow create, update, delete: if false; }
+    match /candidates/{candidateId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.google_email == request.auth.token.email);
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || (
+        signedIn()
+        && resource.data.google_email == request.auth.token.email
+        && resource.data.is_office_profile != true
+        && request.resource.data.google_email == resource.data.google_email
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'name', 'photo_url', 'profession', 'education_level', 'diplomas',
+          'experience', 'skills', 'motivation', 'profile_status', 'is_published',
+          'is_active', 'submitted_at', 'updated_at'
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 120
+        && request.resource.data.photo_url is string
+        && request.resource.data.photo_url.size() <= 2048
+        && request.resource.data.profession is map
+        && request.resource.data.education_level is map
+        && request.resource.data.diplomas is map
+        && request.resource.data.experience is map
+        && request.resource.data.skills is map
+        && request.resource.data.motivation is map
+        && request.resource.data.profile_status == 'pending'
+        && request.resource.data.is_published == false
+        && request.resource.data.is_active == true
+      );
+    }
+    match /publishedCandidates/{candidateId} { allow read: if true; allow create, update, delete: if isAdmin(); }
     match /candidateAccess/{document=**} { allow read, write: if false; }
     match /candidatePinAttempts/{document=**} { allow read, write: if false; }
     match /{document=**} { allow read, write: if false; }

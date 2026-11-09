@@ -456,7 +456,7 @@ Identifiants : `PLAY_SERVICE_ACCOUNT_JSON` (JSON en ligne, utilisé par la CI) o
 > (paramètre `changesNotSentForReview=true`) : il reste à les envoyer en revue
 > depuis la Play Console. Les descriptions ne sont pas soumises à cette limite.
 
-## Configuration Firebase\n\nLe projet utilise `rnd-aet`. Déployer les règles et fonctions avec `firebase deploy --only firestore:rules,firestore:indexes,storage,functions`. Le premier compte administrateur doit être créé dans Firebase Authentication puis recevoir les custom claims via `GOOGLE_APPLICATION_CREDENTIALS=/chemin/service-account.json node scripts/set-admin-claim.mjs admin@example.com`. Ne jamais placer de clé de compte de service dans le dépôt.\n\nLes anciennes données Supabase ne sont pas copiées automatiquement : exporter les profils candidats existants puis les importer dans la collection Firestore `candidates` avant de supprimer l'ancien projet.\n\n## Outils MCP
+## Configuration Firebase\n\nLe projet utilise `rnd-aet`. Déployer les règles, indexes et fonctions avec `firebase deploy --only firestore:rules,firestore:indexes,storage,functions`. Le premier compte administrateur doit être créé dans Firebase Authentication puis recevoir les custom claims via `cd functions && GOOGLE_APPLICATION_CREDENTIALS=/chemin/service-account.json node scripts/set-admin-claim.mjs admin@example.com`. Ne jamais placer de clé de compte de service dans le dépôt.\n\nLes anciennes données Supabase ne sont pas copiées automatiquement : exporter les profils candidats existants puis les importer dans la collection Firestore `candidates` avant de supprimer l'ancien projet.\n\n## Outils MCP
 
 Le dépôt déclare ses serveurs MCP dans `opencode.json` (racine) :
 

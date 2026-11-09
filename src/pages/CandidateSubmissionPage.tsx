@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle2, ImagePlus, Loader2, LockKeyhole, LogIn, LogOut } from 'lucide-react';
+import { CheckCircle2, ImagePlus, Loader2, LogIn, LogOut } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { collection, doc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
@@ -71,6 +71,7 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
  useEffect(() => {
   if (!user?.email) { setAuthorized(false); setCandidateId(''); return; }
   let active = true;
+  setAuthorized(false); setCandidateId('');
   setBusy(true); setError('');
   const findAssignedProfile = async () => {
    try {

@@ -120,7 +120,8 @@ Deno.serve(async req => {
 
     const { data: candidate, error: candidateError } = await db.from("candidates")
       .select("id,name,google_email")
-      .ilike("google_email", email)\n      .eq("is_office_profile", false)
+      .ilike("google_email", email)
+      .eq("is_office_profile", false)
       .maybeSingle();
     if (candidateError || !candidate) {
       return json({ error: "Aucun profil candidat n'est associé à cette adresse Google. Contactez l'administrateur." }, 404);

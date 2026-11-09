@@ -113,7 +113,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
       setCandidatesLoading(true); setCandidatesError(null);
       const { data, error } = await supabase.from('candidates')
         .select('id,name,google_email,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation,profile_status,is_published,submitted_at')
-        .eq('is_office_profile', false)\n        .order('created_at', { ascending: false });
+        .eq('is_office_profile', false)
+        .order('created_at', { ascending: false });
       if (cancelled) return;
       if (error) setCandidatesError('Impossible de charger les profils soumis. Vérifiez les droits Supabase.');
       else setSubmittedCandidates((data || []) as SubmittedCandidateProfile[]);

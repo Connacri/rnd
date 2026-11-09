@@ -151,7 +151,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
 
   const reviewCandidate = async (id: string, status: 'approved' | 'rejected') => {
     const profile = submittedCandidates.find(item => item.id === id);
-    if (!profile) { setCandidatesError('Profil candidat introuvable.'); return; }
+    if (!profile || profile.profile_status !== 'pending') { setCandidatesError('Seules les candidatures envoyées peuvent être modérées.'); return; }
     setCandidateActionId(id); setCandidatesError(null);
     try {
       const batch = writeBatch(firestore);
@@ -1043,8 +1043,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                     </div>
                     <div className="flex flex-wrap gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
                       <span className="text-xs text-zinc-500">Accès réservé au compte Google associé</span>
-                      {profile.profile_status !== 'approved' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'approved')} className="flex-1 min-h-11 rounded-xl bg-green-700 px-4 text-sm font-bold text-white hover:bg-green-800 disabled:opacity-50">Approuver et publier</button>}
-                      {profile.profile_status !== 'rejected' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'rejected')} className="min-h-11 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 disabled:opacity-50">Refuser</button>}
+                      {profile.profile_status === 'pending' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'approved')} className="flex-1 min-h-11 rounded-xl bg-green-700 px-4 text-sm font-bold text-white hover:bg-green-800 disabled:opacity-50">Approuver et publier</button>}
+                      {profile.profile_status === 'pending' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'rejected')} className="min-h-11 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 disabled:opacity-50">Refuser</button>}
                     </div>
                   </article>
                 );

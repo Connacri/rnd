@@ -56,7 +56,7 @@ const copy = {
 };
 export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = () => {
  const { lang, isRtl } = useLanguage();
- const { user, logout } = useAuth();
+ const { user, logout, loginWithGoogle } = useAuth();
  const t = copy[lang as keyof typeof copy] || copy.fr;
  const [digits, setDigits] = useState<string[]>(Array(10).fill(''));
  const [candidateId, setCandidateId] = useState('');
@@ -72,11 +72,8 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
 
  const signInGoogle = async () => {
   setError('');
-  const { error: oauthError } = await supabase.auth.signInWithOAuth({
-   provider:'google',
-   options:{ redirectTo: window.location.origin + window.location.pathname + '#/candidate-submit', queryParams:{ prompt:'select_account' } }
-  });
-  if (oauthError) setError(oauthError.message || t.googleError);
+  const result = await loginWithGoogle();
+  if (!result.success) setError(result.error || t.googleError);
  };
  const changeDigit = (index:number, value:string) => {
   const digit = value.replace(/\D/g,'').slice(-1);

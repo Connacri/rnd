@@ -33,7 +33,7 @@ interface AdminPageProps {
 }
 
 interface SubmittedCandidateProfile {
-  id: string; name: string; photo_url: string | null; candidate_number: number | null;
+  id: string; name: string; google_email?: string | null; photo_url: string | null; candidate_number: number | null;
   profession: Record<string, string>; education_level: Record<string, string>; diplomas: Record<string, string>;
   experience: Record<string, string>; skills: Record<string, string>; motivation: Record<string, string>;
   profile_status: 'draft' | 'pending' | 'approved' | 'rejected'; is_published: boolean; submitted_at: string | null;
@@ -69,26 +69,29 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const [candidatesError, setCandidatesError] = useState<string | null>(null);
   const [candidateActionId, setCandidateActionId] = useState<string | null>(null);
   const [newCandidateName, setNewCandidateName] = useState('');
-  const [issuedCandidatePin, setIssuedCandidatePin] = useState<{ name: string; pin: string; candidateId: string } | null>(null);
+  const [newCandidateEmail, setNewCandidateEmail] = useState('');
+  const [sharedPin, setSharedPin] = useState('');
   const [issuingCandidatePin, setIssuingCandidatePin] = useState(false);
   const issueCandidatePin = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!newCandidateName.trim()) return;
-    setIssuingCandidatePin(true); setCandidatesError(null); setIssuedCandidatePin(null);
-    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'create', name: newCandidateName.trim() } });
+    if (!newCandidateName.trim() || !newCandidateEmail.trim()) return;
+    setIssuingCandidatePin(true); setCandidatesError(null);
+    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'create', name: newCandidateName.trim(), email: newCandidateEmail.trim() } });
     setIssuingCandidatePin(false);
-    if (error || !data?.pin || !data?.candidateId) { setCandidatesError(data?.error || error?.message || 'Impossible de créer cet accès.'); return; }
-    setIssuedCandidatePin({ name: newCandidateName.trim(), pin: data.pin, candidateId: data.candidateId });
-    setNewCandidateName('');
-    showToast('Accès candidat créé. Communiquez le PIN en privé.');
+    if (error || !data?.candidateId) { setCandidatesError(data?.error || error?.message || 'Impossible de créer ce profil.'); return; }
+    setNewCandidateName(''); setNewCandidateEmail('');
+    showToast('Profil candidat créé et associé à son compte Google.');
   };
-  const resetCandidatePin = async (candidateId: string, name: string) => {
-    setCandidatesError(null); setIssuedCandidatePin(null); setIssuingCandidatePin(true);
-    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'create', candidateId } });
+  const saveSharedPin = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setCandidatesError(null);
+    if (!/^\\d{10}$/.test(sharedPin)) { setCandidatesError('Le PIN commun doit contenir exactement 10 chiffres.'); return; }
+    setIssuingCandidatePin(true);
+    const { data, error } = await supabase.functions.invoke('candidate-access', { body: { action: 'set-shared-pin', pin: sharedPin } });
     setIssuingCandidatePin(false);
-    if (error || !data?.pin) { setCandidatesError(data?.error || error?.message || 'Impossible de réinitialiser le PIN.'); return; }
-    setIssuedCandidatePin({ name, pin: data.pin, candidateId });
-    showToast('Nouveau PIN créé. L’ancien code est désormais invalide.');
+    if (error || !data?.success) { setCandidatesError(data?.error || error?.message || 'Impossible d’enregistrer le PIN commun.'); return; }
+    setSharedPin('');
+    showToast('PIN commun enregistré. Il est stocké sous forme de hash sécurisé.');
   };
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
@@ -109,7 +112,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     const load = async () => {
       setCandidatesLoading(true); setCandidatesError(null);
       const { data, error } = await supabase.from('candidates')
-        .select('id,name,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation,profile_status,is_published,submitted_at')
+        .select('id,name,google_email,photo_url,candidate_number,profession,education_level,diplomas,experience,skills,motivation,profile_status,is_published,submitted_at')
         .not('submitted_at', 'is', null).order('submitted_at', { ascending: false });
       if (cancelled) return;
       if (error) setCandidatesError('Impossible de charger les profils soumis. Vérifiez les droits Supabase.');
@@ -119,6 +122,17 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
     void load();
     return () => { cancelled = true; };
   }, [activeTab, isAdmin]);
+
+  const saveCandidateGoogleEmail = async (id: string, value: string) => {
+    const email = value.trim().toLowerCase();
+    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) { setCandidatesError('Adresse e-mail Google invalide.'); return; }
+    setCandidateActionId(id);
+    const { error } = await supabase.from('candidates').update({ google_email: email }).eq('id', id);
+    setCandidateActionId(null);
+    if (error) { setCandidatesError('Impossible d’associer cette adresse Google. Vérifiez qu’elle n’est pas déjà utilisée.'); return; }
+    setSubmittedCandidates(items => items.map(item => item.id === id ? { ...item, google_email: email } : item));
+    showToast('Compte Google associé au profil candidat.');
+  };
 
   const reviewCandidate = async (id: string, status: 'approved' | 'rejected') => {
     setCandidateActionId(id);
@@ -909,20 +923,22 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
             </div>
             <span className="ms-auto rounded-full bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200 px-3 py-1 text-sm font-bold tabular-nums">{submittedCandidates.length}</span>
           </div>
-          <form onSubmit={issueCandidatePin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
-            <div>
-              <h3 className="font-black text-zinc-900 dark:text-white">Créer un accès candidat — réservé à l’administrateur</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Vous seul pouvez générer le code PIN de 10 chiffres et le communiquer personnellement au candidat.</p>
-            </div>
+          <form onSubmit={saveSharedPin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
+            <h3 className="font-black text-zinc-900 dark:text-white">PIN commun des candidats</h3>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">Définissez le même code à 10 chiffres pour tous les candidats. Le code est conservé uniquement sous forme de hash côté serveur.</p>
             <div className="flex flex-col sm:flex-row gap-2">
-              <input value={newCandidateName} onChange={e => setNewCandidateName(e.target.value)} required maxLength={120} placeholder="Nom et prénom du candidat" className="min-h-12 flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm" />
-              <button type="submit" disabled={issuingCandidatePin} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Génération…' : 'Générer le PIN'}</button>
+              <input value={sharedPin} onChange={e=>setSharedPin(e.target.value.replace(/\\D/g,'').slice(0,10))} inputMode="numeric" pattern="[0-9]{10}" maxLength={10} required placeholder="10 chiffres" className="min-h-12 flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm tracking-widest" />
+              <button type="submit" disabled={issuingCandidatePin || sharedPin.length!==10} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Enregistrement…' : 'Enregistrer le PIN commun'}</button>
             </div>
-            {issuedCandidatePin && <div className="rounded-2xl border border-green-300 dark:border-green-800 bg-white dark:bg-zinc-900 p-4 space-y-2">
-              <p className="text-sm font-bold text-green-800 dark:text-green-300">PIN créé pour {issuedCandidatePin.name}. Copiez-le maintenant : il ne sera pas réaffiché.</p>
-              <div className="flex flex-wrap items-center gap-3"><code className="text-2xl font-black tracking-[0.25em] tabular-nums">{issuedCandidatePin.pin}</code><button type="button" onClick={() => { void navigator.clipboard?.writeText(issuedCandidatePin.pin); }} className="min-h-10 rounded-lg border border-zinc-300 dark:border-zinc-700 px-3 text-sm font-bold">Copier</button></div>
-              <p className="text-xs text-zinc-500">Identifiant interne : {issuedCandidatePin.candidateId}</p>
-            </div>}
+          </form>
+          <form onSubmit={issueCandidatePin} className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 space-y-3">
+            <h3 className="font-black text-zinc-900 dark:text-white">Créer un profil candidat</h3>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">Associez chaque profil à l’adresse e-mail exacte de son compte Google.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input value={newCandidateName} onChange={e=>setNewCandidateName(e.target.value)} required maxLength={120} placeholder="Nom et prénom du candidat" className="min-h-12 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm" />
+              <input type="email" value={newCandidateEmail} onChange={e=>setNewCandidateEmail(e.target.value)} required placeholder="Adresse Gmail du compte Google" className="min-h-12 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm" />
+            </div>
+            <button type="submit" disabled={issuingCandidatePin} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Création…' : 'Créer le profil'}</button>
           </form>
           {candidatesError && <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 dark:bg-rose-950/30 dark:border-rose-900 p-4 text-sm text-rose-700 dark:text-rose-300">{candidatesError}</p>}
           {candidatesLoading ? (
@@ -958,8 +974,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                         return detail ? <div key={label} className="min-w-0"><dt className="text-xs font-semibold text-zinc-500">{label}</dt><dd className="mt-0.5 text-zinc-800 dark:text-zinc-200 break-words">{detail}</dd></div> : null;
                       })}
                     </dl>
+                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                      <input type="email" defaultValue={profile.google_email || ''} placeholder="Adresse e-mail du compte Google" aria-label="Adresse Google du candidat" className="min-h-11 min-w-0 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 text-sm" onBlur={e=>{if(e.target.value.trim().toLowerCase()!==(profile.google_email||''))void saveCandidateGoogleEmail(profile.id,e.target.value);}} />
+                      <span className="self-center text-xs text-zinc-500">Compte Google associé</span>
+                    </div>
                     <div className="flex flex-wrap gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
-                      <button type="button" disabled={issuingCandidatePin} onClick={() => void resetCandidatePin(profile.id, profile.name)} className="min-h-11 rounded-xl border border-green-300 px-4 text-sm font-bold text-green-800 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-950/30 disabled:opacity-50">Générer / réinitialiser le PIN</button>
+                      <span className="text-xs text-zinc-500">PIN commun configuré ci-dessus</span>
                       {profile.profile_status !== 'approved' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'approved')} className="flex-1 min-h-11 rounded-xl bg-green-700 px-4 text-sm font-bold text-white hover:bg-green-800 disabled:opacity-50">Approuver et publier</button>}
                       {profile.profile_status !== 'rejected' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'rejected')} className="min-h-11 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 disabled:opacity-50">Refuser</button>}
                     </div>

@@ -15,10 +15,11 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
     match /candidates/{candidateId} {
-      allow read: if isAdmin() || (signedIn() && resource.data.google_email == request.auth.token.email);
+      allow read: if isAdmin() || (signedIn() && request.auth.token.email_verified == true && resource.data.google_email == request.auth.token.email);
       allow create, delete: if isAdmin();
       allow update: if isAdmin() || (
         signedIn()
+        && request.auth.token.email_verified == true
         && resource.data.google_email == request.auth.token.email
         && resource.data.is_office_profile != true
         && request.resource.data.google_email == resource.data.google_email

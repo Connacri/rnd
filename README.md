@@ -317,8 +317,6 @@ Chaque artefact de release est accompagné de son empreinte SHA-256 dans
 | `ANDROID_KEY_ALIAS` | Alias de la clé de signature |
 | `ANDROID_KEY_PASSWORD` | Mot de passe de la clé |
 | `GOOGLE_SERVICES_JSON_BASE64` | `google-services.json` (base64) |
-| `SUPABASE_URL` | URL du projet Firebase |
-| `SUPABASE_ANON_KEY` | Clé publique (anon) Firebase |
 | `PLAY_SERVICE_ACCOUNT_JSON` | Clé du compte de service Google Play (JSON) |
 
 ### Variables GitHub

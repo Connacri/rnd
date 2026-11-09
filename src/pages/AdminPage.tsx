@@ -26,9 +26,8 @@ import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { CouncilCandidate } from '../types';
-import { collection, doc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
-import { httpsCallable } from 'firebase/functions';
-import { firebaseFunctions, firestore } from '../lib/firebase';
+import { addDoc, collection, doc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where, writeBatch } from 'firebase/firestore';
+import { firestore } from '../lib/firebase';
 import { candidateData, programPillars, campaignNews, defaultCouncilCandidates, defaultCampaignSettings } from '../data/campaignData';
 
 interface AdminPageProps {
@@ -73,60 +72,36 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   const [candidateActionId, setCandidateActionId] = useState<string | null>(null);
   const [newCandidateName, setNewCandidateName] = useState('');
   const [newCandidateEmail, setNewCandidateEmail] = useState('');
-  const [sharedPin, setSharedPin] = useState('');
-  const [pinConfigured, setPinConfigured] = useState(false);
-  const [pinUpdatedAt, setPinUpdatedAt] = useState<string | null>(null);
   const [issuingCandidatePin, setIssuingCandidatePin] = useState(false);
 
-  useEffect(() => {
-    if (!isAdmin || activeTab !== 'applicants') return;
-    let cancelled = false;
-    const loadPinStatus = async () => {
-      try {
-        const getStatus = httpsCallable< Record<string, never>, { configured: boolean; updatedAt: string | null }>(firebaseFunctions, 'getSharedCandidatePinStatus');
-        const result = await getStatus({});
-        if (!cancelled) { setPinConfigured(result.data.configured); setPinUpdatedAt(result.data.updatedAt); }
-      } catch (error) {
-        if (!cancelled) setCandidatesError(error instanceof Error ? error.message : 'Impossible de lire la configuration du PIN dans Firestore.');
-      }
-    };
-    void loadPinStatus();
-    return () => { cancelled = true; };
-  }, [activeTab, isAdmin]);
   const issueCandidatePin = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!newCandidateName.trim() || !newCandidateEmail.trim()) return;
+    const name = newCandidateName.trim();
+    const email = newCandidateEmail.trim().toLowerCase();
+    if (!name || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+      setCandidatesError('Veuillez saisir un nom et une adresse e-mail Google valide.');
+      return;
+    }
     setIssuingCandidatePin(true); setCandidatesError(null);
     try {
-      const createProfile = httpsCallable<{name:string;email:string},{candidateId:string}>(firebaseFunctions, 'createCandidateProfile');
-      await createProfile({ name: newCandidateName.trim(), email: newCandidateEmail.trim() });
+      const existing = await getDocs(query(collection(firestore, 'candidates'), where('google_email', '==', email)));
+      if (!existing.empty) throw new Error('Cette adresse Google est déjà associée à un profil.');
+      const candidateRef = await addDoc(collection(firestore, 'candidates'), {
+        name, google_email: email, profile_status: 'draft', is_published: false,
+        is_active: true, is_office_profile: false, candidate_number: null,
+        profession: {}, education_level: {}, diplomas: {}, experience: {}, skills: {}, motivation: {},
+        photo_url: null, created_at: serverTimestamp(), updated_at: serverTimestamp(),
+      });
+      setSubmittedCandidates(items => [...items, {
+        id: candidateRef.id, name, google_email: email, photo_url: null, candidate_number: null,
+        profession: {}, education_level: {}, diplomas: {}, experience: {}, skills: {}, motivation: {},
+        profile_status: 'draft', is_published: false, submitted_at: null,
+      }]);
+      setNewCandidateName(''); setNewCandidateEmail('');
+      showToast('Profil candidat créé et associé à son compte Google.');
     } catch (error) {
-      setIssuingCandidatePin(false);
-      setCandidatesError(error instanceof Error ? error.message : 'Impossible de créer ce profil.');
-      return;
-    }
-    setIssuingCandidatePin(false);
-    setNewCandidateName(''); setNewCandidateEmail('');
-    showToast('Profil candidat créé et associé à son compte Google.');
-  };
-  const saveSharedPin = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setCandidatesError(null);
-    if (!/^\d{10}$/.test(sharedPin)) { setCandidatesError('Le PIN commun doit contenir exactement 10 chiffres.'); return; }
-    setIssuingCandidatePin(true);
-    try {
-      const setPin = httpsCallable<{pin:string},{success:boolean}>(firebaseFunctions, 'setSharedCandidatePin');
-      await setPin({ pin: sharedPin });
-    } catch (error) {
-      setIssuingCandidatePin(false);
-      setCandidatesError(error instanceof Error ? error.message : 'Impossible d’enregistrer le PIN commun.');
-      return;
-    }
-    setIssuingCandidatePin(false);
-    setSharedPin('');
-    setPinConfigured(true);
-    setPinUpdatedAt(new Date().toISOString());
-    showToast('PIN commun enregistré dans Firestore sous forme de hash sécurisé.');
+      setCandidatesError(error instanceof Error ? error.message : 'Impossible de créer ce profil dans Firestore.');
+    } finally { setIssuingCandidatePin(false); }
   };
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
@@ -175,18 +150,31 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
   };
 
   const reviewCandidate = async (id: string, status: 'approved' | 'rejected') => {
-    setCandidateActionId(id);
+    const profile = submittedCandidates.find(item => item.id === id);
+    if (!profile || profile.profile_status !== 'pending') { setCandidatesError('Seules les candidatures envoyées peuvent être modérées.'); return; }
+    setCandidateActionId(id); setCandidatesError(null);
     try {
-      const review = httpsCallable<{candidateId:string;status:'approved'|'rejected'},{success:boolean;status:string;is_published:boolean}>(firebaseFunctions, 'reviewCandidateProfile');
-      await review({ candidateId: id, status });
+      const batch = writeBatch(firestore);
+      batch.update(doc(firestore, 'candidates', id), {
+        profile_status: status, is_published: status === 'approved', updated_at: serverTimestamp(),
+      });
+      const publicRef = doc(firestore, 'publishedCandidates', id);
+      if (status === 'approved') {
+        batch.set(publicRef, {
+          name: profile.name || '', photo_url: profile.photo_url || null,
+          candidate_number: profile.candidate_number ?? null,
+          profession: profile.profession || {}, education_level: profile.education_level || {},
+          diplomas: profile.diplomas || {}, experience: profile.experience || {},
+          skills: profile.skills || {}, motivation: profile.motivation || {},
+          submitted_at: profile.submitted_at || null, is_active: true, is_office_profile: false,
+        });
+      } else { batch.delete(publicRef); }
+      await batch.commit();
+      setSubmittedCandidates(items => items.map(item => item.id === id ? { ...item, profile_status: status, is_published: status === 'approved' } : item));
+      showToast(status === 'approved' ? 'Profil approuvé et publié.' : 'Profil refusé.');
     } catch (error) {
-      setCandidateActionId(null);
-      setCandidatesError(error instanceof Error ? error.message : 'La mise à jour du profil a échoué. Réessayez.');
-      return;
-    }
-    setCandidateActionId(null);
-    setSubmittedCandidates(items => items.map(item => item.id === id ? { ...item, profile_status: status, is_published: status === 'approved' } : item));
-    showToast(status === 'approved' ? 'Profil approuvé et publié.' : 'Profil refusé.');
+      setCandidatesError(error instanceof Error ? error.message : 'La mise à jour du profil a échoué.');
+    } finally { setCandidateActionId(null); }
   };
 
 
@@ -1006,21 +994,6 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
             </div>
             <span className="ms-auto rounded-full bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200 px-3 py-1 text-sm font-bold tabular-nums">{submittedCandidates.length}</span>
           </div>
-          <form onSubmit={saveSharedPin} className="rounded-3xl border border-green-200 dark:border-green-900 bg-green-50/70 dark:bg-green-950/20 p-5 sm:p-6 space-y-3">
-            <h3 className="font-black text-zinc-900 dark:text-white">PIN commun des candidats</h3>
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className={pinConfigured ? 'rounded-full bg-emerald-100 px-3 py-1 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200' : 'rounded-full bg-amber-100 px-3 py-1 text-amber-800 dark:bg-amber-950 dark:text-amber-200'}>
-                {pinConfigured ? 'PIN configuré dans Firestore' : 'Aucun PIN configuré'}
-              </span>
-              {pinUpdatedAt && <span className="text-xs text-zinc-500">Dernière modification : {new Date(pinUpdatedAt).toLocaleString()}</span>}
-            </div>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Le serveur lit le hash depuis Firestore et vérifie le PIN sans jamais exposer le code en clair au navigateur. Saisissez un nouveau PIN à 10 chiffres pour le remplacer.</p>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input value={sharedPin} onChange={e=>setSharedPin(e.target.value.replace(/\\D/g,'').slice(0,10))} inputMode="numeric" pattern="[0-9]{10}" maxLength={10} required placeholder="10 chiffres" className="min-h-12 flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 text-sm tracking-widest" />
-              <button type="submit" disabled={issuingCandidatePin || sharedPin.length!==10} className="min-h-12 rounded-xl bg-green-700 px-5 text-sm font-black text-white disabled:opacity-60">{issuingCandidatePin ? 'Enregistrement…' : 'Enregistrer le PIN commun'}</button>
-            </div>
-          </form>
-          
           <form onSubmit={issueCandidatePin} className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 space-y-3">
             <h3 className="font-black text-zinc-900 dark:text-white">Créer un profil candidat</h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">Associez chaque profil à l’adresse e-mail exacte de son compte Google.</p>
@@ -1037,7 +1010,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
             <div className="rounded-3xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-12 text-center space-y-2">
               <UserRoundSearch className="w-10 h-10 mx-auto text-zinc-400" />
               <h3 className="font-bold text-zinc-800 dark:text-zinc-100">Aucun profil soumis pour le moment</h3>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">Seuls les profils dont l’envoi a été confirmé apparaîtront ici. Les brouillons et les simples comptes utilisateurs sont exclus.</p>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">Les profils créés par l’administrateur et les candidatures envoyées depuis le compte Google associé apparaissent ici.</p>
               <button type="button" onClick={() => setActiveTab('council')} className="mt-2 inline-flex min-h-11 items-center justify-center rounded-xl border border-zinc-300 dark:border-zinc-700 px-4 text-sm font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800">Retour au tableau de bord</button>
             </div>
           ) : (
@@ -1069,9 +1042,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onNavigate }) => {
                       <span className="self-center text-xs text-zinc-500">Compte Google associé</span>
                     </div>
                     <div className="flex flex-wrap gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
-                      <span className="text-xs text-zinc-500">PIN commun configuré ci-dessus</span>
-                      {profile.profile_status !== 'approved' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'approved')} className="flex-1 min-h-11 rounded-xl bg-green-700 px-4 text-sm font-bold text-white hover:bg-green-800 disabled:opacity-50">Approuver et publier</button>}
-                      {profile.profile_status !== 'rejected' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'rejected')} className="min-h-11 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 disabled:opacity-50">Refuser</button>}
+                      <span className="text-xs text-zinc-500">Accès réservé au compte Google associé</span>
+                      {profile.profile_status === 'pending' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'approved')} className="flex-1 min-h-11 rounded-xl bg-green-700 px-4 text-sm font-bold text-white hover:bg-green-800 disabled:opacity-50">Approuver et publier</button>}
+                      {profile.profile_status === 'pending' && <button type="button" disabled={candidateActionId === profile.id} onClick={() => void reviewCandidate(profile.id, 'rejected')} className="min-h-11 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 disabled:opacity-50">Refuser</button>}
                     </div>
                   </article>
                 );

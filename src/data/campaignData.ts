@@ -129,7 +129,9 @@ export const programPillars: ProgramPillar[] = [
         "Install standardized, coordinated commercial kiosks with attractive, modern architectural design.",
         "Create a digital database listing all shops, tradespeople, independent professionals and associations to facilitate transactions and communication.",
         "Hold regular meetings between businesses, traders, investors and clubs to support sponsorships and collaborative projects.",
-        "Encourage companies awarded public contracts to help resolve at least two of the problems facing the city."
+        "Encourage companies awarded public contracts to help resolve at least two of the problems facing the city.",
+        "Support local economic projects, encourage investment and trade, and foster new activities and employment.",
+        "Revive marine fish farming in basins following feasibility studies and in compliance with environmental requirements.",
       ]
     }
   },
@@ -164,8 +166,6 @@ export const programPillars: ProgramPillar[] = [
         "Gestion intelligente et professionnelle des flux de circulation pendant la saison touristique estivale.",
         "Construction de 6 ponts pour dévier la circulation depuis la route des Andalouses, faciliter les déplacements et éviter les embouteillages.",
         "Création de stations organisées de transport public à proximité des zones de Trouville, Bouisseville, Bensmir et Cap Falcon.",
-        "Support local economic projects, encourage investment and trade, and foster new activities and employment.",
-        "Revive marine fish farming in basins following feasibility studies and in compliance with environmental requirements.",
         "Développer et rénover les routes et les trottoirs dans les différents quartiers.",
         "Améliorer le réseau d’assainissement et la qualité des services publics de proximité."
       ],
@@ -187,7 +187,9 @@ export const programPillars: ProgramPillar[] = [
         "Improve service to neighborhoods so residents do not have to walk long distances to reach the national road.",
         "Ensure smart and professional traffic-flow management during the summer tourist season.",
         "Build 6 bridges to divert traffic from the Les Andalouses road, make access easier and prevent congestion.",
-        "Create organized public transport stops near the Trouville, Bouisseville, Bensmir and Cap Falcon areas."
+        "Create organized public transport stops near the Trouville, Bouisseville, Bensmir and Cap Falcon areas.",
+        "Upgrade and renovate roads and sidewalks across the municipality’s neighborhoods.",
+        "Improve the sanitation network and the quality of local public services.",
       ]
     }
   },
@@ -223,8 +225,6 @@ export const programPillars: ProgramPillar[] = [
         "Développement des activités et des sports nautiques, avec le soutien aux clubs de plongée, d’aviron, de voile et à toutes les autres disciplines sportives.",
         "Soutien aux associations sportives et culturelles actives dans les domaines maritime et touristique.",
         "Lancement d’un portail numérique complet regroupant toutes les informations et tous les services destinés aux citoyens, aux touristes et aux visiteurs.",
-        "Upgrade and renovate roads and sidewalks across the municipality’s neighborhoods.",
-        "Improve the sanitation network and the quality of local public services.",
         "Poursuivre le développement du secteur touristique et l’aménagement des plages et des équipements de loisirs.",
         "Dynamiser les festivals et les manifestations culturelles pour faire vivre la commune toute l’année.",
         "Remettre en service et aménager le théâtre en plein air de Trouville."
@@ -252,7 +252,10 @@ export const programPillars: ProgramPillar[] = [
         "Install modern information signs reminding visitors of cleanliness, safety and marine-environment protection rules.",
         "Develop water-based activities and sports, supporting diving, rowing, sailing and all other sports clubs.",
         "Support sports and cultural associations active in maritime and tourism activities.",
-        "Launch a comprehensive digital portal containing all information and services for residents, tourists and visitors."
+        "Launch a comprehensive digital portal containing all information and services for residents, tourists and visitors.",
+        "Continue developing tourism and improving beaches and recreational facilities.",
+        "Promote festivals and cultural events that bring the municipality to life throughout the year.",
+        "Restore and refurbish the Trouville open-air theatre.",
       ]
     }
   },
@@ -284,9 +287,6 @@ export const programPillars: ProgramPillar[] = [
         "Protection renforcée et stricte du patrimoine arboré et du couvert végétal du front de mer et des forêts.",
         "Interdiction absolue de couper ou de dégrader des arbres sans autorisation légale, avec sanction des contrevenants.",
         "Fabrication locale de jeux et d’équipements pour les aires de jeux pour enfants dans les ateliers municipaux, afin d’accélérer leur renouvellement et leur entretien et de réduire les coûts.",
-        "Continue developing tourism and improving beaches and recreational facilities.",
-        "Promote festivals and cultural events that bring the municipality to life throughout the year.",
-        "Restore and refurbish the Trouville open-air theatre.",
         "Renforcer la protection de l’environnement et des espaces verts, et améliorer durablement la propreté et la gestion environnementale.",
         "Réhabiliter le point de mouillage de la zone sablonneuse, après les études et autorisations nécessaires.",
         "Améliorer les infrastructures et les équipements des établissements scolaires.",
@@ -310,7 +310,12 @@ export const programPillars: ProgramPillar[] = [
         "Plant 10,000 fast-growing trees adapted to the Mediterranean climate throughout all municipal neighborhoods.",
         "Enforce strict protection of trees and vegetation along the waterfront and in forest areas.",
         "Strictly prohibit the cutting down or damaging of trees without legal authorization and penalize offenders.",
-        "Manufacture playground equipment and children’s park facilities locally in municipal workshops to speed up renewal and maintenance and reduce costs."
+        "Manufacture playground equipment and children’s park facilities locally in municipal workshops to speed up renewal and maintenance and reduce costs.",
+        "Strengthen environmental and green-space protection while improving cleanliness and environmental management sustainably.",
+        "Rehabilitate the anchorage point in the sandy area, subject to the required studies and permits.",
+        "Improve infrastructure and facilities in schools.",
+        "Support youth and sports activities and expand vocational training and career guidance.",
+        "Improve access to healthcare, assist vulnerable people and support social-solidarity initiatives.",
       ]
     }
   },
@@ -346,11 +351,6 @@ export const programPillars: ProgramPillar[] = [
         "Renforcement des effectifs aux guichets de délivrance des documents et dans les services administratifs pendant les périodes de forte affluence et les saisons.",
         "Création d’une cellule municipale permanente de veille ainsi que d’une cellule de gestion des crises et des situations d’urgence.",
         "Système de notifications rapides pour informer les citoyens des actualités et des interruptions d’eau ou des travaux.",
-        "Strengthen environmental and green-space protection while improving cleanliness and environmental management sustainably.",
-        "Rehabilitate the anchorage point in the sandy area, subject to the required studies and permits.",
-        "Improve infrastructure and facilities in schools.",
-        "Support youth and sports activities and expand vocational training and career guidance.",
-        "Improve access to healthcare, assist vulnerable people and support social-solidarity initiatives."
       ],
       ar: [
         "تطبيق للإبلاغ الفوري عن أعطال الإنارة والنفايات والحفر مع تحديد الموقع الجغرافي والصور.",

@@ -54,6 +54,19 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       onSnapshot(doc(firestore, 'siteContent', 'settings'), snap => { if (snap.exists()) setSettings({ ...defaultCampaignSettings, ...snap.data() } as CampaignSettings); }),
       onSnapshot(collection(firestore, 'programPillars'), snap => {
         const storedPillars = new Map(snap.docs.map(d => [d.id, { ...d.data(), id: d.id } as ProgramPillar]));
+
+        // Publish the eight committed domains to Firestore when an administrator
+        // opens the app. Only missing documents are created: existing admin-edited
+        // content is preserved and merged with the committed commitments below.
+        if (isAdmin) {
+          initialPillars.forEach(defaultPillar => {
+            if (!storedPillars.has(defaultPillar.id)) {
+              void setDoc(doc(firestore, 'programPillars', defaultPillar.id), defaultPillar)
+                .catch(error => console.error(`Unable to seed programme domain ${defaultPillar.id}:`, error));
+            }
+          });
+        }
+
         const mergedPillars = initialPillars.map(defaultPillar => {
           const stored = storedPillars.get(defaultPillar.id);
           return stored ? mergePillarWithDefaults(defaultPillar, stored) : defaultPillar;

@@ -6,19 +6,18 @@
 - [x] Profils candidats, modération et PIN basculés vers Cloud Firestore / Cloud Functions.
 - [x] Téléversement des photos candidat basculé vers Firebase Storage.
 - [x] Règles Firestore/Storage et indexes ajoutés.
-- [ ] Déployer les règles, indexes et fonctions Firebase sur `rnd-aet`.
-- [ ] Activer/valider Email/Password et Google dans Firebase Authentication et autoriser `connacri.github.io`.
+- [ ] Déployer les règles Firestore/Storage, les index et les Cloud Functions sur `rnd-aet` avec un compte Firebase autorisé.
+- [ ] Vérifier Email/Password et Google Sign-In dans Firebase Authentication et autoriser `connacri.github.io`.
 - [ ] Attribuer le custom claim `admin` au compte administrateur via `scripts/set-admin-claim.mjs`.
-- [ ] Exporter les anciennes lignes candidates Supabase et les importer dans Firestore avant de fermer l'ancien projet.
-- [ ] Vérifier le build CI et les tests sur le site publié.
+- [ ] Vérifier les données candidates déjà présentes dans Firestore et confirmer leur intégrité.
+- [ ] Exécuter le build CI, les tests et vérifier le site publié (pages, formulaires, connexion et téléversement de photos).
 
 
 Suivi du travail restant. Dernière mise à jour : 15/10/2026.
 
 ## Fait
 
-- [x] **MCP** : 4 serveurs opérationnels (`firebase`, `google-play`, `render`,
-      `supabase`) — config projet dans `opencode.json`.
+- [x] **MCP** : 3 serveurs opérationnels (`firebase`, `google-play`, `render`) — config projet dans `opencode.json`.
 - [x] **MCP reconnectés après passage V2** ✅ — config migrée vers
       `mcp.servers` + `mcp.timeout` (`startup`/`catalog`/`execution`). Le
       serveur `firebase` (`npx firebase-tools mcp`, handshake ~20 s) échouait
@@ -36,7 +35,6 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
       à distance → check CI « Supabase Preview » vert.
 - [x] **Secret / variable GitHub** : `PLAY_SERVICE_ACCOUNT_JSON` (secret),
       `ANDROID_PACKAGE_NAME=com.rnd.dz`, `FIREBASE_PROJECT_ID=rnd-aet`,
-      `SUPABASE_PROJECT_REF=liveclvibiqcpekanfbp`,
       `PLAY_UPLOAD_ENABLED=false`.
 - [x] **Google Play — compte de service invité et actif** ✅
       `play-console-mcp@cargolink-23dd3.iam.gserviceaccount.com` (compte
@@ -103,13 +101,13 @@ Suivi du travail restant. Dernière mise à jour : 15/10/2026.
       (sortie 0 = « Fiche Play alignée »). Le job CI `play-listing` applique la
       fiche puis l'icône.
 - [x] **Config MCP alignée** ✅ — `opencode.json` (dépôt) déclare les 4 serveurs
-      (`firebase`, `google-play`, `render`, `supabase`) ; aucun secret ni chemin
+      (`firebase`, `google-play`, `render`) ; aucun secret ni chemin
       absolu committé. `GOOGLE_APPLICATION_CREDENTIALS` (compte de service Play,
       variable utilisateur créée le 15/10/2026) est lu depuis l'environnement et
       `RENDER_API_KEY` par substitution `{env:RENDER_API_KEY}`. Le serveur
       `google-play` ne répond aux appels qu'après **redémarrage d'OpenCode**
       (la variable n'existe pas dans le processus en cours) ; `firebase`,
-      `render` et `supabase` sont vérifiés connectés.
+      `render` est vérifié connecté.
 - [x] **Renommage publié** — run `38730842663` : `Qualité`, `Version`,
       `Site web`, `Google Play (fiche)` (nouveau job), `Deploy GitHub Pages`,
       `Android signé` et `Tag + GitHub Release` verts ; release

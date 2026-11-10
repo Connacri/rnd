@@ -73,9 +73,6 @@ jobs:
   ##############################################################################
   build-android:
     name: Android signe (APK + AAB)
-    # Pause temporaire : aucun APK/AAB le 9 novembre 2026 (heure UTC).
-    # Algerie (UTC+1) : pause du 09/11 00:00 au 10/11 00:00 heure locale.
-    if: ${{ github.run_started_at < '2026-11-08T23:00:00Z' || github.run_started_at >= '2026-11-09T23:00:00Z' }}
     needs: [version, build-site]
     runs-on: ubuntu-latest
     timeout-minutes: 40

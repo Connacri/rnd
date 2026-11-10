@@ -101,12 +101,15 @@ export const CandidateSubmissionPage: React.FC<CandidateSubmissionPageProps> = (
  }, [user?.id, user?.email, lang]);
  const submit = async (event:React.FormEvent) => {
   event.preventDefault(); setError(''); setSuccess('');
+  // Recheck the session inside this async handler; JSX visibility does not narrow nullable state.
+  const authenticatedUserId = user?.id;
+  if (!authenticatedUserId) { setError(t.emailError); return; }
   if (!form.name.trim() || !form.profession.trim() || !form.education.trim() || !form.skills.trim() || !photo) { setError(t.required); return; }
   if (!['image/jpeg','image/png','image/webp'].includes(photo.type) || photo.size > 5*1024*1024) { setError(t.photoError); return; }
   setBusy(true);
   try {
    const ext = photo.type==='image/jpeg'?'jpg':photo.type==='image/png'?'png':'webp';
-   const path = `submissions/${user.id}/${crypto.randomUUID()}.${ext}`;
+   const path = `submissions/${authenticatedUserId}/${crypto.randomUUID()}.${ext}`;
    const photoRef = ref(firebaseStorage, `candidate-photos/${path}`);
    const uploaded = await uploadBytes(photoRef, photo, { contentType: photo.type, cacheControl: 'public,max-age=3600' });
    const photoUrl = await getDownloadURL(uploaded.ref);

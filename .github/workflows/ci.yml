@@ -352,6 +352,12 @@ jobs:
         env:
           BASE_PATH: /rnd/
 
+      - name: Inclure l'animation montions dans GitHub Pages
+        run: |
+          mkdir -p dist/montions
+          cp montions/index.html dist/montions/index.html
+          test -s dist/montions/index.html
+
       - name: Validate the build
         run: |
           test -f dist/index.html

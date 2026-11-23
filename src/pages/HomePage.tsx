@@ -26,6 +26,7 @@ import { useCampaign } from '../context/CampaignContext';
 import { campaignStats, officialCampaignPosters } from '../data/campaignData';
 import { AudioPlayer } from '../components/AudioPlayer';
 import { ShareButton } from '../components/ShareButton';
+import { PWAInstallButton } from '../components/PWAInstallButton';
 import { ProgramPillar, CampaignPoster } from '../types';
 import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { firestore } from '../lib/firebase';
@@ -175,19 +176,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
           {/* Action Button Pills (like "Book" and "Chat" in the reference design) */}
           <div className="mt-5 sm:mt-7 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-sm sm:max-w-md mx-auto">
-            <button
-              onClick={() => onNavigate('program')}
+            <a
+              href="https://connacri.github.io/rnd/#/program"
               className="flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[#18181B] dark:bg-white text-white dark:text-zinc-950 font-bold text-xs sm:text-sm shadow-md hover:opacity-90 active:scale-95 transition min-h-[44px]"
+              aria-label={t('ourProgram')}
             >
               <span>{t('ourProgram')}</span>
               <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
-            </button>
+            </a>
             <button
               onClick={() => onNavigate('membership')}
               className="flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-xs sm:text-sm shadow-sm border border-amber-200 dark:border-zinc-700 hover:bg-amber-50/50 active:scale-95 transition min-h-[44px]"
             >
               <span>{t('joinUs')}</span>
             </button>
+          </div>
+
+          {/* Installable web app: Android prompt or iOS Add to Home Screen guidance. */}
+          <div className="mt-3 flex justify-center">
+            <PWAInstallButton />
           </div>
 
           {/* Quick Share Action */}

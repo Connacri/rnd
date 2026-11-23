@@ -1,18 +1,18 @@
-/* Cairo variable TTF — self-host-ready font face (served from the Cairo font mirror) */
+/* Cairo is bundled locally: all UI text uses Cairo, including Arabic and French. */
 @font-face {
   font-family: 'Cairo';
-  src: url('https://static.oeh.ac.at/fonts/ofl/cairo/Cairo%5Bslnt%2Cwght%5D.ttf') format('truetype');
+  src: url('./assets/fonts/Cairo-Variable.ttf') format('truetype');
   font-style: normal;
   font-weight: 200 1000;
-  font-display: swap;
+  font-display: block;
 }
 
 @import "tailwindcss";
 
 @layer base {
   :root {
-    --font-sans: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    --font-arabic: 'Cairo', 'Noto Sans Arabic', 'Al Jazeera Arabic', sans-serif;
+    --font-sans: 'Cairo', sans-serif;
+    --font-arabic: 'Cairo', sans-serif;
   }
 
   html {
@@ -21,7 +21,7 @@
   }
 
   body {
-    font-family: var(--font-sans);
+    font-family: 'Cairo', sans-serif;
     background-color: #FFFFFF;
     width: 100%;
     min-width: 320px;
@@ -30,13 +30,14 @@
 
   [dir="rtl"],
   [lang="ar"],
-  :lang(ar) {
-    font-family: var(--font-arabic);
+  :lang(ar),
+  button, input, select, textarea {
+    font-family: 'Cairo', sans-serif;
   }
 }
 
 .font-arabic {
-  font-family: 'Cairo', 'Noto Sans Arabic', sans-serif !important;
+  font-family: 'Cairo', sans-serif !important;
 }
 
 @keyframes spinSlow {
